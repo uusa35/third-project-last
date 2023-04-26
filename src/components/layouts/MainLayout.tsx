@@ -5,9 +5,13 @@ import { useRouter } from 'next/router';
 import {
   arboriaFont,
   gessFont,
+  scrollClass,
   setLang,
+  suppressText,
 } from '@/constants/*';
 import { setLocale } from '@/redux/slices/localeSlice';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
+import MainAsideLayout from './MainAsideLayout';
 
 type Props = {
   children: ReactNode | undefined;
@@ -29,6 +33,25 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
+
+  useEffect(() => {
+    getVendor();
+  }, [url]);
+
+  const getVendor = () => {
+    triggerGetVendor(
+      {
+        lang: locale.lang,
+        url,
+        branch_id: method !== `pickup` ? branch_id : ``,
+        area_id: method === `pickup` ? area_id : ``,
+      },
+      false
+    );
+  };
+
   useEffect(() => {
     if (router.locale !== locale.lang) {
       dispatch(setLocale(router.locale));
@@ -47,6 +70,17 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
     >
       {children}
+
+      <div
+        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${scrollClass} ${
+          router.locale === 'ar' ? 'left-0' : 'right-0'
+        }`}
+        suppressHydrationWarning={suppressText}
+      >
+        {vendorSuccess && vendorElement && vendorElement.Data && (
+          <MainAsideLayout element={vendorElement.Data} />
+        )}
+      </div>
     </div>
   );
 };
