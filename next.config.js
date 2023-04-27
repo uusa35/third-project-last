@@ -6,6 +6,26 @@ const nextConfig = {
     defaultLocale: 'en',
     localeDetection: false,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/areas',
+        destination: '/select/areas',
+      },
+      {
+        source: '/branches',
+        destination: '/select/branches',
+      },
+      {
+        source: '/schedule',
+        destination: '/select/schedule',
+      },
+      {
+        source: '/about',
+        destination: '/vendor/show',
+      },
+    ];
+  },
   env: {
     SECRET_APP_KEY: "@#8!U.S.A.M.A.!@)8231",
     NEXT_PUBLIC_URL: "/",
