@@ -1,4 +1,4 @@
-import NoFoundImage from '@/appImages/not_found.png';
+import NoFoundImage from "@/appImages/not_found.png";
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 // export const xDomain = `next2-q.testbedbynd.com`;
 export const xDomain = `next-q.testbedbynd.com`;
@@ -6,10 +6,11 @@ export const xDomain = `next-q.testbedbynd.com`;
 //https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
- 
+  root: { path: "/home" },
+  home: { path: "/home" },
 };
 
-export const isLocal = process.env.NODE_ENV !== 'production';
+export const isLocal = process.env.NODE_ENV !== "production";
 // export const isLocal = true;
 export const tajwalFont = `font-tajwal-medium`;
 export const arboriaFont = `font-arboria-light`;
@@ -34,10 +35,10 @@ export const imageSizes = {
 
 // export const imgUrl = (img: string) => `${baseUrl}${img}`;
 export const imgUrl = (img: string) =>
-  img.includes('http') ? img : NoFoundImage.src;
+  img.includes("http") ? img : NoFoundImage.src;
 
 export const convertColor = (hex: string, opacity: number) => {
-  const tempHex = hex.replace('#', '');
+  const tempHex = hex.replace("#", "");
   const r = parseInt(tempHex.substring(0, 2), 16);
   const g = parseInt(tempHex.substring(2, 4), 16);
   const b = parseInt(tempHex.substring(4, 6), 16);
@@ -58,9 +59,9 @@ export const scrollClass = `scroll-smooth overflow-scroll scrollbar-hide overflo
 
 export const setLang = (lang: any) =>
   fetch(`/api/set/lang`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ lang }),
   });

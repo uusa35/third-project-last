@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
-import { configureStore } from '@reduxjs/toolkit';
-import { createLogger } from 'redux-logger';
-import { rootReducer } from './slices/rootReducer';
+import { useMemo } from "react";
+import { configureStore } from "@reduxjs/toolkit";
+import { createLogger } from "redux-logger";
+import { rootReducer } from "./slices/rootReducer";
 import {
   persistReducer,
   persistStore,
@@ -11,34 +11,33 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
-import storage from 'redux-persist/lib/storage';
-import rootSaga from './sagas/rootSaga';
-import { productApi } from './api/productApi';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { HYDRATE, createWrapper } from 'next-redux-wrapper';
-import { apiSlice } from './api';
-import { categoryApi } from '@/redux/api/categoryApi';
-import { vendorApi } from '@/redux/api/vendorApi';
-import { isLocal } from '@/constants/*';
-import { locationApi } from '@/redux/api/locationApi';
-import { branchApi } from '@/redux/api/branchApi';
+} from "redux-persist";
+import createSagaMiddleware from "redux-saga";
+import storage from "redux-persist/lib/storage";
+import rootSaga from "./sagas/rootSaga";
+import { productApi } from "./api/productApi";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { HYDRATE, createWrapper } from "next-redux-wrapper";
+import { apiSlice } from "./api";
+import { categoryApi } from "@/redux/api/categoryApi";
+import { vendorApi } from "@/redux/api/vendorApi";
+import { isLocal } from "@/constants/*";
+import { locationApi } from "@/redux/api/locationApi";
+import { branchApi } from "@/redux/api/branchApi";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  blacklist: ['api'],
+  blacklist: ["api", "appSetting"],
   whitelist: [
-    'appLoading',
-    'appSetting',
-    'area',
-    'branch',
-    'cart',
-    'customer',
-    'order',
-    'productCart',
-    'vendor',
+    "appLoading",
+    "area",
+    "branch",
+    "cart",
+    "customer",
+    "order",
+    "productCart",
+    "vendor",
   ],
   // stateReconciler: hardSet,
   debug: isLocal,
@@ -115,7 +114,7 @@ export const initializeStore = (preloadedState: RootState) => {
     store = undefined;
   }
   // For SSG and SSR always create a new store
-  if (typeof window === 'undefined') return _store;
+  if (typeof window === "undefined") return _store;
   // Create the store once in the client
   if (!store) store = _store;
   return _store;

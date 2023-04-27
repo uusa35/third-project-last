@@ -91,7 +91,7 @@ export type position = {
 };
 
 export type appSetting = {
-  method: `delivery` | `pickup`;
+  // method: `delivery` | `pickup`;
   url: string;
   productPreview: `hor` | `ver`;
   showFooterElement: string;

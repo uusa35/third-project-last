@@ -9,6 +9,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/home',
+        destination: '/',
+      },
+      {
         source: '/areas',
         destination: '/select/areas',
       },
@@ -22,7 +26,7 @@ const nextConfig = {
       },
       {
         source: '/about',
-        destination: '/vendor/show',
+        destination: '/vendor/info',
       },
     ];
   },

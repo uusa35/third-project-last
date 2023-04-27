@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
-import { areaSlice } from './areaSlice';
-import { branchSlice } from './branchSlice';
 
 const initialState: appSetting = {
-  method: `delivery`,
   url: ``,
   productPreview: `hor`,
   showHeader: true,
@@ -185,15 +182,15 @@ export const appSettingSlice = createSlice({
         showFooterElement: `home`,
       };
     },
-    setCartMethod: (
-      state: typeof initialState,
-      action: PayloadAction<appSetting['method']>
-    ) => {
-      return {
-        ...state,
-        method: action.payload,
-      };
-    },
+    // setCartMethod: (
+    //   state: typeof initialState,
+    //   action: PayloadAction<appSetting['method']>
+    // ) => {
+    //   return {
+    //     ...state,
+    //     method: action.payload,
+    //   };
+    // },
     setProductPreview: (
       state: typeof initialState,
       action: PayloadAction<appSetting['productPreview']>
@@ -231,14 +228,7 @@ export const appSettingSlice = createSlice({
       };
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(branchSlice.actions.setBranch, (state, action) => {
-      state.method = 'pickup';
-    });
-    builder.addCase(areaSlice.actions.setArea, (state, action) => {
-      state.method = 'delivery';
-    });
-  },
+ 
 });
 
 export const {
@@ -261,7 +251,7 @@ export const {
   showChangePasswordModal,
   hideChangePasswordModal,
   resetAppSetting,
-  setCartMethod,
+  // setCartMethod,
   setShowFooterElement,
   setProductPreview,
   resetShowFooterElement,
