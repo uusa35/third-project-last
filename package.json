@@ -8,7 +8,7 @@
     "start": "next start -p 3001",
     "lint": "next lint"
   },
-    "dependencies": {
+  "dependencies": {
     "@emotion/memoize": "^0.8.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -111,6 +111,4 @@
     "tailwindcss-rtl": "^0.9.0",
     "whatwg-fetch": "^3.6.2"
   }
-
-
 }
