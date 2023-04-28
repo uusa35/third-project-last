@@ -1,4 +1,11 @@
-import { Address } from '@/types/queries';
+import { Address, Area, Branch } from "@/types/queries";
+
+export interface DestinationInfo {
+  method: "pickup" | "delivery" | undefined;
+  destination: Branch | Area | undefined;
+  destination_type: string| undefined;
+  category_id: number | null;
+}
 
 export interface Product {
   id: number;
@@ -70,24 +77,24 @@ export interface Vendor {
   facebook: string;
   instagram: string;
   Payment_Methods: {
-    cash_on_delivery: 'yes' | 'no';
-    knet: 'yes' | 'no';
-    visa: 'yes' | 'no';
+    cash_on_delivery: "yes" | "no";
+    knet: "yes" | "no";
+    visa: "yes" | "no";
   };
 }
 
 export interface Locale {
-  lang: 'ar' | 'en';
+  lang: "ar" | "en";
   isRTL: boolean;
-  dir: 'ltr' | 'rtl';
+  dir: "ltr" | "rtl";
   label: string;
-  otherLang: 'ar' | 'en';
+  otherLang: "ar" | "en";
 }
 
 export type hor = `left` | `right`;
 export type ver = `top` | `bottom`;
 export type position = {
-  position: Exclude<`${hor}-${ver}`, 'left-left'> | 'center';
+  position: Exclude<`${hor}-${ver}`, "left-left"> | "center";
 };
 
 export type appSetting = {
