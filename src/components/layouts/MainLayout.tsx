@@ -1,17 +1,18 @@
-import { FC, ReactNode, useCallback, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import i18n from 'i18next';
-import { useRouter } from 'next/router';
+import { FC, ReactNode, useCallback, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import i18n from "i18next";
+import { useRouter } from "next/router";
 import {
   arboriaFont,
   gessFont,
   scrollClass,
   setLang,
   suppressText,
-} from '@/constants/*';
-import { setLocale } from '@/redux/slices/localeSlice';
-import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
-import MainAsideLayout from './MainAsideLayout';
+} from "@/constants/*";
+import { setLocale } from "@/redux/slices/localeSlice";
+import { useLazyGetVendorQuery } from "@/redux/api/vendorApi";
+import MainAsideLayout from "./MainAsideLayout";
+import { destinationObject } from "@/redux/slices/searchParamsSlice";
 
 type Props = {
   children: ReactNode | undefined;
@@ -22,16 +23,16 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl, method },
+    appSetting: { sideMenuOpen, url, previousUrl },
     customer: { userAgent },
     locale,
     branch,
     area,
-    branch: { id: branch_id },
-    area: { id: area_id },
+    searchParams: { destination, method },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const desObject = useAppSelector(destinationObject);
 
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
@@ -45,8 +46,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       {
         lang: locale.lang,
         url,
-        branch_id: method !== `pickup` ? branch_id : ``,
-        area_id: method === `pickup` ? area_id : ``,
+        ...desObject,
       },
       false
     );
@@ -64,19 +64,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   return (
     <div
-      dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${
-        router.locale === 'ar' ? gessFont : arboriaFont
-      } flex-col justify-start items-start grow  lg:flex lg:flex-row flex flex-row h-screen  capitalize`}
-    >
+      dir={router.locale === "ar" ? "rtl" : "ltr"}
+      className={`${router.locale === "ar" ? gessFont : arboriaFont}
+        flex-col justify-start items-start grow lg:flex lg:flex-row flex flex-row h-screen capitalize`}>
       {children}
 
       <div
-        className={`hidden lg:block flex flex-row  w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${scrollClass} ${
-          router.locale === 'ar' ? 'left-0' : 'right-0'
+        className={`hidden lg:block flex flex-row w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${scrollClass} ${
+          router.locale === "ar" ? "left-0" : "right-0"
         }`}
-        suppressHydrationWarning={suppressText}
-      >
+        suppressHydrationWarning={suppressText}>
         {vendorSuccess && vendorElement && vendorElement.Data && (
           <MainAsideLayout element={vendorElement.Data} />
         )}

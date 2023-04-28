@@ -1,30 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Area } from '@/types/queries';
+import { Area, Branch, Category, SearchParams } from '@/types/queries';
 import { branchSlice } from './branchSlice';
+import { RootState } from '../store';
 
-const initialState: any = {
-    method:undefined , //pickup or delivery or undefined,
-    destination_Type:undefined,//pickup or delivery or undefined
-    destination_id:null,//number or string
-
-    category_id:null,//number or string
-
-    destination:undefined     // area | branch
+const initialState: SearchParams = {
+  method: undefined,
+  destination: undefined,
+  destination_type: undefined,
+  category_id: null,
 };
 
 export const searchParamsSlice = createSlice({
-  name: 'area',
+  name: 'searchParams',
   initialState,
   reducers: {
-    setArea: (state: typeof initialState, action: PayloadAction<Area>) =>
-      action.payload,
-  },
-  extraReducers: (builder) => {
-    builder.addCase(
-      branchSlice.actions.setBranch,
-      (state, action) => initialState
-    );
-  },
+    setDestination: (state: typeof initialState, action: PayloadAction<{
+      destination: Branch | Area; method: 'pickup'
+      | 'delivery'
+    }>) => ({
+      ...state,
+      method: action.payload.method,
+      destination_type: action.payload.method === 'pickup' ? 'branch' : 'area',
+
+      destination: action.payload.destination
+    }),
+    setCategory: (state: typeof initialState, action: PayloadAction<number>) => ({
+      ...state,
+      category_id: action.payload,
+    }),
+  }
 });
 
-export const { setArea, removeArea } = searchParamsSlice.actions;
+export const { setDestination, setCategory } = searchParamsSlice.actions;
+export const destinationId = (state: RootState) => state.destination.id;
+export const destinationObject = (state: RootState) => (state.method === 'pickup' ? { branch_id: state.destination?.id } : { area_id: state.destination?.id });
+// branch_id: method !== `pickup` ? branch_id : ``,
+//   area_id: method === `pickup` ? area_id : ``,
