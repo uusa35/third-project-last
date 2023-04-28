@@ -37,6 +37,12 @@ export type Branch = {
   delivery_type: string;
 };
 
+export interface SearchParams {
+  method: 'pickup' | 'delivery';
+  destination_type: 'branch' | 'area';
+  destination_id: undefined | number;
+  category_id: undefined | number;
+}
 export interface Area {
   id: string | number | null;
   name: string;
