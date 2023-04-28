@@ -10,19 +10,19 @@ import { vendorApi } from '@/redux/api/vendorApi';
 import { orderSlice } from '@/redux/slices/orderSlice';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
-import { vendorSlice } from '@/redux/slices/vendorSlice';
-import { branchSlice } from '@/redux/slices/branchSlice';
-import { branchesSlice } from '@/redux/slices/branchesSlice';
-import { areaSlice } from '@/redux/slices/areaSlice';
+// import { vendorSlice } from '@/redux/slices/vendorSlice';
+// import { branchSlice } from '@/redux/slices/branchSlice';
+// import { branchesSlice } from '@/redux/slices/branchesSlice';
+// import { areaSlice } from '@/redux/slices/areaSlice';
 import { customerSlice } from '@/redux/slices/customerSlice';
 
 export const rootReducer = combineReducers({
   [appLoadingSlice.name]: appLoadingSlice.reducer,
   [localeSlice.name]: localeSlice.reducer,
-  [vendorSlice.name]: vendorSlice.reducer,
-  [branchSlice.name]: branchSlice.reducer,
-  [areaSlice.name]: areaSlice.reducer,
-  [branchesSlice.name]: branchesSlice.reducer,
+  // [vendorSlice.name]: vendorSlice.reducer,
+  // [branchSlice.name]: branchSlice.reducer,
+  // [areaSlice.name]: areaSlice.reducer,
+  // [branchesSlice.name]: branchesSlice.reducer,
   [appSettingSlice.name]: appSettingSlice.reducer,
   [appLoadingSlice.name]: appLoadingSlice.reducer,
   [customerSlice.name]: customerSlice.reducer,
