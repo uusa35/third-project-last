@@ -4,9 +4,9 @@ import { branchSlice } from './branchSlice';
 import { RootState } from '../store';
 
 const initialState: SearchParams = {
-  method: undefined,
-  destination: undefined,
-  destination_type: undefined,
+  method: null,
+  destination: null,
+  destination_type: null,
   category_id: null,
 };
 

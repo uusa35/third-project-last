@@ -18,18 +18,18 @@ export const appLinks = {
   productSearch: { path: "/product/search" },
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number) => `product/show/${id}`,
-  selectArea: {path:'/select/area'},
-  selectBranch: {path:'/select/branch'},
-  orderSchedule: {path:'/select/schedule'},
-  userAddresses:{path:'/user/addresses'},
-  accountInfo:{path:'/user/info'},
-  orderHistory:{path:'/user/orders'},
-  wishlist:{path:'/user/wishlist'},
+  selectArea: { path: '/select/area' },
+  selectBranch: { path: '/select/branch' },
+  orderSchedule: { path: '/select/schedule' },
+  userAddresses: { path: '/user/addresses' },
+  accountInfo: { path: '/user/info' },
+  orderHistory: { path: '/user/orders' },
+  wishlist: { path: '/user/wishlist' },
 
-  vendorDetails:{path:'/vendor/info'},
+  vendorDetails: { path: '/vendor/info' },
 
-  mobileVerification:{path:'/verification/mobile'},
-  otpVerification:{path:'/verification/otp'},
+  mobileVerification: { path: '/verification/mobile' },
+  otpVerification: { path: '/verification/otp' },
 
 
   orderReceipt: (orderId: number) => `/order/${orderId}/receipt`,
@@ -69,11 +69,13 @@ export const imgUrl = (img: string) =>
   img.includes("http") ? img : NoFoundImage.src;
 
 export const convertColor = (hex: string, opacity: number) => {
-  const tempHex = hex.replace("#", "");
-  const r = parseInt(tempHex.substring(0, 2), 16);
-  const g = parseInt(tempHex.substring(2, 4), 16);
-  const b = parseInt(tempHex.substring(4, 6), 16);
-  return `rgba(${r},${g},${b},${opacity / 100})`;
+  const tempHex = hex?.replace("#", "");
+  if (tempHex) {
+    const r = parseInt(tempHex.substring(0, 2), 16);
+    const g = parseInt(tempHex.substring(2, 4), 16);
+    const b = parseInt(tempHex.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${opacity / 100})`;
+  }
 };
 
 export const iconColor = `grayscale`;

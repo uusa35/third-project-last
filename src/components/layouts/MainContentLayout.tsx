@@ -1,14 +1,14 @@
-import { FC, ReactNode, useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import OffLineWidget from "@/widgets/OffLineWidget";
-import NoInternet from "@/appImages/no_internet.png";
-import NextNProgress from "nextjs-progressbar";
-import { themeColor } from "@/redux/slices/vendorSlice";
-import { setUrl } from "@/redux/slices/appSettingSlice";
-import { isUndefined } from "lodash";
-import { scrollClass, suppressText } from "@/constants/*";
+import { FC, ReactNode, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import OffLineWidget from '@/widgets/OffLineWidget';
+import NoInternet from '@/appImages/no_internet.png';
+import NextNProgress from 'nextjs-progressbar';
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { setUrl } from '@/redux/slices/appSettingSlice';
+import { isUndefined } from 'lodash';
+import { scrollClass, suppressText } from '@/constants/*';
 // import ScrollToTopButton from '@/components/ScrollToTopButton';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
@@ -58,11 +58,11 @@ const MainContentLayout: FC<Props> = ({
     const handleStatusChange = () => {
       setIsOnline(navigator.onLine);
     };
-    window.addEventListener("online", handleStatusChange);
-    window.addEventListener("offline", handleStatusChange);
+    window.addEventListener('online', handleStatusChange);
+    window.addEventListener('offline', handleStatusChange);
     return () => {
-      window.removeEventListener("online", handleStatusChange);
-      window.removeEventListener("offline", handleStatusChange);
+      window.removeEventListener('online', handleStatusChange);
+      window.removeEventListener('offline', handleStatusChange);
     };
   }, [isOnline]);
 
@@ -86,7 +86,7 @@ const MainContentLayout: FC<Props> = ({
         className={`w-full ${
           showFooterElement === `home` ? `mb-0` : `mb-[20%]`
         } relative rounded-t-full min-h-screen `}
-        style={{ height: "100%" }}
+        style={{ height: '100%' }}
       >
         {isOnline ? (
           children
@@ -98,13 +98,13 @@ const MainContentLayout: FC<Props> = ({
         )}
       </main>
       {/* <ScrollToTopButton /> */}
-      <AppFooter
+      {/* <AppFooter
         handleSubmit={handleSubmit}
         handleIncreaseProductQty={handleIncreaseProductQty}
         handleDecreaseProductQty={handleDecreaseProductQty}
         productCurrentQty={productCurrentQty}
         productOutStock={productOutStock}
-      />
+      /> */}
       <NextNProgress
         color={color}
         startPosition={0.3}
