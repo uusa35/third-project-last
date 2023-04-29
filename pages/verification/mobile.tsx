@@ -2,8 +2,8 @@ import React from 'react'
 
 type Props = {}
 
-export default function mobile({}: Props) {
+export default function MobileVerifications({}: Props) {
   return (
-    <div>mobile</div>
+    <div>M</div>
   )
 }

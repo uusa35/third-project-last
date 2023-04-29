@@ -8,6 +8,34 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: "/home" },
   home: { path: "/home" },
+  createAddress: { path: "/address/create" },
+  AddressMap: { path: "/address/map" },
+  cart: { path: "/cart" },
+  cheeckout: { path: "/order/checkout" },
+  privacyPolicy: { path: "/policies/privacy" },
+  returnPolicy: { path: "/policies/return" },
+  shippingPolicy: { path: "/policies/shipping" },
+  productSearch: { path: "/product/search" },
+  categoryProducts: (categoryId: number) => `product/${categoryId}`,
+  productShow: (id: number) => `product/show/${id}`,
+  selectArea: {path:'/select/area'},
+  selectBranch: {path:'/select/branch'},
+  orderSchedule: {path:'/select/schedule'},
+  userAddresses:{path:'/user/addresses'},
+  accountInfo:{path:'/user/info'},
+  orderHistory:{path:'/user/orders'},
+  wishlist:{path:'/user/wishlist'},
+
+  vendorDetails:{path:'/vendor/info'},
+
+  mobileVerification:{path:'/verification/mobile'},
+  otpVerification:{path:'/verification/otp'},
+
+
+  orderReceipt: (orderId: number) => `/order/${orderId}/receipt`,
+  orderTrack: (orderId: number) => `/order/${orderId}/track`,
+  orderFailure: (orderId: number) => `/order/${orderId}/status/failure`,
+  orderSuccess: (orderId: number) => `/order/${orderId}/status/success`,
 };
 
 export const isLocal = process.env.NODE_ENV !== "production";

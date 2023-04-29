@@ -1,5 +1,6 @@
 import { Address } from '@/types/queries';
 
+
 export interface Product {
   id: number;
   amount: number;

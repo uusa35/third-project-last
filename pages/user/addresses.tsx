@@ -2,7 +2,7 @@ import React from 'react'
 
 type Props = {}
 
-export default function index({}: Props) {
+export default function UserAddresses({}: Props) {
   return (
     <div>show user addresses</div>
   )
