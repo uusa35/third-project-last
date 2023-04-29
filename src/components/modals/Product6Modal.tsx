@@ -1,23 +1,24 @@
 import Image from "next/image";
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import MainModal from "./MainModal";
 import User from '@/appImages/user.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { modalBtnRed, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
-const Product6Modal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+  
+const Product6Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open sign up modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex flex-col items-center px-5 pt-4">
@@ -50,7 +51,7 @@ const Product6Modal: FC = ():JSX.Element => {
                             <button 
                                 className="bg-slate-100 text-black w-full text-md font-semibold rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
                                 suppressHydrationWarning={suppressText}
-                                onClick={() => setIsOpen(false)}
+                                onClick={onRequestClose}
                             >
                                 {`${upperFirst(`${t('skip_for_now')}`)}`}
                             </button>  

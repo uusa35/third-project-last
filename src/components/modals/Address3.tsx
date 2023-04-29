@@ -6,19 +6,19 @@ import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { useRouter } from "next/router";
 import { modalBtnRed, suppressText } from "@/constants/*";
-const Address2Modal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const Address2Modal: FC<Props>  = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
     
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open address3 modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex flex-col items-center px-5">

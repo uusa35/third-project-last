@@ -6,18 +6,18 @@ import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { imgUrl, modalBtnRed, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
-const ChangeMood3Modal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open change mood 3 modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div className="flex flex-col items-center px-5 pt-4">
                     <CustomImage

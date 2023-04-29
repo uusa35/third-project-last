@@ -17,8 +17,11 @@ import { map } from "lodash";
 import { useRouter } from "next/router";
 import { arboriaFont, gessFont, modalBtnContainer, modalBtnRed, suppressText } from "@/constants/*";
 import { useAppSelector } from "@/redux/hooks";
-const FeedbackModal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
     const {
@@ -61,19 +64,16 @@ const FeedbackModal: FC = ():JSX.Element => {
         
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open feedback modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex lg:grid lg:grid-cols-3 w-full pb-5 px-4 border-b-[1px] border-gray-200">
                         <div className="w-1/3">
                             <button
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
-                                onClick={() => setIsOpen(false)}
+                                onClick={onRequestClose}
                             >
                                 <ExpandMoreIcon className="text-gray-500" />
                             </button>

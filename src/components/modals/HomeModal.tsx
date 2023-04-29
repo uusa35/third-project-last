@@ -5,29 +5,21 @@ import { useAppSelector } from '@/redux/hooks';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { suppressText } from "@/constants/*";
 type Props = {
-    isOpen?: boolean;
+  isOpen: boolean;
+  onRequestClose: () => void;
 };
-
 const HomeModal: FC<Props> = ({
-  isOpen
+  isOpen,
+  onRequestClose
 }): JSX.Element => {
-  const [modalIsOpen, setIsOpen] = useState(true);
   const { t } = useTranslation();
   const {
     locale: { isRTL }
   } = useAppSelector((state) => state);
-  useEffect(() => {
-    if(isOpen) {
-      setIsOpen(isOpen)
-    }
-  }, [isOpen]);
-  function closeModal() {
-    setIsOpen(false);
-  }
     return (
         <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
+            isOpen={isOpen}
+            onRequestClose={onRequestClose}
             className={`w-full mx-auto lg:w-2/4 xl:w-1/3 rounded-t-lg border-white h-1/4 ${isRTL ? 'right-0' : 'left-0'}`}
             style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)' } }}
             shouldFocusAfterRender={false}
@@ -65,7 +57,7 @@ const HomeModal: FC<Props> = ({
                     </div>
                     <button
                     className={`mt-2`}
-                    onClick={closeModal}
+                    onClick={onRequestClose}
                     >
                     <XMarkIcon className={`w-6 h-6 text-black text-base bg-white rounded-full p-1`} />
                     </button>

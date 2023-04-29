@@ -2,17 +2,15 @@ import { FC, useState } from "react"
 import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
-import Link from "next/link";
-import { arboriaFont, gessFont, modalBtnRed, suppressText } from "@/constants/*";
+import { modalBtnRed, suppressText } from "@/constants/*";
 import { useRouter } from "next/router";
-import PickuppIcon from '@/appIcons/pickup.svg';
-import DeliveryIcon from '@/appIcons/delivery.svg';
-import Image from "next/image";
-import { PlaceOutlined, WatchLaterOutlined, ArrowForwardIos } from '@mui/icons-material';
-import { ClockIcon } from "@heroicons/react/24/outline";
 
-const CancelOrderModal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+
+const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
     const reasons = [
@@ -25,12 +23,9 @@ const CancelOrderModal: FC = ():JSX.Element => {
     ]
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open cancel order modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex justify-between w-full px-4">
@@ -39,7 +34,7 @@ const CancelOrderModal: FC = ():JSX.Element => {
                         </h5>
                         <button
                             className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
-                            onClick={() => setIsOpen(false)}
+                            onClick={onRequestClose}
                         >
                             <ExpandMoreIcon className="text-gray-500" />
                         </button>

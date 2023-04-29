@@ -12,9 +12,6 @@ const WhenClosedModal: FC = ():JSX.Element => {
     
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open when closed modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
                 closeModal={() => setIsOpen(false)}

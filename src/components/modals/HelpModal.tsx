@@ -4,25 +4,24 @@ import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
 import { PhoneIphone, Chat, ChatOutlined } from '@mui/icons-material';
 import { modalBtnContainer, modalBtnRed, suppressText } from "@/constants/*";
-
-const HelpModal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const HelpModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open help modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex lg:grid lg:grid-cols-3 w-full pb-5 px-4 border-b-[1px] border-gray-200">
                         <div className="w-1/3">
                             <button
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
-                                onClick={() => setIsOpen(false)}
+                                onClick={onRequestClose}
                             >
                                 <ExpandMoreIcon className="text-gray-500" />
                             </button>
@@ -49,7 +48,7 @@ const HelpModal: FC = ():JSX.Element => {
                         </button>   
                         <button 
                             className="bg-white text-red-600 w-full text-md font-semibold border-2 border-red-600 rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
-                            onClick={() => setIsOpen(false)}
+                            onClick={onRequestClose}
                         >
                             <ChatOutlined className="mx-1" />
                             {`${upperFirst(`${t('message_us')}`)}`}

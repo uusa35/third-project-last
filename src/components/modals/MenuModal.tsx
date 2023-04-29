@@ -3,8 +3,11 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map } from "lodash";
 import Link from "next/link";
-const MenuModal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const MenuModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const products = [
         { id: 1, name: 'most selling'},
@@ -14,19 +17,16 @@ const MenuModal: FC = ():JSX.Element => {
     ]
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open menu modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex w-[90%] p-4">
                         <div className="w-1/2">
                             <button
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
-                                onClick={() => setIsOpen(false)}
+                                onClick={onRequestClose}
                             >
                                 <ExpandMoreIcon className="text-gray-500" />
                             </button>

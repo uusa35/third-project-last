@@ -5,18 +5,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperF
 import { useRouter } from "next/router";
 import { modalBtnRed, suppressText } from "@/constants/*";
 
-const CancelOrder2Modal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
     return (
         <>
-            <button className="bg-white text-black" onClick={() => setIsOpen(true)}>
-                open cancel order 2 modal
-            </button>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex justify-between w-full px-4 pt-5">
@@ -25,7 +25,7 @@ const CancelOrder2Modal: FC = ():JSX.Element => {
                         </h5>
                         <button
                             className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
-                            onClick={() => setIsOpen(false)}
+                            onClick={onRequestClose}
                         >
                             <ExpandMoreIcon className="text-gray-500" />
                         </button>

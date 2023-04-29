@@ -16,7 +16,6 @@ const MainModal: FC<Props> = ({
     locale: { isRTL }
   } = useAppSelector((state) => state);
 
-  console.log({isOpen})
     return (
       <div>
       <Modal
