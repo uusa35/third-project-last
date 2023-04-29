@@ -1,3 +1,17 @@
 {
-  
+  "powered_by_queue" : "بدعم من كيو",
+    "return_policy" : "سياسة الاسترجاع",
+  "shipping_policy" : "سياسة الشحن",
+  "privacy_policy" :  "سياسة الخصوصية",
+  "more":"المزيد",
+  "menu":"قائمة الطعام",
+  "my_cart":"عربة التسوق",
+  "my_orders":"الطلبات",
+  "wishlist":"المفضلة",
+  "my_addresses":"العناوين",
+  "rights_reserved":"All Rights Reserved To Mcdonald's 2023 ©",
+  "sign_in":"تسجيل الدخول",
+    "to_orderfast_now":"لتسريع الطلب الان",
+    "Welcome_back":"مرحبا بعودتك",
+    "sign_out":"تسجيل خروج"
 }

@@ -98,13 +98,13 @@ const MainContentLayout: FC<Props> = ({
         )}
       </main>
       {/* <ScrollToTopButton /> */}
-      <AppFooter
+      {/* <AppFooter
         handleSubmit={handleSubmit}
         handleIncreaseProductQty={handleIncreaseProductQty}
         handleDecreaseProductQty={handleDecreaseProductQty}
         productCurrentQty={productCurrentQty}
         productOutStock={productOutStock}
-      />
+      /> */}
       <NextNProgress
         color={color}
         startPosition={0.3}

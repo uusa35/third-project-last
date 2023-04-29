@@ -38,9 +38,9 @@ export type Branch = {
 };
 
 export interface SearchParams {
-  method: 'pickup' | 'delivery' | undefined;
-  destination_type: 'branch' | 'area' | undefined;
-  destination: undefined | Branch | Area;
+  method: "pickup" | "delivery" | "";
+  destination_type: "branch" | "area" | "";
+  destination: Branch | Area | null;
   category_id: null | number;
 }
 export interface Area {

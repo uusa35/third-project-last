@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Area, Branch, Category, SearchParams } from '@/types/queries';
-import { branchSlice } from './branchSlice';
 import { RootState } from '../store';
 
 const initialState: SearchParams = {
-  method: undefined,
-  destination: undefined,
-  destination_type: undefined,
+  method: "",
+  destination: null,
+  destination_type: "",
   category_id: null,
 };
 
