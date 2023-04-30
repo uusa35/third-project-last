@@ -8,11 +8,26 @@ import { Vendor } from "@/types/index";
 import { vendorApi } from "@/redux/api/vendorApi";
 
 type Props = {
+  element: Vendor;
+  currentLocale: string;
   url: string;
 };
-export default function Home({ url }: Props) {
+export default function Home({ url , element,
+  currentLocale,}: Props) {
   return (
     <MainContentLayout>
+       {/* SEO Head DEV*/}
+       {/* <mainhea
+        title={currentLocale === 'ar' ? element.name_ar : element.name_en}
+        description={element.desc}
+        mainImage={`${element.logo}`}
+        icon={`${element.logo}`}
+        phone={element.phone}
+        twitter={element.twitter}
+        facebook={element.facebook}
+        instagram={element.instagram}
+      /> */}
+
       <HomeVendorMainInfo url={url}/>
     </MainContentLayout>
   );
