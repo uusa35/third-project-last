@@ -53,4 +53,4 @@ export const vendorSlice = createSlice({
 
 export const { setVendor, setColorTheme } = vendorSlice.actions;
 
-export const themeColor = (state: RootState) => state.vendor.theme_color;
+export const themeColor = (state: RootState) => state.vendor?.theme_color;
