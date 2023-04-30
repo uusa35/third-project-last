@@ -38,8 +38,8 @@ export type Branch = {
 };
 
 export interface SearchParams {
-  method: "pickup" | "delivery" | null;
-  destination_type: "branch" | "area" | null;
+  method: 'pickup' | 'delivery' | null;
+  destination_type: 'branch' | 'area' | null;
   destination: null | Branch | Area;
   category_id: null | number;
 }

@@ -4,9 +4,9 @@ import NoFoundImage from '@/appImages/not_found.png';
 import { imageSizes, suppressText } from '@/constants/*';
 
 type Props = {
-  src: string;
+  src: string | any;
   alt: string;
-  className: string;
+  className?: string;
   fill?: boolean;
   width?: number;
   height?: number;

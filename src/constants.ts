@@ -18,18 +18,18 @@ export const appLinks = {
   productSearch: { path: "/product/search" },
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number) => `product/show/${id}`,
-  selectArea: {path:'/select/area'},
-  selectBranch: {path:'/select/branch'},
-  orderSchedule: {path:'/select/schedule'},
-  userAddresses:{path:'/user/addresses'},
-  accountInfo:{path:'/user/info'},
-  orderHistory:{path:'/user/orders'},
-  wishlist:{path:'/user/wishlist'},
+  selectArea: { path: '/select/area' },
+  selectBranch: { path: '/select/branch' },
+  orderSchedule: { path: '/select/schedule' },
+  userAddresses: { path: '/user/addresses' },
+  accountInfo: { path: '/user/info' },
+  orderHistory: { path: '/user/orders' },
+  wishlist: { path: '/user/wishlist' },
 
-  vendorDetails:{path:'/vendor/info'},
+  vendorDetails: { path: '/vendor/info' },
 
-  mobileVerification:{path:'/verification/mobile'},
-  otpVerification:{path:'/verification/otp'},
+  mobileVerification: { path: '/verification/mobile' },
+  otpVerification: { path: '/verification/otp' },
 
 
   orderReceipt: (orderId: number) => `/order/${orderId}/receipt`,
@@ -47,6 +47,9 @@ export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm t
 export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
 export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0 ${arboriaFont}`;
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
+export const modalBtnContainer = `w-full border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4`;
+export const modalBtnRed = `bg-red-600 text-white w-full text-md font-bold rounded-full h-10 pt-2 pb-8 mx-auto capitalize`;
+export const inputClass = `block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none dark:text-white focus:outline-none focus:ring-0 focus:border-gray-400 peer`;
 export const toEn = (s) =>
   s.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, (a) => a.charCodeAt(0) & 15);
 
@@ -66,11 +69,13 @@ export const imgUrl = (img: string) =>
   img.includes("http") ? img : NoFoundImage.src;
 
 export const convertColor = (hex: string, opacity: number) => {
-  const tempHex = hex.replace("#", "");
-  const r = parseInt(tempHex.substring(0, 2), 16);
-  const g = parseInt(tempHex.substring(2, 4), 16);
-  const b = parseInt(tempHex.substring(4, 6), 16);
-  return `rgba(${r},${g},${b},${opacity / 100})`;
+  const tempHex = hex?.replace("#", "");
+  if (tempHex) {
+    const r = parseInt(tempHex.substring(0, 2), 16);
+    const g = parseInt(tempHex.substring(2, 4), 16);
+    const b = parseInt(tempHex.substring(4, 6), 16);
+    return `rgba(${r},${g},${b},${opacity / 100})`;
+  }
 };
 
 export const iconColor = `grayscale`;
