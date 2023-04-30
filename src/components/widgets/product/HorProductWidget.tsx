@@ -22,20 +22,16 @@ const HorProductWidget: FC<Props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
-  const {
-    branch: { id: branchId },
-    area: { id: areaId },
-  } = useAppSelector((state) => state);
+  // const {
+  //   branch: { id: branchId },
+  //   area: { id: areaId },
+  // } = useAppSelector((state) => state);
+  
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
-        href={`${appLinks.tempOneProductShow(
-          element.id.toString(),
+        href={`${appLinks.productShow(
           element.id,
-          lowerCase(kebabCase(element.name)),
-          branchId,
-          areaId,
-          category_id
         )}`}
         className={`h-auto shadow-7xl h-full  block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
         data-cy="product"

@@ -21,21 +21,16 @@ const VerProductWidget: FC<Props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
-  const {
-    branch: { id: branchId },
-    area: { id: areaId },
-  } = useAppSelector((state) => state);
+  // const {
+  //   branch: { id: branchId },
+  //   area: { id: areaId },
+  // } = useAppSelector((state) => state);
 
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
-        href={`${appLinks.tempOneProductShow(
-          element.id.toString(),
-          element.id,
-          kebabCase(lowerCase(element.name)),
-          branchId,
-          areaId,
-          category_id
+        href={`${appLinks.productShow(
+          element.id
         )}`}
         className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
       >

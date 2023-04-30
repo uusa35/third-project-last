@@ -30,21 +30,24 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
     storeStatus,
     (store) => store.status === element?.Data?.status.toLowerCase()
   );
-  useEffect(() => {
-    if (url) {
-      triggerGetVendor(
-        {
-          lang,
-          url,
-          // ...(branch_id && { branch_id }),
-          // ...(area_id && { area_id }),
-        },
-        false
-      );
-    }
-  }, [
-    // branch_id, area_id
-  ]);
+  useEffect(
+    () => {
+      if (url) {
+        triggerGetVendor(
+          {
+            lang,
+            url,
+            // ...(branch_id && { branch_id }),
+            // ...(area_id && { area_id }),
+          },
+          false
+        );
+      }
+    },
+    [
+      // branch_id, area_id
+    ]
+  );
 
   if (!isSuccess || !element || !element.Data) return <></>;
   return (
@@ -99,7 +102,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
         </div>
         {/* vendorshow icon */}
         <Link
-          href={`/vendor/name/customer/info`}
+          href={appLinks.vendorDetails.path}
           scroll={true}
           className={`flex-none pt-4 grayscale`}
         >
