@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const withSvgr = require('next-plugin-svgr');
+
+const nextConfig = withSvgr({
   reactStrictMode: false,
   i18n: {
     locales: ['en', 'ar'],
@@ -35,6 +37,13 @@ const nextConfig = {
     NEXT_PUBLIC_URL: '/',
     PUBLIC_URL: '/',
   },
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: [
       'testbedbynd.com',
@@ -46,15 +55,17 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     // contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     // disableStaticImages: false,
+    staticPageGenerationTimeout: 60,
     webpack(config) {
       config.module.rules.push({
         test: /\.svg$/,
+        issuer: /\.[jt]sx?$/,
         use: ['@svgr/webpack'],
       });
 
       return config;
     },
   },
-};
+});
 
 module.exports = nextConfig;

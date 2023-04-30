@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, Suspense, useState } from 'react';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
@@ -9,6 +10,7 @@ import MainHead from '@/components/MainHead';
 import Clock from '@/appIcons/clock.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
 import PreOrderAvailabilityIcon from '@/appIcons/availability.svg';
+
 import PaymentIcon from '@/appIcons/payment.svg';
 import Knet from '@/appImages/knet.svg';
 import CashOnDelivery from '@/appImages/cod.svg';
@@ -55,6 +57,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   const color = useAppSelector(themeColor);
 
   useEffect(() => {
+    console.log('icon',Clock)
     dispatch(setCurrentModule(element.name));
   }, [element]);
 
@@ -76,24 +79,25 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
     SetShowModal(true);
   };
   const [showModal, SetShowModal] = useState(false);
-  // const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
-  //   return (
-  //     <div className="flex justify-between px-4 py-6 m-3 shadow-md capitalize">
-  //       <div className="flex justify-center items-center">
-  //         {icon}
-  //         <p
-  //           className="px-2 font-semibold"
-  //           suppressHydrationWarning={suppressText}
-  //         >
-  //           {t(text)}
-  //         </p>
-  //       </div>
-  //       <div>
-  //         <p suppressHydrationWarning={suppressText}>{t(content)}</p>
-  //       </div>
-  //     </div>
-  //   );
-  // };
+  const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
+    console.log(icon);
+    return (
+      <div className="flex justify-between px-4 py-6 m-3 shadow-md capitalize">
+        <div className="flex justify-center items-center">
+          {/* {icon} */}
+          <p
+            className="px-2 font-semibold"
+            suppressHydrationWarning={suppressText}
+          >
+            {t(text)}
+          </p>
+        </div>
+        <div>
+          <p suppressHydrationWarning={suppressText}>{t(content)}</p>
+        </div>
+      </div>
+    );
+  };
 
   console.log('element', element);
   if (!element) {
@@ -131,7 +135,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           }
           text="delivery_time"
           content={element.DeliveryTime}
-        />
+        /> */}
         <VendorDetailsItem
           icon={
             <PreOrderAvailabilityIcon
@@ -143,7 +147,9 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           }
           text="preorder_availability"
           content={element.Preorder_availability}
-        /> */}
+        />
+        
+        <Clock />
         <div className="px-4 py-6 shadow-md">
           <div className="flex justify-between pb-20 ps-3">
             <div className="flex items-center">
