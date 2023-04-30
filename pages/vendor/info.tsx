@@ -57,7 +57,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   const color = useAppSelector(themeColor);
 
   useEffect(() => {
-    console.log('icon',Clock)
+    console.log('icon', Clock);
     dispatch(setCurrentModule(element.name));
   }, [element]);
 
@@ -99,7 +99,6 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
     );
   };
 
-  console.log('element', element);
   if (!element) {
     return <div>loading</div>;
   }
@@ -112,7 +111,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
         icon={`${element.logo}`}
       />
       <MainContentLayout url={url}>
-        {/* <VendorDetailsItem
+        <VendorDetailsItem
           icon={
             <Clock
               width={imageSizes.xs}
@@ -123,8 +122,8 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           }
           text="work_hours"
           content={element.WorkHours}
-        /> */}
-        {/* <VendorDetailsItem
+        />
+        <VendorDetailsItem
           icon={
             <DeliveryIcon
               width={imageSizes.xs}
@@ -135,7 +134,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           }
           text="delivery_time"
           content={element.DeliveryTime}
-        /> */}
+        />
         <VendorDetailsItem
           icon={
             <PreOrderAvailabilityIcon
@@ -148,17 +147,17 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           text="preorder_availability"
           content={element.Preorder_availability}
         />
-        
+
         <Clock />
         <div className="px-4 py-6 shadow-md">
           <div className="flex justify-between pb-20 ps-3">
             <div className="flex items-center">
-              {/* <PaymentIcon
+              <PaymentIcon
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('payment_methods')}
                 className={`w-6 h-6 ${iconColor}`}
-              /> */}
+              />
               <p
                 className="px-2 font-semibold"
                 suppressHydrationWarning={suppressText}
@@ -169,17 +168,17 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
             <div className="flex items-center">
               {element.Payment_Methods.visa && (
                 <div className="px-5">
-                  {/* <Visa className={`h-8 w-12`} /> */}
+                  <Visa className={`h-8 w-12`} />
                 </div>
               )}
               {element.Payment_Methods.cash_on_delivery && (
                 <div className="px-5">
-                  {/* <CashOnDelivery className={`h-8 w-12`} /> */}
+                  <CashOnDelivery className={`h-8 w-12`} />
                 </div>
               )}
               {element.Payment_Methods.knet && (
                 <div className="px-5 ">
-                  {/* <Knet className={`h-8 w-12`} /> */}
+                  <Knet className={`h-8 w-12`} />
                 </div>
               )}
             </div>
@@ -190,10 +189,10 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           <div className="py-5">
             <button className={`${submitBtnClass}`}>
               <div className="flex justify-center items-center">
-                {/* <FeedbackIcon
+                <FeedbackIcon
                   className={`w-5 h-5 ${iconColor}`}
                   alt={t('feedback')}
-                /> */}
+                />
                 <p
                   className={`text-white px-2 ${submitBtnClass}`}
                   suppressHydrationWarning={suppressText}
@@ -208,35 +207,35 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           <div className="flex justify-evenly items-center w-[90%] m-auto">
             {element.facebook && (
               <a href={element.facebook} target={'_blank'}>
-                {/* <Facebook
+                <Facebook
                   className={`w-8 h-8  ${iconColor} pt-1`}
                   alt={t('facebook')}
-                /> */}
+                />
               </a>
             )}
             {element.instagram && (
               <a href={element.instagram} target={'_blank'}>
-                {/* <Instagram
+                <Instagram
                   className={`w-8 h-8  ${iconColor} pt-1`}
                   alt={t('instagram')}
-                /> */}
+                />
               </a>
             )}
             {element.twitter && (
               <a href={element.twitter} target={'_blank'}>
-                {/* <Twitter
+                <Twitter
                   className={`w-8 h-8  ${iconColor} pt-1`}
                   alt={t('twitter')}
-                /> */}
+                />
               </a>
             )}
           </div>
         </div>
-        {/* <Feedback
+        <Feedback
           isOpen={showModal}
           ariaHideApp={false}
           onRequestClose={handleClosePopup}
-        /> */}
+        />
         <div className={`mt-[10%]`}>
           <PoweredByQ />
         </div>

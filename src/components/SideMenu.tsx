@@ -32,6 +32,7 @@ import {
   BuildingStorefrontIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
+import { destinationObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {};
 
@@ -39,11 +40,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const {
-    appSetting,
-    vendor,
-    branch: { id: branchId },
-  } = useAppSelector((state) => state);
+  const { appSetting, vendor } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
 
   return (
@@ -115,10 +112,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   </div>
                 </Link>
 
-                <Link
-                  scroll={true}
-                  href={'#'}
-                >
+                <Link scroll={true} href={'#'}>
                   <div className="flex gap-x-3 pb-7 items-center">
                     <MapPinIcon className={`h-6 w-8`} style={{ color }} />
                     <p
@@ -130,10 +124,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   </div>
                 </Link>
 
-                <Link
-                  scroll={true}
-                  href={'#'}
-                >
+                <Link scroll={true} href={'#'}>
                   <div className="flex gap-x-3 pb-7 items-center ps-1">
                     <PlagiarismOutlined
                       className={`h-8 w-8`}
