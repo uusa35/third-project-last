@@ -1,11 +1,9 @@
 import { Product } from '@/types/index';
 import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
-import Link from 'next/link';
 import React from 'react';
 import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-ui-scrollspy';
-import HorProductWidget from '../widgets/product/HorProductWidget';
 import VerProductWidget from '../widgets/product/VerProductWidget';
 
 type Props = {
@@ -30,16 +28,23 @@ export default function ProductListView({ CategoriesProducts }: Props) {
   return (
     <div>
       {/* sticky header */}
-      <header className="flex gap-x-2 bg-white py-4 sticky top-0 z-40">
+      <header
+        className="flex gap-x-2 bg-white py-4 sticky top-0 z-40"
+        style={{ boxShadow: ' 0 6px 9px -2px #cbcbcb' }}
+      >
         <div className="rounded-full bg-gray-100 w-fit h-fit p-1 cursor-pointer">
           <ListOutlined />
         </div>
-        <div className="flex overflow-x-scroll scrollbar-hide">
+        <div className="flex gap-x-2 overflow-x-scroll scrollbar-hide">
           {CategoriesProducts.map((category) => {
             return (
-              <a className='' onClick={(e) => onPress(e)} href={`#${category?.cat_id}`}>
+              <a
+                className=""
+                onClick={(e) => onPress(e)}
+                href={`#${category?.cat_id}`}
+              >
                 <p
-                  className="text-sm rounded-full px-2 whitespace-nowrap"
+                  className="text-sm rounded-full px-2 py-1 rounded-full whitespace-nowrap bg-zinc-100"
                   data-to-scrollspy-id={`${category?.cat_id}`}
                 >
                   {category.name}
@@ -51,7 +56,7 @@ export default function ProductListView({ CategoriesProducts }: Props) {
       </header>
 
       {/* products and cats names */}
-      <ScrollSpy scrollThrottle={10} useBoxMethod={false} offsetBottom={-10}>
+      <ScrollSpy>
         {CategoriesProducts.map((category) => {
           return (
             <div id={`${category.cat_id}`} className="mt-10">
