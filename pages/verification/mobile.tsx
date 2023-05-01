@@ -17,6 +17,7 @@ import TrackOrderIcon from '@/appIcons/track_order_icon.svg';
 import { map, upperFirst } from 'lodash';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 type Props = {
   url: string;
@@ -89,6 +90,7 @@ export default function MobileVerifications({ url }: Props) {
                 />
             </div>
             <div className="px-4">
+            <Image src={SaveAddressIcon} alt='t' width={20} height={20} />
               {map(signInAdvantages, (advantage) => (
                 <div className="flex pb-2" key={advantage.id}>
                   <CustomImage 

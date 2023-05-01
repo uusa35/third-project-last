@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map } from 
 import Link from "next/link";
 import { arboriaFont, gessFont, mainBtnClass, suppressText } from "@/constants/*";
 import { useRouter } from "next/router";
-import PickuppIcon from '@/appIcons/pickup.svg';
+import PickupIcon from '@/appIcons/pickup.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
 import Image from "next/image";
 import { PlaceOutlined, WatchLaterOutlined, ArrowForwardIos } from '@mui/icons-material';
@@ -73,7 +73,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             suppressHydrationWarning={suppressText}                        >
                             <span className="flex px-7 capitalize">
                                 <CustomImage 
-                                    src={PickuppIcon} 
+                                    src={PickupIcon} 
                                     alt={t('pickup')} 
                                     width={20} 
                                     height={20} 

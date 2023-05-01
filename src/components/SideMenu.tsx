@@ -42,7 +42,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const {
     appSetting,
     vendor,
-    branch: { id: branchId },
+    // branch: { id: branchId },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
 
