@@ -89,7 +89,6 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
     return <div>loading</div>;
   }
 
-  console.log(element);
   return (
     <Suspense>
       <MainHead
