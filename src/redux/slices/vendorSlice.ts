@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Vendor } from '@/types/index';
-import { RootState } from '@/redux/store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Vendor } from "@/types/index";
+import { RootState } from "@/redux/store";
 
 const initialState: Vendor = {
   id: null,
@@ -23,10 +23,15 @@ const initialState: Vendor = {
     knet: `no`,
     visa: `no`,
   },
+  twitter: "",
+  instagram: "",
+  facebook: "",
+  template_type: "",
+  delivery_pickup_type: "",
 };
 
 export const vendorSlice = createSlice({
-  name: 'vendor',
+  name: "vendor",
   initialState,
   reducers: {
     setVendor: (state: typeof initialState, action: PayloadAction<Vendor>) => {

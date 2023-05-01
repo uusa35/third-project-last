@@ -33,10 +33,10 @@ export default function MobileVerifications({ url }: Props) {
     dispatch(setCurrentModule('your_number'));
   }, []);
   const signInAdvantages = [
-    { id: 1, icon: SaveAddressIcon, text: 'save_your_addresses'},
-    { id: 2, icon: SaveContactInfo, text: 'save_your_contact_information'},
-    { id: 3, icon: ReOrderIcon, text: 'one-tap_re-ordering'},
-    { id: 4, icon: TrackOrderIcon, text: 'tracking_orders'}
+    { id: 1, icon: <SaveAddressIcon />, text: 'save_your_addresses'},
+    { id: 2, icon: <SaveContactInfo />, text: 'save_your_contact_information'},
+    { id: 3, icon: <ReOrderIcon />, text: 'one-tap_re-ordering'},
+    { id: 4, icon: <TrackOrderIcon />, text: 'tracking_orders'}
   ];
 
   const handleSendOtp = () => {
@@ -90,15 +90,9 @@ export default function MobileVerifications({ url }: Props) {
                 />
             </div>
             <div className="px-4">
-            <Image src={SaveAddressIcon} alt='t' width={20} height={20} />
               {map(signInAdvantages, (advantage) => (
                 <div className="flex pb-2" key={advantage.id}>
-                  <CustomImage 
-                    src={advantage.icon}
-                    alt={advantage.icon}
-                    width={25}
-                    height={25}
-                  />
+                  {advantage.icon}
                   <p className="px-2" suppressHydrationWarning={suppressText}>{t(advantage.text)}</p>
               </div>
               ))}

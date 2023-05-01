@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC } from "react"
 import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map } from "lodash";
@@ -7,10 +7,7 @@ import { arboriaFont, gessFont, mainBtnClass, suppressText } from "@/constants/*
 import { useRouter } from "next/router";
 import PickupIcon from '@/appIcons/pickup.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
-import Image from "next/image";
 import { PlaceOutlined, WatchLaterOutlined, ArrowForwardIos } from '@mui/icons-material';
-import { ClockIcon } from "@heroicons/react/24/outline";
-import CustomImage from "../CustomImage";
 
 type Props = {
     isOpen: boolean;
@@ -53,13 +50,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             suppressHydrationWarning={suppressText}
                         >
                             <span className="flex px-5 capitalize">
-                                <CustomImage
-                                    src={DeliveryIcon} 
-                                    alt={t('delivery')} 
-                                    width={20} 
-                                    height={20} 
-                                    className="mx-2"
-                                />
+                                <DeliveryIcon />
                                 {t('delivery')}
                             </span>
                             {/* will shown or not according to method */}
@@ -72,13 +63,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             }`}
                             suppressHydrationWarning={suppressText}                        >
                             <span className="flex px-7 capitalize">
-                                <CustomImage 
-                                    src={PickupIcon} 
-                                    alt={t('pickup')} 
-                                    width={20} 
-                                    height={20} 
-                                    className="mx-2"
-                                />  
+                                <PickupIcon />
                                 {t('pickup')}
                             </span>
                             {/* will shown or not according to method */}
