@@ -110,7 +110,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
         </Link>
       </div>
       {/* description */}
-      {element.Data.desc && (
+      {/* {element.Data.desc && (
         <div className="flex gap-x-1 justify-center items-start mt-2 capitalize">
           <p
             suppressHydrationWarning={suppressText}
@@ -119,7 +119,7 @@ const HomeVendorMainInfo: FC<Props> = ({ url }): JSX.Element => {
             {element.Data.desc}
           </p>
         </div>
-      )}
+      )} */}
     </>
   );
 };

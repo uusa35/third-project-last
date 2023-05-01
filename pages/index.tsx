@@ -14,8 +14,11 @@ import { useTranslation } from 'react-i18next';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
-import { isEmpty } from 'lodash';
-import CategoryListView from '@/components/home/CategoryListView';
+import { isEmpty, map } from 'lodash';
+import CategoryWidget from '@/components/widgets/CategoryWidget';
+import { suppressText } from '@/constants/*';
+import AppFooter from '@/components/AppFooter';
+import Header from '@/components/home/Header';
 
 type Props = {
   element: Vendor;
@@ -96,6 +99,9 @@ export default function Home({ url, element, currentLocale }: Props) {
     // , branch_id, area_id
   ]);
 
+
+  // note : pass vendor info to  HomeVendorMainInfo and don't make the req inside it
+
   return (
     <Suspense fallback={<div>loading</div>}>
       {/* SEO Head DEV*/}
@@ -111,8 +117,13 @@ export default function Home({ url, element, currentLocale }: Props) {
       />
       <MainContentLayout>
         <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
+          {/* sm screen header */}
+          {(vendorSuccess || vendorElement || vendorElement?.Data) && (
+            <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
+          )}
+
           {/*  HomePage Header */}
-          <div className={`px-5 mt-3 lg:mt-0`}>
+          <div className={`px-4 mt-3 lg:mt-0`}>
             <HomeVendorMainInfo url={url} />
           </div>
 
@@ -129,13 +140,23 @@ export default function Home({ url, element, currentLocale }: Props) {
           ) : (
             <>
               {
-                <div className={`py-4 px-2`}>
+                <div className={`py-4 px-4`}>
                   {!isEmpty(categories) &&
-                  vendorElement?.Data?.template_type === 'basic_categoryh' ? (
-                    <div
-                      className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-1`}
-                    >
-                      <CategoryListView />
+                  vendorElement?.Data?.template_type === 'basic_category' ? (
+                    <div>
+                      <p
+                        className="relative text-md font-bold pb-4"
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t('categories')}
+                      </p>
+                      <div
+                        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
+                      >
+                        {map(categories.Data, (c, i) => (
+                          <CategoryWidget element={c} key={i} />
+                        ))}
+                      </div>
                     </div>
                   ) : (
                     CategoriesProducts &&
@@ -149,6 +170,8 @@ export default function Home({ url, element, currentLocale }: Props) {
               }
             </>
           )}
+
+          <AppFooter />
         </div>
       </MainContentLayout>
     </Suspense>

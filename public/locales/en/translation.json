@@ -78,5 +78,6 @@
   "leave_a_feedback": "leave a feedback",
   "your_name_optional": "your name (optional)",
   "phone_number_optional": "phone number (optional)",
-  "your_comment": "your comment"
+  "your_comment": "your comment",
+  "categories":"categories"
 }
