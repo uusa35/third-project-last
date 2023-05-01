@@ -1,5 +1,5 @@
 import { FC, Suspense, useEffect, useState } from 'react';
-// import BackBtn from '@/components/BackBtn';
+import BackBtn from '@/components/BackBtn';
 import { useRouter } from 'next/router';
 // import SlideTopNav from '@/components/home/SlideTopNav';
 // import LoadingSpinner from '@/components/LoadingSpinner';
@@ -33,6 +33,14 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
         } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full capitalize`}
         suppressHydrationWarning={suppressText}
       >
+        {router.asPath === '/' ||
+          (!router.asPath.includes('/home') && (
+            <BackBtn
+              backHome={backHome}
+              offset={offset}
+              backRoute={backRoute}
+            />
+          ))}
         {/* {router.asPath === '/' ||
           (!router.asPath.includes('/home') && (
             <BackBtn

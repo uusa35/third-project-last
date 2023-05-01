@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material';
 import { map } from "lodash";
 import { useRouter } from "next/router";
-import { arboriaFont, gessFont, modalBtnContainer, modalBtnRed, suppressText } from "@/constants/*";
+import { arboriaFont, gessFont, modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
 import { useAppSelector } from "@/redux/hooks";
 type Props = {
     isOpen: boolean;
@@ -115,11 +115,11 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             type="text" 
                             name="name" 
                             id="name"  
-                            className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none dark:text-white focus:outline-none focus:ring-0 focus:border-gray-400 peer" 
+                            className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer" placeholder=" "
                         />
                         <label 
                             htmlFor="full_name" 
-                            className="absolute  text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-focus:dark:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                            className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
                             suppressHydrationWarning={suppressText}
                         >
                             {t('your_name_optional')}
@@ -139,7 +139,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     <LimitedTextarea value="" />
                     <div className={`${modalBtnContainer} mt-5`}>
                         <button 
-                            className={`${modalBtnRed}`}
+                            className={`${mainBtnClass}`}
                             suppressHydrationWarning={suppressText}
                         >
                             {t('submit')}

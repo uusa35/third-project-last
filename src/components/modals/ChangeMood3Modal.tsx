@@ -4,7 +4,7 @@ import MainModal from "./MainModal";
 import ChangeMood from '@/appImages/change_mood.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
-import { imgUrl, modalBtnRed, suppressText } from "@/constants/*";
+import { imgUrl, mainBtnClass, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
 type Props = {
     isOpen: boolean;
@@ -38,7 +38,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                         </span>
                     </div>
                     <button 
-                        className={`${modalBtnRed}`}
+                        className={`${mainBtnClass}`}
                         suppressHydrationWarning={suppressText}
                     >
                         {t('change_branch')}

@@ -4,7 +4,7 @@ import MainModal from "./MainModal";
 import User from '@/appImages/user.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
-import { modalBtnRed, suppressText } from "@/constants/*";
+import { mainBtnClass, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
 type Props = {
     isOpen: boolean;
@@ -42,7 +42,7 @@ const Product6Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </div>
                     <div className="border-t-[1px] border-gray-200 px-4 pt-4">
                             <button 
-                                className={`${modalBtnRed}`}
+                                className={`${mainBtnClass}`}
                                 suppressHydrationWarning={suppressText}
                             >
                                 {`${upperFirst(`${t('sign_in/')}`)}`}

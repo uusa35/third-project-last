@@ -3,7 +3,7 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map } from "lodash";
 import Link from "next/link";
-import { arboriaFont, gessFont, modalBtnRed, suppressText } from "@/constants/*";
+import { arboriaFont, gessFont, mainBtnClass, suppressText } from "@/constants/*";
 import { useRouter } from "next/router";
 import PickuppIcon from '@/appIcons/pickup.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
@@ -109,7 +109,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </Link>
                     <div className="px-5 mt-10">
                         <button 
-                            className={`${modalBtnRed} disabled:bg-stone-400`}
+                            className={`${mainBtnClass} disabled:bg-stone-400`}
                             suppressHydrationWarning={suppressText}
                             disabled
                         >

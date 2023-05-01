@@ -14,7 +14,7 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} 
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -24,4 +24,16 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+} 
+
+.PhoneInputCountrySelectArrow {
+  margin-left: 10px;
+  margin-right: 10px;
+} 
+input:focus, 
+.PhoneInputInput:focus {
+  border-color: #dc2626 !important;
+  caret-color: #dc2626 !important;
+  outline: none;
 }
+
