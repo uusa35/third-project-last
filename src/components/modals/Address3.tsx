@@ -5,7 +5,7 @@ import User from '@/appImages/user.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { useRouter } from "next/router";
-import { modalBtnRed, suppressText } from "@/constants/*";
+import { mainBtnClass, suppressText } from "@/constants/*";
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
@@ -37,7 +37,7 @@ const Address2Modal: FC<Props>  = ({ isOpen, onRequestClose }):JSX.Element => {
                     </div>
                     <div className="border-t-[1px] border-gray-200 px-4 flex items-end space-x-5">
                             <button 
-                                className={`${modalBtnRed}`}
+                                className={`${mainBtnClass}`}
                                 suppressHydrationWarning={suppressText}
                             >
                                 {`${upperFirst(`${t('change_area')}`)}`}

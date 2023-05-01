@@ -3,7 +3,7 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
 import { PhoneIphone, Chat, ChatOutlined } from '@mui/icons-material';
-import { modalBtnContainer, modalBtnRed, suppressText } from "@/constants/*";
+import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
@@ -40,7 +40,7 @@ const HelpModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </div>
                     <div className="border-t-[1px] border-gray-200 px-4 pt-4" suppressHydrationWarning={suppressText}>
                         <button 
-                            className={`${modalBtnRed}`}
+                            className={`${mainBtnClass}`}
                             suppressHydrationWarning={suppressText}
                         >
                             <PhoneIphone className="mx-1 mb-1" />
