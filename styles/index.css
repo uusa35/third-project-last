@@ -1,0 +1,9 @@
+html {
+    scroll-padding-top: 120px; /* height of your navbar */
+  }
+
+.active-scroll-spy {
+    background-color: #E30015;
+    transition: all 0.5s;
+    color: white;
+  }

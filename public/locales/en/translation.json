@@ -1,5 +1,20 @@
 {
-  "get_your_favourite_food_in": "get your favourite food in",
+    "powered_by_queue": "powered by queue",
+    "return_policy" : "return policy",
+    "shipping_policy" : "shipping policy",
+    "privacy_policy" :  "privacy policy",
+    "more":"more",
+    "menu":"menu",
+    "my_cart":"my cart",
+    "my_orders":"my orders",
+    "wishlist":"wishlist",
+    "my_addresses":"my addresses",
+    "rights_reserved":"All Rights Reserved To Mcdonald's 2023 ©",
+    "sign_in":"sign in",
+    "to_orderfast_now":"to Order fast Now",
+    "Welcome_back":"Welcome back",
+    "sign_out":"sign out",
+    "get_your_favourite_food_in": "get your favourite food in",
   "get": "get",
   "use_coupon": "use coupon",
   "apply_coupon": "apply coupon",
@@ -63,5 +78,6 @@
   "leave_a_feedback": "leave a feedback",
   "your_name_optional": "your name (optional)",
   "phone_number_optional": "phone number (optional)",
-  "your_comment": "your comment"
+  "your_comment": "your comment",
+  "categories":"categories"
 }
