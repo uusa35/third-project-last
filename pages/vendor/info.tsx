@@ -10,16 +10,18 @@ import MainHead from '@/components/MainHead';
 import Clock from '@/appIcons/clock.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
 import PreOrderAvailabilityIcon from '@/appIcons/availability.svg';
-
+import ChatIcon from '@mui/icons-material/Chat';
 import PaymentIcon from '@/appIcons/payment.svg';
 import Knet from '@/appImages/knet.svg';
 import CashOnDelivery from '@/appImages/cod.svg';
 import Visa from '@/appImages/credit_card.svg';
 import { useTranslation } from 'react-i18next';
 import {
+  appLinks,
   convertColor,
   iconColor,
   imageSizes,
+  imgUrl,
   submitBtnClass,
   suppressText,
 } from '@/constants/*';
@@ -38,6 +40,10 @@ import Twitter from '@/appIcons/twitter.svg';
 import Instagram from '@/appIcons/instagram.svg';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import PoweredByQ from '@/components/PoweredByQ';
+import Link from 'next/link';
+import TextTrans from '@/components/TextTrans';
+import { ChevronRightOutlined, ChevronLeftOutlined } from '@mui/icons-material';
+import { map } from 'lodash';
 
 type Props = {
   element: Vendor;
@@ -57,7 +63,6 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   const color = useAppSelector(themeColor);
 
   useEffect(() => {
-    console.log('icon', Clock);
     dispatch(setCurrentModule(element.name));
   }, [element]);
 
@@ -79,29 +84,12 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
     SetShowModal(true);
   };
   const [showModal, SetShowModal] = useState(false);
-  const VendorDetailsItem = ({ icon, text, content }: DetailsItem) => {
-    console.log(icon);
-    return (
-      <div className="flex justify-between px-4 py-6 m-3 shadow-md capitalize">
-        <div className="flex justify-center items-center">
-          {/* {icon} */}
-          <p
-            className="px-2 font-semibold"
-            suppressHydrationWarning={suppressText}
-          >
-            {t(text)}
-          </p>
-        </div>
-        <div>
-          <p suppressHydrationWarning={suppressText}>{t(content)}</p>
-        </div>
-      </div>
-    );
-  };
 
   if (!element) {
     return <div>loading</div>;
   }
+
+  console.log(element);
   return (
     <Suspense>
       <MainHead
@@ -111,124 +99,194 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
         icon={`${element.logo}`}
       />
       <MainContentLayout url={url}>
-        <VendorDetailsItem
-          icon={
-            <Clock
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              alt={t('work_hours')}
-              className={`w-5 h-5 ${iconColor}`}
-            />
-          }
-          text="work_hours"
-          content={element.WorkHours}
-        />
-        <VendorDetailsItem
-          icon={
-            <DeliveryIcon
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              alt={t('delivery_time')}
-              className={`w-5 h-5 pt-1 ${iconColor}`}
-            />
-          }
-          text="delivery_time"
-          content={element.DeliveryTime}
-        />
-        <VendorDetailsItem
-          icon={
-            <PreOrderAvailabilityIcon
-              width={imageSizes.xs}
-              height={imageSizes.xs}
-              alt={t('preorder_availability')}
-              className={`w-6 h-6 ${iconColor}`}
-            />
-          }
-          text="preorder_availability"
-          content={element.Preorder_availability}
-        />
+        <Link
+          scroll={true}
+          href={appLinks.home.path}
+          className={`flex flex-col flex-1 justify-center items-center px-6 py-3 my-3`}
+        >
+          <CustomImage
+            src={`${imgUrl(element.logo)}`}
+            alt={element.name}
+            className={`w-16 h-16 object-cover shadow-md rounded-full border border-stone-200 bg-white`}
+            width={imageSizes.sm}
+            height={imageSizes.sm}
+          />
+          <TextTrans
+            ar={element.name_ar}
+            en={element.name_en}
+            className="capitalize text-black text-md text-center my-3"
+          />
+          <TextTrans
+            ar={element.desc}
+            en={element.desc}
+            className="capitalize text-gray-600 text-lg text-center"
+            length={600}
+          />
+        </Link>
 
-        <Clock />
-        <div className="px-4 py-6 shadow-md">
-          <div className="flex justify-between pb-20 ps-3">
-            <div className="flex items-center">
-              <PaymentIcon
+        <div className="flex flex-1 flex-col">
+          {/* branches */}
+          <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6 text-lg">
+            <div
+              className={`flex flex-row space-x-3 justify-center items-center`}
+            >
+              <DeliveryIcon
+                width={imageSizes.sm}
+                height={imageSizes.sm}
+                alt={t('delivery_time')}
+                className={`w-5 h-5 pt-1 ${iconColor}`}
+              />
+              <span>{t('branches')}</span>
+            </div>
+            {!isRTL ? <ChevronRightOutlined /> : <ChevronLeftOutlined />}
+          </div>
+          {/* min_charge */}
+          <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
+            <div
+              className={`flex flex-row space-x-3 justify-center items-center`}
+            >
+              <Clock
                 width={imageSizes.xs}
                 height={imageSizes.xs}
-                alt={t('payment_methods')}
-                className={`w-6 h-6 ${iconColor}`}
+                alt={t('min_charge')}
+                className={`w-5 h-5 ${iconColor}`}
               />
-              <p
-                className="px-2 font-semibold"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('payment_methods')}
-              </p>
+              <span className={`text-lg`}>{t('min_charge')}</span>
             </div>
-            <div className="flex items-center">
+            <div className={`text-lg`}>
+              {10.0} {t(`kd`)}
+            </div>
+          </div>
+          {/* working hours */}
+          <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
+            <div
+              className={`flex flex-row space-x-3 justify-center items-center`}
+            >
+              <Clock
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                alt={t('work_hours')}
+                className={`w-5 h-5 ${iconColor}`}
+              />
+              <span className={`text-lg`}>{t('opening_hours')}</span>
+            </div>
+            <div className={`text-lg`}>{element.WorkHours}</div>
+          </div>
+          {/* min_charge */}
+          <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
+            <div
+              className={`flex flex-row space-x-3 justify-center items-center`}
+            >
+              <Clock
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                alt={t('min_charge')}
+                className={`w-5 h-5 ${iconColor}`}
+              />
+              <span className={`text-lg`}>{t('min_charge')}</span>
+            </div>
+            <div className={`text-lg`}>
+              {10.0} {t(`kd`)}
+            </div>
+          </div>
+          {/* payment */}
+          <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
+            <div
+              className={`flex flex-row space-x-3 justify-center items-center`}
+            >
+              <Clock
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                alt={t('payment_options')}
+                className={`w-5 h-5 ${iconColor}`}
+              />
+              <span className={`text-lg`}>{t('payment_options')}</span>
+            </div>
+            <div className="flex justify-center items-end">
               {element.Payment_Methods.visa && (
-                <div className="px-5">
-                  <Visa className={`h-8 w-12`} />
+                <div className="">
+                  <Visa className={`h-auto w-8`} />
                 </div>
               )}
               {element.Payment_Methods.cash_on_delivery && (
-                <div className="px-5">
-                  <CashOnDelivery className={`h-8 w-12`} />
+                <div className="px-3">
+                  <CashOnDelivery className={`h-auto w-8`} />
                 </div>
               )}
               {element.Payment_Methods.knet && (
-                <div className="px-5 ">
-                  <Knet className={`h-8 w-12`} />
+                <div className=" ">
+                  <Knet className={`h-auto w-8`} />
                 </div>
+              )}
+            </div>
+          </div>
+          {/* contactus */}
+          <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-b-8 border-stone-100 p-6">
+            <div
+              className={`flex flex-row space-x-3 justify-center items-center`}
+            >
+              <Clock
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                alt={t('contactus')}
+                className={`w-5 h-5 ${iconColor}`}
+              />
+              <span className={`text-lg`}>{t('contactus')}</span>
+            </div>
+            <div className="flex justify-center items-end">
+              {element.facebook && (
+                <a href={element.facebook} target={'_blank'}>
+                  <Facebook
+                    className={`w-8 h-8  ${iconColor} pt-1`}
+                    alt={t('facebook')}
+                  />
+                </a>
+              )}
+              {element.instagram && (
+                <a href={element.instagram} target={'_blank'}>
+                  <Instagram
+                    className={`w-8 h-8  ${iconColor} pt-1`}
+                    alt={t('instagram')}
+                  />
+                </a>
+              )}
+              {element.twitter && (
+                <a href={element.twitter} target={'_blank'}>
+                  <Twitter
+                    className={`w-8 h-8  ${iconColor} pt-1`}
+                    alt={t('twitter')}
+                  />
+                </a>
               )}
             </div>
           </div>
         </div>
 
-        <div className="w-full py-8 px-4">
-          <div className="py-5">
-            <button className={`${submitBtnClass}`}>
-              <div className="flex justify-center items-center">
-                <FeedbackIcon
-                  className={`w-5 h-5 ${iconColor}`}
-                  alt={t('feedback')}
-                />
-                <p
-                  className={`text-white px-2 ${submitBtnClass}`}
-                  suppressHydrationWarning={suppressText}
-                  onClick={handleOpenPopup}
-                  style={{ backgroundColor: convertColor(color, 100) }}
-                >
-                  {t('leave_feedback')}
-                </p>
-              </div>
+        <div className="flex flex-col p-6">
+          <div className="flex flex-1 flex-col justify-center items-center space-y-3 bg-gray-100 p-6 rounded-2xl">
+            <span
+              className={`text-black h-16 w-16 flex justify-center items-center border rounded-full bg-white`}
+            >
+              <ChatIcon className={`text-4xl text-gray-800`} />
+            </span>
+
+            <p
+              suppressHydrationWarning={suppressText}
+              className={`text-black py-4`}
+            >
+              {t('leave_feedback_desc')}
+            </p>
+            <button
+              onClick={handleOpenPopup}
+              className={`flex flex-col flex-1 w-1/2 justify-center items-center bg-white text-white rounded-2xl p-3 shadow-xl`}
+            >
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`text-black`}
+              >
+                {t('leave_feedback')}
+              </p>
             </button>
-          </div>
-          <div className="flex justify-evenly items-center w-[90%] m-auto">
-            {element.facebook && (
-              <a href={element.facebook} target={'_blank'}>
-                <Facebook
-                  className={`w-8 h-8  ${iconColor} pt-1`}
-                  alt={t('facebook')}
-                />
-              </a>
-            )}
-            {element.instagram && (
-              <a href={element.instagram} target={'_blank'}>
-                <Instagram
-                  className={`w-8 h-8  ${iconColor} pt-1`}
-                  alt={t('instagram')}
-                />
-              </a>
-            )}
-            {element.twitter && (
-              <a href={element.twitter} target={'_blank'}>
-                <Twitter
-                  className={`w-8 h-8  ${iconColor} pt-1`}
-                  alt={t('twitter')}
-                />
-              </a>
-            )}
           </div>
         </div>
         <Feedback
@@ -236,9 +294,6 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
           ariaHideApp={false}
           onRequestClose={handleClosePopup}
         />
-        <div className={`mt-[10%]`}>
-          <PoweredByQ />
-        </div>
       </MainContentLayout>
     </Suspense>
   );
