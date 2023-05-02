@@ -1,49 +1,54 @@
 import { FC, Suspense, useEffect, useState } from 'react';
-// import BackBtn from '@/components/BackBtn';
 import { useRouter } from 'next/router';
-// import SlideTopNav from '@/components/home/SlideTopNav';
-// import LoadingSpinner from '@/components/LoadingSpinner';
 import { debounce } from 'lodash';
 import { suppressText } from '@/constants/*';
+import Backbtn from '@/appIcons/backbtn.svg';
+import { useTranslation } from 'react-i18next';
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from '@/redux/hooks';
 
 type Props = {
   backHome?: boolean;
   backRoute?: string | null;
+  currentModule?:string
 };
-const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
-  const [offset, setOffset] = useState(0);
-  const router = useRouter();
-  const [isHome, setIsHome] = useState(
-    router.pathname === '/' || router.pathname === '/home'
-  );
+const AppHeader: FC<Props> = ({ backHome = false, backRoute = null ,currentModule='home'}) => {
+  // const [offset, setOffset] = useState(0);
+  // const router = useRouter();
+  const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
+  // const {
+  //   appSetting: { currentModule },
+  // } = useAppSelector((state) => state);
 
-  useEffect(() => {
-    const onScroll = () => setOffset(window.pageYOffset);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', debounce(onScroll, 400));
-    };
-  }, [router.pathname]);
+  // const [isHome, setIsHome] = useState(
+  //   router.pathname === '/' || router.pathname === '/home'
+  // );
+
+  // useEffect(() => {
+  //   const onScroll = () => setOffset(window.pageYOffset);
+  //   window.addEventListener('scroll', onScroll, { passive: true });
+  //   return () => {
+  //     window.removeEventListener('scroll', debounce(onScroll, 400));
+  //   };
+  // }, [router.pathname]);
 
   return (
-    <Suspense fallback={<div>loading</div>}>
-      <header
-        className={`${offset <= 80 ? `bg-white` : `bg-transparent`} ${
-          isHome ? `bg-transparent` : `bg-white`
-        } relative sticky top-0 z-50 flex flex-col justify-start items-center w-full capitalize`}
-        suppressHydrationWarning={suppressText}
-      >
-        {/* {router.asPath === '/' ||
-          (!router.asPath.includes('/home') && (
-            <BackBtn
-              backHome={backHome}
-              offset={offset}
-              backRoute={backRoute}
-            />
-          ))}
-        <SlideTopNav offset={offset} isHome={isHome} /> */}
-      </header>
-    </Suspense>
+    <header
+      className={`relative sticky top-0 z-50 w-full capitalize bg-white flex items-center py-3 px-2 border-b-2`}
+      suppressHydrationWarning={suppressText}
+    >
+      <Backbtn />
+      <div className={`flex flex-1 justify-center items-center pt-1`}>
+        <span
+          className={`text-md capitalize truncate font-semibold`}
+          suppressHydrationWarning={suppressText}
+          style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
+        >
+          {t(currentModule)}
+        </span>
+      </div>
+    </header>
   );
 };
 
