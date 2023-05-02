@@ -46,7 +46,7 @@ const AppFooter: FC<Props> = ({
 
   return (
     <Suspense>
-      <footer className={`w-full px-3 text-center text-xs`}>
+      <footer className={`w-full px-3 text-center text-xs bg-white`}>
         <p className=" font-bold">{t('rights_reserved')}</p>
         <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
       </footer>

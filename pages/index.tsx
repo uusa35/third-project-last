@@ -101,6 +101,7 @@ export default function Home({ url, element, currentLocale }: Props) {
 
 
   // note : pass vendor info to  HomeVendorMainInfo and don't make the req inside it
+  
 
   return (
     <Suspense fallback={<div>loading</div>}>
@@ -115,7 +116,7 @@ export default function Home({ url, element, currentLocale }: Props) {
         facebook={element.facebook}
         instagram={element.instagram}
       />
-      <MainContentLayout>
+      <MainContentLayout showAppFooter={true}>
         <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
           {/* sm screen header */}
           {(vendorSuccess || vendorElement || vendorElement?.Data) && (
@@ -170,8 +171,6 @@ export default function Home({ url, element, currentLocale }: Props) {
               }
             </>
           )}
-
-          <AppFooter />
         </div>
       </MainContentLayout>
     </Suspense>

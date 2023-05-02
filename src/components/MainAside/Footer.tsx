@@ -12,7 +12,7 @@ export default function AsideFooter() {
           >
             <div className={`flex flex-row gap-x-3 items-center`}>
               <Link href={appLinks.returnPolicy.path}>{t("return_policy")}</Link>
-              <Link href={appLinks.shippingPolicy.path}>{t("shopping_policy")}</Link>
+              <Link href={appLinks.shippingPolicy.path}>{t("shipping_policy")}</Link>
               <Link href={appLinks.privacyPolicy.path}>{t("privacy_policy")}</Link>
             </div>
             <div className={`flex flex-1 flex-row justify-end items-center`}>
