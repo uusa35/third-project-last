@@ -6,12 +6,16 @@ import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { imgUrl, mainBtnClass, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from "@/redux/hooks";
+
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
 };
 const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
+    const color = useAppSelector(themeColor);
     
     return (
         <>
@@ -39,6 +43,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                     </div>
                     <button 
                         className={`${mainBtnClass}`}
+                        style={{ backgroundColor: color }}
                         suppressHydrationWarning={suppressText}
                     >
                         {t('change_branch')}

@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
 import { mainBtnClass, suppressText } from "@/constants/*";
 import { useRouter } from "next/router";
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from "@/redux/hooks";
 
 type Props = {
     isOpen: boolean;
@@ -13,6 +15,7 @@ type Props = {
 const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
+    const color = useAppSelector(themeColor);
     const reasons = [
         { id: 1, name: 'order_is_taking_long_time'},
         { id: 2, name: 'placed_order_by_accident'},
@@ -55,7 +58,8 @@ const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                                     type="radio"
                                     name="cancelReason" 
                                     id={`${reason.id}`} 
-                                    className="h-4 w-4 accent-red-600" 
+                                    className="h-4 w-4"
+                                    style={{ accentColor: color }} 
                                 />
                                 <span suppressHydrationWarning={suppressText}>
                                     {`${upperFirst(`${t(`${reason.name}`)}`)}`}
@@ -66,6 +70,7 @@ const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                     <div className="border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4">
                         <button 
                             className={`${mainBtnClass}`}
+                            style={{ backgroundColor: color }}
                             suppressHydrationWarning={suppressText}
                         >
                             {`${upperFirst(`${t('continue')}`)}`}

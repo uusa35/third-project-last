@@ -404,7 +404,7 @@ const ProductShow: NextPage<Props> = (
   }
   const FavouriteAndWishLish = () => {
     return (
-      <div className="flex items-center space-x-2">
+      <div className="flex justify-end items-center space-x-2">
         <Link href={appLinks.wishlist.path}>
           <Favourite />
         </Link>
@@ -431,7 +431,8 @@ const ProductShow: NextPage<Props> = (
       /> */}
       <MainContentLayout
         url={url}
-        backChildren={<FavouriteAndWishLish />}
+        showBackBtnHeader={true}
+        FavouriteAndShareComponent={<FavouriteAndWishLish />}
         // productCurrentQty={currentQty}
         // handleIncreaseProductQty={handleIncrease}
         // handleDecreaseProductQty={handleDecrease}
@@ -646,7 +647,7 @@ const ProductShow: NextPage<Props> = (
                     >
                       {s.must_select === 'q_meter' &&
                       s.selection_type === 'mandatory' && (
-                        <p className={`flex -w-full text-red-600 pb-3`}>
+                        <p className={`flex -w-full pb-3`} style={{ color }}>
                           {t(`must_select_min_and_max`, {
                             min: s.min_q,
                             max: s.max_q,
@@ -868,7 +869,7 @@ const ProductShow: NextPage<Props> = (
           // onClick={debounce(() => handleAddToCart(), 400)}
           className={`${mainBtnClass}`}
           style={{
-            backgroundColor: convertColor(color, 100),
+            backgroundColor: color,
             color: `white`,
           }}
           onClick={() => setIsOpen(true)}

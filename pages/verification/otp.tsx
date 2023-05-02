@@ -1,7 +1,7 @@
 import CustomImage from '@/components/CustomImage';
 import MainHead from '@/components/MainHead'
 import MainContentLayout from '@/layouts/MainContentLayout'
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setCurrentModule } from '@/redux/slices/appSettingSlice';
 import { wrapper } from '@/redux/store';
 import { useRouter } from 'next/router';
@@ -11,6 +11,7 @@ import OtpVerify from '@/appImages/otp_verify.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from '@/constants/*';
 import { upperFirst } from 'lodash';
 import OtpInput from 'react18-input-otp';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   url: string;
@@ -21,10 +22,8 @@ export default function OtpVerifications({ url }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const [otp, setOtp] = useState('');
+  const color = useAppSelector(themeColor);
 
-  useEffect(() => {
-    dispatch(setCurrentModule('otp_verification'));
-  }, []);
   
   const handleChangeOtp = (enteredOtp: string) => {
     setOtp(enteredOtp);
@@ -45,10 +44,7 @@ export default function OtpVerifications({ url }: Props) {
         title={t('otp_verification')}
         description={`${t('otp_verification')}`}
       />
-       <MainContentLayout url={url}>
-        <div className="h-1 w-full bg-gray-200">
-          <div className="h-1 bg-red-600" style={{width: '66%'}}></div>
-        </div>
+       <MainContentLayout url={url} showBackBtnHeader currentModule="otp_verification">
         <div className="flex justify-center p-5">
           <div>
             <div className="flex justify-center">
@@ -101,7 +97,8 @@ export default function OtpVerifications({ url }: Props) {
               />
             </div>
             <button 
-              className={`mt-5 mb-20 ${mainBtnClass}`} 
+              className={`mt-5 mb-20 ${mainBtnClass}`}
+              style={{ backgroundColor: color }} 
               suppressHydrationWarning={suppressText}
               onClick={handleVerify}
             >

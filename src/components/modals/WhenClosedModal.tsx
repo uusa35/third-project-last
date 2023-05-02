@@ -5,10 +5,14 @@ import Clock from '@/appImages/clock.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
+import { themeColor } from '@/redux/slices/vendorSlice';
+
 import CustomImage from "../CustomImage";
+import { useAppSelector } from "@/redux/hooks";
 const WhenClosedModal: FC = ():JSX.Element => {
     const [isOpen,setIsOpen] = useState<boolean>(false);
     const { t } = useTranslation();
+    const color = useAppSelector(themeColor);
     
     return (
         <>
@@ -43,6 +47,7 @@ const WhenClosedModal: FC = ():JSX.Element => {
                     <div className={`${modalBtnContainer}`}>
                         <button 
                             className={`${mainBtnClass}`}
+                            style={{ backgroundColor: color }}
                             suppressHydrationWarning={suppressText}
                             onClick={() => setIsOpen(false)}
                         >

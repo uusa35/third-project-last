@@ -7,9 +7,10 @@ import { useTranslation } from "react-i18next";
 import AccountInfoImg from '@/appImages/account_info.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from "@/constants/*";
 import { upperFirst } from "lodash";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setCurrentModule } from "@/redux/slices/appSettingSlice";
 import { useRouter } from "next/router";
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   url: string;
@@ -19,23 +20,21 @@ export default function AccountInfo({ url }: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  useEffect(() => {
-    dispatch(setCurrentModule('account_info'));
-  }, []);
+  const color = useAppSelector(themeColor);
+
 
   const handleSubmit = () => {
     router.push(`${appLinks.AddressMap.path}`);
   }
-  
+
   return (
     <Fragment>
       <MainHead
         title={t('account_info')}
         description={`${t('account_info')}`}
       />
-       <MainContentLayout url={url}>
+       <MainContentLayout url={url} showBackBtnHeader currentModule="account_info">
         <div>
-        <div className="h-1 bg-red-600 w-full"></div>
         <div className="text-center w-full p-5">
           <div>
             <div className="flex justify-center">
@@ -62,9 +61,13 @@ export default function AccountInfo({ url }: Props) {
             <div className="relative">
                 <input 
                     type="text" 
-                    name="full name" 
-                    id="full name"  
-                    className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer" placeholder=" " />
+                    name="full_name" 
+                    id="full_name"  
+                    className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] appearance-none focus:outline-none focus:ring-0  peer" 
+                    style={{ borderBottomColor: '#e5e7eb' }}
+                    onFocus={(e) => e.target.style.borderBottomColor = color }
+                    onBlur={(e) => e.target.style.borderBottomColor = '#e5e7eb' }
+                    placeholder=" " />
                 <label 
                     htmlFor="full_name"  
                     className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
@@ -78,7 +81,12 @@ export default function AccountInfo({ url }: Props) {
                       type="email" 
                       name="email" 
                       id="email" 
-                      className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-red-600 peer" placeholder=" " />
+                      className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer" placeholder=" " 
+                      style={{ borderBottomColor: '#e5e7eb' }}
+                      onFocus={(e) => e.target.style.borderBottomColor = color }
+                      onBlur={(e) => e.target.style.borderBottomColor = '#e5e7eb' }
+                      
+                      />
                   <label 
                       htmlFor="email" 
                       className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
@@ -90,6 +98,9 @@ export default function AccountInfo({ url }: Props) {
             </form>
             <button 
               className={`mt-5 ${mainBtnClass}`} 
+              style={{
+                backgroundColor: color
+              }}
               suppressHydrationWarning={suppressText}
               onClick={handleSubmit}
             >

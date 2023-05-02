@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import PickupIcon from '@/appIcons/pickup.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
 import { PlaceOutlined, WatchLaterOutlined, ArrowForwardIos } from '@mui/icons-material';
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from "@/redux/hooks";
 
 type Props = {
     isOpen: boolean;
@@ -16,6 +18,7 @@ type Props = {
 const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
+    const color = useAppSelector(themeColor);
     const addresses = [
         { id: 1, name: 'most selling'},
         { id: 2, name: 'special offers'},
@@ -54,7 +57,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                                 <span className="px-3">{t('delivery')}</span>
                             </span>
                             {/* will shown or not according to method */}
-                            <div className="w-full h-1 bg-red-500 rounded-tl rounded-tr mt-2"></div>
+                            <div className="w-full h-1 rounded-tl rounded-tr mt-2" style={{ backgroundColor: color }}></div>
                         </button>
                         <p></p>
                         <button
@@ -72,7 +75,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </div>
                     <Link href={appLinks.selectArea.path} className="w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ">
                         <div className="flex justify-between items-center">
-                            <PlaceOutlined className="text-red-500" />
+                            <PlaceOutlined style={{ color }} />
                             <div className="px-3 capitalize font-semibold">
                                 <h6 className="text-sm text-gray-500 capitalize" suppressHydrationWarning={suppressText}>
                                     {t('delivering_to')}
@@ -84,7 +87,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </Link>
                     <Link href={appLinks.orderSchedule.path} className="w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ">
                         <div className="flex justify-between items-center">
-                            <WatchLaterOutlined className="text-red-500" />
+                            <WatchLaterOutlined style={{ color }} />
                             <div className="px-3 capitalize text-sm font-semibold">
                                 <h6 className="text-sm text-gray-500" suppressHydrationWarning={suppressText}>{t('deliver_in')}</h6>
                                 <p suppressHydrationWarning={suppressText}>{t('now_within_20_minutes')}</p>
@@ -95,6 +98,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     <div className="px-5 mt-10">
                         <button 
                             className={`${mainBtnClass} disabled:bg-stone-400`}
+                            style={{ backgroundColor: color }}
                             suppressHydrationWarning={suppressText}
                             disabled
                         >

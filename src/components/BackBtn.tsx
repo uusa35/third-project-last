@@ -16,14 +16,12 @@ type Props = {
   backHome: boolean;
   backRoute?: string | null;
   offset: number;
-  backChildren?: ReactNode | undefined
 };
 
 const BackBtn: FC<Props> = ({
   backHome,
   backRoute = null,
-  offset,
-  backChildren
+  offset
 }): JSX.Element => {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -78,10 +76,9 @@ const BackBtn: FC<Props> = ({
             suppressHydrationWarning={suppressText}
             style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
           >
-            {backChildren && offset === 0 ? '' : t(currentModule)}
+            {t(currentModule)}
           </span>
         </div>
-        {backChildren}
       </div>
     </Suspense>
   );

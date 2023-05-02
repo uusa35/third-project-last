@@ -28,7 +28,7 @@ type Props = {
   backRoute?: string | null;
   currentModule?: string;
   showBackBtnHeader?: boolean;
-
+  FavouriteAndShareComponent?: ReactNode | undefined;
   showAppFooter?: boolean;
 
   hideBack?: boolean;
@@ -47,7 +47,7 @@ const MainContentLayout: FC<Props> = ({
   backHome = false,
   backRoute = null,
   showBackBtnHeader = false,
-
+  FavouriteAndShareComponent,
   showAppFooter = false,
 
   hideBack = false,
@@ -100,6 +100,7 @@ const MainContentLayout: FC<Props> = ({
           backHome={backHome}
           backRoute={backRoute}
           currentModule={currentModule}
+          FavouriteAndShareComponent={FavouriteAndShareComponent}
         />
       )}
 

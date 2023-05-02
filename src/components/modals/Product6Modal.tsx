@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { mainBtnClass, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from "@/redux/hooks";
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
@@ -13,6 +15,7 @@ type Props = {
   
 const Product6Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
+    const color = useAppSelector(themeColor);
     
     return (
         <>
@@ -43,6 +46,7 @@ const Product6Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     <div className="border-t-[1px] border-gray-200 px-4 pt-4">
                             <button 
                                 className={`${mainBtnClass}`}
+                                style={{ backgroundColor: color }}
                                 suppressHydrationWarning={suppressText}
                             >
                                 {`${upperFirst(`${t('sign_in/')}`)}`}
