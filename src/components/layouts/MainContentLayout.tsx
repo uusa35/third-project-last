@@ -27,6 +27,7 @@ type Props = {
   hideBack?: boolean;
   showMotion?: boolean;
   backRoute?: string | null;
+  backChildren?: ReactNode | undefined;
   handleSubmit?: (element?: any) => void | undefined | Promise<any>;
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
@@ -39,6 +40,7 @@ const MainContentLayout: FC<Props> = ({
   backHome = false,
   hideBack = false,
   backRoute = null,
+  backChildren,
   showMotion = true,
   handleSubmit,
   handleIncreaseProductQty,
@@ -81,7 +83,7 @@ const MainContentLayout: FC<Props> = ({
       suppressHydrationWarning={suppressText}
     >
       <SideMenu />
-      {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} />}
+      {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} backChildren={backChildren} />}
       <main
         className={`w-full ${
           showFooterElement === `home` ? `mb-0` : `mb-[20%]`

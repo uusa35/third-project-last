@@ -96,5 +96,14 @@
     "resend": "إعادة الإرسال",
     "phone_number": "رقم الهاتف",
     "submit": "إرسال",
-    "full_name": "الاسم الكامل"
+    "full_name": "الاسم الكامل",
+    "kwd": "دينار كويتي",
+    "special_instructions": "تعليمات خاصة",
+    "add_instructions": "أضف التعليمات",
+    "start_ordering": "ابدأ الطلب",
+    "must_select_min_and_max": "يجب اختيار الحد الأدني والأقصى",
+    "field_must_select_at_least_one": "يجب اختيار واحدة على الأقل",
+    "select": "اختر",
+    "select1": "اختر واحدة",
+    "multi_selection":  "اختيار متعدد"
 }

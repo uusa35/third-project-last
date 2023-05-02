@@ -1,4 +1,4 @@
-import { FC, Suspense, useEffect, useState } from 'react';
+import { FC, ReactNode, Suspense, useEffect, useState } from 'react';
 import BackBtn from '@/components/BackBtn';
 import { useRouter } from 'next/router';
 // import SlideTopNav from '@/components/home/SlideTopNav';
@@ -9,8 +9,9 @@ import { suppressText } from '@/constants/*';
 type Props = {
   backHome?: boolean;
   backRoute?: string | null;
+  backChildren?: ReactNode | undefined
 };
-const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
+const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, backChildren }) => {
   const [offset, setOffset] = useState(0);
   const router = useRouter();
   const [isHome, setIsHome] = useState(
@@ -39,6 +40,7 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null }) => {
               backHome={backHome}
               offset={offset}
               backRoute={backRoute}
+              backChildren={backChildren}
             />
           ))}
         {/* {router.asPath === '/' ||

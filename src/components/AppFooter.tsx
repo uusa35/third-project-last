@@ -57,7 +57,7 @@ const AppFooter: FC<Props> = ({
             productOutStock={productOutStock}
           />
         )}
-        {showFooterElement === 'cart_index' &&
+       {showFooterElement === 'cart_index' &&
           isSuccess &&
           cartItems.data?.Cart?.length > 0 && <CartIndexFooter />}
 
