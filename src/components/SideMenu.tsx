@@ -35,6 +35,7 @@ import {
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 import HorizentalLine from "./HorizentalLine";
+import AppFooter from "./AppFooter";
 
 type Props = {};
 
@@ -200,10 +201,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
             </div>
           </div>
 
-          <footer className={`w-full px-3 text-center text-xs`}>
-            <p className=" font-bold">{t("rights_reserved")}</p>
-            <p className=" py-1 mb-2 text-zinc-500">{t("powered_by_queue")}</p>
-          </footer>
+          <AppFooter/>
         </div>
       </Menu>
     </Suspense>

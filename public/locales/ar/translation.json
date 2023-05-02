@@ -105,5 +105,9 @@
     "field_must_select_at_least_one": "يجب اختيار واحدة على الأقل",
     "select": "اختر",
     "select1": "اختر واحدة",
-    "multi_selection":  "اختيار متعدد"
+    "multi_selection":  "اختيار متعدد",
+  "categories":"الفئات",
+  "whishlist":"قائمة الرغبات",
+  "no_wish_list_for_you_yet":"لا يوجد قائمة رغبات لديك",
+  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"اضف الي قائمة رغباتك لتتمكن من الوصول اليها لاحقا"
 }

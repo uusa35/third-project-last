@@ -23,11 +23,16 @@ const SideMenu = dynamic(() => import(`@/components/SideMenu`), {
 type Props = {
   children: ReactNode | undefined;
   url?: string;
+
   backHome?: boolean;
+  backRoute?: string | null;
+  currentModule?: string;
+  showBackBtnHeader?: boolean;
+
+  showAppFooter?: boolean;
+
   hideBack?: boolean;
   showMotion?: boolean;
-  backRoute?: string | null;
-  backChildren?: ReactNode | undefined;
   handleSubmit?: (element?: any) => void | undefined | Promise<any>;
   handleIncreaseProductQty?: () => void;
   handleDecreaseProductQty?: () => void;
@@ -37,10 +42,15 @@ type Props = {
 
 const MainContentLayout: FC<Props> = ({
   children,
+
+  currentModule = 'home',
   backHome = false,
-  hideBack = false,
   backRoute = null,
-  backChildren,
+  showBackBtnHeader = false,
+
+  showAppFooter = false,
+
+  hideBack = false,
   showMotion = true,
   handleSubmit,
   handleIncreaseProductQty,
@@ -79,17 +89,21 @@ const MainContentLayout: FC<Props> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
+      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative `}
       suppressHydrationWarning={suppressText}
     >
       <SideMenu />
-      {showHeader && <AppHeader backHome={backHome} backRoute={backRoute} backChildren={backChildren} />}
-      <main
-        className={`w-full ${
-          showFooterElement === `home` ? `mb-0` : `mb-[20%]`
-        } relative rounded-t-full min-h-screen `}
-        style={{ height: '100%' }}
-      >
+
+      {/* backbtn and name header */}
+      {showBackBtnHeader && (
+        <AppHeader
+          backHome={backHome}
+          backRoute={backRoute}
+          currentModule={currentModule}
+        />
+      )}
+
+      <main className={`w-full relative bg-white min-h-screen h-auto`}>
         {isOnline ? (
           children
         ) : (
@@ -100,13 +114,8 @@ const MainContentLayout: FC<Props> = ({
         )}
       </main>
       {/* <ScrollToTopButton /> */}
-      {/* <AppFooter
-        handleSubmit={handleSubmit}
-        handleIncreaseProductQty={handleIncreaseProductQty}
-        handleDecreaseProductQty={handleDecreaseProductQty}
-        productCurrentQty={productCurrentQty}
-        productOutStock={productOutStock}
-      /> */}
+      {showAppFooter && <AppFooter />}
+
       <NextNProgress
         color={color}
         startPosition={0.3}

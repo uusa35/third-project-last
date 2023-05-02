@@ -107,5 +107,9 @@
   "field_must_select_at_least_one": "field must select at least one",
   "select": "select",
   "select1": "select 1",
-  "multi_selection": "multi_selection"
+  "multi_selection": "multi_selection",
+  "categories":"categories",
+  "whishlist":"whish list",
+  "no_wish_list_for_you_yet":"no wish list for you yet",
+  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"add something to your wish list, to make it easier to access it later"
 }
