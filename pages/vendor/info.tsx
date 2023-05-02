@@ -61,6 +61,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
+  const [showModal, SetShowModal] = useState(false);
 
   useEffect(() => {
     dispatch(setCurrentModule(element.name));
@@ -77,13 +78,12 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
     };
   }, []);
 
-  function handleClosePopup() {
+  const handleClosePopup = () => {
     SetShowModal(false);
-  }
+  };
   const handleOpenPopup = () => {
     SetShowModal(true);
   };
-  const [showModal, SetShowModal] = useState(false);
 
   if (!element) {
     return <div>loading</div>;
@@ -137,7 +137,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
               />
               <span>{t('branches')}</span>
             </div>
-            {!isRTL ? <ChevronRightOutlined /> : <ChevronLeftOutlined />}
+            {isRTL ? <ChevronLeftOutlined /> : <ChevronRightOutlined />}
           </div>
           {/* min_charge */}
           <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">

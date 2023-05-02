@@ -49,6 +49,7 @@ const nextConfig = withSvgr({
       'testbedbynd.com',
       'pages-dash.testbedbynd.com',
       'queue-spaces.nyc3.digitaloceanspaces.com',
+      'place-hold.it',
     ],
     // minimumCacheTTL: 60 * 60 * 24,
     minimumCacheTTL: 0,
