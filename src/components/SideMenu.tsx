@@ -1,11 +1,11 @@
-import React, { Suspense } from "react";
-import { ReactBurgerMenu, slide as Menu } from "react-burger-menu";
-import { useTranslation } from "react-i18next";
-import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/router";
+import React, { Suspense } from 'react';
+import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
+import { useTranslation } from 'react-i18next';
+import { FC } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useRouter } from 'next/router';
 // import SideMenuSkelton from '@/components/sideMenu/SideMenuSkelton';
-import Link from "next/link";
+import Link from 'next/link';
 import {
   appLinks,
   convertColor,
@@ -13,9 +13,9 @@ import {
   imgUrl,
   submitBtnClass,
   suppressText,
-} from "@/constants/*";
-import { hideSideMenu } from "@/redux/slices/appSettingSlice";
-import { themeColor } from "@/redux/slices/vendorSlice";
+} from '@/constants/*';
+import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 import {
   Close,
   ShoppingBagOutlined,
@@ -25,17 +25,18 @@ import {
   LocationOnOutlined,
   BoltOutlined,
   ChevronRightOutlined,
-} from "@mui/icons-material";
-import { setLocale } from "@/redux/slices/localeSlice";
-import CustomImage from "@/components/CustomImage";
-import { isEmpty } from "lodash";
+} from '@mui/icons-material';
+import { setLocale } from '@/redux/slices/localeSlice';
+import CustomImage from '@/components/CustomImage';
+import { isEmpty } from 'lodash';
 // import LoadingSpinner from '@/components/LoadingSpinner';
 import {
   BuildingStorefrontIcon,
   MapPinIcon,
-} from "@heroicons/react/24/outline";
-import HorizentalLine from "./HorizentalLine";
-import AppFooter from "./AppFooter";
+} from '@heroicons/react/24/outline';
+import { destinationObject } from '@/redux/slices/searchParamsSlice';
+import HorizentalLine from './HorizentalLine';
+import AppFooter from './AppFooter';
 
 type Props = {};
 
@@ -51,7 +52,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   return (
     <Suspense fallback={<div>loading skeleton</div>}>
       <Menu
-        right={router.locale === "ar"}
+        right={router.locale === 'ar'}
         isOpen={appSetting.sideMenuOpen}
         onClose={() => {
           dispatch(hideSideMenu());
@@ -62,7 +63,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
         customCrossIcon={false}
       >
         <div
-          style={{ display: "flex" }}
+          style={{ display: 'flex' }}
           className="flex-col justify-between  bg-white h-full outline-none capitalize"
         >
           <div>
@@ -77,7 +78,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 >
                   <Close fontSize="small" className={`h-4 w-4`} />
                 </p>
-                <p className="w-full text-center font-bold">{t("more")}</p>
+                <p className="w-full text-center font-bold">{t('more')}</p>
               </div>
               <HorizentalLine className="h-1" />
 
@@ -90,10 +91,10 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                       href={appLinks.mobileVerification.path}
                     >
                       <div className="flex gap-x-1">
-                        <BoltOutlined style={{ color: "#facc15" }} />
+                        <BoltOutlined style={{ color: '#facc15' }} />
                         <p>
-                          <span className="font-bold">{t("sign_in")}</span>{" "}
-                          {t("to_orderfast_now")}
+                          <span className="font-bold">{t('sign_in')}</span>{' '}
+                          {t('to_orderfast_now')}
                         </p>
                       </div>
                       <ChevronRightOutlined />
@@ -105,12 +106,12 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                         {/* img */}
                         <div className="rounded-full h-5 w-5"></div>
                         <div>
-                          <p className="text-sm">{t("Welcome_back")} !</p>
+                          <p className="text-sm">{t('Welcome_back')} !</p>
                           <p className="font-bold">Mohaned Tark</p>
                         </div>
                       </div>
                       <button className="bg-white rounded-xl text-sm font-semibold px-2 py-px">
-                        {t("sign_out")}
+                        {t('sign_out')}
                       </button>
                     </div>
                   )}
@@ -123,14 +124,14 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={"#"}
+                href={'#'}
               >
                 <Restaurant className={`h-8 w-8`} style={{ color }} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
                 >
-                  {t("menu")}
+                  {t('menu')}
                 </p>
               </Link>
 
@@ -146,7 +147,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
                 >
-                  {t("my_cart")}
+                  {t('my_cart')}
                 </p>
               </Link>
               <HorizentalLine className="my-3" />
@@ -161,7 +162,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
                 >
-                  {t("my_orders")}
+                  {t('my_orders')}
                 </p>
               </Link>
               <HorizentalLine className="my-3" />
@@ -179,7 +180,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
                 >
-                  {t("wishlist")}
+                  {t('wishlist')}
                 </p>
               </Link>
               <HorizentalLine className="my-3" />
@@ -194,14 +195,14 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
                 >
-                  {t("my_addresses")}
+                  {t('my_addresses')}
                 </p>
               </Link>
               <HorizentalLine className="my-3" />
             </div>
           </div>
 
-          <AppFooter/>
+          <AppFooter />
         </div>
       </Menu>
     </Suspense>
