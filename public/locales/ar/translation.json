@@ -74,5 +74,8 @@
     "your_name_optional": "اسمك (اختياري)",
     "phone_number_optional": "رقم هاتف (اختياري)",
     "your_comment": "تعليقك",
-  "categories":"الفئات"
+  "categories":"الفئات",
+  "whishlist":"قائمة الرغبات",
+  "no_wish_list_for_you_yet":"لا يوجد قائمة رغبات لديك",
+  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"اضف الي قائمة رغباتك لتتمكن من الوصول اليها لاحقا"
 }

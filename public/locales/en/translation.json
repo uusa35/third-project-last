@@ -79,5 +79,8 @@
   "your_name_optional": "your name (optional)",
   "phone_number_optional": "phone number (optional)",
   "your_comment": "your comment",
-  "categories":"categories"
+  "categories":"categories",
+  "whishlist":"whish list",
+  "no_wish_list_for_you_yet":"no wish list for you yet",
+  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"add something to your wish list, to make it easier to access it later"
 }
