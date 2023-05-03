@@ -77,5 +77,10 @@
   "categories":"الفئات",
   "whishlist":"قائمة الرغبات",
   "no_wish_list_for_you_yet":"لا يوجد قائمة رغبات لديك",
-  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"اضف الي قائمة رغباتك لتتمكن من الوصول اليها لاحقا"
+  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"اضف الي قائمة رغباتك لتتمكن من الوصول اليها لاحقا",
+  "your_cart_is_empty": "عربة التسوق فارغة",
+  "add_some_items_to_your_cart":"اضف بعض المنتجات الي عربه التسوق الخاصة بك",
+  "continue_shopping":"استمر في التسوق",
+  "review_cart":"مراجعة عربة التسوق",
+  "kwd": "د.ك"
 }

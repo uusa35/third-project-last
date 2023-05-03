@@ -82,5 +82,10 @@
   "categories":"categories",
   "whishlist":"whish list",
   "no_wish_list_for_you_yet":"no wish list for you yet",
-  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"add something to your wish list, to make it easier to access it later"
+  "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"add something to your wish list, to make it easier to access it later",
+  "your_cart_is_empty": "your cart is empty",
+  "add_some_items_to_your_cart":"add some items to your cart",
+  "continue_shopping":"continue shopping",
+  "review_cart":"review cart",
+  "kwd": "kwd"
 }
