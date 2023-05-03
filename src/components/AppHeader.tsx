@@ -1,4 +1,4 @@
-import { FC, ReactNode, Suspense, useEffect, useState } from 'react';
+import { FC, Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { debounce } from 'lodash';
 import { suppressText } from '@/constants/*';

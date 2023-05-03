@@ -99,9 +99,11 @@ export default function Home({ url, element, currentLocale }: Props) {
     // , branch_id, area_id
   ]);
 
-
   // note : pass vendor info to  HomeVendorMainInfo and don't make the req inside it
-  
+  // delivery and pickup section
+  // ads section
+  // review order btn
+  // open modal of categories
 
   return (
     <Suspense fallback={<div>loading</div>}>
