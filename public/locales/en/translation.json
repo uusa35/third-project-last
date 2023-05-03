@@ -107,5 +107,14 @@
   "complete_your_account_info": "complete your account info",
   "enter_your_name_and_email_to_end": "enter your name and email to end",
   "your_email_optional": "your email (optional)",
-  "resend": "resend"
+  "resend": "resend",
+  "promotions":"promotions",
+  "add_a_promo_code":"add a promo code",
+  "apply":"apply",
+  "order_review":"order review",
+  "subtotal": "subtotal",
+  "tax": "tax",
+  "total": "total",
+  "net_total": "total",
+  "go_to_checkout":"go to checkout"
 }

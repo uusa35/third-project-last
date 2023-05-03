@@ -105,5 +105,14 @@
     "resend": "إعادة الإرسال",
     "phone_number": "رقم الهاتف",
     "submit": "إرسال",
-    "full_name": "الاسم الكامل"
+    "full_name": "الاسم الكامل",
+    "promotions":"الخصومات",
+  "add_a_promo_code":"اضف كود الخصم",
+  "apply":"تطبيق",
+  "order_review":"مراجعة الطلب",
+  "subtotal": "المجموع الفرعي",
+  "tax": "ضريبة",
+  "total": "المجموع",
+  "net_total" : "الإجمالي",
+  "go_to_checkout": "تابع الى الدفع"
 }

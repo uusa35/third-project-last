@@ -14,6 +14,9 @@ import { destinationObject } from '@/redux/slices/searchParamsSlice';
 import Link from 'next/link';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import CartProduct from '@/components/widgets/product/CartProduct';
+import PromoCode from '@/components/cart/PromoCode';
+import PaymentSummary from '@/components/cart/PaymentSummary';
+import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 
 type Props = { url: string };
 
@@ -82,7 +85,19 @@ export default function Cart({ url }: Props) {
             </div>
           )
         )}
+
+        {/* promocode */}
+        <PromoCode/>
+
+        {/* payment summary */}
+        <div className='py-3'>
+        <p className="font-bold">{t("order_review")}</p>
+        <PaymentSummary/>
+        </div>
+
+        
       </div>
+      <CheckoutFixedBtn/>
     </MainContentLayout>
   );
 }
