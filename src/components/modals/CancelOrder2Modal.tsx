@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
 import { useRouter } from "next/router";
 import { mainBtnClass, suppressText } from "@/constants/*";
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from "@/redux/hooks";
 
 type Props = {
     isOpen: boolean;
@@ -12,6 +14,8 @@ type Props = {
 const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
+    const color = useAppSelector(themeColor);
+
     return (
         <>
             <MainModal 
@@ -57,6 +61,7 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                         suppressHydrationWarning={suppressText}>
                             <button 
                                 className={`${mainBtnClass}`}
+                                style={{ backgroundColor: color }}
                             >
                                 {`${upperFirst(`${t('confirm_cancellation')}`)}`}
                             </button>       

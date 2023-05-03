@@ -4,12 +4,16 @@ import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
 import { PhoneIphone, Chat, ChatOutlined } from '@mui/icons-material';
 import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppSelector } from "@/redux/hooks";
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
 };
 const HelpModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
+    const color = useAppSelector(themeColor);
+
     return (
         <>
             <MainModal 
@@ -41,13 +45,15 @@ const HelpModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     <div className="border-t-[1px] border-gray-200 px-4 pt-4" suppressHydrationWarning={suppressText}>
                         <button 
                             className={`${mainBtnClass}`}
+                            style={{ backgroundColor: color }}
                             suppressHydrationWarning={suppressText}
                         >
                             <PhoneIphone className="mx-1 mb-1" />
                             {`${upperFirst(`${t('call_us')}`)}`}
                         </button>   
                         <button 
-                            className="bg-white text-red-600 w-full text-md font-semibold border-2 border-red-600 rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
+                            className="bg-white w-full text-md font-semibold border-2 rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
+                            style={{ color, borderColor: color }}
                             onClick={onRequestClose}
                         >
                             <ChatOutlined className="mx-1" />
