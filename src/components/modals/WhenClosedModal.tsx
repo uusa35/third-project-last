@@ -4,7 +4,7 @@ import MainModal from "./MainModal";
 import Clock from '@/appImages/clock.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
-import { modalBtnContainer, modalBtnRed, suppressText } from "@/constants/*";
+import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
 import CustomImage from "../CustomImage";
 const WhenClosedModal: FC = ():JSX.Element => {
     const [isOpen,setIsOpen] = useState<boolean>(false);
@@ -42,7 +42,7 @@ const WhenClosedModal: FC = ():JSX.Element => {
                     </div>
                     <div className={`${modalBtnContainer}`}>
                         <button 
-                            className={`${modalBtnRed}`}
+                            className={`${mainBtnClass}`}
                             suppressHydrationWarning={suppressText}
                             onClick={() => setIsOpen(false)}
                         >

@@ -3,7 +3,7 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map, upperFirst } from "lodash";
 import { useRouter } from "next/router";
-import { modalBtnRed, suppressText } from "@/constants/*";
+import { mainBtnClass, suppressText } from "@/constants/*";
 
 type Props = {
     isOpen: boolean;
@@ -56,7 +56,7 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                         className="border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4" 
                         suppressHydrationWarning={suppressText}>
                             <button 
-                                className={`${modalBtnRed}`}
+                                className={`${mainBtnClass}`}
                             >
                                 {`${upperFirst(`${t('confirm_cancellation')}`)}`}
                             </button>       

@@ -30,8 +30,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const desObject = useAppSelector(destinationObject);
-  console.log('dess', desObject);
-
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
 
