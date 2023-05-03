@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_9766" data-name="Rectangle 9766" width="24" height="24" transform="translate(8 8)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="Rectangle_9766-2" data-name="Rectangle 9766" width="24" height="24" transform="translate(8 8)" fill="#c6c6c6"/>
+    </clipPath>
+  </defs>
+  <g id="language" transform="translate(-8 -8)" clip-path="url(#clip-path)">
+    <g id="Mask_Group_1661" data-name="Mask Group 1661" clip-path="url(#clip-path-2)">
+      <g id="Group_1" data-name="Group 1" transform="translate(8)">
+        <rect id="Rectangle_2" data-name="Rectangle 2" width="24" height="24" transform="translate(0 8)" fill="#fff"/>
+        <text id="ع" transform="translate(6 22)" fill="#1a1615" font-size="20" font-family="Almarai-Bold, Almarai" font-weight="700"><tspan x="0" y="0">ع</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
