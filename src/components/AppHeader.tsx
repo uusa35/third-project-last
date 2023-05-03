@@ -10,8 +10,7 @@ import { useAppSelector } from '@/redux/hooks';
 type Props = {
   backHome?: boolean;
   backRoute?: string | null;
-  currentModule?:string,
-  FavouriteAndShareComponent?: ReactNode | undefined
+  currentModule?:string
 };
 type CurrentModule = 'your_number' | 'otp_verification' | 'account_info';
 
@@ -19,7 +18,7 @@ type ModuleWidths = {
   [key in CurrentModule]: string;
 };
 
-const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home', FavouriteAndShareComponent}) => {
+const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home' }) => {
   // const [offset, setOffset] = useState(0);
   // const router = useRouter();
   const { t } = useTranslation();
@@ -63,7 +62,6 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
         >
           {t(currentModule)}
         </span>
-        {FavouriteAndShareComponent}
       </div>
       </div>
       <div className={`h-[2px] absolute -bottom-[2px] ${widthClass}`} style={{backgroundColor: color}}></div>
