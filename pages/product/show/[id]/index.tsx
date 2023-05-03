@@ -72,9 +72,10 @@ import NoFoundImage from '@/appImages/not_found.png';
 // import LoadingSpinner from '@/components/LoadingSpinner';
 import Image from 'next/image';
 import Link from 'next/link';
-import Favourite from '@/appIcons/favourite.svg';
-import Share from '@/appIcons/share.svg';
+import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
+import Backbtn from '@/appIcons/backbtn.svg';
+import { useRouter } from 'next/router';
 
 type Props = {
   product: Product;
@@ -91,6 +92,7 @@ const ProductShow: NextPage<Props> = (
 }
 ) => {
   const { t } = useTranslation();
+  const router = useRouter();
   const {
     productCart,
     locale: { lang, isRTL },
@@ -402,18 +404,6 @@ const ProductShow: NextPage<Props> = (
     <p>loading</p>
     // return <LoadingSpinner fullWidth={true} />;
   }
-  const FavouriteAndWishLish = () => {
-    return (
-      <div className="flex justify-end items-center space-x-2">
-        <Link href={appLinks.wishlist.path}>
-          <Favourite />
-        </Link>
-        <button>
-          <Share />
-        </button>
-      </div>
-    )
-  }
   return (
     <Suspense>
       {/* <MainHead
@@ -431,8 +421,6 @@ const ProductShow: NextPage<Props> = (
       /> */}
       <MainContentLayout
         url={url}
-        showBackBtnHeader={true}
-        FavouriteAndShareComponent={<FavouriteAndWishLish />}
         // productCurrentQty={currentQty}
         // handleIncreaseProductQty={handleIncrease}
         // handleDecreaseProductQty={handleDecrease}
@@ -446,6 +434,13 @@ const ProductShow: NextPage<Props> = (
       >
         {isSuccess && !isNull(element) && element.Data ? (
           <>
+          <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
+            <button onClick={() => router.back()}>
+              <Backbtn />
+            </button>
+            {element?.Data?.name}
+            <FavouriteAndShare />
+          </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
                 {!isEmpty(element?.Data?.img) ? (
