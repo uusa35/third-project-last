@@ -4,6 +4,8 @@ type Props = {}
 
 export default function checkout({}: Props) {
   return (
-    <div>checkout</div>
+    <div>
+      
+    </div>
   )
 }

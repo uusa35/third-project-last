@@ -17,6 +17,7 @@ import CartProduct from '@/components/widgets/product/CartProduct';
 import PromoCode from '@/components/cart/PromoCode';
 import PaymentSummary from '@/components/cart/PaymentSummary';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
+import SaleNotification from '@/components/cart/SaleNotification';
 
 type Props = { url: string };
 
@@ -42,9 +43,9 @@ export default function Cart({ url }: Props) {
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
       {/* if cart is empty */}
-      <div className={'px-5'}>
+      <div className={''}>
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
-          <div className="flex flex-col items-center justify-center py-5">
+          <div className="flex flex-col items-center justify-center p-5">
             <CustomImage
               src={EmptyCart.src}
               alt="empty_cart"
@@ -78,26 +79,32 @@ export default function Cart({ url }: Props) {
           </div>
         ) : (
           isSuccess && (
-            <div className='py-5'>
-              {cartItems?.data?.Cart.map((product) => (
-                <CartProduct product={product} />
-              ))}
+            <div>
+              <SaleNotification />
+              <div className="p-5">
+                {cartItems?.data?.Cart.map((product) => (
+                  <CartProduct product={product} />
+                ))}
+
+                {/* promocode */}
+                <PromoCode />
+
+                {/* payment summary */}
+                <div className="py-3">
+                  <p
+                    suppressHydrationWarning={suppressText}
+                    className="font-bold"
+                  >
+                    {t('order_review')}
+                  </p>
+                  <PaymentSummary />
+                </div>
+              </div>
             </div>
           )
         )}
-
-        {/* promocode */}
-        <PromoCode/>
-
-        {/* payment summary */}
-        <div className='py-3'>
-        <p className="font-bold">{t("order_review")}</p>
-        <PaymentSummary/>
-        </div>
-
-        
       </div>
-      <CheckoutFixedBtn/>
+      <CheckoutFixedBtn />
     </MainContentLayout>
   );
 }

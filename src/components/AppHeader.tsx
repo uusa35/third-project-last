@@ -90,9 +90,9 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
       </button>
       <div className={`flex flex-1 justify-center items-center pt-1`}>
         <span
-          className={`text-md capitalize truncate font-semibold`}
+          className={`text-md capitalize truncate font-bold`}
           suppressHydrationWarning={suppressText}
-          style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
+          style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
         >
           {t(currentModule)}
         </span>
