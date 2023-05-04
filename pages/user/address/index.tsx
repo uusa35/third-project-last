@@ -8,6 +8,8 @@ import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import NoAddresses from '@/appImages/no_address.svg';
+import { imageSizes } from '@/constants/*';
 
 type Props = {
   element: Vendor;
@@ -55,15 +57,9 @@ const AddressIndex: NextPage<Props> = ({
       </div>
       {/*  no address case */}
       <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center">
-        <Image
-          className="w-auto h-auto object-contain "
-          src="https://place-hold.it/500x500&text=no_address"
-          width={100}
-          height={100}
-          alt={t(`no_address`)}
-        />
-        <p className="text-md">{t('no_address')}</p>
-        <p className="text-md">{t('no_address_des')}</p>
+        <NoAddresses className="w-auto h-auto object-contain " />
+        <p className="text-md text-extrabold">{t('no_address')}</p>
+        <p className="text-md text-extrabold">{t('no_address_des')}</p>
         <button
           className={`flex flex-row w-auto space-x-3 rounded-3xl bg-red-600 p-3 px-8 text-white`}
         >

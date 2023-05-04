@@ -16,6 +16,7 @@ import Knet from '@/appImages/knet.svg';
 import CashOnDelivery from '@/appImages/cod.svg';
 import Visa from '@/appImages/credit_card.svg';
 import { useTranslation } from 'react-i18next';
+
 import {
   appLinks,
   convertColor,
@@ -133,7 +134,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
                 width={imageSizes.sm}
                 height={imageSizes.sm}
                 alt={t('delivery_time')}
-                className={`w-5 h-5 pt-1 ${iconColor}`}
+                className={`w-5 h-5 ml-2 ${iconColor}`}
               />
               <span>{t('branches')}</span>
             </div>
@@ -148,7 +149,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('min_charge')}
-                className={`w-5 h-5 ${iconColor}`}
+                className={`w-5 h-5 ml-2 ${iconColor}`}
               />
               <span className={`text-lg`}>{t('min_charge')}</span>
             </div>
@@ -165,7 +166,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('work_hours')}
-                className={`w-5 h-5 ${iconColor}`}
+                className={`w-5 h-5 ml-2 ${iconColor}`}
               />
               <span className={`text-lg`}>{t('opening_hours')}</span>
             </div>
@@ -180,7 +181,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('min_charge')}
-                className={`w-5 h-5 ${iconColor}`}
+                className={`w-5 h-5 ml-2 ${iconColor}`}
               />
               <span className={`text-lg`}>{t('min_charge')}</span>
             </div>
@@ -197,7 +198,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('payment_options')}
-                className={`w-5 h-5 ${iconColor}`}
+                className={`w-5 h-5 ml-2 ${iconColor}`}
               />
               <span className={`text-lg`}>{t('payment_options')}</span>
             </div>
@@ -228,7 +229,7 @@ const VendorShow: NextPage<Props> = ({ element, url }) => {
                 width={imageSizes.xs}
                 height={imageSizes.xs}
                 alt={t('contactus')}
-                className={`w-5 h-5 ${iconColor}`}
+                className={`w-5 h-5 ml-2 ${iconColor}`}
               />
               <span className={`text-lg`}>{t('contactus')}</span>
             </div>
