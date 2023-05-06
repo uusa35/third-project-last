@@ -6,6 +6,7 @@ import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
 import { NextPage } from 'next';
 import {
+  BanknotesIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   MapIcon,
@@ -33,12 +34,14 @@ const OrderTrack: NextPage<Props> = ({ element, url }): React.ReactElement => {
     >
       <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
         <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 mb-6 px-3">
-          <h1 className="text-xl text-extrabold">
-            Order Received, We have got your order..
+          <h1 className="text-xl font-bold">
+            {t('order_received_we_have_got_ur_order')}
           </h1>
           <div className="flex flex-1 flex-row mt-2">
-            <p className="text-md text-gray-400 mr-2">Estimated time :</p>{' '}
-            <span>2:00-2:30 PM</span>
+            <p className="text-md text-gray-400 mr-2">
+              {t('estimated_time')} :
+            </p>{' '}
+            <span className="font-bold">2:00-2:30 PM</span>
           </div>
           {/* order id  */}
           <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6">
@@ -51,22 +54,72 @@ const OrderTrack: NextPage<Props> = ({ element, url }): React.ReactElement => {
             <p>#34234324</p>
           </div>
         </div>
+        {/*  Branch Name  */}
         <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
-          <div className="capitlize text-xl mb-4">Pick up from</div>
+          <div className="capitlize text-xl mb-4 font-bold">
+            {t('pickup_from')}
+          </div>
           <div className="flex w-full flex-row justify-between items-center ">
-            <div className={`p-1 bg-gray-100 rounded-full`}>
-              <MapPinIcon className="h-5 w-5 text-black" />
+            <div className={`p-2 bg-gray-100 rounded-full`}>
+              <MapPinIcon className="h-6 w-6 text-black" />
             </div>
             <div className="flex flex-1 w-full flex-col mx-3">
-              <p className="flex flex-1">Branch Address</p>
+              <p className="flex flex-1 text-gray-400">{t('branch_address')}</p>
               <p>ManSource, El Geesh St</p>
             </div>
             <div className="flex ">
               <button className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs">
                 <SendOutlined className="h-3 w-3 text-black mx-1" />
-                Get Direction
+                {t('get_direction')}
               </button>
             </div>
+          </div>
+        </div>
+        {/* your order */}
+        <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
+          <div className="capitlize text-xl my-4 font-bold">
+            {t('ur_order')}
+          </div>
+          {/*  item */}
+          <div className="flex w-full flex-row justify-between items-start">
+            <div className="flex flex-col  space-y-2">
+              <div className="text-lg font-bold">Double Big Tasty x1</div>
+              <div className="text-gray-400">x1 cole slaw sald</div>
+              <div className="text-gray-400">any notes here</div>
+            </div>
+            <div>15 KD</div>
+          </div>
+        </div>
+        {/* Payment details */}
+        <div className="flex flex-1 flex-col w-full px-3 pb-6">
+          <div className="capitlize text-xl my-4 font-bold">
+            {t('payment_details')}
+          </div>
+          {/*  item */}
+          <div className="flex w-full flex-row justify-between items-start">
+            <div className="flex flex-col  w-full space-y-2">
+              <div className="flex flex-row justify-start items-center space-x-4">
+                <BanknotesIcon className="h-6 w-6" />
+                <div className="text-lg font-bold">{t('cash_on_delivery')}</div>
+              </div>
+              {/* subtotal */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="">{t('sub_total')}</div>
+                <div className="">2 {t('kd')}</div>
+              </div>
+
+              {/* delivery_fees */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="">{t('delivery_fees')}</div>
+                <div className="">2 {t('kd')}</div>
+              </div>
+              {/* total */}
+              <div className="flex flex-row justify-between items-center">
+                <div className="text-lg text-bold">{t('total')}</div>
+                <div className="">100 {t('kd')}</div>
+              </div>
+            </div>
+            <div>15 KD</div>
           </div>
         </div>
       </div>
