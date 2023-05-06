@@ -153,5 +153,16 @@
   "payment_details": "payment details",
   "delivery_fees": "delivery fees",
   "order_receipt": "order receipt",
-  "completed": "completed"
+  "completed": "completed",
+  "your_address":"your address",
+  "office":"office",
+  "contacts_info":"contacts info",
+  "delivery_time":"delivery time",
+  "special_remarks":"special remarks",
+  "add_items":"add items",
+  "payment_method":"payment method",
+  "cash_on_delivery":"cash on delivery",
+  "credit_card":"credit card",
+  "pay_by_knet":"pay by knet",
+  "place_order":"place order"
 }

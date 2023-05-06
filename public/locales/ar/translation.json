@@ -153,5 +153,16 @@
     "payment_details": "تفاصيل الدفع",
     "delivery_fees": "مصاريف التوصيل",
     "order_receipt": "إيصال الطلب",
-    "completed": "المكتملة"
+    "completed": "المكتملة",
+  "your_address":"عنوانك",
+  "office":"المكتب",
+  "contacts_info":"معلومات التواصل",
+  "delivery_time":"وقت التوصيل",
+  "special_remarks":"",
+  "add_items":"add items",
+  "payment_method":"payment method",
+  "cash_on_delivery":"cash on delivery",
+  "credit_card":"credit card",
+  "pay_by_knet":"pay by knet",
+  "place_order":"place order"
 }
