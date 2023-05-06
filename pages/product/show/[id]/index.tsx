@@ -74,7 +74,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
-import Backbtn from '@/appIcons/backbtn.svg';
+import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -436,7 +436,11 @@ const ProductShow: NextPage<Props> = (
           <>
           <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
             <button onClick={() => router.back()}>
-              <Backbtn />
+            {router.locale === 'en' ? (
+              <West />
+            ) : (
+              <East />
+            )}
             </button>
             {element?.Data?.name}
             <FavouriteAndShare />
@@ -817,81 +821,79 @@ const ProductShow: NextPage<Props> = (
                 />
               </div>
             </div>
-            <div className="w-full bg-gray-100">
-      {/* quantity meter */}
-      <div className="flex justify-center items-center w-full px-8 bg-gray-100">
-        <div
-          className={`flex flex-row justify-center items-center my-4 capitalize`}
-        >
-          <div className="flex flex-row-reverse items-center">
-            <button
-              // onClick={() =>
-              //   handleIncreaseProductQty ? handleIncreaseProductQty() : null
-              // }
-              type="button"
-              className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3"
-              style={{ backgroundColor: color }}
+          {/* quantity meter */}
+          <div className="flex justify-center items-center w-full px-8">
+            <div
+              className={`flex flex-row justify-center items-center my-4 capitalize`}
             >
-              +
-            </button>
-            <span className="px-5 text-xl font-semibold">
-              1
-            </span>
-            <button
-              // disabled={productCurrentQty === 0}
-              // onClick={() =>
-              //   handleDecreaseProductQty ? handleDecreaseProductQty() : null
-              // }
-              type="button"
-              className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
-            >
-              -
-            </button>
+              <div className="flex flex-row-reverse items-center">
+                <button
+                  // onClick={() =>
+                  //   handleIncreaseProductQty ? handleIncreaseProductQty() : null
+                  // }
+                  type="button"
+                  className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3"
+                  style={{ backgroundColor: color }}
+                >
+                  +
+                </button>
+                <span className="px-5 text-xl font-semibold">
+                  1
+                </span>
+                <button
+                  // disabled={productCurrentQty === 0}
+                  // onClick={() =>
+                  //   handleDecreaseProductQty ? handleDecreaseProductQty() : null
+                  // }
+                  type="button"
+                  className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
+                >
+                  -
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* add to cart btn */}
-      <div
-        className={`${modalBtnContainer}`}
-      >
-        <button
-          // disabled={
-          //   (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-          //     !method) ||
-          //   productOutStock
-          // }
-          // onClick={debounce(() => handleAddToCart(), 400)}
-          className={`${mainBtnClass}`}
-          style={{
-            backgroundColor: color,
-            color: `white`,
-          }}
-          onClick={() => setIsOpen(true)}
-        >
-          {/* {!area_id && !branch_id
-            ? t(`start_ordering`)
-            ? productOutStock
-            : t('out_stock')
-            : t('add_to_cart')} */}
-            {t('start_ordering')}
-        </button>
-        {/* <span className={`flex flex-row items-center gap-2`}>
-          <p className={`text-xl text-white`}>
-            {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-              ? t(`price_on_selection`)
-              : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-          </p>
-          {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-            <span className={`text-white uppercase`}>{t('kwd')}</span>
-          )}
-        </span> */}
-        <ChangeMoodModal  
-            isOpen={isOpen}
-            onRequestClose={() => setIsOpen(false)}
-          />
-      </div>
-    </div>
+          {/* add to cart btn */}
+          <div
+            className={`${modalBtnContainer} border-b-[1px] pb-5`}
+          >
+            <button
+              // disabled={
+              //   (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
+              //     !method) ||
+              //   productOutStock
+              // }
+              // onClick={debounce(() => handleAddToCart(), 400)}
+              className={`${mainBtnClass}`}
+              style={{
+                backgroundColor: color,
+                color: `white`,
+              }}
+              onClick={() => setIsOpen(true)}
+            >
+              {/* {!area_id && !branch_id
+                ? t(`start_ordering`)
+                ? productOutStock
+                : t('out_stock')
+                : t('add_to_cart')} */}
+                {t('start_ordering')}
+            </button>
+            {/* <span className={`flex flex-row items-center gap-2`}>
+              <p className={`text-xl text-white`}>
+                {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
+                  ? t(`price_on_selection`)
+                  : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+              </p>
+              {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                <span className={`text-white uppercase`}>{t('kwd')}</span>
+              )}
+            </span> */}
+            <ChangeMoodModal  
+                isOpen={isOpen}
+                onRequestClose={() => setIsOpen(false)}
+              />
+          </div>
           </>
         ) : (
           <div className={`w-full flex h-screen justify-center items-center`}>

@@ -14,6 +14,7 @@ import {
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
 import { useAppSelector } from '@/redux/hooks';
+import { suppressText } from '@/constants/*';
 
 type Props = {
   element: Vendor;
@@ -54,7 +55,8 @@ const AddressCreate: NextPage<Props> = ({
           {/*  phone  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="phone"
               className="block text-sm font-medium text-gray-900"
             >
               {t('phone')}
@@ -62,10 +64,11 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 type="text"
-                name="account-number"
-                id="account-number"
+                suppressHydrationWarning={suppressText}
+                name="phone"
+                id="phone"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('phone')}
+                placeholder={`${t('phone')}`}
               />
             </div>
           </div>
@@ -73,18 +76,20 @@ const AddressCreate: NextPage<Props> = ({
           {/*  full_name  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="full_name"
               className="block text-sm font-medium text-gray-900"
             >
               {t('full_name')}
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
+                suppressHydrationWarning={suppressText}
                 type="text"
-                name="account-number"
-                id="account-number"
+                name="full_name"
+                id="full_name"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('full_name')}
+                placeholder={`${t('full_name')}`}
               />
             </div>
           </div>
@@ -92,7 +97,8 @@ const AddressCreate: NextPage<Props> = ({
           {/*  city_and_area  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="city_and_area"
               className="block text-sm font-medium text-gray-900"
             >
               {t('city_and_area')}
@@ -100,10 +106,11 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 type="text"
-                name="account-number"
-                id="account-number"
+                suppressHydrationWarning={suppressText}
+                name="city_and_area"
+                id="city_and_area"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('city_and_area')}
+                placeholder={`${t('city_and_area')}`}
               />
               <div
                 className={`${
@@ -128,7 +135,8 @@ const AddressCreate: NextPage<Props> = ({
           {/*  street  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="street"
               className="block text-sm font-medium text-gray-900"
             >
               {t('street')}
@@ -136,10 +144,11 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 type="text"
-                name="account-number"
-                id="account-number"
+                suppressHydrationWarning={suppressText}
+                name="street"
+                id="street"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('street')}
+                placeholder={`${t('street')}`}
               />
             </div>
           </div>
@@ -147,18 +156,105 @@ const AddressCreate: NextPage<Props> = ({
           {/*  house_no  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="house_no"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('house_no')}
+              {t('house_no')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
                 type="text"
-                name="account-number"
-                id="account-number"
+                suppressHydrationWarning={suppressText}
+                name="house_no"
+                id="house_no"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('house_no')}
+                placeholder={`${t('house_no')}`}
+              />
+            </div>
+          </div>
+
+          {/*  office  */}
+          {/*  building_no  */}
+          <div className="w-full ">
+            <label
+              suppressHydrationWarning={suppressText}
+              htmlFor="building_no"
+              className="block text-sm font-medium text-gray-900"
+            >
+              {t('building_no')}*
+            </label>
+            <div className="relative rounded-md shadow-sm">
+              <input
+                type="text"
+                suppressHydrationWarning={suppressText}
+                name="building_no"
+                id="building_no"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                placeholder={`${t('building_no')}`}
+              />
+            </div>
+          </div>
+
+          {/*  floor_no  */}
+          <div className="w-full ">
+            <label
+              suppressHydrationWarning={suppressText}
+              htmlFor="floor_no"
+              className="block text-sm font-medium text-gray-900"
+            >
+              {t('floor_no')}*
+            </label>
+            <div className="relative rounded-md shadow-sm">
+              <input
+                type="text"
+                suppressHydrationWarning={suppressText}
+                name="floor_no"
+                id="floor_no"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                placeholder={`${t('floor_no')}`}
+              />
+            </div>
+          </div>
+
+          {/*  appartment_no  */}
+          <div className="w-full ">
+            <label
+              suppressHydrationWarning={suppressText}
+              htmlFor="appartment_no"
+              className="block text-sm font-medium text-gray-900"
+            >
+              {t('appartment_no')}*
+            </label>
+            <div className="relative rounded-md shadow-sm">
+              <input
+                type="text"
+                suppressHydrationWarning={suppressText}
+                name="appartment_no"
+                id="appartment_no"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                placeholder={`${t('appartment_no')}`}
+              />
+            </div>
+          </div>
+
+          {/*  office_no  */}
+          <div className="w-full ">
+            <label
+              suppressHydrationWarning={suppressText}
+              htmlFor="office_no"
+              className="block text-sm font-medium text-gray-900"
+            >
+              {t('office_no')}*
+            </label>
+            <div className="relative rounded-md shadow-sm">
+              <input
+                type="text"
+                suppressHydrationWarning={suppressText}
+                name="office_no"
+                id="office_no"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                placeholder={`${t('office_no')}`}
               />
             </div>
           </div>
@@ -166,7 +262,8 @@ const AddressCreate: NextPage<Props> = ({
           {/*  notice  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="notice"
               className="block text-sm font-medium text-gray-900"
             >
               {t('notice')}{' '}
@@ -175,10 +272,11 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 type="text"
-                name="account-number"
-                id="account-number"
+                suppressHydrationWarning={suppressText}
+                name="notice"
+                id="notice"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('notice')}
+                placeholder={`${t('notice')}`}
               />
             </div>
           </div>
@@ -186,7 +284,8 @@ const AddressCreate: NextPage<Props> = ({
           {/*  other_phone  */}
           <div className="w-full ">
             <label
-              htmlFor="account-number"
+              suppressHydrationWarning={suppressText}
+              htmlFor="other_phone"
               className="block text-sm font-medium text-gray-900"
             >
               {t('other_phone')}{' '}
@@ -195,10 +294,11 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 type="text"
-                name="account-number"
-                id="account-number"
+                suppressHydrationWarning={suppressText}
+                name="other_phone"
+                id="other_phone"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={t('other_phone')}
+                placeholder={`${t('other_phone')}`}
               />
             </div>
           </div>

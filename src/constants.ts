@@ -14,10 +14,10 @@ export const appLinks = {
   cheeckout: { path: "/order/checkout" },
   privacyPolicy: { path: "/policies/privacy" },
   returnPolicy: { path: "/policies/return" },
-  shippingPolicy: { path: "/policies/shipping" },
+  shippingPolicy: { path: "/policies/shipping"},
   productSearch: { path: "/product/search" },
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
-  productShow: (id: number) => `product/show/${id}`,
+  productShow: (id: number) => `/product/show/${id}`,
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   orderSchedule: { path: '/select/schedule' },
@@ -31,10 +31,10 @@ export const appLinks = {
   mobileVerification: { path: '/verification/mobile' },
   otpVerification: { path: '/verification/otp' },
 
-  orderReceipt: (orderId: number) => `/order/${orderId}/receipt`,
-  orderTrack: (orderId: number) => `/order/${orderId}/track`,
-  orderFailure: (orderId: number) => `/order/${orderId}/status/failure`,
-  orderSuccess: (orderId: number) => `/order/${orderId}/status/success`,
+  orderReceipt: (orderId: string) => `/order/${orderId}/receipt`,
+  orderTrack: (orderId: string) => `/order/${orderId}/track`,
+  orderFailure: (orderId: string) => `/order/${orderId}/status/failure`,
+  orderSuccess: (orderId: string) => `/order/${orderId}/status/success`,
 };
 
 export const isLocal = process.env.NODE_ENV !== "production";

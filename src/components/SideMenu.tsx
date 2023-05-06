@@ -155,7 +155,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={appLinks.cart.path}
+                href={appLinks.orderHistory.path}
               >
                 <ListAltOutlined className={`h-8 w-8`} style={{ color }} />
                 <p
