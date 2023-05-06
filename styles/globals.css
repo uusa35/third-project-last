@@ -30,10 +30,10 @@ body {
   margin-left: 10px;
   margin-right: 10px;
 } 
-input:focus, 
+/* input:focus, 
 .PhoneInputInput:focus {
   border-color: #dc2626 !important;
   caret-color: #dc2626 !important;
   outline: none;
-}
+} */
 

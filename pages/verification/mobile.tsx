@@ -17,7 +17,7 @@ import TrackOrderIcon from '@/appIcons/track_order_icon.svg';
 import { map, upperFirst } from 'lodash';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   url: string;
@@ -29,9 +29,7 @@ export default function MobileVerifications({ url }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { locale: { isRTL }} = useAppSelector((state) => state);
-  useEffect(() => {
-    dispatch(setCurrentModule('your_number'));
-  }, []);
+  const color = useAppSelector(themeColor);
   const signInAdvantages = [
     { id: 1, icon: <SaveAddressIcon />, text: 'save_your_addresses'},
     { id: 2, icon: <SaveContactInfo />, text: 'save_your_contact_information'},
@@ -48,9 +46,9 @@ export default function MobileVerifications({ url }: Props) {
         title={t('mobile')}
         description={`${t('mobile')}`}
       />
-       <MainContentLayout url={url}>
-        <div className="h-1 w-full bg-gray-200">
-          <div className="h-1 bg-red-600 w-1/3"></div>
+       <MainContentLayout url={url} showBackBtnHeader currentModule="your_number">
+        <div className="h-[2px] w-full fixed top-0">
+          <div className="h-[2px] w-1/3" style={{backgroundColor: color}}></div>
         </div>
         <div className="text-center w-full p-5">
           <div>
@@ -99,6 +97,7 @@ export default function MobileVerifications({ url }: Props) {
             </div>
             <button 
               className={`mt-5 ${mainBtnClass}`} 
+              style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
               onClick={handleSendOtp}
             >

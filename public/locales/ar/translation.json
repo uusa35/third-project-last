@@ -105,5 +105,24 @@
     "resend": "إعادة الإرسال",
     "phone_number": "رقم الهاتف",
     "submit": "إرسال",
-    "full_name": "الاسم الكامل"
+    "full_name": "الاسم الكامل",
+    "promotions":"الخصومات",
+  "add_a_promo_code":"اضف كود الخصم",
+  "apply":"تطبيق",
+  "order_review":"مراجعة الطلب",
+  "subtotal": "المجموع الفرعي",
+  "tax": "ضريبة",
+  "total": "المجموع",
+  "net_total" : "الإجمالي",
+  "go_to_checkout": "تابع الى الدفع",
+    "special_instructions": "تعليمات خاصة",
+    "add_instructions": "أضف التعليمات",
+    "start_ordering": "ابدأ الطلب",
+    "must_select_min_and_max": "يجب اختيار الحد الأدني والأقصى",
+    "field_must_select_at_least_one": "يجب اختيار واحدة على الأقل",
+    "select": "اختر",
+    "select1": "اختر واحدة",
+    "multi_selection":  "اختيار متعدد",
+    "save_on_orders_above":"وفر في الطلبات الاعلي من "
+    
 }

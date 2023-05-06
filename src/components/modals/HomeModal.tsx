@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { suppressText } from "@/constants/*";
+import { themeColor } from '@/redux/slices/vendorSlice';
 type Props = {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -16,6 +17,7 @@ const HomeModal: FC<Props> = ({
   const {
     locale: { isRTL }
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
     return (
         <Modal
             isOpen={isOpen}
@@ -25,9 +27,10 @@ const HomeModal: FC<Props> = ({
             shouldFocusAfterRender={false}
         > 
             <div
-                className={`bg-red-600 rounded-lg absolute w-[90%] lg:w-2/4 xl:w-1/3 top-[50%] translate-y-[-50%] ${
+                className={`rounded-lg absolute w-[90%] lg:w-2/4 xl:w-1/3 top-[50%] translate-y-[-50%] ${
                 isRTL ? ' right-5' : 'left-5'
                 }`}
+                style={{ backgroundColor: color }}
             >
                 <div
                     className={`flex justify-between items-start px-4 space-x-2 py-4 w-full ${

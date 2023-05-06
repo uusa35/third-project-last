@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { FC, Suspense, useEffect } from 'react';
+import { FC, ReactNode, Suspense, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isNull } from 'lodash';
 import { appLinks, setLang, suppressText } from '../constants';
@@ -21,7 +21,7 @@ type Props = {
 const BackBtn: FC<Props> = ({
   backHome,
   backRoute = null,
-  offset,
+  offset
 }): JSX.Element => {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -58,7 +58,7 @@ const BackBtn: FC<Props> = ({
       <div
         className={`${
           offset < 80 ? `block` : `hidden`
-        } flex w-full my-3 justify-center items-center rounded-md py-4 px-4`}
+        } flex w-full my-3 justify-evenly items-center rounded-md py-4 px-4`}
       >
         <button
           onClick={() => handleBack()}
@@ -74,7 +74,7 @@ const BackBtn: FC<Props> = ({
           <span
             className={`text-md capitalize truncate overflow-hidden max-w-md font-semibold`}
             suppressHydrationWarning={suppressText}
-            style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
+            style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
           >
             {t(currentModule)}
           </span>

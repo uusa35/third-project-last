@@ -28,7 +28,6 @@ type Props = {
   backRoute?: string | null;
   currentModule?: string;
   showBackBtnHeader?: boolean;
-
   showAppFooter?: boolean;
 
   hideBack?: boolean;
@@ -47,7 +46,6 @@ const MainContentLayout: FC<Props> = ({
   backHome = false,
   backRoute = null,
   showBackBtnHeader = false,
-
   showAppFooter = false,
 
   hideBack = false,

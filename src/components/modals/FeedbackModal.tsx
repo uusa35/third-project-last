@@ -17,6 +17,8 @@ import { map } from "lodash";
 import { useRouter } from "next/router";
 import { arboriaFont, gessFont, modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
 import { useAppSelector } from "@/redux/hooks";
+import { themeColor } from '@/redux/slices/vendorSlice';
+
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
@@ -27,6 +29,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const {
         locale: { isRTL },
       } = useAppSelector((state) => state);
+      const color = useAppSelector(themeColor);
     const [rateVal, setRateVal] = useState<number>();
     const [value, setValue] = useState();
     const [phone, setPhone] = useState();
@@ -92,12 +95,10 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                         <button
                         key={rate.id}
                         dir={`${isRTL ? 'rtl' : 'ltr'}`}
-                        className={`${router.locale === 'ar' ? gessFont : arboriaFont}
-                        ${
-                            rateVal === rate.id
-                            ? 'text-red-600 '
-                            : 'text-zinc-400'
-                        }`}
+                        className={`${router.locale === 'ar' ? gessFont : arboriaFont}`}
+                        style={{
+                            color: rateVal === rate.id ? color : 'text-zinc-400'
+                        }}
                         suppressHydrationWarning={suppressText}
                         onClick={() => {
                             setRateVal(rate.id);
@@ -140,6 +141,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     <div className={`${modalBtnContainer} mt-5`}>
                         <button 
                             className={`${mainBtnClass}`}
+                            style={{ backgroundColor: color }}
                             suppressHydrationWarning={suppressText}
                         >
                             {t('submit')}
