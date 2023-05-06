@@ -123,6 +123,7 @@
     "select": "اختر",
     "select1": "اختر واحدة",
     "multi_selection":  "اختيار متعدد",
-    "save_on_orders_above":"وفر في الطلبات الاعلي من "
+    "save_on_orders_above":"وفر في الطلبات الاعلي من ",
+    "checkout":"الدفع"
     
 }

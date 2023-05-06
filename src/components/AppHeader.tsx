@@ -12,7 +12,6 @@ type Props = {
   backHome?: boolean;
   backRoute?: string | null;
   currentModule?:string;
-  offset: number;
 };
 type CurrentModule = 'your_number' | 'otp_verification' | 'account_info';
 
@@ -20,7 +19,7 @@ type ModuleWidths = {
   [key in CurrentModule]: string;
 };
 
-const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home', offset }) => {
+const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home' }) => {
   // const [offset, setOffset] = useState(0);
   const router = useRouter();
   const { t } = useTranslation();

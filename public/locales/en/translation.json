@@ -124,5 +124,6 @@
   "whishlist":"whish list",
   "no_wish_list_for_you_yet":"no wish list for you yet",
   "add_something_to_your_wish_list_to_make_it_easier_to_access_it_later":"add something to your wish list, to make it easier to access it later",
-  "save_on_orders_above":"save on orders above "
+  "save_on_orders_above":"save on orders above ",
+  "checkout":"checkout"
 }
