@@ -84,7 +84,11 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   console.log('branches', branches);
   console.log('loca', locations);
   return (
-    <MainContentLayout url={url}>
+    <MainContentLayout
+      url={url}
+      showBackBtnHeader={true}
+      currentModule="addresses"
+    >
       <div className="flex flex-1 flex-col min-h-screen">
         <div className="flex flex-row w-full h-auto justify-center items-center p-6">
           <MagnifyingGlassIcon

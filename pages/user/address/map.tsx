@@ -24,7 +24,11 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
   return (
-    <MainContentLayout url={url}>
+    <MainContentLayout
+      url={url}
+      showBackBtnHeader={true}
+      currentModule="addresses"
+    >
       <div className="flex flex-1 flex-col min-h-screen">
         <div className="flex flex-row h-auto py-6 px-4 justify-start items-center">
           <MapPinIcon className={`w-6 h-6 text-red-600 `} />

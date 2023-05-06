@@ -31,8 +31,12 @@ const AddressCreate: NextPage<Props> = ({
   } = useAppSelector((state) => state);
 
   return (
-    <MainContentLayout url={url}>
-      <div className="flex flex-1 flex-col h-full">
+    <MainContentLayout
+      url={url}
+      showBackBtnHeader={true}
+      currentModule="addresses"
+    >
+      <div className="flex flex-1 flex-col h-full mt-8">
         <div className="flex mx-3 flex-row justify-center items-start">
           <button className="flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize ">
             <HomeIcon fontSize="large" />
