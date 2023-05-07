@@ -486,7 +486,7 @@ const ProductShow: NextPage<Props> = (
                       fill={true}
                     />
                   ))}
-                    </Carousel>
+                  </Carousel>
                 ) : (
                   <CustomImage
                     src={`${NoFoundImage.src}`}
