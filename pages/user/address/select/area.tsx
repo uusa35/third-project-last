@@ -20,7 +20,7 @@ import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
 import { useEffect, useState } from 'react';
-import { map } from 'lodash';
+import { debounce, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import {
   Accordion,
@@ -52,6 +52,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(0);
+  const [allLocations, setAllLocations] = useState<any>();
   const router = useRouter();
   const [selectedData, setSelectedData] = useState({
     area: destinationId,
@@ -64,10 +65,15 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
   const [
     triggerGetLocations,
-    { data: locations, isLoading: locationsLoading },
+    {
+      data: locations,
+      isLoading: locationsLoading,
+      isSuccess: locationsSuccess,
+    },
   ] = useLazyGetLocationsQuery<{
     data: AppQueryResult<Location[]>;
     isLoading: boolean;
+    isSuccess: boolean;
   }>();
   const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
     useLazyGetBranchesQuery<{
@@ -94,6 +100,24 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     );
     // );
   };
+  useEffect(() => {
+    setAllLocations(locations?.Data);
+  }, [locations]);
+
+  const handleChange = (area: any) => {
+    if (area === '') {
+      setAllLocations(locations.Data);
+    } else {
+      if (locationsSuccess) {
+        const filteredAreas = locations?.Data?.filter((item) =>
+          item.Areas.some((a) => a.name.toLowerCase().includes(area))
+        );
+        setAllLocations(filteredAreas);
+        setOpen(filteredAreas[0]?.id ?? false);
+      }
+    }
+  };
+
   if (
     branchesLoading ||
     locationsLoading ||
@@ -120,11 +144,12 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
             type="text"
             className={`w-full h-14 rounded-full mx-2 bg-gray-100 border border-stone-100 ltr:pl-20 rtl:pr-20`}
             placeholder={`${t('search_for_cities_and_areas')}`}
+            onChange={debounce((e) => handleChange(e.target.value), 400)}
           />
         </div>
 
         <div className={`mx-4`}>
-          {map(locations.Data, (item: Location, i) => {
+          {map(allLocations, (item: Location, i) => {
             return (
               <>
                 {item.Areas?.length > 0 && (
