@@ -11,12 +11,14 @@ import {
   ChevronRightIcon,
   MagnifyingGlassIcon,
   MapPinIcon,
+  ChevronUpIcon,
+  CheckCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
-import { AppQueryResult, Branch, Location } from '@/types/queries';
+import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
 import { useEffect, useState } from 'react';
 import { map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
@@ -27,9 +29,14 @@ import {
 } from '@material-tailwind/react';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { Icon } from '@mui/material';
-import { suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import { CheckCircle, CircleOutlined } from '@mui/icons-material';
-import { destinationId } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationId,
+  setDestination,
+} from '@/redux/slices/searchParamsSlice';
+import { useRouter } from 'next/router';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -39,11 +46,13 @@ type Props = {
 const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const {
     locale: { lang, isRTL },
-    searchParams: { method, desintion },
+    searchParams: { method, destination },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(0);
+  const router = useRouter();
   const [selectedData, setSelectedData] = useState({
     area: destinationId,
     branch: destinationId,
@@ -71,6 +80,20 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
+  const handleSelectMethod = (
+    destination: Area | Branch,
+    type: 'pickup' | 'delivery'
+  ) => {
+    dispatch(setDestination({ destination, type }));
+    // router.replace(appLinks.home.path).then(() =>
+    dispatch(
+      showToastMessage({
+        content: `area_selected`,
+        type: `success`,
+      })
+    );
+    // );
+  };
   if (
     branchesLoading ||
     locationsLoading ||
@@ -81,13 +104,12 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   ) {
     return <div>loading ...</div>;
   }
-  console.log('branches', branches);
-  console.log('loca', locations);
+
   return (
     <MainContentLayout
       url={url}
       showBackBtnHeader={true}
-      currentModule="addresses"
+      currentModule={`${t('select_area')}`}
     >
       <div className="flex flex-1 flex-col min-h-screen">
         <div className="flex flex-row w-full h-auto justify-center items-center p-6">
@@ -100,13 +122,8 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
             placeholder={`${t('search_for_cities_and_areas')}`}
           />
         </div>
-        {map(branches.Data, (b: Branch, i) => (
-          <div key={i} className="px-3 py-6 border-b border-gray-100">
-            <TextTrans ar={b.name_ar} en={b.name_en} />
-          </div>
-        ))}
-        <h1>locations</h1>
-        <div className={``}>
+
+        <div className={`mx-4`}>
           {map(locations.Data, (item: Location, i) => {
             return (
               <>
@@ -117,7 +134,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                     icon={<Icon id={item.id} open={open} />}
                   >
                     <AccordionHeader
-                      className="flex w-full"
+                      className="flex w-full justify-between py-4 border-b border-gray-200"
                       onClick={() => handleOpen(item.id)}
                       suppressHydrationWarning={suppressText}
                       data-cy="accordion"
@@ -125,35 +142,41 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                       <TextTrans
                         ar={item.name_ar}
                         en={item.name_en}
-                        className="flex w-full mx-4"
+                        className="flex flex-1 text-lg font-bold"
+                        length={60}
                       />
-                      <ChevronDownIcon className="text-black w-6 h-6" />
+                      {open === item.id ? (
+                        <ChevronUpIcon className="flex text-black w-auto h-6 " />
+                      ) : (
+                        <ChevronDownIcon className="text-black w-auto h-6" />
+                      )}
                     </AccordionHeader>
-                    <AccordionBody>
-                      <div className="bg-LightGray mx-4">
+                    <AccordionBody className="p-0 m-0">
+                      <div className="">
                         {map(item.Areas, (a: Area, i) => (
                           <button
-                            className={'flex justify-between w-full space-y-4'}
+                            className={
+                              'flex w-full justify-between py-4 border-b border-gray-200'
+                            }
                             key={i}
-                            // onClick={() =>
-                            //   setSelectedData({ ...selectedData, area: a })
-                            // }
+                            onClick={() => handleSelectMethod(a, 'delivery')}
                           >
-                            <p
-                              className="flex flex-1 text-base text-black capitalize "
-                              suppressHydrationWarning={suppressText}
-                              data-cy="area"
-                            >
-                              <TextTrans ar={a.name_ar} en={a.name_en} />
-                            </p>
-                            {a.id === selectedData.area.id ? (
-                              <CheckCircle
-                                style={{ color }}
-                                className="text-black w-6 h-6 mr-4"
-                              />
-                            ) : (
-                              <CircleOutlined className="text-black w-6 h-6 mr-4" />
-                            )}
+                            <TextTrans
+                              ar={a.name_ar}
+                              en={a.name_en}
+                              className="flex   text-lg font-bold"
+                              length={60}
+                            />
+                            <div className="flex flex-1 justify-end items-end mx-5">
+                              {destination && a.id === destination.id ? (
+                                <CheckCircle
+                                  style={{ color }}
+                                  className="text-black w-6 h-6 "
+                                />
+                              ) : (
+                                <CircleOutlined className="text-black w-6 h-6 " />
+                              )}
+                            </div>
                           </button>
                         ))}
                       </div>

@@ -18,13 +18,12 @@ export const searchParamsSlice = createSlice({
       state: typeof initialState,
       action: PayloadAction<{
         destination: Branch | Area;
-        method: "pickup" | "delivery";
+        type: "pickup" | "delivery";
       }>
     ) => ({
       ...state,
-      method: action.payload.method,
-      destination_type: action.payload.method === "pickup" ? "branch" : "area",
-
+      method: action.payload.type,
+      destination_type: action.payload.type === "pickup" ? "branch" : "area",
       destination: action.payload.destination,
     }),
     setCategory: (

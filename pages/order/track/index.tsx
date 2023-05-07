@@ -44,10 +44,11 @@ const OrderTrack: NextPage<Props> = ({ element, url }): React.ReactElement => {
             <span className="font-bold">2:00-2:30 PM</span>
           </div>
           {/* order id  */}
-          <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6">
+          <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 space-x-2">
             <div className="w-1/3 bg-red-600 h-1"></div>
-            <div className="w-1/3 bg-gray-200 h-1 mx-1.5"></div>
-            <div className="w-1/3 bg-gray-200 h-1"></div>
+            <div className="w-1/3 bg-gray-200 h-1 "></div>
+            <div className="w-1/3 bg-gray-200 h-1 "></div>
+            <div className="w-1/3 bg-gray-200 h-1 "></div>
           </div>
           <div className="flex flex-1 flex-row text-gray-400">
             <p>Order Id :</p>
@@ -115,11 +116,10 @@ const OrderTrack: NextPage<Props> = ({ element, url }): React.ReactElement => {
               </div>
               {/* total */}
               <div className="flex flex-row justify-between items-center">
-                <div className="text-lg text-bold">{t('total')}</div>
-                <div className="">100 {t('kd')}</div>
+                <div className="text-lg font-bold">{t('total')}</div>
+                <div className="text-lg font-bold">100 {t('kd')}</div>
               </div>
             </div>
-            <div>15 KD</div>
           </div>
         </div>
       </div>
