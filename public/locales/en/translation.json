@@ -145,5 +145,16 @@
   "subtotal": "subtotal",
   "delivery_fees": "delivery fees",
   "order_receipt": "order receipt",
-  "completed": "completed"
+  "completed": "completed",
+  "pickup_from": "pickup from",
+  "delivery_in": "delivery in",
+  "pickup_in": "pickup in",
+  "select_area": "select area",
+  "search for cities and areas": "search for cities and areas",
+  "select_branch": "select branch",
+  "select_time": "select time",
+  "scheduled_order": "scheduled order",
+  "set_time": "set time",
+  "today": "today",
+  "tomorrow": "tomorrow"
 }

@@ -143,5 +143,16 @@
     "subtotal": "المجموع الفرعي",
     "delivery_fees": "مصاريف التوصيل",
     "order_receipt": "إيصال الطلب",
-    "completed": "المكتملة"
+    "completed": "المكتملة",
+    "pickup_from": "الاستلام من",
+    "delivery_in": "التوصيل خلال",
+    "pickup_in": "الاستلام خلال",
+    "select_area": "اختر منطقة",
+    "search for cities and areas": "ابحث عن مدن ومناطق",
+    "select_branch": "اختر فرع",
+    "select_time": "اختر وقت",
+    "scheduled_order": "طلب مجدول",
+    "set_time": "حدد الوقت",
+    "today": "اليوم",
+    "tomorrow": "غدًا"
 }
