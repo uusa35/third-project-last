@@ -22,7 +22,11 @@ const AddressIndex: NextPage<Props> = ({
 }): React.ReactElement => {
   const { t } = useTranslation();
   return (
-    <MainContentLayout url={url}>
+    <MainContentLayout
+      url={url}
+      showBackBtnHeader={true}
+      currentModule="addresses"
+    >
       <div className="flex flex-col w-auto justify-start items-start mx-4 space-y-4">
         {/* office */}
         <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 h-42 overflow-hidden">
