@@ -149,11 +149,15 @@ export default function checkout({ url }: Props) {
           </div>
 
           {/* summary */}
-          <PaymentSummary />
-
-          <button className='w-full rounded-full py-2 text-white' style={{ color }}>
-            {t('place_order')}
-          </button>
+          <div className="p-3">
+            <PaymentSummary />
+            <button
+              className="w-full rounded-full py-2 my-4 text-white"
+              style={{ backgroundColor: color }}
+            >
+              {t('place_order')}
+            </button>
+          </div>
         </>
       )}
     </MainContentLayout>
