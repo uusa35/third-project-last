@@ -15,7 +15,7 @@ import Link from 'next/link';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import PromoCode from '@/components/cart/PromoCode';
-import PaymentSummary from '@/components/cart/PaymentSummary';
+import PaymentSummary from '@/components/PaymentSummary';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import SaleNotification from '@/components/cart/SaleNotification';
 
