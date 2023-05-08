@@ -12,7 +12,6 @@ type Props = {
   backHome?: boolean;
   backRoute?: string | null;
   currentModule?:string;
-  offset?: number;
 };
 type CurrentModule = 'your_number' | 'otp_verification' | 'account_info';
 
@@ -20,7 +19,8 @@ type ModuleWidths = {
   [key in CurrentModule]: string;
 };
 
-const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home', offset }) => {
+const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home' }) => {
+  // const [offset, setOffset] = useState(0);
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -89,9 +89,9 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
       </button>
       <div className={`flex flex-1 justify-center items-center pt-1`}>
         <span
-          className={`text-md capitalize truncate font-semibold`}
+          className={`text-md capitalize truncate font-bold`}
           suppressHydrationWarning={suppressText}
-          style={{ color, maxWidth: '20ch', textOverflow: 'truncate' }}
+          style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
         >
           {t(currentModule)}
         </span>
