@@ -2,9 +2,9 @@ import * as yup from 'yup';
 
 export const customerInfoSchema = yup
   .object({
-    id: yup.number(),
+    id: yup.number().nullable(),
     name: yup.string().required().min(2).max(50),
-    email: yup.string().email(),
+    email: yup.string().email().required(),
     phone: yup.number().min(100000).max(999999999999).required(),
   })
   .required();

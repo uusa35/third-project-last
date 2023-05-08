@@ -14,7 +14,7 @@ export const appLinks = {
   cheeckout: { path: "/order/checkout" },
   privacyPolicy: { path: "/policies/privacy" },
   returnPolicy: { path: "/policies/return" },
-  shippingPolicy: { path: "/policies/shipping"},
+  shippingPolicy: { path: "/policies/shipping" },
   productSearch: { path: "/product/search" },
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number) => `/product/show/${id}`,
@@ -96,3 +96,5 @@ export const setLang = (lang: any) =>
     },
     body: JSON.stringify({ lang }),
   });
+
+
