@@ -76,6 +76,7 @@ import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   product: Product;
@@ -497,7 +498,7 @@ const ProductShow: NextPage<Props> = (
                   />
                 )}
               </div>
-              
+              <ContentLoader type="Home" sections={1} />
             </div>
             <div className={`capitalize pt-5`}>
               {/*   name and desc */}

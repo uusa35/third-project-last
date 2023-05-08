@@ -16,9 +16,10 @@ import { suppressText } from '@/constants/*';
 import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
 import { map } from 'lodash';
-import PaymentSummary from '@/components/cart/PaymentSummary';
+import PaymentSummary from '@/components/PaymentSummary';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import ElementMap from '@/components/address/ElementMap';
 
 type Props = {
   url: string;
@@ -70,6 +71,7 @@ export default function checkout({ url }: Props) {
       {isSuccess && cartItems?.data && cartItems?.data && (
         <>
           {/* map */}
+          {/* <ElementMap lat={59.955413} lng={30.337844} height={'10rem'}/> */}
           <div className={`w-full h-[10rem]`}>
             <GoogleMapReact
               bootstrapURLKeys={{

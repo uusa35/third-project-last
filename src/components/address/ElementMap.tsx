@@ -8,7 +8,7 @@ type Props = {
   lng: string;
   height?: number;
 };
-const ElementMap: FC<Props> = ({ lat, lng, height = 60 }) => {
+const ElementMap: FC<Props> = ({ lat, lng, height = 600 }) => {
   const LocationMarker = ({ icon }: any) => (
     <Image src={icon} alt="map marker" width={60} height={60} />
   );
