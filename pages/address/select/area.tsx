@@ -113,9 +113,19 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           item.Areas.some((a) => a.name.toLowerCase().includes(area))
         );
         setAllLocations(filteredAreas);
-        setOpen(filteredAreas[0]?.id ?? false);
+        if (filteredAreas && filteredAreas.length > 0) {
+          setOpen(filteredAreas[0]?.id ?? false);
+        }
       }
     }
+  };
+
+  const Icon = ({ id, open }: { id: number; open: number }) => {
+    return open === id ? (
+      <ChevronUpIcon className="flex text-black w-auto h-6 " />
+    ) : (
+      <ChevronDownIcon className="text-black w-auto h-6" />
+    );
   };
 
   if (
@@ -170,11 +180,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                         className="flex flex-1 text-lg font-bold"
                         length={60}
                       />
-                      {open === item.id ? (
-                        <ChevronUpIcon className="flex text-black w-auto h-6 " />
-                      ) : (
-                        <ChevronDownIcon className="text-black w-auto h-6" />
-                      )}
                     </AccordionHeader>
                     <AccordionBody className="p-0 m-0">
                       <div className="">
@@ -192,7 +197,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                               className="flex   text-lg font-bold"
                               length={60}
                             />
-                            <div className="flex flex-1 justify-end items-end mx-5">
+                            <div className="flex flex-1 justify-end items-end">
                               {destination && a.id === destination.id ? (
                                 <CheckCircle
                                   style={{ color }}

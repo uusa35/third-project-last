@@ -86,6 +86,15 @@ const SelectBranch: NextPage<Props> = ({
   ) => {
     dispatch(setDestination({ destination, type }));
   };
+
+  const Icon = ({ id, open }: { id: number; open: number }) => {
+    return open === id ? (
+      <ChevronUpIcon className="flex text-black w-auto h-6 " />
+    ) : (
+      <ChevronDownIcon className="text-black w-auto h-6" />
+    );
+  };
+
   if (
     branchesLoading ||
     locationsLoading ||
