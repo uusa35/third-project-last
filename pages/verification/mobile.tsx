@@ -28,7 +28,7 @@ export default function MobileVerifications({ url }: Props) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  const { locale: { isRTL }} = useAppSelector((state) => state);
+  const { locale: {  }} = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const signInAdvantages = [
     { id: 1, icon: <SaveAddressIcon />, text: 'save_your_addresses'},
@@ -109,7 +109,7 @@ export default function MobileVerifications({ url }: Props) {
               onClick={() => setIsOpen(true)}
             >
               {upperFirst(`${t('or_continue_as')}`)}
-              <span className={`${!isRTL && 'px-1'}`}>{upperFirst(`${t('guest')}`)}</span>
+              <span className={`${! && 'px-1'}`}>{upperFirst(`${t('guest')}`)}</span>
             </button>
             <GuestOrderModal  
               isOpen={isOpen}

@@ -23,13 +23,11 @@ const SideMenu = dynamic(() => import(`@/components/SideMenu`), {
 type Props = {
   children: ReactNode | undefined;
   url?: string;
-
   backHome?: boolean;
   backRoute?: string | null;
   currentModule?: string;
   showBackBtnHeader?: boolean;
   showAppFooter?: boolean;
-
   hideBack?: boolean;
   showMotion?: boolean;
   handleSubmit?: (element?: any) => void | undefined | Promise<any>;

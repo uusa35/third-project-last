@@ -24,7 +24,7 @@ const nextConfig = withSvgr({
       },
       {
         source: '/schedule',
-        destination: '/select/schedule',
+        destination: '/select/time',
       },
       {
         source: '/about',

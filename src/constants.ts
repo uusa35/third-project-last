@@ -20,7 +20,7 @@ export const appLinks = {
   productShow: (id: number) => `/product/show/${id}`,
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
-  orderSchedule: { path: '/select/schedule' },
+  orderSchedule: { path: '/select/time' },
   userAddresses: { path: '/user/addresses' },
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/user/orders' },

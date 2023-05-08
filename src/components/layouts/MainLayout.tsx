@@ -15,6 +15,9 @@ import MainAsideLayout from './MainAsideLayout';
 import { destinationObject } from '@/redux/slices/searchParamsSlice';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import ToastAppContainer from '../ToastAppContainer';
+import moment from 'moment';
+import * as yup from 'yup';
 
 type Props = {
   children: ReactNode | undefined;
@@ -35,8 +38,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
 
-
-    // vendor..................................
+  // vendor..................................
 
   useEffect(() => {
     getVendor();
@@ -83,7 +85,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     }
   };
 
-
   // locale ......................................
   useEffect(() => {
     if (router.locale !== locale.lang) {
@@ -102,26 +103,24 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     if (router.locale !== i18n.language) {
       i18n.changeLanguage(router.locale);
     }
-    // moment.locale(router.locale);
-    // yup.setLocale({
-    //   mixed: {
-    //     required: 'validation.required',
-    //   },
-    //   number: {
-    //     min: ({ min }) => ({ key: 'validation.min', values: { min } }),
-    //     max: ({ max }) => ({ key: 'validation.max', values: { max } }),
-    //   },
-    //   string: {
-    //     email: 'validation.email',
-    //     min: ({ min }) => ({ key: `validation.min`, values: min }),
-    //     max: ({ max }) => ({ key: 'validation.max', values: max }),
-    //     matches: 'validation.matches',
-    //   },
-    // });
+    moment.locale(router.locale);
+    yup.setLocale({
+      mixed: {
+        required: 'validation.required',
+      },
+      number: {
+        min: ({ min }) => ({ key: 'validation.min', values: { min } }),
+        max: ({ max }) => ({ key: 'validation.max', values: { max } }),
+      },
+      string: {
+        email: 'validation.email',
+        min: ({ min }) => ({ key: `validation.min`, values: min }),
+        max: ({ max }) => ({ key: 'validation.max', values: max }),
+        matches: 'validation.matches',
+      },
+    });
     setLang(router.locale);
   }, [router.locale]);
-
-  // routing..................................
 
   useEffect(() => {
     const handleRouteChange: Handler = (url, { shallow }) => {
@@ -153,7 +152,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         flex-col justify-start items-start grow lg:flex lg:flex-row flex flex-row h-screen capitalize`}
     >
       {children}
-
+      <ToastAppContainer />
       <div
         className={`hidden lg:block flex flex-row w-full h-screen lg:w-2/4 xl:w-2/3 fixed ${scrollClass} ${
           router.locale === 'ar' ? 'left-0' : 'right-0'
