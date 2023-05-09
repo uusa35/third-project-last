@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { mainBtnClass, suppressText, toEn } from '@/constants/*';
+import { appLinks, mainBtnClass, suppressText, toEn } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { customerInfoSchema } from 'src/validations';
@@ -14,6 +14,7 @@ import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { startCase } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomer } from '@/redux/slices/customerSlice';
+import { useRouter } from 'next/router';
 
 type Props = {
   isOpen: boolean;
@@ -28,6 +29,7 @@ const GuestOrderModal: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
@@ -53,7 +55,13 @@ const GuestOrderModal: FC<Props> = ({
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
         dispatch(setCustomer(r.data.Data));
-        // router.push(appLinks.address.path);
+        dispatch(
+          showToastMessage({
+            content: `info_saved`,
+            type: 'success',
+          })
+        );
+        router.push(appLinks.addressCreate.path);
         // .then(() => dispatch(setCustomer(r.data.Data)));
       } else {
         dispatch(
