@@ -73,7 +73,7 @@
   "guest_info": "guest info",
   "full_name": "full name",
   "phone_number": "phone number",
-  "email_optional": "email [optional]",
+  "email_optional": "email (optional)",
   "submit": "submit",
   "leave_a_feedback": "leave a feedback",
   "your_name_optional": "your name (optional)",
@@ -188,5 +188,6 @@
   "scheduled_order": "scheduled order",
   "set_time": "set time",
   "today": "today",
-  "tomorrow": "tomorrow"
+  "tomorrow": "tomorrow",
+  "fill_name": "fill name"
 }

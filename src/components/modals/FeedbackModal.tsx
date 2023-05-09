@@ -78,7 +78,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                                 onClick={onRequestClose}
                             >
-                                <ExpandMoreIcon className="text-gray-500" />
+                                <ExpandMoreIcon />
                             </button>
                         </div>
                         <h5 className="font-semibold capitalize md:ps-16 lg:ps-4 xl:ps-0" suppressHydrationWarning={suppressText}>
