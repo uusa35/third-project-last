@@ -12,7 +12,7 @@ type Props = {
 };
 
 export default function ProductListView({ CategoriesProducts }: Props) {
-  const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(true);
+  const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
 
   //   scroll function
   const onPress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -68,7 +68,7 @@ export default function ProductListView({ CategoriesProducts }: Props) {
             <div id={`${category.cat_id}`} className="mt-10 px-4">
               {/* cat name */}
               <TextTrans
-                className="font-bold mt-5"
+                className="font-extrabold text-lg mt-5"
                 ar={category.name_ar}
                 en={category.name_en}
               />

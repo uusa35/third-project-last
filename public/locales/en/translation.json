@@ -188,5 +188,6 @@
   "scheduled_order": "scheduled order",
   "set_time": "set time",
   "today": "today",
-  "tomorrow": "tomorrow"
+  "tomorrow": "tomorrow",
+  "price_on_selection":"price on selection"
 }
