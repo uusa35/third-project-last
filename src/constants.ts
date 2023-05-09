@@ -8,8 +8,8 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: "/home" },
   home: { path: "/home" },
-  createAddress: { path: "/address/create" },
-  AddressMap: { path: "/address/map" },
+  addressCreate: { path: "/address/create" },
+  addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
   cheeckout: { path: "/order/checkout" },
   privacyPolicy: { path: "/policies/privacy" },
