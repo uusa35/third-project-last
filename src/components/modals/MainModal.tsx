@@ -29,7 +29,7 @@ const MainModal: FC<Props> = ({
         className={`w-full lg:w-2/4 xl:w-1/3 rounded-t-lg border-white h-1/4 ${
           isRTL ? 'right-0' : 'left-0'
         }`}
-        style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)' } }}
+        style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)' , zIndex:30} }}
         shouldFocusAfterRender={false}
       >
         <div

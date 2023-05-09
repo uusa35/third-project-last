@@ -3,18 +3,15 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';import { map } from "lodash";
 import Link from "next/link";
+import { Category } from "@/types/queries";
+import { Product } from "@/types/index";
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
+    Categories: Product[];
 };
-const MenuModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
+const MenuModal: FC<Props> = ({ isOpen, onRequestClose ,Categories}):JSX.Element => {
     const { t } = useTranslation();
-    const products = [
-        { id: 1, name: 'most selling'},
-        { id: 2, name: 'special offers'},
-        { id: 3, name: 'beef'},
-        { id: 4, name: 'chicken'}
-    ]
     return (
         <>
             <MainModal 
@@ -33,13 +30,13 @@ const MenuModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                         </div>
                         <h5 className="font-semibold capitalize">{t('menu')}</h5>
                     </div>
-                    {map(products, (product) => (
+                    {map(Categories, (Category) => (
                         <Link 
                             href={'/'} 
-                            key={product.id} 
+                            key={Category?.cat_id} 
                             className="border-t-[1px] border-slate-200 block px-4 py-2 font-semibold capitalize"
                         >
-                            <p>{product.name}</p>
+                            <p>{Category.name}</p>
                         </Link>
                     ))}
                 </div>

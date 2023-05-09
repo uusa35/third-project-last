@@ -143,10 +143,10 @@ export default function Home({ url, element, currentLocale }: Props) {
           ) : (
             <>
               {
-                <div className={`py-4 px-4`}>
+                <div className={`py-4`}>
                   {!isEmpty(categories) &&
-                  vendorElement?.Data?.template_type === 'basic_category' ? (
-                    <div>
+                  vendorElement?.Data?.template_type === 'basic_categorymbjmb' ? (
+                    <div className='px-4'>
                       <p
                         className="relative text-md font-bold pb-4"
                         suppressHydrationWarning={suppressText}
