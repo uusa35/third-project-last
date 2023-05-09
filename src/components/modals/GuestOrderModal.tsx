@@ -143,7 +143,7 @@ const GuestOrderModal: FC<Props> = ({
                   aria-invalid={errors.phone}
                   //   type="text"
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
-                  //   onChange={(e) => setValue('phone', e.target.value)}
+                  onChange={(e) => setValue('phone', e)}
                   className="focus:outline-none"
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) => (e.target.style.borderBottomColor = color)}
