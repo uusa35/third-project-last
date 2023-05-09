@@ -45,6 +45,7 @@ const GuestOrderModal: FC<Props> = ({
   });
 
   const onSubmit = async (body: any) => {
+    console.log('bodd', body);
     await triggerSaveCustomerInfo({
       body,
       url,
@@ -90,6 +91,7 @@ const GuestOrderModal: FC<Props> = ({
               <div className="relative">
                 <input
                   {...register('name')}
+                  aria-invalid={errors.name}
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   //   onChange={(e) => setValue('name', toEn(e.target.value))}
                   className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
@@ -134,12 +136,14 @@ const GuestOrderModal: FC<Props> = ({
                     )}
                   </div>
                 </label>
-                <PhoneInput
+                <input
                   defaultCountry="KW"
+                  type="number"
                   {...register('phone')}
+                  aria-invalid={errors.phone}
                   //   type="text"
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
-                  //   onChange={(e) => setValue('email', e.target.value)}
+                  //   onChange={(e) => setValue('phone', e.target.value)}
                   className="focus:outline-none"
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) => (e.target.style.borderBottomColor = color)}
@@ -149,13 +153,13 @@ const GuestOrderModal: FC<Props> = ({
               <div className="relative">
                 <input
                   {...register('email')}
+                  aria-invalid={errors.email}
                   //   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                   //   onChange={(e) => setValue('email', e?.target?.value)}
                   className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) => (e.target.style.borderBottomColor = color)}
                   onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
-                  placeholder=" "
                 />
                 <label
                   htmlFor="email"
