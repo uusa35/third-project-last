@@ -6,12 +6,13 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import { mainBtnClass, suppressText, toEn } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { customerInfoSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { startCase } from 'lodash';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   isOpen: boolean;
@@ -25,6 +26,7 @@ const GuestOrderModal: FC<Props> = ({
 }): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
+  const dispatch = useAppDispatch();
   const [triggerSaveCustomerInfo] = useSaveCustomerInfoMutation();
   const {
     register,
@@ -100,7 +102,17 @@ const GuestOrderModal: FC<Props> = ({
                   className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('full_name')}
+                  <div>{t('full_name')}</div>
+                  <div>
+                    {errors?.name?.message && (
+                      <p
+                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t('name_is_required')}
+                      </p>
+                    )}
+                  </div>
                 </label>
               </div>
               <div className="py-5">
@@ -109,7 +121,18 @@ const GuestOrderModal: FC<Props> = ({
                   className="text-gray-500"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('phone_number')}
+                  <div>{t('phone_number')}</div>
+
+                  <div>
+                    {errors?.phone?.message && (
+                      <p
+                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t('phone_is_required')}
+                      </p>
+                    )}
+                  </div>
                 </label>
                 <PhoneInput
                   defaultCountry="KW"
@@ -126,7 +149,6 @@ const GuestOrderModal: FC<Props> = ({
               <div className="relative">
                 <input
                   {...register('email')}
-                  type="number"
                   //   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                   //   onChange={(e) => setValue('email', e?.target?.value)}
                   className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
@@ -140,7 +162,17 @@ const GuestOrderModal: FC<Props> = ({
                   className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('email_optional')}
+                  <div>{t('email')}</div>
+                  <div>
+                    {errors?.email?.message && (
+                      <p
+                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t('email_is_required')}
+                      </p>
+                    )}
+                  </div>
                 </label>
               </div>
               <div className="border-t-[1px] border-gray-200 px-4 pt-4 mt-20">
