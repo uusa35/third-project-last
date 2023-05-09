@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { startCase } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setCustomer } from '@/redux/slices/customerSlice';
 
 type Props = {
   isOpen: boolean;
@@ -51,8 +52,7 @@ const GuestOrderModal: FC<Props> = ({
       url,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
-        console.log('r data', r.data.Data);
-        // dispatch(setCustomer(r.data.Data));
+        dispatch(setCustomer(r.data.Data));
         // router.push(appLinks.address.path);
         // .then(() => dispatch(setCustomer(r.data.Data)));
       } else {
@@ -136,9 +136,9 @@ const GuestOrderModal: FC<Props> = ({
                     )}
                   </div>
                 </label>
-                <input
+                <PhoneInput
                   defaultCountry="KW"
-                  type="number"
+                  type="text"
                   {...register('phone')}
                   aria-invalid={errors.phone}
                   //   type="text"
