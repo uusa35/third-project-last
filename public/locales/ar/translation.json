@@ -124,6 +124,12 @@
   "set_time": "حدد الوقت",
   "today": "اليوم",
   "tomorrow": "غدًا",
-  "fill_name": "أدخِل الاسم"
+  "fill_name": "أدخِل الاسم",
+  "start_ordering": "ابدأ الطلب",
+  "add_instructions": "أضف تعليمات",
+  "required": "مطلوب",
+  "special_instructions": "تعليمات خاصة",
+  "optional": "اختياري",
+  "select": "اختر"
 
 }

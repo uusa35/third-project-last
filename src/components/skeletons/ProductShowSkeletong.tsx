@@ -1,0 +1,20 @@
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
+
+export default function ProductShowSkeleton() {
+  return (
+    <div>
+      <Skeleton width={'100%'} height={70} />
+      <Skeleton width={'100%'} height={'40vh'} className="mb-5" />
+      <div className="px-8">
+        <Skeleton width={200} height={30} className="mb-3" />
+        <Skeleton width={500} height={60} />
+        <Skeleton width={180} height={30} className="mb-3" />
+        <Skeleton width={'80%'} height={40} />
+        <div className="w-[98%] mx-auto py-5">
+            <Skeleton width={'100%'} height={60} className="mx-auto" style={{ borderRadius: '35px'}} />
+        </div>
+      </div>
+    </div>
+  );
+}

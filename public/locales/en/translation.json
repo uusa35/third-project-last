@@ -189,5 +189,6 @@
   "set_time": "set time",
   "today": "today",
   "tomorrow": "tomorrow",
-  "fill_name": "fill name"
+  "fill_name": "fill name",
+  "optional": "optional"
 }
