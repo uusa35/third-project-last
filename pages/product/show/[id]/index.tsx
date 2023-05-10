@@ -73,6 +73,7 @@ import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons';
+import { destinationId } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   product: Product;
@@ -104,6 +105,7 @@ const ProductShow: NextPage<Props> = ({
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [productOutStock, setProductOutStock] = useState<boolean>();
   const {
     data: element,
     isSuccess,
@@ -116,10 +118,11 @@ const ProductShow: NextPage<Props> = ({
     url,
   });
   
-
-
+console.log({destinationId})
+  
   useEffect(() => {
     if (isSuccess && element.Data) {
+      setProductOutStock(element.Data.never_out_of_stock === 0 && element.Data.amount <= currentQty);
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
       }
@@ -246,8 +249,8 @@ const ProductShow: NextPage<Props> = ({
           ProductID: element?.Data?.id,
           ProductName: element?.Data?.name,
           ProductImage: element?.Data?.cover ?? ``,
-          ProductNameAr: element?.Data?.ProductNameAr,
-          ProductNameEn: element?.Data?.ProductNameEn,
+          ProductNameAr: element?.Data?.name_ar,
+          ProductNameEn: element?.Data?.name_en,
           ProductDesc: element?.Data?.desc,
           Quantity: currentQty,
           ExtraNotes: ``,
@@ -409,7 +412,18 @@ const ProductShow: NextPage<Props> = ({
               <East />
             )}
             </button>
-            {element?.Data?.name}
+            <TextTrans
+              ar={element?.Data?.name_ar}
+              en={element?.Data?.name_en}
+              style={{
+                maxWidth: '30ch',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                display: 'block',
+                color: `black`,
+              }}
+            />
             <FavouriteAndShare />
           </div>
             <div className="relative w-full capitalize">
@@ -810,30 +824,33 @@ const ProductShow: NextPage<Props> = ({
               //   productOutStock
               // }
               // onClick={debounce(() => handleAddToCart(), 400)}
-              className={`${mainBtnClass}`}
+              className={`${mainBtnClass} py-5 h-10`}
               style={{
                 backgroundColor: color,
                 color: `white`,
               }}
               onClick={() => setIsOpen(true)}
             >
-              {/* {!area_id && !branch_id
+              {!destinationId
                 ? t(`start_ordering`)
                 ? productOutStock
                 : t('out_stock')
-                : t('add_to_cart')} */}
-                {t('start_ordering')}
+                : <p className="flex justify-between px-5">
+                  {t('add_to_cart')}
+                  <span className={`flex flex-row items-center gap-2 text-white`}>
+                  <p>
+                    {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
+                      ? t(`price_on_selection`)
+                      : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                  </p>
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                    <span className={`uppercase`}>{t('kwd')}</span>
+                  )}
+                </span>
+                </p>}
+                
             </button>
-            {/* <span className={`flex flex-row items-center gap-2`}>
-              <p className={`text-xl text-white`}>
-                {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-                  ? t(`price_on_selection`)
-                  : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-              </p>
-              {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                <span className={`text-white uppercase`}>{t('kwd')}</span>
-              )}
-            </span> */}
+            
             <ChangeMoodModal  
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
