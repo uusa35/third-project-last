@@ -27,6 +27,7 @@ const GuestOrderModal: FC<Props> = ({
   url,
 }): JSX.Element => {
   const { t } = useTranslation();
+  const { customer } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -41,14 +42,13 @@ const GuestOrderModal: FC<Props> = ({
     resolver: yupResolver(customerInfoSchema),
     defaultValues: {
       id: null,
-      name: ``,
-      email: ``,
-      phone: ``,
+      name: customer.name ?? ``,
+      email: customer.email ?? ``,
+      phone: customer.phone ?? ``,
     },
   });
 
   const onSubmit = async (body: any) => {
-    console.log('bodd', body);
     await triggerSaveCustomerInfo({
       body,
       url,
@@ -99,13 +99,14 @@ const GuestOrderModal: FC<Props> = ({
               <div className="relative">
                 <input
                   {...register('name')}
-                  aria-invalid={errors.name}
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   //   onChange={(e) => setValue('name', toEn(e.target.value))}
                   className="block px-2.5 pb-2.5 pt-5 w-full text-black border-b-[1px] appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
                   placeholder=" "
                   style={{ borderBottomColor: '#e5e7eb' }}
-                  onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
+                  onFocus={(e) =>
+                    (e.target.style.borderBottomColor = '#3f3f46')
+                  }
                   onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                 />
                 <label
@@ -151,22 +152,25 @@ const GuestOrderModal: FC<Props> = ({
                   {...register('phone')}
                   aria-invalid={errors.phone}
                   //   type="text"
-                  //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
+                  defaultValue={customer.phone ?? ``}
+                  placeholder={`${
+                    customer.phone ?? startCase(`${t('enter_your_name')}`)
+                  }`}
                   onChange={(e) => setValue('phone', e)}
                   className="focus:outline-none"
                   style={{ borderBottomColor: '#e5e7eb' }}
-                  onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
+                  onFocus={(e) =>
+                    (e.target.style.borderBottomColor = '#3f3f46')
+                  }
                   onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                 />
               </div>
               <div className="relative">
                 <input
                   {...register('email')}
-                  aria-invalid={errors.email}
                   //   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                   //   onChange={(e) => setValue('email', e?.target?.value)}
-                  className="block px-2.5 pb-2.5 py-12 w-full text-black border-b-[1px] border-t-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer" 
-                  placeholder=" "
+                  className="block px-2.5 pb-2.5 py-12 w-full text-black border-b-[1px] border-t-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) => (e.target.style.borderColor = color)}
                   onBlur={(e) => (e.target.style.borderColor = '#e5e7eb')}
