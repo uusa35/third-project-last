@@ -130,6 +130,6 @@
   "required": "مطلوب",
   "special_instructions": "تعليمات خاصة",
   "optional": "اختياري",
-  "select": "اختر"
-
+  "select": "اختر",
+  "price_on_selection":"السعر عند الاختيار"
 }

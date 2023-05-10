@@ -1,17 +1,18 @@
 import { Product } from '@/types/index';
 import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
-import React from 'react';
+import React, { useState } from 'react';
 import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-ui-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
+import MenuModal from '../modals/MenuModal';
 
 type Props = {
   CategoriesProducts: Product[];
 };
 
 export default function ProductListView({ CategoriesProducts }: Props) {
-  console.log('in product view', CategoriesProducts);
+  const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
 
   //   scroll function
   const onPress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -29,10 +30,15 @@ export default function ProductListView({ CategoriesProducts }: Props) {
     <div>
       {/* sticky header */}
       <header
-        className="flex gap-x-2 bg-white py-4 sticky top-0 z-40"
-        style={{ boxShadow: ' 0 6px 9px -2px #cbcbcb' }}
+        className="flex gap-x-2 bg-white py-4 sticky top-0 z-10 border-b-2 px-4"
+        // style={{ boxShadow: ' 0 6px 9px -2px #cbcbcb' }}
       >
-        <div className="rounded-full bg-gray-100 w-fit h-fit p-1 cursor-pointer">
+        <div
+          className="rounded-full bg-gray-100 w-fit h-fit p-1 cursor-pointer"
+          onClick={() => {
+            setOpenCategoryModal(true);
+          }}
+        >
           <ListOutlined />
         </div>
         <div className="flex gap-x-2 overflow-x-scroll scrollbar-hide">
@@ -59,21 +65,21 @@ export default function ProductListView({ CategoriesProducts }: Props) {
       <ScrollSpy>
         {CategoriesProducts.map((category) => {
           return (
-            <div id={`${category.cat_id}`} className="mt-10">
+            <div id={`${category.cat_id}`} className="mt-10 px-4">
               {/* cat name */}
               <TextTrans
-                className="font-bold mt-5"
+                className="font-extrabold text-lg mt-5"
                 ar={category.name_ar}
                 en={category.name_en}
               />
 
               {/* products */}
               <div>
-                {category.items.map((product) => {
+                {category.items?.map((product) => {
                   return (
                     <VerProductWidget
                       element={product}
-                      category_id={category.cat_id}
+                      category_id={category?.cat_id}
                     />
                   );
                 })}
@@ -82,6 +88,12 @@ export default function ProductListView({ CategoriesProducts }: Props) {
           );
         })}
       </ScrollSpy>
+
+      <MenuModal
+        isOpen={openCategoryModal}
+        onRequestClose={() => setOpenCategoryModal(false)}
+        Categories={CategoriesProducts}
+      />
     </div>
   );
 }

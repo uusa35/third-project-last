@@ -29,23 +29,21 @@ const VerProductWidget: FC<Props> = ({
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
-        href={`${appLinks.productShow(
-          element.id
-        )}`}
+        href={`${appLinks.productShow(element.id)}`}
         className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
       >
         <div className="relative">
-          <div className="flex items-center">
-            <div className="ps-5 w-[100%] pe-5">
+          <div className="flex gap-x-2 justify-between items-center ">
+            <div className="">
               <p className="text-lg truncate pb-5">
                 <TextTrans
-                  className={`text-black font-bold`}
+                  className={`text-black font-semibold`}
                   ar={element.name_ar}
                   en={element.name_en}
                   length={20}
                 />
                 <TextTrans
-                  className={`text-muted`}
+                  className={`text-[#877D78] text-sm`}
                   ar={element.description_ar}
                   en={element.description_en}
                   length={30}
@@ -72,7 +70,7 @@ const VerProductWidget: FC<Props> = ({
                     </div>
                   ) : (
                     <p
-                      className="text-md uppercase p-2 rounded-full border border-red-500"
+                      className="w-fit text-center text-sm uppercase p-1 rounded-full border border-red-500"
                       suppressHydrationWarning={suppressText}
                       style={{ color: `black` }}
                     >
@@ -88,21 +86,22 @@ const VerProductWidget: FC<Props> = ({
                       )}
                     </p>
                   )}
-                  <div className="text-end mx-8">
-                    <button className="w-10 h-10 rounded-full bg-red-600 text-white border border-red-500  uppercase text-center text-xl">
+                  <div className="text-end mx-2">
+                    <button className="w-8 h-8 rounded-full bg-red-600 text-white border border-red-500  uppercase text-center text-xl">
                       +
                     </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="h-auto w-auto overflow-hidden rounded-lg">
+
+            <div className="h-16 w-16 sm:h-24 sm:w-24  aspect-square rounded-lg">
               <CustomImage
                 src={`${element.cover ?? NoFoundImage.src}`}
                 alt={element.name}
-                width={imageSizes.lg}
-                height={imageSizes.lg}
-                className="h-36 w-52 object-cover object-center"
+                width={imageSizes.sm}
+                height={imageSizes.sm}
+                className="w-full h-full object-cover object-center rounded-lg"
               />
             </div>
           </div>

@@ -190,5 +190,6 @@
   "today": "today",
   "tomorrow": "tomorrow",
   "fill_name": "fill name",
-  "optional": "optional"
+  "optional": "optional",
+  "price_on_selection":"price on selection"
 }

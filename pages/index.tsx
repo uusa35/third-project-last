@@ -19,6 +19,7 @@ import CategoryWidget from '@/components/widgets/CategoryWidget';
 import { suppressText } from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
 import Header from '@/components/home/Header';
+import Footer from '@/components/home/Footer';
 
 type Props = {
   element: Vendor;
@@ -103,7 +104,7 @@ export default function Home({ url, element, currentLocale }: Props) {
   // delivery and pickup section
   // ads section
   // review order btn
-  // open modal of categories
+  // skeltons
 
   return (
     <Suspense fallback={<div>loading</div>}>
@@ -142,35 +143,36 @@ export default function Home({ url, element, currentLocale }: Props) {
             <div>loading</div>
           ) : (
             <>
-              {
-                <div className={`py-4 px-4`}>
-                  {!isEmpty(categories) &&
-                  vendorElement?.Data?.template_type === 'basic_category' ? (
-                    <div>
-                      <p
-                        className="relative text-md font-bold pb-4"
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t('categories')}
-                      </p>
-                      <div
-                        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
-                      >
-                        {map(categories.Data, (c, i) => (
-                          <CategoryWidget element={c} key={i} />
-                        ))}
-                      </div>
+              <div className={`py-4`}>
+                {!isEmpty(categories) &&
+                vendorElement?.Data?.template_type === 'basic_categorymbjmb' ? (
+                  <div className="px-4">
+                    <p
+                      className="relative text-md font-bold pb-4"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('categories')}
+                    </p>
+                    <div
+                      className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
+                    >
+                      {map(categories.Data, (c, i) => (
+                        <CategoryWidget element={c} key={i} />
+                      ))}
                     </div>
-                  ) : (
-                    CategoriesProducts &&
-                    !isEmpty(CategoriesProducts.Data) && (
-                      <ProductListView
-                        CategoriesProducts={CategoriesProducts.Data}
-                      />
-                    )
-                  )}
-                </div>
-              }
+                  </div>
+                ) : (
+                  CategoriesProducts &&
+                  !isEmpty(CategoriesProducts.Data) && (
+                    <ProductListView
+                      CategoriesProducts={CategoriesProducts.Data}
+                    />
+                  )
+                )}
+              </div>
+
+              {/* in sm screens only */}
+              <Footer element={vendorElement?.Data} />
             </>
           )}
         </div>

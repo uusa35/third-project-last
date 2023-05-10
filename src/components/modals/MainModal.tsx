@@ -5,12 +5,14 @@ type Props = {
   isOpen: boolean;
   children: JSX.Element;
   closeModal: () => void;
+  contentClass?: string;
 };
 
 const MainModal: FC<Props> = ({
   isOpen = false,
   children,
   closeModal,
+  contentClass = '',
 }): JSX.Element => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(isOpen);
   const {
@@ -29,11 +31,13 @@ const MainModal: FC<Props> = ({
         className={`w-full lg:w-2/4 xl:w-1/3 rounded-t-lg border-white h-1/4 ${
           isRTL ? 'right-0' : 'left-0'
         }`}
-        style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)' } }}
+        style={{
+          overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 30 },
+        }}
         shouldFocusAfterRender={false}
       >
         <div
-          className={`bg-white text-black rounded-t-lg absolute w-full lg:w-2/4 xl:w-1/3 bottom-0 ${
+          className={`bg-white text-black rounded-t-lg absolute w-full lg:w-2/4 xl:w-1/3 bottom-0 ${contentClass} ${
             isRTL ? ' right-0' : 'left-0'
           }`}
         >
