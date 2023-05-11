@@ -23,8 +23,13 @@ type Props = { url: string };
 
 export default function Cart({ url }: Props) {
   const { t } = useTranslation();
+  const {
+    customer: { userAgent },
+  } = useAppSelector((state) => state);
   const destination = useAppSelector(destinationObject);
   const color = useAppSelector(themeColor);
+
+  // get cart
   const {
     data: cartItems,
     isSuccess,
@@ -87,7 +92,7 @@ export default function Cart({ url }: Props) {
                 ))}
 
                 {/* promocode */}
-                <PromoCode />
+                <PromoCode url={url} />
 
                 {/* payment summary */}
                 <div className="py-3">

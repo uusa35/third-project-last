@@ -189,5 +189,7 @@
   "set_time": "set time",
   "today": "today",
   "tomorrow": "tomorrow",
-  "price_on_selection":"price on selection"
+  "price_on_selection":"price on selection",
+  "within":"within",
+  "min_order":"min order"
 }

@@ -124,6 +124,8 @@
   "set_time": "حدد الوقت",
   "today": "اليوم",
   "tomorrow": "غدًا",
-  "price_on_selection":"السعر عند الاختيار"
+  "price_on_selection":"السعر عند الاختيار",
+  "within":"خلال",
+  "min_order":"الحد الادني للطلب"
 
 }
