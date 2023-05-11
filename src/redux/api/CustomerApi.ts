@@ -20,7 +20,21 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
+
+    createTempId: builder.query<
+      AppQueryResult<{ Id: string }>,
+      { url: string }
+    >({
+      query: ({ url }) => ({
+        url: `tempId`,
+        headers: {
+          url,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
   }),
 });
 
-export const { useSaveCustomerInfoMutation } = customerApi;
+export const { useSaveCustomerInfoMutation ,useLazyCreateTempIdQuery} = customerApi;

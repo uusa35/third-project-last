@@ -62,8 +62,8 @@ export const cartApi = apiSlice.injectEndpoints({
     checkPromoCode: builder.query<
       AppQueryResult<ServerCart>,
       {
-        userAgent: string;
-        PromoCode: string;
+        userAgent: string | undefined;
+        PromoCode: string | undefined;
         url: string;
         area_branch: any;
       }

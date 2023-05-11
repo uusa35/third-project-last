@@ -18,6 +18,9 @@ import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import ToastAppContainer from '../ToastAppContainer';
 import moment from 'moment';
 import * as yup from 'yup';
+import { useLazyCreateTempIdQuery } from '@/redux/api/CustomerApi';
+import { setUserAgent } from '@/redux/slices/customerSlice';
+import { isNull } from 'lodash';
 
 type Props = {
   children: ReactNode | undefined;
@@ -28,15 +31,19 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { sideMenuOpen, url, previousUrl },
+    appSetting: { url },
     locale,
     searchParams: { destination, method },
+    customer: { userAgent },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const desObject = useAppSelector(destinationObject);
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
+
+  const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
+    useLazyCreateTempIdQuery();
 
   // vendor..................................
 
@@ -70,16 +77,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess]);
+  }, [vendorSuccess, tempIdSuccess]);
 
-  const setAppDefaults = () => {
-    // if (isNull(userAgent) && url) {
-    //   await triggerCreateTempId({ url }).then((r: any) => {
-    //     if (r && r.data && r.data.Data && r.data.Data.Id) {
-    //       dispatch(setUserAgent(r.data.Data?.Id));
-    //     }
-    //   });
-    // }
+  const setAppDefaults = async () => {
+    if (isNull(userAgent) && url) {
+      await triggerCreateTempId({ url }).then((r: any) => {
+        if (r && r.data && r.data.Data && r.data.Data.Id) {
+          dispatch(setUserAgent(r.data.Data?.Id));
+        }
+      });
+    }
     if (vendorSuccess && vendorElement && vendorElement.Data) {
       dispatch(setVendor(vendorElement.Data));
     }
@@ -122,28 +129,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     setLang(router.locale);
   }, [router.locale]);
 
-  useEffect(() => {
-    const handleRouteChange: Handler = (url, { shallow }) => {
-      dispatch(hideSideMenu());
-    };
-    const handleChangeComplete: Handler = (url, { shallow }) => {
-      if (sideMenuOpen) {
-        dispatch(hideSideMenu());
-      }
-    };
+  // useEffect(() => {
+  //   const handleRouteChangeError = (err: any) => {
+  //     // return router.replace(router.asPath);
+  //   };
 
-    const handleRouteChangeError = (err: any) => {
-      // return router.replace(router.asPath);
-    };
-
-    router.events.on('routeChangeError', handleRouteChangeError);
-    router.events.on('routeChangeStart', handleRouteChange);
-    router.events.on('routeChangeComplete', handleChangeComplete);
-    return () => {
-      router.events.off('routeChangeComplete', handleChangeComplete);
-      router.events.off('routeChangeError', handleRouteChangeError);
-    };
-  }, [router.pathname]);
+  //   router.events.on('routeChangeError', handleRouteChangeError);
+  //   return () => {
+  //     router.events.off('routeChangeError', handleRouteChangeError);
+  //   };
+  // }, [router.pathname]);
 
   return (
     <div
