@@ -31,7 +31,7 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                             className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                             onClick={onRequestClose}
                         >
-                            <ExpandMoreIcon className="text-gray-500" />
+                            <ExpandMoreIcon/>
                         </button>
                     </div>
                     <div className="px-4 pb-2">

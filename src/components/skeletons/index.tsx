@@ -8,6 +8,7 @@ import OrderItemSkeleton from './OrderItemSkeleton';
 import OrderSkeleton from './OrderSkeleton';
 import PopularSearchSkeleton from './PopularSearchSkeleton';
 import ProductHorizontalSkeleton from './ProductHorizontalSkeleton';
+import ProductShowSkeleton from './ProductShowSkeletong';
 import ProductVerticalSkeleton from './ProductVerticalSkeleton';
 import ReturnPolicySkeleton from './ReturnPolicySkeleton';
 
@@ -53,8 +54,11 @@ export default function ContentLoader({ type, sections }: Props) {
     case 'Home':
         SkeletonComponent = HomePageSMSkeleton;
     break;
+    case 'ProductShow':
+        SkeletonComponent = ProductShowSkeleton;
+    break;
     default:
-      return null; // Render nothing if the type is invalid
+      return null; 
   }
 
   return (

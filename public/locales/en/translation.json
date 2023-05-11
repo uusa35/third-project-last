@@ -73,7 +73,7 @@
   "guest_info": "guest info",
   "full_name": "full name",
   "phone_number": "phone number",
-  "email_optional": "email [optional]",
+  "email_optional": "email (optional)",
   "submit": "submit",
   "leave_a_feedback": "leave a feedback",
   "your_name_optional": "your name (optional)",
@@ -189,7 +189,8 @@
   "set_time": "set time",
   "today": "today",
   "tomorrow": "tomorrow",
-  "price_on_selection":"price on selection",
   "within":"within",
-  "min_order":"min order"
+  "min_order":"min order",
+  "optional": "optional",
+  "price_on_selection":"price on selection"
 }

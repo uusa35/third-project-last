@@ -109,7 +109,7 @@ export default function MobileVerifications({ url }: Props) {
               onClick={() => setIsOpen(true)}
             >
               {upperFirst(`${t('or_continue_as')}`)}
-              <span className={`${! && 'px-1'}`}>{upperFirst(`${t('guest')}`)}</span>
+              <span className={`${'px-1'}`}>{upperFirst(`${t('guest')}`)}</span>
             </button>
             <GuestOrderModal  
               isOpen={isOpen}

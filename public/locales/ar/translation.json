@@ -124,8 +124,15 @@
   "set_time": "حدد الوقت",
   "today": "اليوم",
   "tomorrow": "غدًا",
-  "price_on_selection":"السعر عند الاختيار",
   "within":"خلال",
-  "min_order":"الحد الادني للطلب"
+  "min_order":"الحد الادني للطلب",
 
+  "fill_name": "أدخِل الاسم",
+  "start_ordering": "ابدأ الطلب",
+  "add_instructions": "أضف تعليمات",
+  "required": "مطلوب",
+  "special_instructions": "تعليمات خاصة",
+  "optional": "اختياري",
+  "select": "اختر",
+  "price_on_selection":"السعر عند الاختيار"
 }

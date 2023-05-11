@@ -10,12 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Fragment, Suspense } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import {
-  resetShowFooterElement,
-  setCurrentModule,
-  setShowFooterElement,
-  setUrl,
-} from '@/redux/slices/appSettingSlice';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
   arboriaFont,
@@ -37,6 +32,7 @@ import {
   flatMap,
   isEmpty,
   isNull,
+  isUndefined,
   join,
   map,
   maxBy,
@@ -48,23 +44,23 @@ import {
   sum,
   sumBy,
 } from 'lodash';
-// import {
-//   addMeter,
-//   addRadioBtn,
-//   addToCheckBox,
-//   disableAddToCart,
-//   enableAddToCart,
-//   removeFromCheckBox,
-//   removeMeter,
-//   resetCheckBoxes,
-//   resetMeters,
-//   resetRadioBtns,
-//   setCartProductQty,
-//   setInitialProductCart,
-//   setNotes,
-//   updateId,
-//   updatePrice,
-// } from '@/redux/slices/productCartSlice';
+import {
+  addMeter,
+  addRadioBtn,
+  addToCheckBox,
+  disableAddToCart,
+  enableAddToCart,
+  removeFromCheckBox,
+  removeMeter,
+  resetCheckBoxes,
+  resetMeters,
+  resetRadioBtns,
+  setCartProductQty,
+  setInitialProductCart,
+  setNotes,
+  updateId,
+  updatePrice,
+} from '@/redux/slices/productCartSlice';
 import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -84,14 +80,12 @@ type Props = {
   currentLocale: string;
   resolvedUrl: string;
 };
-const ProductShow: NextPage<Props> = (
-  {
-  // product,
+const ProductShow: NextPage<Props> = ({
+  product,
   url,
   currentLocale,
   resolvedUrl,
-}
-) => {
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -99,14 +93,13 @@ const ProductShow: NextPage<Props> = (
     locale: { lang, isRTL },
     // branch: { id: branch_id },
     // area: { id: area_id },
-    // cart: { total },
-    // vendor: { logo },
+    vendor: { logo },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  // const [currentQty, setCurrentyQty] = useState<number>(
-  //   productCart.ProductID === product.id ? productCart.Quantity : 1
-  // );
+  const [currentQty, setCurrentyQty] = useState<number>(
+    productCart.ProductID === product.id ? productCart.Quantity : 1
+  );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
@@ -116,7 +109,7 @@ const ProductShow: NextPage<Props> = (
     isSuccess,
     refetch: refetchGetProduct,
   } = useGetProductQuery({
-    id: 11,
+    id: product.id,
     lang,
     // ...(branch_id && { branch_id }),
     // ...(area_id && { area_id }),
@@ -127,30 +120,20 @@ const ProductShow: NextPage<Props> = (
 
   useEffect(() => {
     if (isSuccess && element.Data) {
-      dispatch(
-        setCurrentModule(
-          isRTL ? element?.Data?.name_ar : element?.Data?.name_en
-        )
-      );
-      // if (productCart.ProductID !== element?.Data?.id) {
-      //   handleResetInitialProductCart();
-      // }
-      // if (element?.Data?.sections?.length === 0) {
-      //   dispatch(enableAddToCart());
-      // }
-      // if (
-      //   element?.Data?.sections?.length !== 0 &&
-      //   element?.Data?.sections?.filter(
-      //     (itm) => itm.selection_type === 'mandatory'
-      //   ).length === 0
-      // ) {
-      //   dispatch(enableAddToCart());
-      // }
-      // if (total > 0) {
-      //   dispatch(resetRadioBtns());
-      //   dispatch(resetCheckBoxes());
-      //   dispatch(resetMeters());
-      // }
+      if (productCart.ProductID !== element?.Data?.id) {
+        handleResetInitialProductCart();
+      }
+      if (element?.Data?.sections?.length === 0) {
+        dispatch(enableAddToCart());
+      }
+      if (
+        element?.Data?.sections?.length !== 0 &&
+        element?.Data?.sections?.filter(
+          (itm) => itm.selection_type === 'mandatory'
+        ).length === 0
+      ) {
+        dispatch(enableAddToCart());
+      }
     }
   }, [isSuccess, element?.Data?.id, isRTL]);
 
@@ -158,256 +141,251 @@ const ProductShow: NextPage<Props> = (
     if (url) {
       dispatch(setUrl(url));
     }
-    dispatch(setShowFooterElement(`product_show`));
-    return () => {
-      dispatch(resetShowFooterElement());
-    };
   }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     isSuccess &&
-  //     !isNull(element) &&
-  //     !isNull(element.Data) &&
-  //     !isEmpty(productCart) &&
-  //     currentQty >= 1 &&
-  //     element?.Data?.amount &&
-  //     element?.Data?.amount >= currentQty
-  //   ) {
-  //     const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
-  //     const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
-  //     const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
-  //     const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
-  //     const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
-  //     const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
-  //     if (
-  //       element?.Data?.sections?.length !== 0 &&
-  //       element?.Data?.sections?.filter(
-  //         (itm) => itm.selection_type === 'mandatory'
-  //       ).length !== 0 &&
-  //       isEmpty(allCheckboxes) &&
-  //       isEmpty(allRadioBtns) &&
-  //       isEmpty(allMeters)
-  //     ) {
-  //       dispatch(disableAddToCart());
-  //     } else {
-  //       dispatch(enableAddToCart());
-  //     }
-  //     dispatch(
-  //       updatePrice({
-  //         totalPrice: sum([
-  //           parseFloat(
-  //             element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-  //               ? element?.Data?.new_price
-  //               : element?.Data?.price
-  //           ),
-  //           metersSum,
-  //           checkboxesSum,
-  //           radioBtnsSum,
-  //         ]),
-  //         totalQty: currentQty,
-  //       })
-  //     );
-  //     const uIds = concat(
-  //       productCart.QuantityMeters &&
-  //         map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
-  //       productCart.CheckBoxes &&
-  //         map(productCart.CheckBoxes, (c) => `_${c.uId}`),
-  //       productCart.RadioBtnsAddons &&
-  //         map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
-  //       ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
-  //     );
-  //     dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
-  //   }
-  // }, [
-  //   productCart.QuantityMeters,
-  //   productCart.CheckBoxes,
-  //   productCart.RadioBtnsAddons,
-  //   currentQty,
-  //   productCart.ExtraNotes,
-  // ]);
+  useEffect(() => {
+    if (
+      isSuccess &&
+      !isNull(element) &&
+      !isNull(element.Data) &&
+      !isEmpty(productCart) &&
+      currentQty >= 1 &&
+      element?.Data?.amount &&
+      element?.Data?.amount >= currentQty
+    ) {
+      const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
+      const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
+      const allMeters = map(productCart.QuantityMeters, (q) => q.addons[0]);
+      const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
+      const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
+      const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      if (
+        element?.Data?.sections?.length !== 0 &&
+        element?.Data?.sections?.filter(
+          (itm) => itm.selection_type === 'mandatory'
+        ).length !== 0 &&
+        isEmpty(allCheckboxes) &&
+        isEmpty(allRadioBtns) &&
+        isEmpty(allMeters)
+      ) {
+        dispatch(disableAddToCart());
+      } else {
+        dispatch(enableAddToCart());
+      }
+      dispatch(
+        updatePrice({
+          totalPrice: sum([
+            parseFloat(
+              element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+                ? element?.Data?.new_price
+                : element?.Data?.price
+            ),
+            metersSum,
+            checkboxesSum,
+            radioBtnsSum,
+          ]),
+          totalQty: currentQty,
+        })
+      );
+      const uIds = concat(
+        productCart.QuantityMeters &&
+          map(productCart.QuantityMeters, (q) => `_${q.uId2}`),
+        productCart.CheckBoxes &&
+          map(productCart.CheckBoxes, (c) => `_${c.uId}`),
+        productCart.RadioBtnsAddons &&
+          map(productCart.RadioBtnsAddons, (r) => `_${r.uId}`),
+        ` _${productCart.ExtraNotes.replace(/[^A-Z0-9]/gi, '')}`
+      );
+      dispatch(updateId(`${productCart.ProductID}${join(uIds, '')}`));
+    }
+  }, [
+    productCart.QuantityMeters,
+    productCart.CheckBoxes,
+    productCart.RadioBtnsAddons,
+    currentQty,
+    productCart.ExtraNotes,
+  ]);
 
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
   };
 
-  // const handleIncrease = () => {
-  //   if (
-  //     element &&
-  //     element?.Data?.amount &&
-  //     element?.Data?.amount &&
-  //     element?.Data?.amount >= currentQty + 1
-  //   ) {
-  //     setCurrentyQty(currentQty + 1);
-  //     dispatch(setCartProductQty(currentQty + 1));
-  //   }
-  // };
+  const handleIncrease = () => {
+    if (
+      element &&
+      element?.Data?.amount &&
+      element?.Data?.amount &&
+      element?.Data?.amount >= currentQty + 1
+    ) {
+      setCurrentyQty(currentQty + 1);
+      dispatch(setCartProductQty(currentQty + 1));
+    }
+  };
 
-  // const handleDecrease = () => {
-  //   if (isSuccess && !isNull(element)) {
-  //     if (
-  //       currentQty - 1 > 0 &&
-  //       element?.Data?.amount &&
-  //       currentQty <= element?.Data?.amount
-  //     ) {
-  //       setCurrentyQty(currentQty - 1);
-  //       dispatch(setCartProductQty(currentQty - 1));
-  //     } else {
-  //       setCurrentyQty(0);
-  //       handleResetInitialProductCart();
-  //     }
-  //   }
-  // };
+  const handleDecrease = () => {
+    if (isSuccess && !isNull(element)) {
+      if (
+        currentQty - 1 > 0 &&
+        element?.Data?.amount &&
+        currentQty <= element?.Data?.amount
+      ) {
+        setCurrentyQty(currentQty - 1);
+        dispatch(setCartProductQty(currentQty - 1));
+      } else {
+        setCurrentyQty(0);
+        handleResetInitialProductCart();
+      }
+    }
+  };
 
-  // const handleResetInitialProductCart = () => {
-  //   if (isSuccess && !isNull(element) && element.Data) {
-  //     dispatch(
-  //       setInitialProductCart({
-  //         ProductID: element?.Data?.id,
-  //         ProductName: element?.Data?.name,
-  //         ProductImage: element?.Data?.cover ?? ``,
-  //         ProductNameAr: element?.Data?.ProductNameAr,
-  //         ProductNameEn: element?.Data?.ProductNameEn,
-  //         ProductDesc: element?.Data?.desc,
-  //         Quantity: currentQty,
-  //         ExtraNotes: ``,
-  //         totalPrice: parseFloat(
-  //           element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-  //             ? element?.Data?.new_price
-  //             : element?.Data?.price
-  //         ),
-  //         grossTotalPrice: parseFloat(
-  //           element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-  //             ? element?.Data?.new_price
-  //             : element?.Data?.price
-  //         ),
-  //         totalQty: currentQty,
-  //         Price: parseFloat(
-  //           element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
-  //             ? element?.Data?.new_price
-  //             : element?.Data?.price
-  //         ),
-  //         enabled: false,
-  //         image: imgUrl(element?.Data.img[0]?.toString()),
-  //         id: now().toString(),
-  //       })
-  //     );
-  //   }
-  // };
+  const handleResetInitialProductCart = () => {
+    if (isSuccess && !isNull(element) && element.Data) {
+      dispatch(
+        setInitialProductCart({
+          ProductID: element?.Data?.id,
+          ProductName: element?.Data?.name,
+          ProductImage: element?.Data?.cover ?? ``,
+          ProductNameAr: element?.Data?.ProductNameAr,
+          ProductNameEn: element?.Data?.ProductNameEn,
+          ProductDesc: element?.Data?.desc,
+          Quantity: currentQty,
+          ExtraNotes: ``,
+          totalPrice: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
+          grossTotalPrice: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
+          totalQty: currentQty,
+          Price: parseFloat(
+            element?.Data?.new_price && !isEmpty(element?.Data?.new_price)
+              ? element?.Data?.new_price
+              : element?.Data?.price
+          ),
+          enabled: false,
+          image: imgUrl(element?.Data.img[0]?.toString()),
+          id: now().toString(),
+        })
+      );
+    }
+  };
 
-  // const handleSelectAddOn = async (
-  //   selection: ProductSection,
-  //   choice: any,
-  //   type: string,
-  //   checked: boolean
-  // ) => {
-  //   if (type === 'checkbox') {
-  //     if (checked) {
-  //       dispatch(
-  //         addToCheckBox({
-  //           addonID: selection.id,
-  //           uId: `${selection.id}${choice.id}`,
-  //           addons: [
-  //             {
-  //               attributeID: choice.id,
-  //               name: choice.name,
-  //               name_ar: choice.name_ar,
-  //               name_en: choice.name_en,
-  //               Value: 1,
-  //               price: parseFloat(choice.price),
-  //             },
-  //           ],
-  //         })
-  //       );
-  //     } else {
-  //       dispatch(removeFromCheckBox(`${selection.id}${choice.id}`));
-  //     }
-  //   } else if (type === 'radio') {
-  //     dispatch(
-  //       addRadioBtn({
-  //         addonID: selection.id,
-  //         uId: `${selection.id}${choice.id}`,
-  //         addons: {
-  //           attributeID: choice.id,
-  //           name: choice.name,
-  //           name_ar: choice.name_ar,
-  //           name_en: choice.name_en,
-  //           Value: 1,
-  //           price: parseFloat(choice.price),
-  //         },
-  //       })
-  //     );
-  //   } else if (type === 'q_meter') {
-  //     const currentMeter = filter(
-  //       productCart.QuantityMeters,
-  //       (q: QuantityMeters) =>
-  //         q.uId === `${selection.id}${choice.id}` && q.addons[0]
-  //     );
-  //     if (checked) {
-  //       // increase
-  //       const Value = isEmpty(currentMeter)
-  //         ? 1
-  //         : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
-  //         ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
-  //         : parseFloat(currentMeter[0]?.addons[0].Value);
-  //       dispatch(
-  //         addMeter({
-  //           addonID: selection.id,
-  //           uId2: `${selection.id}${choice.id}${Value}`,
-  //           uId: `${selection.id}${choice.id}`,
-  //           addons: [
-  //             {
-  //               attributeID: choice.id,
-  //               name: choice.name,
-  //               name_ar: choice.name_ar,
-  //               name_en: choice.name_en,
-  //               Value,
-  //               price: parseFloat(choice.price),
-  //             },
-  //           ],
-  //         })
-  //       );
-  //     } else {
-  //       // decrease
-  //       if (!isEmpty(currentMeter)) {
-  //         const Value = isEmpty(currentMeter)
-  //           ? 1
-  //           : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
-  //           ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
-  //           : parseFloat(currentMeter[0]?.addons[0].Value);
+  const handleSelectAddOn = async (
+    selection: ProductSection,
+    choice: any,
+    type: string,
+    checked: boolean
+  ) => {
+    if (type === 'checkbox') {
+      if (checked) {
+        dispatch(
+          addToCheckBox({
+            addonID: selection.id,
+            uId: `${selection.id}${choice.id}`,
+            addons: [
+              {
+                attributeID: choice.id,
+                name: choice.name,
+                name_ar: choice.name_ar,
+                name_en: choice.name_en,
+                Value: 1,
+                price: parseFloat(choice.price),
+              },
+            ],
+          })
+        );
+      } else {
+        dispatch(removeFromCheckBox(`${selection.id}${choice.id}`));
+      }
+    } else if (type === 'radio') {
+      dispatch(
+        addRadioBtn({
+          addonID: selection.id,
+          uId: `${selection.id}${choice.id}`,
+          addons: {
+            attributeID: choice.id,
+            name: choice.name,
+            name_ar: choice.name_ar,
+            name_en: choice.name_en,
+            Value: 1,
+            price: parseFloat(choice.price),
+          },
+        })
+      );
+    } else if (type === 'q_meter') {
+      const currentMeter = filter(
+        productCart.QuantityMeters,
+        (q: QuantityMeters) =>
+          q.uId === `${selection.id}${choice.id}` && q.addons[0]
+      );
+      if (checked) {
+        // increase
+        const Value = isEmpty(currentMeter)
+          ? 1
+          : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
+          ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
+          : parseFloat(currentMeter[0]?.addons[0].Value);
+        dispatch(
+          addMeter({
+            addonID: selection.id,
+            uId2: `${selection.id}${choice.id}${Value}`,
+            uId: `${selection.id}${choice.id}`,
+            addons: [
+              {
+                attributeID: choice.id,
+                name: choice.name,
+                name_ar: choice.name_ar,
+                name_en: choice.name_en,
+                Value,
+                price: parseFloat(choice.price),
+              },
+            ],
+          })
+        );
+      } else {
+        // decrease
+        if (!isEmpty(currentMeter)) {
+          const Value = isEmpty(currentMeter)
+            ? 1
+            : parseFloat(currentMeter[0]?.addons[0].Value) - 1 >= 0
+            ? parseFloat(currentMeter[0]?.addons[0].Value) - 1
+            : parseFloat(currentMeter[0]?.addons[0].Value);
 
-  //         dispatch(
-  //           addMeter({
-  //             addonID: selection.id,
-  //             uId2: `${selection.id}${choice.id}${Value}`,
-  //             uId: `${selection.id}${choice.id}`,
-  //             addons: [
-  //               {
-  //                 attributeID: choice.id,
-  //                 name: choice.name,
-  //                 name_ar: choice.name_ar,
-  //                 name_en: choice.name_en,
-  //                 Value,
-  //                 price: parseFloat(choice.price),
-  //               },
-  //             ],
-  //           })
-  //         );
-  //       } else {
-  //         dispatch(removeMeter(`${selection.id}${choice.id}`));
-  //       }
-  //     }
-  //   }
-  // };
+          dispatch(
+            addMeter({
+              addonID: selection.id,
+              uId2: `${selection.id}${choice.id}${Value}`,
+              uId: `${selection.id}${choice.id}`,
+              addons: [
+                {
+                  attributeID: choice.id,
+                  name: choice.name,
+                  name_ar: choice.name_ar,
+                  name_en: choice.name_en,
+                  Value,
+                  price: parseFloat(choice.price),
+                },
+              ],
+            })
+          );
+        } else {
+          dispatch(removeMeter(`${selection.id}${choice.id}`));
+        }
+      }
+    }
+  };
 
   if (!isSuccess || !url) {
-    <p>loading</p>
-    // return <LoadingSpinner fullWidth={true} />;
+    return <ContentLoader type="ProductShow" sections={1} />;
   }
   return (
     <Suspense>
-      {/* <MainHead
+      <MainHead
         title={`${currentLocale === 'ar' ? product.name_ar : product.name_en}`}
         description={`${
           currentLocale === 'ar'
@@ -419,20 +397,8 @@ const ProductShow: NextPage<Props> = (
         twitter={`${url}${resolvedUrl}`}
         facebook={`${url}${resolvedUrl}`}
         instagram={`${url}${resolvedUrl}`}
-      /> */}
-      <MainContentLayout
-        url={url}
-        // productCurrentQty={currentQty}
-        // handleIncreaseProductQty={handleIncrease}
-        // handleDecreaseProductQty={handleDecrease}
-        // productOutStock={
-        //   isSuccess &&
-        //   !isNull(element) &&
-        //   element.Data &&
-        //   element.Data.never_out_of_stock === 0 &&
-        //   element.Data.amount <= currentQty
-        // }
-      >
+      />
+      <MainContentLayout url={url}>
         {isSuccess && !isNull(element) && element.Data ? (
           <>
           <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
@@ -498,7 +464,6 @@ const ProductShow: NextPage<Props> = (
                   />
                 )}
               </div>
-              <ContentLoader type="Home" sections={1} />
             </div>
             <div className={`capitalize pt-5`}>
               {/*   name and desc */}
@@ -549,12 +514,12 @@ const ProductShow: NextPage<Props> = (
                       </button>
                     )}
                   </p>
-                  {element?.Data?.sections?.length > 0 && (
+                  {!isUndefined(element?.Data?.sections?.length) && element?.Data?.sections?.length > 0 && (
                      <div className={`w-fit h-10 border-[1px] rounded-full flex justify-center items-center space-x-2 px-4`} 
                           style={{ borderColor: color, color }}>
-                      <span>{(minBy(element?.Data?.sections?.[0]?.choices, (choice) => choice?.price))?.price}</span>
+                      <span>{(minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price)))?.price}</span>
                       <span>-</span>
-                      <span>{(maxBy(element?.Data?.sections?.[0]?.choices, (choice) => choice?.price))?.price} {t('kwd')}</span>
+                      <span>{(maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price)))?.price} {t('kwd')}</span>
                     </div>
                   )}
                 </div>
@@ -604,25 +569,26 @@ const ProductShow: NextPage<Props> = (
                           id={s.title}
                           name={s.title}
                           type="radio"
-                          // checked={isEmpty(
-                          //   filter(tabsOpen, (t) => t.id === s.id)
-                          // )}
-                          // onClick={() => {
-                          //   if (
-                          //     s.selection_type === `optional` &&
-                          //     s.must_select === 'multi'
-                          //   ) {
-                          //     dispatch(resetCheckBoxes());
-                          //   } else {
-                          //     dispatch(resetRadioBtns());
-                          //   }
-                          //   setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
-                          // }}
+                          checked={isEmpty(
+                            filter(tabsOpen, (t) => t.id === s.id)
+                          )}
+                          onClick={() => {
+                            if (
+                              s.selection_type === `optional` &&
+                              s.must_select === 'multi'
+                            ) {
+                              dispatch(resetCheckBoxes());
+                            } else {
+                              dispatch(resetRadioBtns());
+                            }
+                            setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
+                          }}
                           className="h-4 w-4"
+                          style={{ accentColor: color }}
                         />
                         <label
                           htmlFor={s.title}
-                          className="mx-3 block text-sm font-medium text-gray-700"
+                          className="mx-3 block text-sm"
                         >
                           {t('no')}
                         </label>
@@ -645,23 +611,21 @@ const ProductShow: NextPage<Props> = (
                         paddingRight: 0,
                       }}
                     >
-                      {s.must_select === 'q_meter' &&
-                      s.selection_type === 'mandatory' && (
-                        <p className={`flex -w-full pb-3`} style={{ color }}>
+                       {s.must_select === 'q_meter' &&
+                      s.selection_type === 'mandatory' ? (
+                        <p className={`flex -w-full text-red-600 pb-3`}>
                           {t(`must_select_min_and_max`, {
                             min: s.min_q,
                             max: s.max_q,
                           })}
                         </p>
-                      ) 
-                      // : (
-                      //   s.selection_type === 'mandatory' && (
-                      //     <p className={`flex -w-full text-red-600 pb-3`}>
-                      //       {t(`field_must_select_at_least_one`)}
-                      //     </p>
-                      //   )
-                      // )
-                      }
+                      ) : (
+                        s.selection_type === 'mandatory' && (
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`field_must_select_at_least_one`)}
+                          </p>
+                        )
+                      )}
                       {map(s.choices, (c, i) => (
                         <div className="flex items-center w-full pb-2" key={i}>
                           {s.must_select === 'q_meter' ? (
@@ -670,81 +634,66 @@ const ProductShow: NextPage<Props> = (
                             >
                               <div className={`space-y-1`}>
                                 <div>
-                                  <p 
-                                  // style={{ color }}
-                                  >
-                                    <TextTrans ar={c.name_ar} en={c.name_en} />
-                                  </p>
+                                  <TextTrans ar={c.name_ar} en={c.name_en} />
                                 </div>
-                                <div>
+                                {/* <div>
                                   +{c.price}{' '}
                                   <span className={`uppercase`}>
                                     {t(`kwd`)}
                                   </span>
-                                </div>
+                                </div> */}
                               </div>
                               <div>
-                                <span className="isolate inline-flex rounded-xl shadow-sm flex-row-reverse">
-                                  <button
-                                    // disabled={currentQty < 1}
-                                    // onClick={() =>
-                                    //   handleSelectAddOn(
-                                    //     s,
-                                    //     c,
-                                    //     s.must_select,
-                                    //     true
-                                    //   )
-                                    // }
-                                    type="button"
-                                    className="relative -ml-px inline-flex items-center ltr:rounded-l-sm rtl:rounded-r-sm  bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
-                                    // style={{ color }}
-                                  >
-                                    <span
-                                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                                    >
-                                      +
-                                    </span>
-                                  </button>
-                                  <button
-                                    // disabled={currentQty === 0}
-                                    type="button"
-                                    className="relative -ml-px inline-flex items-center  bg-gray-100 px-4 py-2 text-sm font-medium focus:z-10 w-10"
-                                    // style={{ color }}
-                                  >
-                                    {filter(
-                                      productCart?.QuantityMeters,
-                                      (q) => q.uId === `${s.id}${c.id}`
-                                    )[0]?.addons[0]?.Value ?? 0}
-                                  </button>
-                                  <button
-                                    // disabled={
-                                    //   currentQty === 0 ||
-                                    //   first(
-                                    //     filter(
-                                    //       productCart.QuantityMeters,
-                                    //       (q) => q.uId === `${s.id}${c.id}`
-                                    //     )
-                                    //   )?.addons.Value === 0
-                                    // }
-                                    // onClick={() =>
-                                    //   handleSelectAddOn(
-                                    //     s,
-                                    //     c,
-                                    //     s.must_select,
-                                    //     false
-                                    //   )
-                                    // }
-                                    type="button"
-                                    className="relative inline-flex items-center ltr:rounded-r-sm rtl:rounded-l-sm bg-gray-100 px-1 py-1 text-sm font-medium text-black  focus:z-10 w-10"
-                                    // style={{ color }}
-                                  >
-                                    <span
-                                      className={`border border-gray-300 p-1 px-3 bg-white rounded-md text-md font-extrabold  w-8 h-8 flex justify-center items-center`}
-                                    >
-                                      -
-                                    </span>
-                                  </button>
-                                </span>
+                              <button
+                                  disabled={
+                                    currentQty === 0 ||
+                                    first(
+                                      filter(
+                                        productCart.QuantityMeters,
+                                        (q) => q.uId === `${s.id}${c.id}`
+                                      )
+                                    )?.addons.Value === 0
+                                  }
+                                  onClick={() =>
+                                    handleSelectAddOn(
+                                      s,
+                                      c,
+                                      s.must_select,
+                                      false
+                                    )
+                                  }
+                                  type="button"
+                                  className={`w-7 h-7 text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                                  style={{ borderColor: color, color }}
+        
+                                >
+                                  -
+                              </button>
+                                <button
+                                  disabled={currentQty === 0}
+                                  type="button"
+                                  className="text-black text-xl font-semibold px-5"
+                                >
+                                  {filter(
+                                    productCart?.QuantityMeters,
+                                    (q) => q.uId === `${s.id}${c.id}`
+                                  )[0]?.addons[0]?.Value ?? 0}
+                                </button>
+                                <button
+                                  disabled={currentQty < 1}
+                                  onClick={() =>
+                                    handleSelectAddOn(
+                                      s,
+                                      c,
+                                      s.must_select,
+                                      true
+                                    )
+                                  }
+                                  type="button"
+                                  className="w-7 h-7 text-white text-lg font-semibold rounded-full pb-3 bg-red-600 disabled:bg-gray-200 disabled:cursor-not-allowed"
+                                >
+                                    +
+                                </button>
                               </div>
                             </div>
                           ) : (
@@ -769,16 +718,16 @@ const ProductShow: NextPage<Props> = (
                                         (q) => q.uId === `${s.id}${c.id}`
                                       )[0]?.uId === `${s.id}${c.id}`
                                 }
-                                // onChange={(e) =>
-                                //   handleSelectAddOn(
-                                //     s,
-                                //     c,
-                                //     s.must_select === 'multi'
-                                //       ? `checkbox`
-                                //       : 'radio',
-                                //     e.target.checked
-                                //   )
-                                // }
+                                onChange={(e) =>
+                                  handleSelectAddOn(
+                                    s,
+                                    c,
+                                    s.must_select === 'multi'
+                                      ? `checkbox`
+                                      : 'radio',
+                                    e.target.checked
+                                  )
+                                }
                                 className="h-4 w-4 border-gray-200 checked:ring-0 focus:ring-0"
                                 style={{ accentColor: color }}
                               />
@@ -817,35 +766,30 @@ const ProductShow: NextPage<Props> = (
                   placeholder={`${t('add_instructions')}`}
                   suppressHydrationWarning={suppressText}
                   value={productCart?.ExtraNotes}
-                  // onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
-                  className={`bg-gray-200 py-2 rounded-md px-5 w-full focus:ring-0 capitalize ${arboriaFont}`}
+                  onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
+                  className={`bg-gray-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize ${arboriaFont}`}
                 />
               </div>
             </div>
-          {/* quantity meter */}
           <div className="flex justify-center items-center w-full px-8">
             <div
               className={`flex flex-row justify-center items-center my-4 capitalize`}
             >
               <div className="flex flex-row-reverse items-center">
                 <button
-                  // onClick={() =>
-                  //   handleIncreaseProductQty ? handleIncreaseProductQty() : null
-                  // }
+                  onClick={handleIncrease}
                   type="button"
-                  className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3"
+                  className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
                   style={{ backgroundColor: color }}
                 >
                   +
                 </button>
                 <span className="px-5 text-xl font-semibold">
-                  1
+                  {currentQty}
                 </span>
                 <button
-                  // disabled={productCurrentQty === 0}
-                  // onClick={() =>
-                  //   handleDecreaseProductQty ? handleDecreaseProductQty() : null
-                  // }
+                  disabled={currentQty === 0}
+                  onClick={handleDecrease}
                   type="button"
                   className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
                 >
@@ -897,9 +841,7 @@ const ProductShow: NextPage<Props> = (
           </div>
           </>
         ) : (
-          <div className={`w-full flex h-screen justify-center items-center`}>
-            {/* <LoadingSpinner fullWidth={true} /> */}
-          </div>
+          <ContentLoader type="ProductShow" sections={1} />
         )}
       </MainContentLayout>
     </Suspense>
@@ -912,35 +854,36 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
+      console.log({ id })
       if (!id || !req.headers.host) {
         return {
           notFound: true,
         };
       }
-      // const {
-      //   data: element,
-      //   isError,
-      // }: {
-      //   data: AppQueryResult<Product>;
-      //   isError: boolean;
-      // } = await store.dispatch(
-      //   productApi.endpoints.getProduct.initiate({
-      //     id,
-      //     lang: locale,
-      //     ...(branchId ? { branch_id: branchId } : {}),
-      //     ...(areaId ? { area_id: areaId } : {}),
-      //     url: req.headers.host,
-      //   })
-      // );
-      // await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      // if (isError || !element.Data) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
+      const {
+        data: element,
+        isError,
+      }: {
+        data: AppQueryResult<Product>;
+        isError: boolean;
+      } = await store.dispatch(
+        productApi.endpoints.getProduct.initiate({
+          id,
+          lang: locale,
+          ...(branchId ? { branch_id: branchId } : {}),
+          ...(areaId ? { area_id: areaId } : {}),
+          url: req.headers.host,
+        })
+      );
+      await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
+      if (isError || !element.Data) {
+        return {
+          notFound: true,
+        };
+      }
       return {
         props: {
-          // product: element.Data,
+          product: element.Data,
           url: req.headers.host,
           currentLocale: locale,
           resolvedUrl,

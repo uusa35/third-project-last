@@ -3,6 +3,7 @@ import Favourite from '@/appIcons/favourite.svg';
 import Share from '@/appIcons/share.svg';
 import Link from 'next/link';
 import { appLinks } from '@/constants/*';
+import Image from 'next/image';
 
 
 
@@ -13,7 +14,7 @@ export default function FavouriteAndShare() {
           <Favourite />
         </Link>
         <button>
-          <Share />
+         <Share />
         </button>
       </div>
   )
