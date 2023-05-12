@@ -16,15 +16,15 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.number().required(),
-      block: yup
-        .string()
-        .max(100)
-        .when('address_type', (address_type, schema) => {
-          if (method === `delivery`) {
-            return schema.required(t(`validation.required`));
-          }
-          return schema.nullable(true);
-        }),
+      // block: yup
+      //   .string()
+      //   .max(100)
+      //   .when('address_type', (address_type, schema) => {
+      //     if (method === `delivery`) {
+      //       return schema.required(t(`validation.required`));
+      //     }
+      //     return schema.nullable(true);
+      //   }),
       street: yup
         .string()
         .max(100)
