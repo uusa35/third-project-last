@@ -191,5 +191,6 @@
   "tomorrow": "tomorrow",
   "fill_name": "fill name",
   "optional": "optional",
-  "price_on_selection":"price on selection"
+  "price_on_selection":"price on selection",
+  "add_to_cart": "add to cart"
 }

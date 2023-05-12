@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Fragment, Suspense } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { setUrl } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
   arboriaFont,
@@ -72,9 +72,9 @@ import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import ContentLoader from '@/components/skeletons';
+import ContentLoader from '@/components/skeletons'; 
 import { destinationId } from '@/redux/slices/searchParamsSlice';
-
+import { useGetCartProductsQuery, useAddToCartMutation, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
 type Props = {
   product: Product;
   url: string;
@@ -94,9 +94,12 @@ const ProductShow: NextPage<Props> = ({
     locale: { lang, isRTL },
     // branch: { id: branch_id },
     // area: { id: area_id },
+    searchParams: { method, destination },
+    customer: { userAgent },
     vendor: { logo },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  console.log({ destination, method })
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
@@ -106,6 +109,8 @@ const ProductShow: NextPage<Props> = ({
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
   const [productOutStock, setProductOutStock] = useState<boolean>();
+  const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
   const {
     data: element,
     isSuccess,
@@ -117,8 +122,6 @@ const ProductShow: NextPage<Props> = ({
     // ...(area_id && { area_id }),
     url,
   });
-  
-console.log({destinationId})
   
   useEffect(() => {
     if (isSuccess && element.Data) {
@@ -383,6 +386,146 @@ console.log({destinationId})
     }
   };
 
+  const { data: cartItems } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': destination?.id }
+        : { 'x-area-id': destination?.id },
+    url,
+  });
+  const handelCartPayload = () => {
+    let items = map(cartItems?.data.Cart, (i) => {
+      // if item is not in the cart return all items in cart
+      if (
+        i.id?.split('_').sort().join(',') !==
+        productCart.id.split('_').sort().join(',')
+      ) {
+        return i;
+      }
+      // if item is in the cart return item but with quantity increased
+      // if (i.id === productCart.id)
+      else if (
+        i.id?.split('_').sort().join(',') ===
+        productCart.id.split('_').sort().join(',')
+      ) {
+        return {
+          ...i,
+          Quantity: i.Quantity + productCart.Quantity,
+        };
+      }
+    });
+    // if item is not in the cart add it
+    if (
+      isUndefined(
+        find(
+          items,
+          (x) =>
+            x?.id?.split('_').sort().join(',') ===
+            productCart.id.split('_').sort().join(',')
+        )
+      )
+    ) {
+      items.push(productCart);
+    }
+    return items;
+  };
+
+  const handleAddToCart = async () => {
+    if (
+      (method === `pickup` && !destination?.id) ||
+      (method === `delivery` && !destination?.id)
+    ) {
+      setIsOpen(true);
+    }
+    if (!productCart.enabled) {
+      dispatch(
+        showToastMessage({
+          content: `please_review_sections_some_r_required`,
+          type: `info`,
+        })
+      );
+    } else {
+      if (!isEmpty(productCart) && userAgent) {
+        await triggerAddToCart({
+          process_type: method,
+          area_branch: method === 'delivery' ? destination?.id : destination?.id,
+          body: {
+            UserAgent: userAgent,
+            Cart:
+              cartItems && cartItems.data && cartItems.data.Cart
+                ? handelCartPayload()
+                : [productCart],
+          },
+          url,
+        }).then((r: any) => {
+          if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
+            triggerGetCartProducts({
+              UserAgent: userAgent,
+              area_branch:
+                method === `pickup` && destination?.id
+                  ? { 'x-branch-id': destination?.id }
+                  : method === `delivery` && destination?.id
+                  ? { 'x-area-id': destination?.id }
+                  : {},
+              url,
+            }).then((r) => {
+              if ((r.data && r.data.data) || r.data?.data.Cart) {
+                dispatch(
+                  showToastMessage({
+                    content: 'item_added_successfully',
+                    type: `success`,
+                  })
+                );
+                dispatch(resetRadioBtns());
+                dispatch(resetCheckBoxes());
+                dispatch(resetMeters());
+                if (
+                  router.query.category_id &&
+                  router.query.category_id !== 'null' &&
+                  router.query.category_id !== 'undefined'
+                ) {
+                  router.replace(
+                    appLinks.productIndex(
+                      router.query.category_id.toString(),
+                      ``,
+                      branchId,
+                      area.id
+                    )
+                  );
+                } else {
+                  // according to ahmed return to home if  no category
+                  // router.replace(
+                  //   appLinks.productIndex(``, ``, branchId, area.id)
+                  // );
+                  router.replace('/');
+                }
+              } else {
+              }
+            });
+          } else {
+            if (r.error && r.error.data) {
+              dispatch(
+                showToastMessage({
+                  content: r.error.data.msg
+                    ? lowerCase(
+                        kebabCase(
+                          r.error.data.msg.isArray
+                            ? first(values(r.error.data.msg))
+                            : r.error.data.msg
+                        )
+                      )
+                    : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
+                  type: `error`,
+                })
+              );
+            } else {
+            }
+          }
+        });
+      }
+    }
+  };
   if (!isSuccess || !url) {
     return <ContentLoader type="ProductShow" sections={1} />;
   }
@@ -818,37 +961,37 @@ console.log({destinationId})
             className={`${modalBtnContainer} border-b-[1px] pb-5`}
           >
             <button
-              // disabled={
-              //   (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-              //     !method) ||
-              //   productOutStock
-              // }
-              // onClick={debounce(() => handleAddToCart(), 400)}
+              disabled={
+                (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
+                  !method) ||
+                productOutStock
+              }
+              onClick={debounce(() => handleAddToCart(), 400)}
               className={`${mainBtnClass} py-5 h-10`}
               style={{
                 backgroundColor: color,
                 color: `white`,
               }}
-              onClick={() => setIsOpen(true)}
+              // onClick={() => setIsOpen(true)}
             >
-              {!destinationId
-                ? t(`start_ordering`)
-                ? productOutStock
-                : t('out_stock')
-                : <p className="flex justify-between px-5">
-                  {t('add_to_cart')}
-                  <span className={`flex flex-row items-center gap-2 text-white`}>
-                  <p>
-                    {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-                      ? t(`price_on_selection`)
-                      : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                  </p>
+            {isNull(destination)
+            ? t(`start_ordering`)
+            : productOutStock
+            ? t('out_stock')
+            : <div className="flex justify-between px-5">
+              {t('add_to_cart')}
+              <span className={`flex flex-row items-center gap-2 text-white`}>
+                    <p>
+                      {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
+                        ? t(`price_on_selection`)
+                        : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                    </p>
                   {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
                     <span className={`uppercase`}>{t('kwd')}</span>
                   )}
-                </span>
-                </p>}
-                
+                  </span>
+              </div>
+            }  
             </button>
             
             <ChangeMoodModal  
