@@ -20,6 +20,9 @@ import { suppressText } from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
+import ContentLoader from '@/components/skeletons';
+import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
+import DeliveryPickup from '@/components/home/DeliveryPickup';
 
 type Props = {
   element: Vendor;
@@ -100,14 +103,12 @@ export default function Home({ url, element, currentLocale }: Props) {
     // , branch_id, area_id
   ]);
 
-  // note : pass vendor info to  HomeVendorMainInfo and don't make the req inside it
-  // delivery and pickup section
-  // ads section
-  // review order btn
-  // skeltons
+  // delivery and pickup section====>  data is missing
+  // ads section=====>  api is missing
+  // store is closed modal====> api
 
   return (
-    <Suspense fallback={<div>loading</div>}>
+    <Suspense>
       {/* SEO Head DEV*/}
       <MainHead
         title={currentLocale === 'ar' ? element.name_ar : element.name_en}
@@ -122,59 +123,71 @@ export default function Home({ url, element, currentLocale }: Props) {
       <MainContentLayout showAppFooter={true}>
         <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
           {/* sm screen header */}
-          {(vendorSuccess || vendorElement || vendorElement?.Data) && (
-            <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
-          )}
-
-          {/*  HomePage Header */}
-          <div className={`px-4 mt-3 lg:mt-0`}>
-            <HomeVendorMainInfo url={url} />
-          </div>
-
-          {!vendorSuccess ||
-          !vendorElement ||
-          !vendorElement.Data ||
-          !categoriesSuccess ||
-          !categories ||
-          !categories.Data ||
-          !CategoriesProductsSuccess ||
-          !CategoriesProducts ||
-          !CategoriesProducts.Data ? (
-            <div>loading</div>
-          ) : (
+          {vendorSuccess || vendorElement || vendorElement?.Data ? (
             <>
-              <div className={`py-4`}>
-                {!isEmpty(categories) &&
-                vendorElement?.Data?.template_type === 'basic_categorymbjmb' ? (
-                  <div className="px-4">
-                    <p
-                      className="relative text-md font-bold pb-4"
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('categories')}
-                    </p>
-                    <div
-                      className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
-                    >
-                      {map(categories.Data, (c, i) => (
-                        <CategoryWidget element={c} key={i} />
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  CategoriesProducts &&
-                  !isEmpty(CategoriesProducts.Data) && (
-                    <ProductListView
-                      CategoriesProducts={CategoriesProducts.Data}
-                    />
-                  )
-                )}
+              <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
+              {/*  HomePage vendor info */}
+              <div className={`px-4 mt-3 lg:mt-0`}>
+                <HomeVendorMainInfo element={vendorElement} />
               </div>
-
-              {/* in sm screens only */}
-              <Footer element={vendorElement?.Data} />
+              <DeliveryPickup />
             </>
+          ) : (
+            <div>
+              <ContentLoader type="Home" sections={1} />
+            </div>
           )}
+
+          <Suspense fallback={<div>cats</div>}>
+            {!vendorSuccess ||
+            !vendorElement ||
+            !vendorElement.Data ||
+            !categoriesSuccess ||
+            !categories ||
+            !categories.Data ||
+            !CategoriesProductsSuccess ||
+            !CategoriesProducts ||
+            !CategoriesProducts.Data ? (
+              <div>
+                <ContentLoader type="ProductHorizontal" sections={8} />
+              </div>
+            ) : (
+              <>
+                <div className={`py-4`}>
+                  {!isEmpty(categories) &&
+                  vendorElement?.Data?.template_type ===
+                    'basic_categorymbjmb' ? (
+                    <div className="px-4">
+                      <p
+                        className="relative text-md font-bold pb-4"
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t('categories')}
+                      </p>
+                      <div
+                        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
+                      >
+                        {map(categories.Data, (c, i) => (
+                          <CategoryWidget element={c} key={i} />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    CategoriesProducts &&
+                    !isEmpty(CategoriesProducts.Data) && (
+                      <ProductListView
+                        CategoriesProducts={CategoriesProducts.Data}
+                      />
+                    )
+                  )}
+                </div>
+
+                {/* in sm screens only */}
+                <Footer element={vendorElement?.Data} />
+                <CheckoutFixedBtn />
+              </>
+            )}
+          </Suspense>
         </div>
       </MainContentLayout>
     </Suspense>

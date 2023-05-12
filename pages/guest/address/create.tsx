@@ -14,7 +14,7 @@ import {
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
 import { useRef, useState } from 'react';
 import { useCreateAddressMutation } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
@@ -24,6 +24,7 @@ import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomerAddress } from '@/redux/slices/customerSlice';
 import { kebabCase, lowerCase } from 'lodash';
 import { useRouter } from 'next/router';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Vendor;
@@ -35,6 +36,7 @@ const AddressCreate: NextPage<Props> = ({
   url,
 }): React.ReactElement => {
   const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [currentAddressType, setCurrentAddressType] = useState<
@@ -68,7 +70,7 @@ const AddressCreate: NextPage<Props> = ({
           : 1,
       longitude: ``,
       latitude: ``,
-      customer_id: customer.customer_id?.toString(),
+      customer_id: customer.id?.toString(),
       phone: customer.phone,
       name: customer.name,
       block: customer.address.block ?? ``,
@@ -138,6 +140,7 @@ const AddressCreate: NextPage<Props> = ({
     }
   };
 
+  console.log(errors);
   return (
     <MainContentLayout
       url={url}
@@ -145,7 +148,7 @@ const AddressCreate: NextPage<Props> = ({
       currentModule="addresses"
     >
       <div className="flex flex-1 flex-col h-full mt-8">
-        <div className="flex mx-3 flex-row justify-center items-start">
+        <div className="flex mx-3 flex-row justify-center items-start mb-4">
           <button
             onClick={() => setCurrentAddressType('home')}
             className={`flex flex-1 flex-col border ${
@@ -180,6 +183,7 @@ const AddressCreate: NextPage<Props> = ({
           onSubmit={handleSubmit(onSubmit)}
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
+          <input type="hidden" {...register('customer_id')} />
           {/*  phone  */}
           <div className="w-full ">
             <label
@@ -187,7 +191,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="phone"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('phone_no')} testing
+              {t('phone_no')}
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -482,7 +486,9 @@ const AddressCreate: NextPage<Props> = ({
           <div className="flex flex-1 justify-center items-end w-full">
             <button
               type="submit"
-              className={`flex flex-1 flex-row w-auto space-x-3 rounded-3xl bg-red-600 p-3 px-8 text-white justify-center items-end`}
+              className={`${mainBtnClass}`}
+              style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
             >
               <p className="text-md">{t('save_address')}</p>
             </button>

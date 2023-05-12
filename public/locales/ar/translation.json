@@ -124,6 +124,9 @@
   "set_time": "حدد الوقت",
   "today": "اليوم",
   "tomorrow": "غدًا",
+  "within":"خلال",
+  "min_order":"الحد الادني للطلب",
+
   "fill_name": "أدخِل الاسم",
   "start_ordering": "ابدأ الطلب",
   "add_instructions": "أضف تعليمات",

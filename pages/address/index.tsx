@@ -9,7 +9,15 @@ import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import NoAddresses from '@/appImages/no_address.svg';
-import { imageSizes } from '@/constants/*';
+import {
+  appLinks,
+  imageSizes,
+  mainBtnClass,
+  suppressText,
+} from '@/constants/*';
+import { useAppSelector } from '@/redux/hooks';
+import { themeColor } from '@/redux/slices/vendorSlice';
+import Link from 'next/link';
 
 type Props = {
   element: Vendor;
@@ -21,6 +29,7 @@ const AddressIndex: NextPage<Props> = ({
   url,
 }): React.ReactElement => {
   const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
   return (
     <MainContentLayout
       url={url}
@@ -60,12 +69,15 @@ const AddressIndex: NextPage<Props> = ({
         </div>
       </div>
       {/*  no address case */}
-      <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center">
+      <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
         <NoAddresses className="w-auto h-auto object-contain " />
         <p className="text-md text-extrabold">{t('no_address')}</p>
         <p className="text-md text-extrabold">{t('no_address_des')}</p>
-        <button
-          className={`flex flex-row w-auto space-x-3 rounded-3xl bg-red-600 p-3 px-8 text-white`}
+        <Link
+          href={`${appLinks.addressCreate.path}`}
+          className={`${mainBtnClass} flex flex-row justify-center items-center`}
+          style={{ backgroundColor: color }}
+          suppressHydrationWarning={suppressText}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -81,8 +93,10 @@ const AddressIndex: NextPage<Props> = ({
               d="M12 4.5v15m7.5-7.5h-15"
             />
           </svg>
-          <p className="text-md text-center">{t('add_new_address')}</p>
-        </button>
+          <p className="w-fit text-md text-center mx-2">
+            {t('add_new_address')}
+          </p>
+        </Link>
       </div>
     </MainContentLayout>
   );

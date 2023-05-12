@@ -8,7 +8,7 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: "/home" },
   home: { path: "/home" },
-  addressCreate: { path: "/address/create" },
+  addressCreate: { path: "/guest/address/create" },
   addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
   cheeckout: { path: "/order/checkout" },
@@ -47,7 +47,7 @@ export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py
 export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0 ${arboriaFont}`;
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
 export const modalBtnContainer = `w-full border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4`;
-export const mainBtnClass = `text-white w-full text-md font-bold rounded-full h-10 pt-2 pb-8 mx-auto capitalize`;
+export const mainBtnClass = `text-white w-full text-md font-bold rounded-full py-4 mx-auto capitalize`;
 export const toEn = (s) =>
   s.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, (a) => a.charCodeAt(0) & 15);
 

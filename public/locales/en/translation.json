@@ -189,7 +189,8 @@
   "set_time": "set time",
   "today": "today",
   "tomorrow": "tomorrow",
-  "fill_name": "fill name",
+  "within":"within",
+  "min_order":"min order",
   "optional": "optional",
   "price_on_selection":"price on selection",
   "add_to_cart": "add to cart"
