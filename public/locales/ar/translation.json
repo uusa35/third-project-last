@@ -142,5 +142,6 @@
   "this_branch": "هذا الفرع",
   "this_area": "هذه المنطقة",
   "select_address": "اختر عنوان",
-  "search_for_cities_and_areas": "ابحث عن مدن ومناطق"
+  "search_for_cities_and_areas": "ابحث عن مدن ومناطق",
+  "multi_selection": "متعدد الخيارات"
 }

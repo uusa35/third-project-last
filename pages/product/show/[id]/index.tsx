@@ -123,8 +123,8 @@ const ProductShow: NextPage<Props> = ({
     url,
   });
 
-  const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
-  const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
+  // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
+  // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
     if (isSuccess && element.Data) {
       setProductOutStock(element.Data.never_out_of_stock === 0 && element.Data.amount <= currentQty);
@@ -679,7 +679,7 @@ const ProductShow: NextPage<Props> = ({
                       </button>
                     )}
                   </p>
-                  {(!isUndefined(element?.Data?.sections?.length) && 
+                  {/* {(!isUndefined(element?.Data?.sections?.length) && 
                   element?.Data?.sections?.length > 0 && 
                   minPrice !== maxPrice) &&
                   (
@@ -689,7 +689,7 @@ const ProductShow: NextPage<Props> = ({
                       <span>-</span>
                       <span>{maxPrice} {t('kwd')}</span>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
               {/*     sections  */}
@@ -703,7 +703,7 @@ const ProductShow: NextPage<Props> = ({
                     <p className="text-lg">
                       {t('select')} <TextTrans ar={s.title_ar} en={s.title_en} />
                     </p>
-                    <p>{s.must_select === 'single' ? t('select1') : 'multi_selection'}</p>
+                    <p>{s.must_select === 'single' ? t('select1') : t('multi_selection')}</p>
                     </div>
                     <div className="text-sm text-center bg-gray-100 rounded-full w-20 h-8 pt-1">
                     <span>{s.selection_type === 'mandatory' ? t('required') : t('optional')}</span>
@@ -802,14 +802,15 @@ const ProductShow: NextPage<Props> = ({
                             >
                               <div className={`space-y-1`}>
                                 <div>
-                                  <TextTrans ar={c.name_ar} en={c.name_en} />
+                                  <TextTrans ar={c.name_ar} en={c.name_en}
+                                    style={{ color }} />
                                 </div>
-                                {/* <div>
+                                <div>
                                   +{c.price}{' '}
                                   <span className={`uppercase`}>
                                     {t(`kwd`)}
                                   </span>
-                                </div> */}
+                                </div>
                               </div>
                               <div>
                               <button
