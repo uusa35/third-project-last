@@ -146,15 +146,16 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       currentModule={`${t('select_area')}`}
     >
       <div className="flex flex-1 flex-col min-h-screen">
-        <div className="flex flex-row w-full h-auto justify-center items-center p-6">
+        <div className="flex flex-row w-full h-auto justify-center items-center p-6 outline-none">
           <MagnifyingGlassIcon
             className={`absolute ltr:left-14 rtl:right-14 text-gray-500 w-8 h-8 pt-1`}
           />
           <input
             type="text"
-            className={`w-full h-14 rounded-full mx-2 bg-gray-100 border border-stone-100 ltr:pl-20 rtl:pr-20`}
+            className={`w-full h-14 rounded-full mx-2 bg-gray-100 border border-stone-100 ltr:pl-20 rtl:pr-20 outline-none`}
             placeholder={`${t('search_for_cities_and_areas')}`}
             onChange={debounce((e) => handleChange(e.target.value), 400)}
+            suppressHydrationWarning={suppressText}
           />
         </div>
 

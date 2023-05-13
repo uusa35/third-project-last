@@ -14,8 +14,6 @@ import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
   arboriaFont,
-  baseUrl,
-  convertColor,
   imageSizes,
   imgUrl,
   mainBtnClass,
@@ -28,12 +26,15 @@ import {
   concat,
   debounce,
   filter,
+  find,
   first,
   flatMap,
   isEmpty,
   isNull,
   isUndefined,
   join,
+  kebabCase,
+  lowerCase,
   map,
   maxBy,
   min,
@@ -65,16 +66,16 @@ import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
-// import LoadingSpinner from '@/components/LoadingSpinner';
 import Image from 'next/image';
-import Link from 'next/link';
 import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons'; 
-import { destinationId } from '@/redux/slices/searchParamsSlice';
 import { useGetCartProductsQuery, useAddToCartMutation, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
+import search from '../../search';
+
 type Props = {
   product: Product;
   url: string;
@@ -92,8 +93,6 @@ const ProductShow: NextPage<Props> = ({
   const {
     productCart,
     locale: { lang, isRTL },
-    // branch: { id: branch_id },
-    // area: { id: area_id },
     searchParams: { method, destination },
     customer: { userAgent },
     vendor: { logo },
@@ -108,6 +107,7 @@ const ProductShow: NextPage<Props> = ({
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [productOutStock, setProductOutStock] = useState<boolean>();
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
@@ -118,11 +118,13 @@ const ProductShow: NextPage<Props> = ({
   } = useGetProductQuery({
     id: product.id,
     lang,
-    // ...(branch_id && { branch_id }),
-    // ...(area_id && { area_id }),
+    ...(destination?.id && { branch_id: destination?.id }),
+    ...(destination?.id && { area_id: destination?.id }),
     url,
   });
-  
+
+  const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
+  const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
     if (isSuccess && element.Data) {
       setProductOutStock(element.Data.never_out_of_stock === 0 && element.Data.amount <= currentQty);
@@ -211,7 +213,12 @@ const ProductShow: NextPage<Props> = ({
     currentQty,
     productCart.ExtraNotes,
   ]);
-
+  
+  useEffect(() => {
+    if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
+      setIsOpen(true)
+    }
+  }, []);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -434,7 +441,8 @@ const ProductShow: NextPage<Props> = ({
   const handleAddToCart = async () => {
     if (
       (method === `pickup` && !destination?.id) ||
-      (method === `delivery` && !destination?.id)
+      (method === `delivery` && !destination?.id) ||
+      (isNull(method))
     ) {
       setIsOpen(true);
     }
@@ -449,7 +457,7 @@ const ProductShow: NextPage<Props> = ({
       if (!isEmpty(productCart) && userAgent) {
         await triggerAddToCart({
           process_type: method,
-          area_branch: method === 'delivery' ? destination?.id : destination?.id,
+          area_branch: destination?.id,
           body: {
             UserAgent: userAgent,
             Cart:
@@ -485,19 +493,17 @@ const ProductShow: NextPage<Props> = ({
                   router.query.category_id !== 'null' &&
                   router.query.category_id !== 'undefined'
                 ) {
-                  router.replace(
-                    appLinks.productIndex(
-                      router.query.category_id.toString(),
-                      ``,
-                      branchId,
-                      area.id
-                    )
-                  );
-                } else {
-                  // according to ahmed return to home if  no category
                   // router.replace(
-                  //   appLinks.productIndex(``, ``, branchId, area.id)
+                  //   appLinks.productIndex(
+                  //     router.query.category_id.toString(),
+                  //     ``,
+                  //     destination?.id,
+                  //     destination?.id
+                  //   )
                   // );
+                  // will edit routing to productSearch page when complete product search
+                  router.replace('/');
+                } else {
                   router.replace('/');
                 }
               } else {
@@ -505,7 +511,11 @@ const ProductShow: NextPage<Props> = ({
             });
           } else {
             if (r.error && r.error.data) {
-              dispatch(
+              if(r.error.data.msg.includes('not available')) {
+                setIsOpenNotAvailable(true);
+              }
+              else { 
+                dispatch(
                 showToastMessage({
                   content: r.error.data.msg
                     ? lowerCase(
@@ -518,7 +528,8 @@ const ProductShow: NextPage<Props> = ({
                     : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
                   type: `error`,
                 })
-              );
+                ); 
+              }
             } else {
             }
           }
@@ -526,9 +537,6 @@ const ProductShow: NextPage<Props> = ({
       }
     }
   };
-  if (!isSuccess || !url) {
-    return <ContentLoader type="ProductShow" sections={1} />;
-  }
   return (
     <Suspense>
       <MainHead
@@ -671,12 +679,15 @@ const ProductShow: NextPage<Props> = ({
                       </button>
                     )}
                   </p>
-                  {!isUndefined(element?.Data?.sections?.length) && element?.Data?.sections?.length > 0 && (
+                  {(!isUndefined(element?.Data?.sections?.length) && 
+                  element?.Data?.sections?.length > 0 && 
+                  minPrice !== maxPrice) &&
+                  (
                      <div className={`w-fit h-10 border-[1px] rounded-full flex justify-center items-center space-x-2 px-4`} 
                           style={{ borderColor: color, color }}>
-                      <span>{(minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price)))?.price}</span>
+                      <span>{minPrice}</span>
                       <span>-</span>
-                      <span>{(maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price)))?.price} {t('kwd')}</span>
+                      <span>{maxPrice} {t('kwd')}</span>
                     </div>
                   )}
                 </div>
@@ -826,16 +837,12 @@ const ProductShow: NextPage<Props> = ({
                                 >
                                   -
                               </button>
-                                <button
-                                  disabled={currentQty === 0}
-                                  type="button"
-                                  className="text-black text-xl font-semibold px-5"
-                                >
+                                <span className="text-black text-xl font-semibold px-5">
                                   {filter(
                                     productCart?.QuantityMeters,
                                     (q) => q.uId === `${s.id}${c.id}`
                                   )[0]?.addons[0]?.Value ?? 0}
-                                </button>
+                                </span>
                                 <button
                                   disabled={currentQty < 1}
                                   onClick={() =>
@@ -928,76 +935,78 @@ const ProductShow: NextPage<Props> = ({
                 />
               </div>
             </div>
-          <div className="flex justify-center items-center w-full px-8">
-            <div
-              className={`flex flex-row justify-center items-center my-4 capitalize`}
-            >
-              <div className="flex flex-row-reverse items-center">
-                <button
-                  onClick={handleIncrease}
-                  type="button"
-                  className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
-                  style={{ backgroundColor: color }}
-                >
-                  +
-                </button>
-                <span className="px-5 text-xl font-semibold">
-                  {currentQty}
-                </span>
-                <button
-                  disabled={currentQty === 0}
-                  onClick={handleDecrease}
-                  type="button"
-                  className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
-                >
-                  -
-                </button>
+          <div className="sticky bottom-0 bg-white">
+            <div className="flex justify-center items-center w-full px-8">
+              <div
+                className={`flex flex-row justify-center items-center my-4 capitalize`}
+              >
+                <div className="flex flex-row-reverse items-center">
+                  <button
+                    onClick={handleIncrease}
+                    type="button"
+                    className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                    style={{ backgroundColor: color }}
+                  >
+                    +
+                  </button>
+                  <span className="px-5 text-xl font-semibold">
+                    {currentQty}
+                  </span>
+                  <button
+                    disabled={currentQty === 0}
+                    onClick={handleDecrease}
+                    type="button"
+                    className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
+                  >
+                    -
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* add to cart btn */}
-          <div
-            className={`${modalBtnContainer} border-b-[1px] pb-5`}
-          >
-            <button
-              disabled={
-                (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-                  !method) ||
-                productOutStock
-              }
-              onClick={debounce(() => handleAddToCart(), 400)}
-              className={`${mainBtnClass} py-5 h-10`}
-              style={{
-                backgroundColor: color,
-                color: `white`,
-              }}
-              // onClick={() => setIsOpen(true)}
+            <div
+              className={`px-2 border-b-[1px] pb-5`}
             >
-            {isNull(destination)
-            ? t(`start_ordering`)
-            : productOutStock
-            ? t('out_stock')
-            : <div className="flex justify-between px-5">
-              {t('add_to_cart')}
-              <span className={`flex flex-row items-center gap-2 text-white`}>
-                    <p>
-                      {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-                        ? t(`price_on_selection`)
-                        : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                    </p>
-                  {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                    <span className={`uppercase`}>{t('kwd')}</span>
-                  )}
-                  </span>
-              </div>
-            }  
-            </button>
-            
-            <ChangeMoodModal  
-                isOpen={isOpen}
-                onRequestClose={() => setIsOpen(false)}
+              <button
+                disabled={
+                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
+                    !method) ||
+                  productOutStock
+                }
+                onClick={debounce(() => handleAddToCart(), 400)}
+                className={`${mainBtnClass} py-2`}
+                style={{
+                  backgroundColor: color,
+                  color: `white`,
+                }}>
+              {isNull(destination)
+              ? t(`start_ordering`)
+              : productOutStock
+              ? t('out_stock')
+              : <div className="flex justify-between px-5">
+                {t('add_to_cart')}
+                <span className={`flex flex-row items-center gap-2 text-white`}>
+                      <p>
+                        {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
+                          ? t(`price_on_selection`)
+                          : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                      </p>
+                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                      <span className={`uppercase`}>{t('kwd')}</span>
+                    )}
+                    </span>
+                </div>
+              }  
+              </button>
+              
+              <ChangeMoodModal  
+                  isOpen={isOpen}
+                  onRequestClose={() => setIsOpen(false)}
               />
+              <ChangeMood3Modal 
+                isOpen={isNotAvailable}
+                onRequestClose={() => setIsOpenNotAvailable(false)}
+              />
+            </div>
           </div>
           </>
         ) : (
@@ -1030,10 +1039,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProduct.initiate({
           id,
           lang: locale,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(areaId ? { area_id: areaId } : {}),
+          // ...(destination?.id ? { branch_id: destination?.id } : {}),
+          // ...(destination?.id ? { area_id: destination?.id } : {}),
           url: req.headers.host,
-        })
+        }) 
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {

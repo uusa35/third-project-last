@@ -35,8 +35,11 @@
   "now_within_20_minutes": "الآن خلال 20 دقيقة",
   "change_mood": "نمط التغيير",
   "your_item_is_not_available": "العنصر الخاص بك غير متوفر",
-  "we_are_sorry_about_that_the_item_is_not_available_in_this_branch.": "نأسف لعدم توفر العنصر في هذا الفرع.",
-  "please_change_the_branch_or_re-order_again": "برجاء تغيير الفرع أو إعادة الطلب مرة أخرى",
+  "we_are_sorry_about_that_the_item_is_not_available_in": "نأسف لعدم توفر العنصر في هذا.",
+  "please_change": "برجاء تغيير",
+  "the_branch": "الفرع",
+  "the_area": "المنطقة",
+  "or_re-order_again": "أو إعادة الطلب مرة أخرى",
   "change_branch": "تغيير الفرع",
   "change_order": "تغيير الطلب",
   "sign_in/": "تسجيل الدخول",
@@ -126,7 +129,6 @@
   "tomorrow": "غدًا",
   "within":"خلال",
   "min_order":"الحد الادني للطلب",
-
   "fill_name": "أدخِل الاسم",
   "start_ordering": "ابدأ الطلب",
   "add_instructions": "أضف تعليمات",
@@ -135,5 +137,10 @@
   "optional": "اختياري",
   "select": "اختر",
   "price_on_selection":"السعر عند الاختيار",
-  "add_to_cart": "أضف إلى عربة التسوق"
+  "add_to_cart": "أضف إلى عربة التسوق",
+  "item_added_successfully" : "تم الإضافة",
+  "this_branch": "هذا الفرع",
+  "this_area": "هذه المنطقة",
+  "select_address": "اختر عنوان",
+  "search_for_cities_and_areas": "ابحث عن مدن ومناطق"
 }
