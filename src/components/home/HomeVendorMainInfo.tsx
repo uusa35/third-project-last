@@ -25,9 +25,9 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
 
   // vendor status
   const storeStatus = [
-    { id: 1, status: 'open', className: 'bg-lime-400' },
-    { id: 2, status: 'busy', className: 'bg-red-400' },
-    { id: 3, status: 'closed', className: 'bg-gray-400' },
+    { id: 1, status: 'open', className: 'text-[#12B76A]' },
+    { id: 2, status: 'busy', className: 'text-[#E30015]' },
+    { id: 3, status: 'closed', className: 'text-[#E30015]' },
   ];
   const currentStoreStatus = filter(
     storeStatus,
@@ -56,30 +56,40 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
               />
             </h1>
 
-            {/* payment info */}
+            {/*info */}
             <div className="text-xs space-y-1 text-[#544A45]">
-              <div className="flex items-center gap-x-1">
-                <ClockIcon />
-                <p suppressHydrationWarning={suppressText}>{t('within')}</p>
-              </div>
-              <div className="flex items-center gap-x-1">
-                <MinOrderIcon />
-                <p suppressHydrationWarning={suppressText}>
-                  {t('min_order')} : {t('KD')}
-                </p>
-              </div>
+              {element?.Data?.delivery && (
+                // check if method is pickup or deliery
+                <>
+                  <div className="flex items-center gap-x-1">
+                    <ClockIcon />
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('within')} {element?.Data?.delivery?.delivery_time}{' '}
+                      {t(`${element?.Data?.delivery?.delivery_time_type}`)}
+                    </p>
+                  </div>
 
-              {/* online */}
+                  <div className="flex items-center gap-x-1">
+                    <MinOrderIcon />
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('min_order')} :{' '}
+                      {element?.Data?.delivery?.minimum_order_price} {t('KD')}
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {/* status */}
               {element?.Data?.status && !isEmpty(currentStoreStatus) && (
                 <span
-                  className={`flex flex-row justify-center items-center text-xs mx-2`}
+                  className={`flex flex-row items-center text-xs`}
                   suppressHydrationWarning={suppressText}
                 >
-                  <div
-                    className={`w-4 h-4 rounded-full ${currentStoreStatus[0].className} rtl:ml-2 ltr:mr-2`}
-                  ></div>
-                  <p suppressHydrationWarning={suppressText}>
-                    ({t(currentStoreStatus[0].status)})
+                  <p
+                    suppressHydrationWarning={suppressText}
+                    className={`${currentStoreStatus[0].className}`}
+                  >
+                    {t(`${currentStoreStatus[0].status}`)}
                   </p>
                 </span>
               )}

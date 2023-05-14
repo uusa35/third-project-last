@@ -59,6 +59,25 @@ export const cartApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Cart'],
     }),
+
+    GetPromoCodes: builder.query<
+      AppQueryResult<string[]>,
+      {
+        url: string;
+        area_branch: any;
+      }
+    >({
+      query: ({ url, area_branch }) => ({
+        url: `available-promo`,
+        headers: {
+          url,
+          ...area_branch,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
+
     checkPromoCode: builder.query<
       AppQueryResult<ServerCart>,
       {
@@ -103,6 +122,7 @@ export const {
   useLazyCreateTempIdQuery,
   useGetCartProductsQuery,
   useAddToCartMutation,
+  useGetPromoCodesQuery,
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
   useLazyChangeLocationQuery,

@@ -14,7 +14,7 @@ function DeliveryPickup({}: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const {
-    searchParams: { type },
+    searchParams: { method },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
 
@@ -22,7 +22,7 @@ function DeliveryPickup({}: Props) {
 
   return (
     <div className="px-4">
-      {type === 'pickup' && (
+      {method === 'pickup' && (
         <div className="flex gap-x-2 text-sm cursor-pointer">
           <PickupIcon />
           <div className="flex items-end justify-between w-full">
@@ -51,7 +51,7 @@ function DeliveryPickup({}: Props) {
           </div>
         </div>
       )}
-      {type === 'delivery' && (
+      {method === 'delivery' && (
         <div className="flex gap-x-2 text-sm cursor-pointer">
           <DeliveryIcon />
           <div className="flex items-end justify-between w-full">

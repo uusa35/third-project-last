@@ -13,11 +13,16 @@ import { isEmpty, map } from 'lodash';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
-type Props = { product: ProductCart; checkoutProduct?: boolean };
+type Props = {
+  product: ProductCart;
+  checkoutProduct?: boolean;
+  HandelDecIncRmv?: (item: ProductCart, process: string) => void;
+};
 
 export default function CartProduct({
   product,
   checkoutProduct = false,
+  HandelDecIncRmv = () => {},
 }: Props) {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -105,11 +110,17 @@ export default function CartProduct({
           {/* quantity meter */}
           {!checkoutProduct && (
             <div className="flex items-center gap-x-2">
-              <div className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center">
+              <div
+                onClick={() => HandelDecIncRmv(product, 'dec')}
+                className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center"
+              >
                 -
               </div>
               <label className="text-xs">{product.Quantity}</label>
-              <div className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center">
+              <div
+                onClick={() => HandelDecIncRmv(product, 'inc')}
+                className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center"
+              >
                 +
               </div>
             </div>

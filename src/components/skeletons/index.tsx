@@ -11,6 +11,9 @@ import ProductHorizontalSkeleton from './ProductHorizontalSkeleton';
 import ProductShowSkeleton from './ProductShowSkeletong';
 import ProductVerticalSkeleton from './ProductVerticalSkeleton';
 import ReturnPolicySkeleton from './ReturnPolicySkeleton';
+import ProductCartSkelton from './ProductCartSkelton';
+import PromoCodeSkelton from './PromoCodeSkelton';
+import PaymentSummarySkelton from './PaymentSummarySkelton';
 
 type Props = {
   type: string;
@@ -56,6 +59,15 @@ export default function ContentLoader({ type, sections }: Props) {
     break;
     case 'ProductShow':
         SkeletonComponent = ProductShowSkeleton;
+    break;
+    case 'ProductCart':
+        SkeletonComponent = ProductCartSkelton;
+    break;
+    case 'Promocode':
+        SkeletonComponent = PromoCodeSkelton;
+    break;
+    case 'PaymentSummary':
+        SkeletonComponent = PaymentSummarySkelton;
     break;
     default:
       return null; 

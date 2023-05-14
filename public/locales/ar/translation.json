@@ -134,5 +134,8 @@
   "special_instructions": "تعليمات خاصة",
   "optional": "اختياري",
   "select": "اختر",
-  "price_on_selection":"السعر عند الاختيار"
+  "price_on_selection":"السعر عند الاختيار",
+  "open":"مفتوح الان",
+  "closed":"مغلق",
+  "busy":"مشغول"
 }

@@ -192,5 +192,8 @@
   "within":"within",
   "min_order":"min order",
   "optional": "optional",
-  "price_on_selection":"price on selection"
+  "price_on_selection":"price on selection",
+  "open":"open now",
+  "closed":"closed",
+  "busy":"busy"
 }
