@@ -78,7 +78,7 @@ const GuestOrderModal: FC<Props> = ({
     <>
       <MainModal isOpen={isOpen} closeModal={closeModal}>
         <div>
-          <div className="flex lg:grid lg:grid-cols-3 w-full pb-5 px-4">
+          <div className="flex lg:grid lg:grid-cols-3 w-full py-4 px-4">
             <div className="w-1/3">
               <button
                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
@@ -193,9 +193,9 @@ const GuestOrderModal: FC<Props> = ({
                   </div>
                 </label>
               </div>
-              <div className="border-t-[1px] border-gray-200 px-4 pt-4 mt-20">
+              <div className="border-t-[1px] border-gray-200 pt-4">
                 <button
-                  className={`pt-4 pb-5 h-14 ${mainBtnClass}`}
+                  className={`${mainBtnClass}`}
                   style={{ backgroundColor: color }}
                   suppressHydrationWarning={suppressText}
                 >

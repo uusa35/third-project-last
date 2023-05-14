@@ -10,12 +10,10 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useEffect, useState, Fragment, Suspense } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { setUrl } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
   arboriaFont,
-  baseUrl,
-  convertColor,
   imageSizes,
   imgUrl,
   mainBtnClass,
@@ -28,12 +26,15 @@ import {
   concat,
   debounce,
   filter,
+  find,
   first,
   flatMap,
   isEmpty,
   isNull,
   isUndefined,
   join,
+  kebabCase,
+  lowerCase,
   map,
   maxBy,
   min,
@@ -65,15 +66,15 @@ import { Accordion, AccordionBody } from '@material-tailwind/react';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
-// import LoadingSpinner from '@/components/LoadingSpinner';
 import Image from 'next/image';
-import Link from 'next/link';
 import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import ContentLoader from '@/components/skeletons';
-import { destinationId } from '@/redux/slices/searchParamsSlice';
+import ContentLoader from '@/components/skeletons'; 
+import { useGetCartProductsQuery, useAddToCartMutation, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
+import search from '../../search';
 
 type Props = {
   product: Product;
@@ -92,11 +93,12 @@ const ProductShow: NextPage<Props> = ({
   const {
     productCart,
     locale: { lang, isRTL },
-    // branch: { id: branch_id },
-    // area: { id: area_id },
+    searchParams: { method, destination },
+    customer: { userAgent },
     vendor: { logo },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  console.log({ destination, method })
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
@@ -105,7 +107,10 @@ const ProductShow: NextPage<Props> = ({
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [productOutStock, setProductOutStock] = useState<boolean>();
+  const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
   const {
     data: element,
     isSuccess,
@@ -113,13 +118,13 @@ const ProductShow: NextPage<Props> = ({
   } = useGetProductQuery({
     id: product.id,
     lang,
-    // ...(branch_id && { branch_id }),
-    // ...(area_id && { area_id }),
+    ...(destination?.id && { branch_id: destination?.id }),
+    ...(destination?.id && { area_id: destination?.id }),
     url,
   });
-  
-console.log({destinationId})
-  
+
+  // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
+  // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
     if (isSuccess && element.Data) {
       setProductOutStock(element.Data.never_out_of_stock === 0 && element.Data.amount <= currentQty);
@@ -208,7 +213,12 @@ console.log({destinationId})
     currentQty,
     productCart.ExtraNotes,
   ]);
-
+  
+  useEffect(() => {
+    if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
+      setIsOpen(true)
+    }
+  }, []);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -383,9 +393,150 @@ console.log({destinationId})
     }
   };
 
-  if (!isSuccess || !url) {
-    return <ContentLoader type="ProductShow" sections={1} />;
-  }
+  const { data: cartItems } = useGetCartProductsQuery({
+    UserAgent: userAgent,
+    area_branch:
+      method === `pickup`
+        ? { 'x-branch-id': destination?.id }
+        : { 'x-area-id': destination?.id },
+    url,
+  });
+  const handelCartPayload = () => {
+    let items = map(cartItems?.data.Cart, (i) => {
+      // if item is not in the cart return all items in cart
+      if (
+        i.id?.split('_').sort().join(',') !==
+        productCart.id.split('_').sort().join(',')
+      ) {
+        return i;
+      }
+      // if item is in the cart return item but with quantity increased
+      // if (i.id === productCart.id)
+      else if (
+        i.id?.split('_').sort().join(',') ===
+        productCart.id.split('_').sort().join(',')
+      ) {
+        return {
+          ...i,
+          Quantity: i.Quantity + productCart.Quantity,
+        };
+      }
+    });
+    // if item is not in the cart add it
+    if (
+      isUndefined(
+        find(
+          items,
+          (x) =>
+            x?.id?.split('_').sort().join(',') ===
+            productCart.id.split('_').sort().join(',')
+        )
+      )
+    ) {
+      items.push(productCart);
+    }
+    return items;
+  };
+
+  const handleAddToCart = async () => {
+    if (
+      (method === `pickup` && !destination?.id) ||
+      (method === `delivery` && !destination?.id) ||
+      (isNull(method))
+    ) {
+      setIsOpen(true);
+    }
+    if (!productCart.enabled) {
+      dispatch(
+        showToastMessage({
+          content: `please_review_sections_some_r_required`,
+          type: `info`,
+        })
+      );
+    } else {
+      if (!isEmpty(productCart) && userAgent) {
+        await triggerAddToCart({
+          process_type: method,
+          area_branch: destination?.id,
+          body: {
+            UserAgent: userAgent,
+            Cart:
+              cartItems && cartItems.data && cartItems.data.Cart
+                ? handelCartPayload()
+                : [productCart],
+          },
+          url,
+        }).then((r: any) => {
+          if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
+            triggerGetCartProducts({
+              UserAgent: userAgent,
+              area_branch:
+                method === `pickup` && destination?.id
+                  ? { 'x-branch-id': destination?.id }
+                  : method === `delivery` && destination?.id
+                  ? { 'x-area-id': destination?.id }
+                  : {},
+              url,
+            }).then((r) => {
+              if ((r.data && r.data.data) || r.data?.data.Cart) {
+                dispatch(
+                  showToastMessage({
+                    content: 'item_added_successfully',
+                    type: `success`,
+                  })
+                );
+                dispatch(resetRadioBtns());
+                dispatch(resetCheckBoxes());
+                dispatch(resetMeters());
+                if (
+                  router.query.category_id &&
+                  router.query.category_id !== 'null' &&
+                  router.query.category_id !== 'undefined'
+                ) {
+                  // router.replace(
+                  //   appLinks.productIndex(
+                  //     router.query.category_id.toString(),
+                  //     ``,
+                  //     destination?.id,
+                  //     destination?.id
+                  //   )
+                  // );
+                  // will edit routing to productSearch page when complete product search
+                  router.replace('/');
+                } else {
+                  router.replace('/');
+                }
+              } else {
+              }
+            });
+          } else {
+            if (r.error && r.error.data) {
+              if(r.error.data.msg.includes('not available')) {
+                setIsOpenNotAvailable(true);
+              }
+              else { 
+                dispatch(
+                showToastMessage({
+                  content: r.error.data.msg
+                    ? lowerCase(
+                        kebabCase(
+                          r.error.data.msg.isArray
+                            ? first(values(r.error.data.msg))
+                            : r.error.data.msg
+                        )
+                      )
+                    : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
+                  type: `error`,
+                })
+                ); 
+              }
+            } else {
+            }
+          }
+        });
+      }
+    }
+  };
   return (
     <Suspense>
       <MainHead
@@ -528,14 +679,17 @@ console.log({destinationId})
                       </button>
                     )}
                   </p>
-                  {!isUndefined(element?.Data?.sections?.length) && element?.Data?.sections?.length > 0 && (
+                  {/* {(!isUndefined(element?.Data?.sections?.length) && 
+                  element?.Data?.sections?.length > 0 && 
+                  minPrice !== maxPrice) &&
+                  (
                      <div className={`w-fit h-10 border-[1px] rounded-full flex justify-center items-center space-x-2 px-4`} 
                           style={{ borderColor: color, color }}>
-                      <span>{(minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price)))?.price}</span>
+                      <span>{minPrice}</span>
                       <span>-</span>
-                      <span>{(maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price)))?.price} {t('kwd')}</span>
+                      <span>{maxPrice} {t('kwd')}</span>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
               {/*     sections  */}
@@ -549,7 +703,7 @@ console.log({destinationId})
                     <p className="text-lg">
                       {t('select')} <TextTrans ar={s.title_ar} en={s.title_en} />
                     </p>
-                    <p>{s.must_select === 'single' ? t('select1') : 'multi_selection'}</p>
+                    <p>{s.must_select === 'single' ? t('select1') : t('multi_selection')}</p>
                     </div>
                     <div className="text-sm text-center bg-gray-100 rounded-full w-20 h-8 pt-1">
                     <span>{s.selection_type === 'mandatory' ? t('required') : t('optional')}</span>
@@ -648,14 +802,15 @@ console.log({destinationId})
                             >
                               <div className={`space-y-1`}>
                                 <div>
-                                  <TextTrans ar={c.name_ar} en={c.name_en} />
+                                  <TextTrans ar={c.name_ar} en={c.name_en}
+                                    style={{ color }} />
                                 </div>
-                                {/* <div>
+                                <div>
                                   +{c.price}{' '}
                                   <span className={`uppercase`}>
                                     {t(`kwd`)}
                                   </span>
-                                </div> */}
+                                </div>
                               </div>
                               <div>
                               <button
@@ -683,16 +838,12 @@ console.log({destinationId})
                                 >
                                   -
                               </button>
-                                <button
-                                  disabled={currentQty === 0}
-                                  type="button"
-                                  className="text-black text-xl font-semibold px-5"
-                                >
+                                <span className="text-black text-xl font-semibold px-5">
                                   {filter(
                                     productCart?.QuantityMeters,
                                     (q) => q.uId === `${s.id}${c.id}`
                                   )[0]?.addons[0]?.Value ?? 0}
-                                </button>
+                                </span>
                                 <button
                                   disabled={currentQty < 1}
                                   onClick={() =>
@@ -785,76 +936,78 @@ console.log({destinationId})
                 />
               </div>
             </div>
-          <div className="flex justify-center items-center w-full px-8">
-            <div
-              className={`flex flex-row justify-center items-center my-4 capitalize`}
-            >
-              <div className="flex flex-row-reverse items-center">
-                <button
-                  onClick={handleIncrease}
-                  type="button"
-                  className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
-                  style={{ backgroundColor: color }}
-                >
-                  +
-                </button>
-                <span className="px-5 text-xl font-semibold">
-                  {currentQty}
-                </span>
-                <button
-                  disabled={currentQty === 0}
-                  onClick={handleDecrease}
-                  type="button"
-                  className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
-                >
-                  -
-                </button>
+          <div className="sticky bottom-0 bg-white">
+            <div className="flex justify-center items-center w-full px-8">
+              <div
+                className={`flex flex-row justify-center items-center my-4 capitalize`}
+              >
+                <div className="flex flex-row-reverse items-center">
+                  <button
+                    onClick={handleIncrease}
+                    type="button"
+                    className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                    style={{ backgroundColor: color }}
+                  >
+                    +
+                  </button>
+                  <span className="px-5 text-xl font-semibold">
+                    {currentQty}
+                  </span>
+                  <button
+                    disabled={currentQty === 0}
+                    onClick={handleDecrease}
+                    type="button"
+                    className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
+                  >
+                    -
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* add to cart btn */}
-          <div
-            className={`${modalBtnContainer} border-b-[1px] pb-5`}
-          >
-            <button
-              // disabled={
-              //   (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-              //     !method) ||
-              //   productOutStock
-              // }
-              // onClick={debounce(() => handleAddToCart(), 400)}
-              className={`${mainBtnClass} py-5 h-10`}
-              style={{
-                backgroundColor: color,
-                color: `white`,
-              }}
-              onClick={() => setIsOpen(true)}
+            <div
+              className={`px-2 border-b-[1px] pb-5`}
             >
-              {!destinationId
-                ? t(`start_ordering`)
-                ? productOutStock
-                : t('out_stock')
-                : <p className="flex justify-between px-5">
-                  {t('add_to_cart')}
-                  <span className={`flex flex-row items-center gap-2 text-white`}>
-                  <p>
-                    {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-                      ? t(`price_on_selection`)
-                      : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                  </p>
-                  {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                    <span className={`uppercase`}>{t('kwd')}</span>
-                  )}
-                </span>
-                </p>}
-                
-            </button>
-            
-            <ChangeMoodModal  
-                isOpen={isOpen}
-                onRequestClose={() => setIsOpen(false)}
+              <button
+                disabled={
+                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
+                    !method) ||
+                  productOutStock
+                }
+                onClick={debounce(() => handleAddToCart(), 400)}
+                className={`${mainBtnClass} py-2`}
+                style={{
+                  backgroundColor: color,
+                  color: `white`,
+                }}>
+              {isNull(destination)
+              ? t(`start_ordering`)
+              : productOutStock
+              ? t('out_stock')
+              : <div className="flex justify-between px-5">
+                {t('add_to_cart')}
+                <span className={`flex flex-row items-center gap-2 text-white`}>
+                      <p>
+                        {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
+                          ? t(`price_on_selection`)
+                          : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                      </p>
+                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                      <span className={`uppercase`}>{t('kwd')}</span>
+                    )}
+                    </span>
+                </div>
+              }  
+              </button>
+              
+              <ChangeMoodModal  
+                  isOpen={isOpen}
+                  onRequestClose={() => setIsOpen(false)}
               />
+              <ChangeMood3Modal 
+                isOpen={isNotAvailable}
+                onRequestClose={() => setIsOpenNotAvailable(false)}
+              />
+            </div>
           </div>
           </>
         ) : (
@@ -887,10 +1040,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProduct.initiate({
           id,
           lang: locale,
-          ...(branchId ? { branch_id: branchId } : {}),
-          ...(areaId ? { area_id: areaId } : {}),
+          // ...(destination?.id ? { branch_id: destination?.id } : {}),
+          // ...(destination?.id ? { area_id: destination?.id } : {}),
           url: req.headers.host,
-        })
+        }) 
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {
