@@ -3,12 +3,13 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import {
   useAddToCartMutation,
   useGetCartProductsQuery,
+  useLazyCheckPromoCodeQuery,
 } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import { filter, isEmpty, kebabCase, lowerCase } from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import EmptyCart from '@/appImages/empty_cart.png';
 import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +27,7 @@ import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import SaleNotification from '@/components/cart/SaleNotification';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
+import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
 
 type Props = { url: string };
 
@@ -35,12 +37,14 @@ export default function Cart({ url }: Props) {
   const {
     customer: { userAgent },
     searchParams: { method },
+    Cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
-  const destination = useAppSelector(destinationObject);
-  const destinationID = useAppSelector(destinationId);
+  const destObj = useAppSelector(destinationObject);
+  const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
 
   const [triggerAddToCart] = useAddToCartMutation();
+  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   // get cart
   const {
@@ -54,16 +58,20 @@ export default function Cart({ url }: Props) {
     refetch: () => void;
   }>(
     {
-      UserAgent:
-        'd972045e-e95b-40c6-be47-238997fef4e9-gmbLgjJ0l6qb4HNf9nGxHkWme7WfsHxF-b600ecbf098431ae282945af21228d14',
-      area_branch: { 'x-area-id': 26 },
+      UserAgent: userAgent,
+      area_branch: destObj,
+      PromoCode: promocode,
       url,
     },
     { refetchOnMountOrArgChange: true }
   );
 
-  // inc and dec
+  // reset promo
+  // useEffect(() => {
+  //   dispatch(resetPromo())
+  // }, []);
 
+  // inc and dec and rmove
   const HandelDecIncRmv = (item: ProductCart, process: string) => {
     if (process === 'inc') {
       handelIncRequest(item);
@@ -79,13 +87,10 @@ export default function Cart({ url }: Props) {
 
   const handelIncRequest = (item: ProductCart) => {
     triggerAddToCart({
-      process_type: 'delivery',
-      area_branch: '26',
-      // process_type: method,
-      // area_branch: destinationID,
+      process_type: method,
+      area_branch: destID,
       body: {
-        UserAgent:
-          'd972045e-e95b-40c6-be47-238997fef4e9-gmbLgjJ0l6qb4HNf9nGxHkWme7WfsHxF-b600ecbf098431ae282945af21228d14',
+        UserAgent: userAgent,
 
         Cart:
           isSuccess && cartItems.data && cartItems.data.Cart
@@ -119,14 +124,10 @@ export default function Cart({ url }: Props) {
 
   const handelDecRequest = (item: ProductCart) => {
     triggerAddToCart({
-      process_type: 'delivery',
-      area_branch: '26',
-      // process_type: method,
-      // area_branch: destinationID,
+      process_type: method,
+      area_branch: destID,
       body: {
-        UserAgent:
-          'd972045e-e95b-40c6-be47-238997fef4e9-gmbLgjJ0l6qb4HNf9nGxHkWme7WfsHxF-b600ecbf098431ae282945af21228d14',
-
+        UserAgent: userAgent,
         Cart:
           isSuccess && cartItems.data && cartItems.data.Cart
             ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
@@ -160,14 +161,10 @@ export default function Cart({ url }: Props) {
   const handelRemoveRequest = (item: ProductCart) => {
     const currentItems = filter(cartItems.data.Cart, (i) => i.id !== item.id);
     triggerAddToCart({
-      process_type: 'delivery',
-      area_branch: '26',
-      // process_type: method,
-      // area_branch: destinationID,
+      process_type: method,
+      area_branch: destID,
       body: {
-        UserAgent:
-          'd972045e-e95b-40c6-be47-238997fef4e9-gmbLgjJ0l6qb4HNf9nGxHkWme7WfsHxF-b600ecbf098431ae282945af21228d14',
-
+        UserAgent: userAgent,
         Cart:
           isSuccess &&
           cartItems.data &&
@@ -197,6 +194,61 @@ export default function Cart({ url }: Props) {
       }
     });
   };
+
+  // apply promo
+  const handelApplyPromoCode = (value: string | undefined) => {
+    console.log('promo', value);
+    /*
+    check if area or branch exists
+    check if promo val is not empty or undef
+    if user is logged in or guest   ===> later
+    */
+    if (!destID) {
+      // open pickup deliver model
+    } else if (!value) {
+      // enter your promocode
+      dispatch(
+        showToastMessage({
+          content: 'enter a promocode',
+          type: `info`,
+        })
+      );
+    } else {
+      triggerCheckPromoCode({
+        userAgent: userAgent,
+        PromoCode: value,
+        url,
+        area_branch: destObj,
+      }).then((r: any) => {
+        if (r.data && r.data.status && r.data.promoCode) {
+          // promoCode Success case
+          dispatch(setPromocode(r.data.promoCode));
+          refetchCart();
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.data.msg)),
+              type: `success`,
+            })
+          );
+        } else if (r.error && r.error?.data && r.error?.data?.msg) {
+          dispatch(resetPromo());
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+        }
+      });
+    }
+  };
+
+  const handelContinue = () => {};
+
+  /*
+  apply promo code ====> api modification
+  tempid and area_branch in cart req , remove , inc and dec
+  */
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
@@ -235,7 +287,7 @@ export default function Cart({ url }: Props) {
               </Link>
             </div>
           </div>
-        ) : !isSuccess ? (
+        ) : isSuccess ? (
           <div>
             {/* <SaleNotification /> */}
             <div className="p-5">
@@ -247,7 +299,10 @@ export default function Cart({ url }: Props) {
               ))}
 
               {/* promocode */}
-              <PromoCode url={url} />
+              <PromoCode
+                url={url}
+                handelApplyPromoCode={handelApplyPromoCode}
+              />
 
               {/* payment summary */}
               <div className="py-3">
@@ -269,7 +324,7 @@ export default function Cart({ url }: Props) {
           </div>
         )}
       </div>
-      {/* <CheckoutFixedBtn /> */}
+      <CheckoutFixedBtn url={url} />
     </MainContentLayout>
   );
 }

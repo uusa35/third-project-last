@@ -36,10 +36,13 @@ export const searchParamsSlice = createSlice({
 });
 
 export const { setDestination, setCategory } = searchParamsSlice.actions;
-export const destinationId = (state: RootState) => state.searchParams.destination?.id;
+export const destinationId = (state: RootState) =>
+  state.searchParams.destination?.id;
 export const destinationObject = (state: RootState) =>
-  state.method === 'pickup'
+  state.searchParams.method === 'pickup'
     ? { 'x-branch-id': state.searchParams.destination?.id ?? '' }
-    : { 'x-area-id': state.searchParams.destination?.id ?? '' };
-// branch_id: method !== `pickup` ? branch_id : ``,
-//   area_id: method === `pickup` ? area_id : ``,
+    : state.searchParams.method === 'delivery'
+    ? {
+        'x-area-id': state.searchParams.destination?.id ?? '',
+      }
+    : {};

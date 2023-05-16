@@ -204,5 +204,7 @@
   "this_branch": "this branch",
   "this_area": "this area",
   "select_address": "select address",
-  "search_for_cities_and_areas": "search for cities and areas"
+  "search_for_cities_and_areas": "search for cities and areas",
+  "cart_updated_successfully": "cart updated",
+  "quantity_of_out_of_stock": "quantity of out of stock"
 }

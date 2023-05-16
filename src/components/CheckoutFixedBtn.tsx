@@ -2,46 +2,89 @@ import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { suppressText } from '../constants';
+import { appLinks, suppressText } from '../constants';
 import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
 import PrepareStatusIcon from '@/appIcons/status_home_prepare.svg';
 import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
 import ArrowUpStatusIcon from '@/appIcons/status_home_up_arrow.svg';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { AppQueryResult } from '@/types/queries';
+import { ServerCart } from '../types';
+import { useRouter } from 'next/router';
+import {
+  destinationId,
+  destinationObject,
+} from '@/redux/slices/searchParamsSlice';
 
 type Props = {
-  // active
-  // msg above the btn
-  // price
-  // qty
+  url: string;
 };
 
-export default function CheckoutFixedBtn({}: Props) {
+export default function CheckoutFixedBtn({ url }: Props) {
   const { t } = useTranslation();
+  const router = useRouter();
+  const {
+    customer: { userAgent },
+    searchParams: { method },
+    Cart: { enable_promocode, promocode },
+  } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationObject);
+  const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
+
+  // get cart
+  const {
+    data: cartItems,
+    isSuccess,
+    refetch: refetchCart,
+  } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  }>(
+    {
+      UserAgent: userAgent,
+      area_branch: destObj,
+      PromoCode: promocode,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
   return (
     <div>
-      <div className="h-28"></div>
+      <div className="h-48"></div>
       {/* sticky fooer */}
       <div className="fixed bottom-0 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
         {/* checkout btn */}
-        <div
-          className="flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4"
-          style={{ backgroundColor: color }}
-        >
-          <div className="flex items-center gap-x-3">
+        {isSuccess &&
+          cartItems &&
+          cartItems.data &&
+          cartItems?.data?.Cart &&
+          cartItems?.data?.Cart.length > 0 && (
             <div
-              suppressHydrationWarning={suppressText}
-              className="flex items-center justify-center rounded-full w-8 h-8 bg-red-800"
+              onClick={() => router.push(appLinks.cart.path)}
+              className="flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer"
+              style={{ backgroundColor: color }}
             >
-              12
-            </div>
-            <div suppressHydrationWarning={suppressText}>
-              {t('go_to_checkout')}
-            </div>
-          </div>
+              <div className="flex items-center gap-x-3">
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className="flex items-center justify-center rounded-full w-8 h-8 bg-red-800"
+                >
+                  {cartItems?.data?.Cart.length}
+                </p>
+                <p suppressHydrationWarning={suppressText}>
+                  {t('go_to_checkout')}
+                </p>
+              </div>
 
-          <div suppressHydrationWarning={suppressText}>120 {t('kwd')}</div>
-        </div>
+              <p suppressHydrationWarning={suppressText}>
+                {cartItems?.data?.total} {t('kwd')}
+              </p>
+            </div>
+          )}
 
         {/* order status  btn*/}
         <div

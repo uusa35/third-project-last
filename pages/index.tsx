@@ -23,7 +23,11 @@ import Footer from '@/components/home/Footer';
 import ContentLoader from '@/components/skeletons';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import DeliveryPickup from '@/components/home/DeliveryPickup';
-import { destinationId, destinationObject } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationId,
+  destinationObject,
+} from '@/redux/slices/searchParamsSlice';
+import AdsScrollBar from '@/components/home/AdsScrollBar';
 
 type Props = {
   element: Vendor;
@@ -38,10 +42,9 @@ export default function Home({ url, element, currentLocale }: Props) {
   } = useAppSelector((state) => state);
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationObject);
-  const dispatch = useAppDispatch();
   const router = useRouter();
 
-  // console.log('desObject',desObject)
+  console.log('desObject', desObject);
 
   const [
     triggerGetCategories,
@@ -56,14 +59,14 @@ export default function Home({ url, element, currentLocale }: Props) {
 
   useEffect(() => {
     getVendor();
-  }, [element.id]);
+  }, [element.id, method, destination, url, DestinationId]);
 
   const getVendor = () => {
     triggerGetVendor(
       {
         lang,
         url,
-        destination:desObject
+        destination: desObject,
       },
       false
     );
@@ -77,7 +80,7 @@ export default function Home({ url, element, currentLocale }: Props) {
         category_id: ``,
         page: `1`,
         limit: `30`,
-        destination:desObject
+        destination: desObject,
       },
       true
     );
@@ -88,11 +91,19 @@ export default function Home({ url, element, currentLocale }: Props) {
       },
       true
     );
-  }, [router.locale, DestinationId]);
+  }, [router.locale, DestinationId, method]);
 
-  // delivery and pickup section====>  data is missing
-  // ads section=====>  api is missing
+  // vendor info check if delivery or pickup
+  // delivery and pickup section====>  where to get the date
   // store is closed modal====> api
+  // in checkout btn get cart and render if cart not empty
+  // if category doesnot contain items should i render it in ProductListView
+  // status btn where to get the data
+  // close modal when to show it
+  // in main layout get vendor un comment destobj
+  // line 149 in index home mdify category
+
+  
 
   return (
     <Suspense>
@@ -109,14 +120,19 @@ export default function Home({ url, element, currentLocale }: Props) {
       />
       <MainContentLayout>
         <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
-          {/* sm screen header */}
           {vendorSuccess || vendorElement || vendorElement?.Data ? (
             <>
+              {/* sm screen header */}
               <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
+
               {/*  HomePage vendor info */}
               <div className={`px-4 mt-3 lg:mt-0`}>
                 <HomeVendorMainInfo element={vendorElement} />
               </div>
+
+              {/* ads scroller */}
+              <AdsScrollBar slider={vendorElement?.Data?.slider ?? []} />
+
               <DeliveryPickup />
             </>
           ) : (
@@ -125,56 +141,53 @@ export default function Home({ url, element, currentLocale }: Props) {
             </div>
           )}
 
-          <Suspense fallback={<div>cats</div>}>
-            {!vendorSuccess ||
-            !vendorElement ||
-            !vendorElement.Data ||
-            !categoriesSuccess ||
-            !categories ||
-            !categories.Data ||
-            !CategoriesProductsSuccess ||
-            !CategoriesProducts ||
-            !CategoriesProducts.Data ? (
-              <div>
-                <ContentLoader type="ProductHorizontal" sections={8} />
-              </div>
-            ) : (
-              <>
-                <div className={`py-4`}>
-                  {!isEmpty(categories) &&
-                  vendorElement?.Data?.template_type ===
-                    'basic_categorymbjmb' ? (
-                    <div className="px-4">
-                      <p
-                        className="relative text-md font-bold pb-4"
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t('categories')}
-                      </p>
-                      <div
-                        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
-                      >
-                        {map(categories.Data, (c, i) => (
-                          <CategoryWidget element={c} key={i} />
-                        ))}
-                      </div>
+          {!vendorSuccess ||
+          !vendorElement ||
+          !vendorElement.Data ||
+          !categoriesSuccess ||
+          !categories ||
+          !categories.Data ||
+          !CategoriesProductsSuccess ||
+          !CategoriesProducts ||
+          !CategoriesProducts.Data ? (
+            <div>
+              <ContentLoader type="ProductHorizontal" sections={8} />
+            </div>
+          ) : (
+            <>
+              <div className={`py-4`}>
+                {!isEmpty(categories) &&
+                vendorElement?.Data?.template_type === 'basic_categorymbjmb' ? (
+                  <div className="px-4">
+                    <p
+                      className="relative text-md font-bold pb-4"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('categories')}
+                    </p>
+                    <div
+                      className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
+                    >
+                      {map(categories.Data, (c, i) => (
+                        <CategoryWidget element={c} key={i} />
+                      ))}
                     </div>
-                  ) : (
-                    CategoriesProducts &&
-                    !isEmpty(CategoriesProducts.Data) && (
-                      <ProductListView
-                        CategoriesProducts={CategoriesProducts.Data}
-                      />
-                    )
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  CategoriesProducts &&
+                  !isEmpty(CategoriesProducts.Data) && (
+                    <ProductListView
+                      CategoriesProducts={CategoriesProducts.Data}
+                    />
+                  )
+                )}
+              </div>
 
-                {/* in sm screens only */}
-                <Footer element={vendorElement?.Data} />
-                {/* <CheckoutFixedBtn /> */}
-              </>
-            )}
-          </Suspense>
+              {/* in sm screens only */}
+              <Footer element={vendorElement?.Data} />
+              <CheckoutFixedBtn url={url} />
+            </>
+          )}
         </div>
       </MainContentLayout>
     </Suspense>

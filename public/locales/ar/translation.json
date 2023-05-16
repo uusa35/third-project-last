@@ -146,5 +146,7 @@
   "this_area": "هذه المنطقة",
   "select_address": "اختر عنوان",
   "search_for_cities_and_areas": "ابحث عن مدن ومناطق",
-  "multi_selection": "متعدد الخيارات"
+  "multi_selection": "متعدد الخيارات",
+  "cart_updated_successfully" : "تم تحديث عربة التسوق",
+  "quantity_of_out_of_stock" : "هذا المنتج غير متاح"
 }

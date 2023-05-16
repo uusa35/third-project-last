@@ -80,3 +80,5 @@ export interface DeliveryPickupDetails {
   delivery_time_type: string;
   id: number;
 }
+
+

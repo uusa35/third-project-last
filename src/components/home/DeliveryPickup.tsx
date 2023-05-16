@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
+import TextTrans from '../TextTrans';
+import { suppressText } from '@/constants/*';
 
 type Props = {};
 
@@ -14,7 +16,7 @@ function DeliveryPickup({}: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const {
-    searchParams: { method },
+    searchParams: { method, destination },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
 
@@ -22,19 +24,35 @@ function DeliveryPickup({}: Props) {
 
   return (
     <div className="px-4">
-      {method === 'pickup' && (
+      {(method === 'pickup' || method === 'delivery') && (
         <div className="flex gap-x-2 text-sm cursor-pointer">
-          <PickupIcon />
+          {method === 'pickup' && <PickupIcon />}
+          {method === 'delivery' && <DeliveryIcon />}
+
           <div className="flex items-end justify-between w-full">
-            <div>
-              <p>deliver now to</p>
-              <p>jhdkjfkjsdhkjj</p>
-            </div>
+            {method === 'pickup' && (
+              <div>
+                <p suppressHydrationWarning={suppressText}>pickup from</p>
+                <TextTrans ar={destination.name_ar} en={destination.name_en} />
+              </div>
+            )}
+
+            {method === 'delivery' && (
+              <div>
+                <p suppressHydrationWarning={suppressText}>deliver now to</p>
+                <TextTrans ar={destination.name_ar} en={destination.name_en} />
+              </div>
+            )}
+
             <div
               className="flex items-center"
               onClick={() => setOpenPickupDeliveryModal(true)}
             >
-              <p style={{ color: color }} className="font-bold">
+              <p
+                suppressHydrationWarning={suppressText}
+                style={{ color: color }}
+                className="font-bold"
+              >
                 {t('change')}
               </p>
 
@@ -51,7 +69,7 @@ function DeliveryPickup({}: Props) {
           </div>
         </div>
       )}
-      {method === 'delivery' && (
+      {/* {method === 'delivery' && (
         <div className="flex gap-x-2 text-sm cursor-pointer">
           <DeliveryIcon />
           <div className="flex items-end justify-between w-full">
@@ -79,7 +97,7 @@ function DeliveryPickup({}: Props) {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       <ChangeMoodModal
         isOpen={openPickupDeliveryModal}
