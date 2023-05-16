@@ -22,17 +22,17 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         body: { UserAgent: string; Cart: any };
         process_type: string;
-        area_branch: string;
+        destination: any;
         url: string;
       }
     >({
-      query: ({ body, process_type, area_branch, url }) => ({
+      query: ({ body, process_type, destination={}, url }) => ({
         url: `addToCart`,
         method: `POST`,
         body,
         headers: {
-          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
-          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
+          ...(process_type === 'delivery' && destination),
+          ...(process_type === 'pickup' && destination),
           url,
         },
         validateStatus: (response, result) => result.status,
@@ -44,15 +44,15 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         UserAgent: string;
         url: string;
-        area_branch: any;
+        destination: any;
       }
     >({
-      query: ({ UserAgent, url, area_branch }) => ({
+      query: ({ UserAgent, url, destination }) => ({
         url: `shoppingCart`,
         params: { UserAgent },
         headers: {
           url,
-          ...area_branch,
+          ...destination,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

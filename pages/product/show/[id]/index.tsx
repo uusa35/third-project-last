@@ -75,6 +75,7 @@ import ContentLoader from '@/components/skeletons';
 import { useGetCartProductsQuery, useAddToCartMutation, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
 import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
+import { destinationId, destinationObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   product: Product;
@@ -109,8 +110,11 @@ const ProductShow: NextPage<Props> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [productOutStock, setProductOutStock] = useState<boolean>();
+  const DestinationId = useAppSelector(destinationId);
+  const desObject = useAppSelector(destinationObject);
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  console.log({ desObject })
   const {
     data: element,
     isSuccess,
@@ -118,8 +122,7 @@ const ProductShow: NextPage<Props> = ({
   } = useGetProductQuery({
     id: product.id,
     lang,
-    ...(destination?.id && { branch_id: destination?.id }),
-    ...(destination?.id && { area_id: destination?.id }),
+    destination: desObject,
     url,
   });
 
@@ -214,11 +217,11 @@ const ProductShow: NextPage<Props> = ({
     productCart.ExtraNotes,
   ]);
   
-  useEffect(() => {
-    if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
-      setIsOpen(true)
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
+  //     setIsOpen(true)
+  //   }
+  // }, []);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -395,10 +398,7 @@ const ProductShow: NextPage<Props> = ({
 
   const { data: cartItems } = useGetCartProductsQuery({
     UserAgent: userAgent,
-    area_branch:
-      method === `pickup`
-        ? { 'x-branch-id': destination?.id }
-        : { 'x-area-id': destination?.id },
+    destination: desObject,
     url,
   });
   const handelCartPayload = () => {
@@ -457,7 +457,7 @@ const ProductShow: NextPage<Props> = ({
       if (!isEmpty(productCart) && userAgent) {
         await triggerAddToCart({
           process_type: method,
-          area_branch: destination?.id,
+          destination: desObject,
           body: {
             UserAgent: userAgent,
             Cart:
@@ -470,12 +470,7 @@ const ProductShow: NextPage<Props> = ({
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({
               UserAgent: userAgent,
-              area_branch:
-                method === `pickup` && destination?.id
-                  ? { 'x-branch-id': destination?.id }
-                  : method === `delivery` && destination?.id
-                  ? { 'x-area-id': destination?.id }
-                  : {},
+              destination: desObject,
               url,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
@@ -969,8 +964,7 @@ const ProductShow: NextPage<Props> = ({
             >
               <button
                 disabled={
-                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-                    !method) ||
+                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000') ||
                   productOutStock
                 }
                 onClick={debounce(() => handleAddToCart(), 400)}

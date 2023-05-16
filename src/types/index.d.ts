@@ -205,6 +205,22 @@ export interface Order {
   branch_address: string;
   orderCode: string | number;
   order_id: string | number;
+  customer: CustomerInfo;
+  items: [
+    {
+      quantity: number;
+      item: string;
+      addon: InvoiceAddon[];
+      price: string;
+      total: number;
+      extra_notes: string;
+    }
+  ];
+  delivery_date_time: string,
+  estimated_time?: {
+    from: string;
+    to: string
+  }
 }
 
 export interface OrderInvoice {
