@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   destinationId,
-  destinationObject,
+  destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import Link from 'next/link';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -39,7 +39,7 @@ export default function Cart({ url }: Props) {
     searchParams: { method },
     Cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
-  const destObj = useAppSelector(destinationObject);
+  const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
 

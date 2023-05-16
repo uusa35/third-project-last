@@ -13,7 +13,7 @@ import { ServerCart } from '../types';
 import { useRouter } from 'next/router';
 import {
   destinationId,
-  destinationObject,
+  destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
@@ -28,7 +28,7 @@ export default function CheckoutFixedBtn({ url }: Props) {
     searchParams: { method },
     Cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
-  const destObj = useAppSelector(destinationObject);
+  const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
 

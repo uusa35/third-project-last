@@ -25,7 +25,7 @@ import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import DeliveryPickup from '@/components/home/DeliveryPickup';
 import {
   destinationId,
-  destinationObject,
+  destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
 
@@ -41,7 +41,7 @@ export default function Home({ url, element, currentLocale }: Props) {
     searchParams: { destination, method },
   } = useAppSelector((state) => state);
   const DestinationId = useAppSelector(destinationId);
-  const desObject = useAppSelector(destinationObject);
+  const desObject = useAppSelector(destinationHeaderObject);
   const router = useRouter();
 
   console.log('desObject', desObject);

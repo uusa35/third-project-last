@@ -22,7 +22,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import ElementMap from '@/components/address/ElementMap';
 import {
   destinationId,
-  destinationObject,
+  destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
@@ -36,7 +36,7 @@ export default function checkout({ url }: Props) {
     searchParams: { method },
     Cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
-  const destObj = useAppSelector(destinationObject);
+  const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
