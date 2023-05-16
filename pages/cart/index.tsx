@@ -223,7 +223,7 @@ export default function Cart({ url }: Props) {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
           dispatch(setPromocode(r.data.promoCode));
-          refetchCart();
+
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -239,6 +239,8 @@ export default function Cart({ url }: Props) {
             })
           );
         }
+
+        refetchCart();
       });
     }
   };
