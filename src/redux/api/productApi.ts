@@ -12,8 +12,7 @@ export const productApi = apiSlice.injectEndpoints({
         lang: Locale['lang'] | string | undefined;
         url: string;
         category_id: string | number;
-        branch_id?: string | null;
-        area_id?: string;
+        destination?: any;
       }
     >({
       query: ({
@@ -24,14 +23,14 @@ export const productApi = apiSlice.injectEndpoints({
         area_id,
         lang,
         url,
+        destination = {},
       }: any) => ({
         url: `items`,
         params: { category_id, page, limit },
         headers: {
           url,
           lang,
-          ...(area_id && { 'x-area-id': area_id }),
-          ...(branch_id && { 'x-branch-id': branch_id }),
+          ...destination,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -76,19 +75,17 @@ export const productApi = apiSlice.injectEndpoints({
       {
         id: string | number;
         lang: Locale['lang'] | string | undefined;
-        branchId?: string | null;
-        areaId?: string | null;
+        destination?: any;
         url: string;
       }
     >({
-      query: ({ id, lang, branchId = null, areaId = ``, url }: any) => ({
+      query: ({ id, lang, url, destination = {} }: any) => ({
         url: `itemDetails`,
         params: { product_id: id },
         headers: {
           url,
           lang,
-          ...(areaId && { 'x-area-id': areaId }),
-          ...(branchId && { 'x-branch-id': branchId }),
+          ...destination
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

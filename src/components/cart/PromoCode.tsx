@@ -2,23 +2,47 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PromotionIcon from '@/appIcons/promotion.svg';
 import PromocodeIcon from '@/appIcons/promocode.svg';
-import { useLazyCheckPromoCodeQuery } from '@/redux/api/cartApi';
+import {
+  useGetPromoCodesQuery,
+  useLazyCheckPromoCodeQuery,
+} from '@/redux/api/cartApi';
 import { useAppSelector } from '@/redux/hooks';
-import { destinationObject } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationObject,
+  destinationId,
+} from '@/redux/slices/searchParamsSlice';
+import { AppQueryResult } from '@/types/queries';
+import { isEmpty } from 'lodash';
 
 type Props = { url: string };
 
 export default function PromoCode({ url }: Props) {
   const { t } = useTranslation();
   const area_branch = useAppSelector(destinationObject);
+  const area_branch_id = useAppSelector(destinationId);
   const [promoCodeVal, setPromoCodeVal] = useState<string | undefined>(
     undefined
   );
 
-  console.log('area_branch', area_branch);
-
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
+  const {
+    data: promoCodes,
+    isLoading: promoCodesLoading,
+    isSuccess: promoCodesSuccess,
+  } = useGetPromoCodesQuery<{
+    data: AppQueryResult<string[]>;
+    isSuccess: boolean;
+    isLoading: boolean;
+  }>(
+    {
+      url: url,
+      area_branch: { 'x-area-id': 26 },
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  // move this func to the index to refetch the cart from there and pass it as params
   const handelApplyPromocode = () => {
     /*
     check if cart is not empty 
@@ -40,6 +64,9 @@ export default function PromoCode({ url }: Props) {
     });
   };
 
+  if (promoCodesSuccess) {
+    console.log(promoCodes);
+  }
   return (
     <div>
       <p className="font-bold mt-3">{t('promotions')}</p>
@@ -47,7 +74,7 @@ export default function PromoCode({ url }: Props) {
         <div className="flex items-center gap-x-1 w-full">
           <PromotionIcon />
           <input
-            className="bg-[#F5F5F5]"
+            className="bg-[#F5F5F5] outline-none"
             onChange={(e) => {
               setPromoCodeVal(e.target.value);
             }}
@@ -60,15 +87,30 @@ export default function PromoCode({ url }: Props) {
       </div>
 
       <div className="pb-4 border-b">
-        <div
-          onClick={() => {
-            setPromoCodeVal('hgjhgkjhkjhkj');
-          }}
-          className="flex items-center gap-x-1 rounded-full border border-[#B7B1AE] w-fit text-sm py-1 px-3 cursor-pointer"
-        >
-          <PromocodeIcon />
-          hgjhgkjhkjhkj
-        </div>
+        {promoCodesSuccess && promoCodes && isEmpty(promoCodes.data) && (
+          <>
+            {promoCodes.data.map((prmocode) => {
+              <div
+                onClick={() => {
+                  setPromoCodeVal(prmocode);
+                }}
+                className="flex items-center gap-x-1 rounded-full border border-[#B7B1AE] w-fit text-sm py-1 px-3 cursor-pointer"
+              >
+                <PromocodeIcon />
+                {prmocode}
+              </div>;
+            })}
+            <div
+              onClick={() => {
+                setPromoCodeVal('hgjhgkjhkjhkj');
+              }}
+              className="flex items-center gap-x-1 rounded-full border border-[#B7B1AE] w-fit text-sm py-1 px-3 cursor-pointer"
+            >
+              <PromocodeIcon />
+              hgjhgkjhkjhkj
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

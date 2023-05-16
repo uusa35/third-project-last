@@ -3,6 +3,10 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '../constants';
+import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
+import PrepareStatusIcon from '@/appIcons/status_home_prepare.svg';
+import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
+import ArrowUpStatusIcon from '@/appIcons/status_home_up_arrow.svg';
 
 type Props = {
   // active
@@ -37,6 +41,29 @@ export default function CheckoutFixedBtn({}: Props) {
           </div>
 
           <div suppressHydrationWarning={suppressText}>120 {t('kwd')}</div>
+        </div>
+
+        {/* order status  btn*/}
+        <div
+          className="flex items-center gap-x-2 justify-between rounded-full text-white w-full py-2 px-4 my-3"
+          style={{ backgroundColor: color }}
+        >
+          <div className="flex items-center gap-x-2">
+            <div>
+              <DeliveryStatusIcon />
+            </div>
+            <div>
+              <p suppressHydrationWarning={suppressText} className="">
+                Order Ready For Deliver
+              </p>
+              <p suppressHydrationWarning={suppressText} className="text-xs">
+                Estimated Time 2:00-2:30 PM
+              </p>
+            </div>
+          </div>
+          <div>
+            <ArrowUpStatusIcon />
+          </div>
         </div>
       </div>
     </div>

@@ -110,7 +110,7 @@ const MainContentLayout: FC<Props> = ({
         )}
       </main>
       {/* <ScrollToTopButton /> */}
-      {showAppFooter && <AppFooter />}
+      {/* {showAppFooter && <AppFooter />} */}
 
       <NextNProgress
         color={color}

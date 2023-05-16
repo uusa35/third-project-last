@@ -29,6 +29,11 @@ body {
   margin-left: 10px;
   margin-right: 10px;
 } 
+button:disabled {
+  background-color: #d6d6d6 !important;
+  border-color: #d6d6d6 !important;
+  color: #FFF !important
+}
 /* input:focus, 
 .PhoneInputInput:focus {
   border-color: #dc2626 !important;

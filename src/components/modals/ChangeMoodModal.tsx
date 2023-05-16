@@ -20,21 +20,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const router = useRouter();
     const color = useAppSelector(themeColor);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
-    const tabs = [
-        {
-          label: 'Tab 1',
-          content: <div>Tab 1 content</div>,
-        },
-        {
-          label: 'Tab 2',
-          content: <div>Tab 2 content</div>,
-        },
-        {
-          label: 'Tab 3',
-          content: <div>Tab 3 content</div>,
-        },
-      ];
-    
+    const { destination, method } = useAppSelector((state) => state);
     return (
         <>
             <MainModal 
@@ -103,7 +89,7 @@ const ChangeMoodModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                                             <h6 className="text-sm text-gray-500 capitalize" suppressHydrationWarning={suppressText}>
                                                 {t('delivering_to')}
                                             </h6>
-                                            <p>address</p>
+                                            <p>{t('select_address')}</p>
                                         </div>
                                     </div>
                                     <ArrowForwardIos className="text-zinc-500 mt-2" />

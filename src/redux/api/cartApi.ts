@@ -22,17 +22,17 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         body: { UserAgent: string; Cart: any };
         process_type: string;
-        area_branch: string;
+        destination: any;
         url: string;
       }
     >({
-      query: ({ body, process_type, area_branch, url }) => ({
+      query: ({ body, process_type, destination={}, url }) => ({
         url: `addToCart`,
         method: `POST`,
         body,
         headers: {
-          ...(process_type === 'delivery' && { 'x-area-id': area_branch }),
-          ...(process_type === 'pickup' && { 'x-branch-id': area_branch }),
+          ...(process_type === 'delivery' && destination),
+          ...(process_type === 'pickup' && destination),
           url,
         },
         validateStatus: (response, result) => result.status,
@@ -44,12 +44,31 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         UserAgent: string;
         url: string;
+        destination: any;
+      }
+    >({
+      query: ({ UserAgent, url, destination }) => ({
+        url: `shoppingCart`,
+        params: { UserAgent },
+        headers: {
+          url,
+          ...destination,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+      providesTags: ['Cart'],
+    }),
+
+    GetPromoCodes: builder.query<
+      AppQueryResult<string[]>,
+      {
+        url: string;
         area_branch: any;
       }
     >({
-      query: ({ UserAgent, url, area_branch }) => ({
-        url: `shoppingCart`,
-        params: { UserAgent },
+      query: ({ url, area_branch }) => ({
+        url: `available-promo`,
         headers: {
           url,
           ...area_branch,
@@ -57,8 +76,8 @@ export const cartApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
-      providesTags: ['Cart'],
     }),
+
     checkPromoCode: builder.query<
       AppQueryResult<ServerCart>,
       {
@@ -103,6 +122,7 @@ export const {
   useLazyCreateTempIdQuery,
   useGetCartProductsQuery,
   useAddToCartMutation,
+  useGetPromoCodesQuery,
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
   useLazyChangeLocationQuery,

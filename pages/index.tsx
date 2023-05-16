@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
-import { isEmpty, map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/components/widgets/CategoryWidget';
 import { suppressText } from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
@@ -23,6 +23,7 @@ import Footer from '@/components/home/Footer';
 import ContentLoader from '@/components/skeletons';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import DeliveryPickup from '@/components/home/DeliveryPickup';
+import { destinationId, destinationObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   element: Vendor;
@@ -33,9 +34,14 @@ export default function Home({ url, element, currentLocale }: Props) {
   const { t } = useTranslation();
   const {
     locale: { lang },
+    searchParams: { destination, method },
   } = useAppSelector((state) => state);
+  const DestinationId = useAppSelector(destinationId);
+  const desObject = useAppSelector(destinationObject);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  // console.log('desObject',desObject)
 
   const [
     triggerGetCategories,
@@ -49,30 +55,15 @@ export default function Home({ url, element, currentLocale }: Props) {
     useLazyGetVendorQuery();
 
   useEffect(() => {
-    // dispatch(setCurrentModule('home'));
-    // dispatch(setShowFooterElement('home'));
     getVendor();
   }, [element.id]);
-
-  // useEffect(() => {
-  //   if (vendorSuccess && vendorElement && vendorElement.Data) {
-  //     if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
-  //       dispatch(setCartMethod('pickup'));
-  //       dispatch(removeArea());
-  //     } else if (vendorElement?.Data?.delivery_pickup_type === 'delivery') {
-  //       dispatch(setCartMethod('delivery'));
-  //       dispatch(removeBranch());
-  //     }
-  //   }
-  // }, [vendorSuccess, method, branch_id, area_id]);
 
   const getVendor = () => {
     triggerGetVendor(
       {
         lang,
         url,
-        // branch_id: method !== `pickup` ? branch_id : ``,
-        // area_id: method === `pickup` ? area_id : ``,
+        destination:desObject
       },
       false
     );
@@ -86,8 +77,7 @@ export default function Home({ url, element, currentLocale }: Props) {
         category_id: ``,
         page: `1`,
         limit: `30`,
-        // branch_id: branch_id.toString(),
-        // area_id: area_id.toString(),
+        destination:desObject
       },
       true
     );
@@ -98,10 +88,7 @@ export default function Home({ url, element, currentLocale }: Props) {
       },
       true
     );
-  }, [
-    router.locale,
-    // , branch_id, area_id
-  ]);
+  }, [router.locale, DestinationId]);
 
   // delivery and pickup section====>  data is missing
   // ads section=====>  api is missing
@@ -120,7 +107,7 @@ export default function Home({ url, element, currentLocale }: Props) {
         facebook={element.facebook}
         instagram={element.instagram}
       />
-      <MainContentLayout showAppFooter={true}>
+      <MainContentLayout>
         <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
           {/* sm screen header */}
           {vendorSuccess || vendorElement || vendorElement?.Data ? (
@@ -184,7 +171,7 @@ export default function Home({ url, element, currentLocale }: Props) {
 
                 {/* in sm screens only */}
                 <Footer element={vendorElement?.Data} />
-                <CheckoutFixedBtn />
+                {/* <CheckoutFixedBtn /> */}
               </>
             )}
           </Suspense>
