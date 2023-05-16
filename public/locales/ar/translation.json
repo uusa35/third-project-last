@@ -144,6 +144,7 @@
   "select_address": "اختر عنوان",
   "search_for_cities_and_areas": "ابحث عن مدن ومناطق",
   "multi_selection": "متعدد الخيارات",
+<<<<<<< HEAD
   "your_order_is_successfully_done": ".تم الطلب بنجاح",
   "estimated_time": "الوقت المتوقع",
   "success_msg":"عندما ننتهي من تجهيز طلبك ، ستتلقى مكالمة صوتية منا. قد نتصل بك لتأكيد معلومات التسليم",
@@ -158,4 +159,10 @@
   "cash_on_delivery": "الدفع عند الاستلام",
   "order": "طلب"
 
+=======
+  "cart_updated_successfully" : "تم تحديث عربة التسوق",
+  "quantity_of_out_of_stock" : "هذا المنتج غير متاح",
+  "promo_code_is_invalid" : "رقم الكوبون غير صحيح",
+  "promo_code_validation" : "تم تفعيل كود الخصم"
+>>>>>>> structure
 }

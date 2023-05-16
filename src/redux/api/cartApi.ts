@@ -44,12 +44,22 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         UserAgent: string;
         url: string;
+<<<<<<< HEAD
         destination: any;
       }
     >({
       query: ({ UserAgent, url, destination }) => ({
         url: `shoppingCart`,
         params: { UserAgent },
+=======
+        area_branch: any;
+        PromoCode: string;
+      }
+    >({
+      query: ({ UserAgent, url, area_branch, PromoCode }) => ({
+        url: `cartPromoCode`,
+        params: { UserAgent, PromoCode },
+>>>>>>> structure
         headers: {
           url,
           ...destination,
