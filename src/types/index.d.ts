@@ -312,6 +312,7 @@ export interface OrderUser {
   user_id: number;
   order_type: string;
   UserAgent: string;
+  PromoCode?:string
   Date?: string;
   Time?: string;
   Messg: string;

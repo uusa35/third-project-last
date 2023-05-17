@@ -210,5 +210,7 @@
   "promo_code_is_invalid": "promo code is invalid",
   "promo_code_validation": "promo code activated and applied on your cart.",
   "remove":"remove",
-  "contact_us": "contact us"
+  "contact_us": "contact us",
+  "review_order":"review order",
+  "please_select_payment_method": "please select payment method"
 }

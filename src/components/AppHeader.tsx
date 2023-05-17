@@ -73,7 +73,7 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
 
   return (
     <header
-      className={`relative sticky top-0 z-50 w-full capitalize bg-white border-b-2`}
+      className={`relative sticky top-0 z-30 w-full capitalize bg-white border-b-2`}
       suppressHydrationWarning={suppressText}
     >
       <div className={`flex items-center py-3 px-2`}>

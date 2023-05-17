@@ -9,7 +9,7 @@ import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import { filter, isEmpty, kebabCase, lowerCase } from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import EmptyCart from '@/appImages/empty_cart.png';
 import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -28,20 +28,25 @@ import SaleNotification from '@/components/cart/SaleNotification';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
+import GuestOrderModal from '@/components/modals/GuestOrderModal';
+import { useRouter } from 'next/router';
 
 type Props = { url: string };
 
 export default function Cart({ url }: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const {
     customer: { userAgent },
     searchParams: { method },
     Cart: { enable_promocode, promocode },
+    customer: { id: customer_id },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
@@ -204,15 +209,14 @@ export default function Cart({ url }: Props) {
 
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
-    console.log('promo', value);
+    // console.log('promo', value);
+    //  don't check if dest is selected cause promo is not showing if cart is empty
+
     /*
-    check if area or branch exists
     check if promo val is not empty or undef
     if user is logged in or guest   ===> later
     */
-    if (!destID) {
-      // open pickup deliver model
-    }
+
     // remove promo if exists
     if (enable_promocode) {
       dispatch(resetPromo());
@@ -254,11 +258,16 @@ export default function Cart({ url }: Props) {
     = check  if guest or user 
     = navigate
     */
+    if (customer_id) {
+      router.push(appLinks.cheeckout.path);
+    } else {
+      // show sign in modal
+      setOpenAuthModal(true);
+    }
   };
 
   /*
-  apply promo code ====> api modification
-  tempid and area_branch in cart req , remove , inc and dec
+  btn msg when min charge and  sale notification
   */
 
   return (
@@ -300,7 +309,7 @@ export default function Cart({ url }: Props) {
           </div>
         ) : isSuccess ? (
           <div>
-            {/* <SaleNotification /> */}
+            <SaleNotification />
             <div className="p-5">
               {cartItems?.data?.Cart.map((product) => (
                 <CartProduct
@@ -326,6 +335,12 @@ export default function Cart({ url }: Props) {
                 <PaymentSummary data={cartItems?.data} />
               </div>
             </div>
+
+            <CheckoutFixedBtn
+              url={url}
+              cart={true}
+              handelContinueInCart={() => handelContinue()}
+            />
           </div>
         ) : (
           <div>
@@ -335,7 +350,11 @@ export default function Cart({ url }: Props) {
           </div>
         )}
       </div>
-      <CheckoutFixedBtn url={url} />
+      <GuestOrderModal
+        isOpen={openAuthModal}
+        url={url}
+        closeModal={() => setOpenAuthModal(false)}
+      />
     </MainContentLayout>
   );
 }

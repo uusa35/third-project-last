@@ -9,7 +9,6 @@ import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
 import ArrowUpStatusIcon from '@/appIcons/status_home_up_arrow.svg';
 import {
   useGetCartProductsQuery,
-  useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '../types';
@@ -21,9 +20,15 @@ import {
 
 type Props = {
   url: string;
+  cart?: boolean;
+  handelContinueInCart?: () => void;
 };
 
-export default function CheckoutFixedBtn({ url }: Props) {
+export default function CheckoutFixedBtn({
+  url,
+  cart = false,
+  handelContinueInCart = () => {},
+}: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -71,7 +76,13 @@ export default function CheckoutFixedBtn({ url }: Props) {
           cartItems?.data?.Cart &&
           cartItems?.data?.Cart.length > 0 && (
             <div
-              onClick={() => router.push(appLinks.cart.path)}
+              onClick={() => {
+                if (cart) {
+                  handelContinueInCart();
+                } else {
+                  router.push(appLinks.cart.path);
+                }
+              }}
               className="flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer"
               style={{ backgroundColor: color }}
             >
@@ -83,7 +94,7 @@ export default function CheckoutFixedBtn({ url }: Props) {
                   {cartItems?.data?.Cart.length}
                 </p>
                 <p suppressHydrationWarning={suppressText}>
-                  {t('go_to_checkout')}
+                  {cart ? t('go_to_checkout') : t('review_order')}
                 </p>
               </div>
 
@@ -94,27 +105,29 @@ export default function CheckoutFixedBtn({ url }: Props) {
           )}
 
         {/* order status  btn*/}
-        <div
-          className="flex items-center gap-x-2 justify-between rounded-full text-white w-full py-2 px-4 my-3"
-          style={{ backgroundColor: color }}
-        >
-          <div className="flex items-center gap-x-2">
-            <div>
-              <DeliveryStatusIcon />
+        {!cart && (
+          <div
+            className="flex items-center gap-x-2 justify-between rounded-full text-white w-full py-2 px-4 my-3"
+            style={{ backgroundColor: color }}
+          >
+            <div className="flex items-center gap-x-2">
+              <div>
+                <DeliveryStatusIcon />
+              </div>
+              <div>
+                <p suppressHydrationWarning={suppressText} className="">
+                  Order Ready For Deliver
+                </p>
+                <p suppressHydrationWarning={suppressText} className="text-xs">
+                  Estimated Time 2:00-2:30 PM
+                </p>
+              </div>
             </div>
             <div>
-              <p suppressHydrationWarning={suppressText} className="">
-                Order Ready For Deliver
-              </p>
-              <p suppressHydrationWarning={suppressText} className="text-xs">
-                Estimated Time 2:00-2:30 PM
-              </p>
+              <ArrowUpStatusIcon />
             </div>
           </div>
-          <div>
-            <ArrowUpStatusIcon />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

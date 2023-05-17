@@ -161,6 +161,8 @@
   "order_items": "عناصر الطلب",
   "contact_us": "اتصل بنا",
   "cash_on_delivery": "الدفع عند الاستلام",
-  "order": "طلب"
+  "order": "طلب",
+  "review_order":"مراجعة الطلب",
+  "please_select_payment_method": "من فضلك اختر طريقة الدفع"
 
 }
