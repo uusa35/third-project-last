@@ -79,6 +79,7 @@ import {
 } from '@/redux/api/cartApi';
 import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
+import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   product: Product;
@@ -114,8 +115,11 @@ const ProductShow: NextPage<Props> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [productOutStock, setProductOutStock] = useState<boolean>();
+  const DestinationId = useAppSelector(destinationId);
+  const desObject = useAppSelector(destinationHeaderObject);
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  console.log({ desObject })
   const {
     data: element,
     isSuccess,
@@ -123,8 +127,7 @@ const ProductShow: NextPage<Props> = ({
   } = useGetProductQuery({
     id: product.id,
     lang,
-    ...(destination?.id && { branch_id: destination?.id }),
-    ...(destination?.id && { area_id: destination?.id }),
+    destination: desObject,
     url,
   });
 
@@ -221,15 +224,12 @@ const ProductShow: NextPage<Props> = ({
     currentQty,
     productCart.ExtraNotes,
   ]);
-
-  useEffect(() => {
-    if (
-      document.referrer === '/address/select/area' ||
-      document.referrer === '/address/select/branch'
-    ) {
-      setIsOpen(true);
-    }
-  }, []);
+  
+  // useEffect(() => {
+  //   if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
+  //     setIsOpen(true)
+  //   }
+  // }, []);
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
@@ -469,7 +469,7 @@ const ProductShow: NextPage<Props> = ({
       if (!isEmpty(productCart) && userAgent) {
         await triggerAddToCart({
           process_type: method,
-          area_branch: destination?.id,
+          destination: desObject,
           body: {
             UserAgent: userAgent,
             Cart:
@@ -944,78 +944,69 @@ const ProductShow: NextPage<Props> = ({
                 />
               </div>
             </div>
-            <div className="sticky bottom-0 bg-white">
-              <div className="flex justify-center items-center w-full px-8">
-                <div
-                  className={`flex flex-row justify-center items-center my-4 capitalize`}
-                >
-                  <div className="flex flex-row-reverse items-center">
-                    <button
-                      onClick={handleIncrease}
-                      type="button"
-                      className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
-                      style={{ backgroundColor: color }}
-                    >
-                      +
-                    </button>
-                    <span className="px-5 text-xl font-semibold">
-                      {currentQty}
-                    </span>
-                    <button
-                      disabled={currentQty === 0}
-                      onClick={handleDecrease}
-                      type="button"
-                      className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
-                    >
-                      -
-                    </button>
-                  </div>
+          <div className="sticky bottom-0 bg-white">
+            <div className="flex justify-center items-center w-full px-8">
+              <div
+                className={`flex flex-row justify-center items-center my-4 capitalize`}
+              >
+                <div className="flex flex-row-reverse items-center">
+                  <button
+                    onClick={handleIncrease}
+                    type="button"
+                    className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                    style={{ backgroundColor: color }}
+                  >
+                    +
+                  </button>
+                  <span className="px-5 text-xl font-semibold">
+                    {currentQty}
+                  </span>
+                  <button
+                    disabled={currentQty === 0}
+                    onClick={handleDecrease}
+                    type="button"
+                    className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
+                  >
+                    -
+                  </button>
                 </div>
               </div>
-              <div className={`px-2 border-b-[1px] pb-5`}>
-                <button
-                  disabled={
-                    (parseFloat(productCart.grossTotalPrice).toFixed(3) ===
-                      '0.000' &&
-                      !method) ||
-                    productOutStock
-                  }
-                  onClick={debounce(() => handleAddToCart(), 400)}
-                  className={`${mainBtnClass} py-2`}
-                  style={{
-                    backgroundColor: color,
-                    color: `white`,
-                  }}
-                >
-                  {isNull(destination) ? (
-                    t(`start_ordering`)
-                  ) : productOutStock ? (
-                    t('out_stock')
-                  ) : (
-                    <div className="flex justify-between px-5">
-                      {t('add_to_cart')}
-                      <span
-                        className={`flex flex-row items-center gap-2 text-white`}
-                      >
-                        <p>
-                          {parseFloat(productCart?.grossTotalPrice).toFixed(
-                            3
-                          ) === '0.000'
-                            ? t(`price_on_selection`)
-                            : parseFloat(productCart.grossTotalPrice).toFixed(
-                                3
-                              )}
-                        </p>
-                        {parseFloat(productCart.grossTotalPrice).toFixed(3) !==
-                          '0.000' && (
-                          <span className={`uppercase`}>{t('kwd')}</span>
-                        )}
-                      </span>
-                    </div>
-                  )}
-                </button>
-
-                <ChangeMoodModal
+            </div>
+            <div
+              className={`px-2 border-b-[1px] pb-5`}
+            >
+              <button
+                disabled={
+                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000') ||
+                  productOutStock
+                }
+                onClick={debounce(() => handleAddToCart(), 400)}
+                className={`${mainBtnClass} py-2`}
+                style={{
+                  backgroundColor: color,
+                  color: `white`,
+                }}>
+              {isNull(destination)
+              ? t(`start_ordering`)
+              : productOutStock
+              ? t('out_stock')
+              : <div className="flex justify-between px-5">
+                {t('add_to_cart')}
+                <span className={`flex flex-row items-center gap-2 text-white`}>
+                      <p>
+                        {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
+                          ? t(`price_on_selection`)
+                          : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                      </p>
+                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                      <span className={`uppercase`}>{t('kwd')}</span>
+                    )}
+                    </span>
+                </div>
+              }  
+              </button>
+              
+              <ChangeMoodModal  
                   isOpen={isOpen}
                   onRequestClose={() => setIsOpen(false)}
                 />

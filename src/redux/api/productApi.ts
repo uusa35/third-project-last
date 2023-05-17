@@ -75,19 +75,17 @@ export const productApi = apiSlice.injectEndpoints({
       {
         id: string | number;
         lang: Locale['lang'] | string | undefined;
-        branchId?: string | null;
-        areaId?: string | null;
+        destination?: any;
         url: string;
       }
     >({
-      query: ({ id, lang, branchId = null, areaId = ``, url }: any) => ({
+      query: ({ id, lang, url, destination = {} }: any) => ({
         url: `itemDetails`,
         params: { product_id: id },
         headers: {
           url,
           lang,
-          ...(areaId && { 'x-area-id': areaId }),
-          ...(branchId && { 'x-branch-id': branchId }),
+          ...destination
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
