@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import MapMarker from '@/appIcons/location.jpg';
 import Image from 'next/image';
@@ -17,13 +17,14 @@ import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
 import { map } from 'lodash';
 import PaymentSummary from '@/components/PaymentSummary';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import ElementMap from '@/components/address/ElementMap';
 import {
   destinationId,
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   url: string;
@@ -36,6 +37,7 @@ export default function checkout({ url }: Props) {
     searchParams: { method },
     Cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
@@ -53,6 +55,13 @@ export default function checkout({ url }: Props) {
     { id: 'knet', src: <CashIcon />, name: 'pay_by_knet' },
   ];
 
+  // seturl
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
   const LocationMarker = ({ icon }: any) => (
     <Image src={icon} alt="map marker" width={30} height={30} />
   );
@@ -66,12 +75,15 @@ export default function checkout({ url }: Props) {
     isSuccess: boolean;
     isLoading: boolean;
     refetch: () => void;
-  }>({
-    UserAgent: userAgent,
-    area_branch: destObj,
-    PromoCode: promocode,
-    url,
-  });
+  }>(
+    {
+      userAgent,
+      area_branch: destObj,
+      PromoCode: promocode,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   if (!isSuccess) {
     <p>loading</p>;
@@ -115,7 +127,7 @@ export default function checkout({ url }: Props) {
             >
               {t('order_items')}
             </p>
-            {cartItems?.data?.Cart.map((product) => (
+            {cartItems?.data?.Cart?.map((product) => (
               <CartProduct product={product} checkoutProduct={true} />
             ))}
 

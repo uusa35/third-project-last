@@ -12,7 +12,10 @@ import {
 import { setLocale } from '@/redux/slices/localeSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import MainAsideLayout from './MainAsideLayout';
-import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationId,
+  destinationHeaderObject,
+} from '@/redux/slices/searchParamsSlice';
 import { setVendor } from '@/redux/slices/vendorSlice';
 import ToastAppContainer from '../ToastAppContainer';
 import moment from 'moment';
@@ -50,7 +53,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     getVendor();
-  }, [url, , method, destination,desID]);
+  }, [url, , method, destination, desID]);
 
   const getVendor = () => {
     triggerGetVendor(
@@ -78,9 +81,11 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess, tempIdSuccess]);
+  }, [vendorSuccess, tempIdSuccess, url]);
 
   const setAppDefaults = async () => {
+    console.log('userAgent',userAgent,isNull(userAgent),url)
+
     if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
         if (r && r.data && r.data.Data && r.data.Data.Id) {

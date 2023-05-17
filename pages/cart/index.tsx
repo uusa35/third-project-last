@@ -25,7 +25,7 @@ import PromoCode from '@/components/cart/PromoCode';
 import PaymentSummary from '@/components/PaymentSummary';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import SaleNotification from '@/components/cart/SaleNotification';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
 
@@ -46,6 +46,13 @@ export default function Cart({ url }: Props) {
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
+  // seturl
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
   // get cart
   const {
     data: cartItems,
@@ -58,7 +65,7 @@ export default function Cart({ url }: Props) {
     refetch: () => void;
   }>(
     {
-      UserAgent: userAgent,
+      userAgent,
       area_branch: destObj,
       PromoCode: promocode,
       url,
@@ -205,15 +212,11 @@ export default function Cart({ url }: Props) {
     */
     if (!destID) {
       // open pickup deliver model
-    } else if (!value) {
-      // enter your promocode
-      dispatch(
-        showToastMessage({
-          content: 'enter a promocode',
-          type: `info`,
-        })
-      );
-    } else {
+    }
+    // remove promo if exists
+    if (enable_promocode) {
+      dispatch(resetPromo());
+    } else if (value) {
       triggerCheckPromoCode({
         userAgent: userAgent,
         PromoCode: value,
@@ -222,7 +225,7 @@ export default function Cart({ url }: Props) {
       }).then((r: any) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
-          dispatch(setPromocode(r.data.promoCode));
+          dispatch(setPromocode(value));
 
           dispatch(
             showToastMessage({
@@ -245,7 +248,13 @@ export default function Cart({ url }: Props) {
     }
   };
 
-  const handelContinue = () => {};
+  const handelContinue = () => {
+    /*
+    = check if area or branch is selected
+    = check  if guest or user 
+    = navigate
+    */
+  };
 
   /*
   apply promo code ====> api modification
@@ -314,7 +323,7 @@ export default function Cart({ url }: Props) {
                 >
                   {t('order_review')}
                 </p>
-                <PaymentSummary />
+                <PaymentSummary data={cartItems?.data} />
               </div>
             </div>
           </div>

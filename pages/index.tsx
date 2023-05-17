@@ -28,6 +28,7 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -40,11 +41,19 @@ export default function Home({ url, element, currentLocale }: Props) {
     locale: { lang },
     searchParams: { destination, method },
   } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const router = useRouter();
 
   console.log('desObject', desObject);
+
+  // seturl
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   const [
     triggerGetCategories,
@@ -102,8 +111,6 @@ export default function Home({ url, element, currentLocale }: Props) {
   // close modal when to show it
   // in main layout get vendor un comment destobj
   // line 149 in index home mdify category
-
-  
 
   return (
     <Suspense>

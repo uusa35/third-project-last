@@ -208,5 +208,6 @@
   "cart_updated_successfully": "cart updated",
   "quantity_of_out_of_stock": "quantity of out of stock",
   "promo_code_is_invalid": "promo code is invalid",
-  "promo_code_validation": "promo code activated and applied on your cart."
+  "promo_code_validation": "promo code activated and applied on your cart.",
+  "remove":"remove"
 }

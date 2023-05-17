@@ -71,8 +71,12 @@ import FavouriteAndShare from '@/components/ProductShow/FavouriteAndShare';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { West, East } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import ContentLoader from '@/components/skeletons'; 
-import { useGetCartProductsQuery, useAddToCartMutation, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import ContentLoader from '@/components/skeletons';
+import {
+  useGetCartProductsQuery,
+  useAddToCartMutation,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
 
@@ -96,9 +100,10 @@ const ProductShow: NextPage<Props> = ({
     searchParams: { method, destination },
     customer: { userAgent },
     vendor: { logo },
+    Cart: { promocode }
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  console.log({ destination, method })
+  console.log({ destination, method });
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1
@@ -127,7 +132,10 @@ const ProductShow: NextPage<Props> = ({
   // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
     if (isSuccess && element.Data) {
-      setProductOutStock(element.Data.never_out_of_stock === 0 && element.Data.amount <= currentQty);
+      setProductOutStock(
+        element.Data.never_out_of_stock === 0 &&
+          element.Data.amount <= currentQty
+      );
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
       }
@@ -213,10 +221,13 @@ const ProductShow: NextPage<Props> = ({
     currentQty,
     productCart.ExtraNotes,
   ]);
-  
+
   useEffect(() => {
-    if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
-      setIsOpen(true)
+    if (
+      document.referrer === '/address/select/area' ||
+      document.referrer === '/address/select/branch'
+    ) {
+      setIsOpen(true);
     }
   }, []);
   const customAnimation = {
@@ -394,7 +405,8 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const { data: cartItems } = useGetCartProductsQuery({
-    UserAgent: userAgent,
+    userAgent,
+    PromoCode: promocode,
     area_branch:
       method === `pickup`
         ? { 'x-branch-id': destination?.id }
@@ -442,7 +454,7 @@ const ProductShow: NextPage<Props> = ({
     if (
       (method === `pickup` && !destination?.id) ||
       (method === `delivery` && !destination?.id) ||
-      (isNull(method))
+      isNull(method)
     ) {
       setIsOpen(true);
     }
@@ -469,13 +481,14 @@ const ProductShow: NextPage<Props> = ({
         }).then((r: any) => {
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({
-              UserAgent: userAgent,
+              userAgent,
               area_branch:
                 method === `pickup` && destination?.id
                   ? { 'x-branch-id': destination?.id }
                   : method === `delivery` && destination?.id
                   ? { 'x-area-id': destination?.id }
                   : {},
+                  PromoCode: promocode,
               url,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
@@ -511,24 +524,23 @@ const ProductShow: NextPage<Props> = ({
             });
           } else {
             if (r.error && r.error.data) {
-              if(r.error.data.msg.includes('not available')) {
+              if (r.error.data.msg.includes('not available')) {
                 setIsOpenNotAvailable(true);
-              }
-              else { 
+              } else {
                 dispatch(
-                showToastMessage({
-                  content: r.error.data.msg
-                    ? lowerCase(
-                        kebabCase(
-                          r.error.data.msg.isArray
-                            ? first(values(r.error.data.msg))
-                            : r.error.data.msg
+                  showToastMessage({
+                    content: r.error.data.msg
+                      ? lowerCase(
+                          kebabCase(
+                            r.error.data.msg.isArray
+                              ? first(values(r.error.data.msg))
+                              : r.error.data.msg
+                          )
                         )
-                      )
-                    : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
-                  type: `error`,
-                })
-                ); 
+                      : 'select_a_branch_or_area_before_order_or_some_fields_are_required_missing',
+                    type: `error`,
+                  })
+                );
               }
             } else {
             }
@@ -555,69 +567,65 @@ const ProductShow: NextPage<Props> = ({
       <MainContentLayout url={url}>
         {isSuccess && !isNull(element) && element.Data ? (
           <>
-          <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
-            <button onClick={() => router.back()}>
-            {router.locale === 'en' ? (
-              <West />
-            ) : (
-              <East />
-            )}
-            </button>
-            <TextTrans
-              ar={element?.Data?.name_ar}
-              en={element?.Data?.name_en}
-              style={{
-                maxWidth: '30ch',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                display: 'block',
-                color: `black`,
-              }}
-            />
-            <FavouriteAndShare />
-          </div>
+            <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
+              <button onClick={() => router.back()}>
+                {router.locale === 'en' ? <West /> : <East />}
+              </button>
+              <TextTrans
+                ar={element?.Data?.name_ar}
+                en={element?.Data?.name_en}
+                style={{
+                  maxWidth: '30ch',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  display: 'block',
+                  color: `black`,
+                }}
+              />
+              <FavouriteAndShare />
+            </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
                 {!isEmpty(element?.Data?.img) ? (
                   <Carousel
-                  className={`w-full h-full`}
-                  height={'40vh'}
-                  navButtonsAlwaysInvisible={true}
-                  indicatorIconButtonProps={{
-                    style: {
-                      padding: '1px', 
-                      color: 'lightgray'    
-                    },
-                  }}
-                  activeIndicatorIconButtonProps={{
-                    style: {
-                      padding: '0.5px', 
-                      fontSize: '1px',
-                      color
-                    },
-                  }}
-                  indicatorContainerProps={{
-                    style: {
-                      marginTop: '2px', // 5
-                    },
-                  }}
-                  indicators={element?.Data?.img.length > 1}
-                >
-                  {map(element?.Data?.img, (image: img, i) => (
-                    <Image
-                      src={`${
-                        image && image.original
-                          ? imgUrl(image.original)
-                          : NoFoundImage.src
-                      }`}
-                      alt={element?.Data?.name ?? ``}
-                      sizes="(max-width: 768px) 100vw,
+                    className={`w-full h-full`}
+                    height={'40vh'}
+                    navButtonsAlwaysInvisible={true}
+                    indicatorIconButtonProps={{
+                      style: {
+                        padding: '1px',
+                        color: 'lightgray',
+                      },
+                    }}
+                    activeIndicatorIconButtonProps={{
+                      style: {
+                        padding: '0.5px',
+                        fontSize: '1px',
+                        color,
+                      },
+                    }}
+                    indicatorContainerProps={{
+                      style: {
+                        marginTop: '2px', // 5
+                      },
+                    }}
+                    indicators={element?.Data?.img.length > 1}
+                  >
+                    {map(element?.Data?.img, (image: img, i) => (
+                      <Image
+                        src={`${
+                          image && image.original
+                            ? imgUrl(image.original)
+                            : NoFoundImage.src
+                        }`}
+                        alt={element?.Data?.name ?? ``}
+                        sizes="(max-width: 768px) 100vw,
                       (max-width: 1200px) 50vw,
                       33vw"
-                      fill={true}
-                    />
-                  ))}
+                        fill={true}
+                      />
+                    ))}
                   </Carousel>
                 ) : (
                   <CustomImage
@@ -700,13 +708,22 @@ const ProductShow: NextPage<Props> = ({
                 >
                   <div className="flex justify-between">
                     <div>
-                    <p className="text-lg">
-                      {t('select')} <TextTrans ar={s.title_ar} en={s.title_en} />
-                    </p>
-                    <p>{s.must_select === 'single' ? t('select1') : t('multi_selection')}</p>
+                      <p className="text-lg">
+                        {t('select')}{' '}
+                        <TextTrans ar={s.title_ar} en={s.title_en} />
+                      </p>
+                      <p>
+                        {s.must_select === 'single'
+                          ? t('select1')
+                          : t('multi_selection')}
+                      </p>
                     </div>
                     <div className="text-sm text-center bg-gray-100 rounded-full w-20 h-8 pt-1">
-                    <span>{s.selection_type === 'mandatory' ? t('required') : t('optional')}</span>
+                      <span>
+                        {s.selection_type === 'mandatory'
+                          ? t('required')
+                          : t('optional')}
+                      </span>
                     </div>
                   </div>
                   {s.hidden ? (
@@ -725,10 +742,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                           style={{ accentColor: color }}
                         />
-                        <label
-                          htmlFor={s.title}
-                          className="mx-3 block text-sm"
-                        >
+                        <label htmlFor={s.title} className="mx-3 block text-sm">
                           {t('yes')}
                         </label>
                       </div>
@@ -754,10 +768,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4"
                           style={{ accentColor: color }}
                         />
-                        <label
-                          htmlFor={s.title}
-                          className="mx-3 block text-sm"
-                        >
+                        <label htmlFor={s.title} className="mx-3 block text-sm">
                           {t('no')}
                         </label>
                       </div>
@@ -779,7 +790,7 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                       {s.must_select === 'q_meter' &&
+                      {s.must_select === 'q_meter' &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-600 pb-3`}>
                           {t(`must_select_min_and_max`, {
@@ -802,8 +813,11 @@ const ProductShow: NextPage<Props> = ({
                             >
                               <div className={`space-y-1`}>
                                 <div>
-                                  <TextTrans ar={c.name_ar} en={c.name_en}
-                                    style={{ color }} />
+                                  <TextTrans
+                                    ar={c.name_ar}
+                                    en={c.name_en}
+                                    style={{ color }}
+                                  />
                                 </div>
                                 <div>
                                   +{c.price}{' '}
@@ -813,7 +827,7 @@ const ProductShow: NextPage<Props> = ({
                                 </div>
                               </div>
                               <div>
-                              <button
+                                <button
                                   disabled={
                                     currentQty === 0 ||
                                     first(
@@ -834,10 +848,9 @@ const ProductShow: NextPage<Props> = ({
                                   type="button"
                                   className={`w-7 h-7 text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
                                   style={{ borderColor: color, color }}
-        
                                 >
                                   -
-                              </button>
+                                </button>
                                 <span className="text-black text-xl font-semibold px-5">
                                   {filter(
                                     productCart?.QuantityMeters,
@@ -847,17 +860,12 @@ const ProductShow: NextPage<Props> = ({
                                 <button
                                   disabled={currentQty < 1}
                                   onClick={() =>
-                                    handleSelectAddOn(
-                                      s,
-                                      c,
-                                      s.must_select,
-                                      true
-                                    )
+                                    handleSelectAddOn(s, c, s.must_select, true)
                                   }
                                   type="button"
                                   className="w-7 h-7 text-white text-lg font-semibold rounded-full pb-3 bg-red-600 disabled:bg-gray-200 disabled:cursor-not-allowed"
                                 >
-                                    +
+                                  +
                                 </button>
                               </div>
                             </div>
@@ -936,79 +944,87 @@ const ProductShow: NextPage<Props> = ({
                 />
               </div>
             </div>
-          <div className="sticky bottom-0 bg-white">
-            <div className="flex justify-center items-center w-full px-8">
-              <div
-                className={`flex flex-row justify-center items-center my-4 capitalize`}
-              >
-                <div className="flex flex-row-reverse items-center">
-                  <button
-                    onClick={handleIncrease}
-                    type="button"
-                    className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
-                    style={{ backgroundColor: color }}
-                  >
-                    +
-                  </button>
-                  <span className="px-5 text-xl font-semibold">
-                    {currentQty}
-                  </span>
-                  <button
-                    disabled={currentQty === 0}
-                    onClick={handleDecrease}
-                    type="button"
-                    className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
-                  >
-                    -
-                  </button>
+            <div className="sticky bottom-0 bg-white">
+              <div className="flex justify-center items-center w-full px-8">
+                <div
+                  className={`flex flex-row justify-center items-center my-4 capitalize`}
+                >
+                  <div className="flex flex-row-reverse items-center">
+                    <button
+                      onClick={handleIncrease}
+                      type="button"
+                      className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                      style={{ backgroundColor: color }}
+                    >
+                      +
+                    </button>
+                    <span className="px-5 text-xl font-semibold">
+                      {currentQty}
+                    </span>
+                    <button
+                      disabled={currentQty === 0}
+                      onClick={handleDecrease}
+                      type="button"
+                      className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
+                    >
+                      -
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              className={`px-2 border-b-[1px] pb-5`}
-            >
-              <button
-                disabled={
-                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-                    !method) ||
-                  productOutStock
-                }
-                onClick={debounce(() => handleAddToCart(), 400)}
-                className={`${mainBtnClass} py-2`}
-                style={{
-                  backgroundColor: color,
-                  color: `white`,
-                }}>
-              {isNull(destination)
-              ? t(`start_ordering`)
-              : productOutStock
-              ? t('out_stock')
-              : <div className="flex justify-between px-5">
-                {t('add_to_cart')}
-                <span className={`flex flex-row items-center gap-2 text-white`}>
-                      <p>
-                        {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-                          ? t(`price_on_selection`)
-                          : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                      </p>
-                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                      <span className={`uppercase`}>{t('kwd')}</span>
-                    )}
-                    </span>
-                </div>
-              }  
-              </button>
-              
-              <ChangeMoodModal  
+              <div className={`px-2 border-b-[1px] pb-5`}>
+                <button
+                  disabled={
+                    (parseFloat(productCart.grossTotalPrice).toFixed(3) ===
+                      '0.000' &&
+                      !method) ||
+                    productOutStock
+                  }
+                  onClick={debounce(() => handleAddToCart(), 400)}
+                  className={`${mainBtnClass} py-2`}
+                  style={{
+                    backgroundColor: color,
+                    color: `white`,
+                  }}
+                >
+                  {isNull(destination) ? (
+                    t(`start_ordering`)
+                  ) : productOutStock ? (
+                    t('out_stock')
+                  ) : (
+                    <div className="flex justify-between px-5">
+                      {t('add_to_cart')}
+                      <span
+                        className={`flex flex-row items-center gap-2 text-white`}
+                      >
+                        <p>
+                          {parseFloat(productCart?.grossTotalPrice).toFixed(
+                            3
+                          ) === '0.000'
+                            ? t(`price_on_selection`)
+                            : parseFloat(productCart.grossTotalPrice).toFixed(
+                                3
+                              )}
+                        </p>
+                        {parseFloat(productCart.grossTotalPrice).toFixed(3) !==
+                          '0.000' && (
+                          <span className={`uppercase`}>{t('kwd')}</span>
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </button>
+
+                <ChangeMoodModal
                   isOpen={isOpen}
                   onRequestClose={() => setIsOpen(false)}
-              />
-              <ChangeMood3Modal 
-                isOpen={isNotAvailable}
-                onRequestClose={() => setIsOpenNotAvailable(false)}
-              />
+                />
+                <ChangeMood3Modal
+                  isOpen={isNotAvailable}
+                  onRequestClose={() => setIsOpenNotAvailable(false)}
+                />
+              </div>
             </div>
-          </div>
           </>
         ) : (
           <ContentLoader type="ProductShow" sections={1} />
@@ -1024,7 +1040,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
-      console.log({ id })
+      console.log({ id });
       if (!id || !req.headers.host) {
         return {
           notFound: true,
@@ -1043,7 +1059,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           // ...(destination?.id ? { branch_id: destination?.id } : {}),
           // ...(destination?.id ? { area_id: destination?.id } : {}),
           url: req.headers.host,
-        }) 
+        })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {

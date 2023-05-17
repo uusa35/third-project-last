@@ -1,13 +1,16 @@
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { appLinks, suppressText } from '../constants';
 import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
 import PrepareStatusIcon from '@/appIcons/status_home_prepare.svg';
 import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
 import ArrowUpStatusIcon from '@/appIcons/status_home_up_arrow.svg';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import {
+  useGetCartProductsQuery,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '../types';
 import { useRouter } from 'next/router';
@@ -44,13 +47,17 @@ export default function CheckoutFixedBtn({ url }: Props) {
     refetch: () => void;
   }>(
     {
-      UserAgent: userAgent,
+      userAgent,
       area_branch: destObj,
       PromoCode: promocode,
       url,
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  useEffect(() => {
+    refetchCart();
+  }, []);
 
   return (
     <div>
