@@ -75,7 +75,7 @@ import ContentLoader from '@/components/skeletons';
 import { useGetCartProductsQuery, useAddToCartMutation, useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
 import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
-import { destinationId, destinationObject } from '@/redux/slices/searchParamsSlice';
+import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   product: Product;
@@ -111,7 +111,7 @@ const ProductShow: NextPage<Props> = ({
   const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [productOutStock, setProductOutStock] = useState<boolean>();
   const DestinationId = useAppSelector(destinationId);
-  const desObject = useAppSelector(destinationObject);
+  const desObject = useAppSelector(destinationHeaderObject);
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
   console.log({ desObject })
@@ -398,8 +398,9 @@ const ProductShow: NextPage<Props> = ({
 
   const { data: cartItems } = useGetCartProductsQuery({
     UserAgent: userAgent,
-    destination: desObject,
+    area_branch: desObject,
     url,
+    PromoCode: ''
   });
   const handelCartPayload = () => {
     let items = map(cartItems?.data.Cart, (i) => {
@@ -470,8 +471,9 @@ const ProductShow: NextPage<Props> = ({
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({
               UserAgent: userAgent,
-              destination: desObject,
+              area_branch: desObject,
               url,
+              PromoCode: ''
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
                 dispatch(

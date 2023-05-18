@@ -18,7 +18,7 @@ import { orderApi } from '@/redux/api/orderApi';
 import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useAppSelector } from '@/redux/hooks';
-import { destinationId, destinationObject } from '@/redux/slices/searchParamsSlice';
+import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { map } from 'lodash';
 import NeedHelpIcon from '@/appIcons/need_help.svg';
 import CancelIcon from '@/appIcons/cancel_order.svg';
@@ -34,7 +34,7 @@ export default function OrderSuccess({ element, url }: Props) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const DestinationId = useAppSelector(destinationId);
-  const desObject = useAppSelector(destinationObject);
+  const desObject = useAppSelector(destinationHeaderObject);
   console.log({ DestinationId, desObject  })
   const {
     customer: { userAgent },
@@ -52,6 +52,7 @@ export default function OrderSuccess({ element, url }: Props) {
     UserAgent: userAgent,
     area_branch: desObject,
     url,
+    PromoCode: ''
   });
 
   if (!isSuccess) {
