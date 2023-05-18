@@ -16,7 +16,7 @@ const initialState: CustomerInfo = {
     latitude: ``,
   },
   prefrences: {
-    type: '',
+    type: '', // delivery_now or pickup_now
     date: '',
     time: '',
   },
