@@ -120,6 +120,12 @@ export type appSetting = {
 export interface ServerCart {
   UserAgent?: string | null;
   Cart: ProductCart[];
+  total_cart_after_tax?: number;
+  promo_code_discount?: number;
+  tax?: number;
+  free_delivery?: boolean;
+  delivery_fee?:string
+  sub_total?: number;
   subTotal: number;
   total: number;
   delivery_fees: string;
@@ -306,6 +312,7 @@ export interface OrderUser {
   user_id: number;
   order_type: string;
   UserAgent: string;
+  PromoCode?:string
   Date?: string;
   Time?: string;
   Messg: string;
