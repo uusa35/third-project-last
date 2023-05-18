@@ -20,6 +20,10 @@ import PaymentSummary from '@/components/PaymentSummary';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import ElementMap from '@/components/address/ElementMap';
+import {
+  destinationId,
+  destinationHeaderObject,
+} from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   url: string;
@@ -27,6 +31,13 @@ type Props = {
 
 export default function checkout({ url }: Props) {
   const { t } = useTranslation();
+  const {
+    customer: { userAgent },
+    searchParams: { method },
+    Cart: { enable_promocode, promocode },
+  } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
+  const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     string | null
@@ -56,9 +67,9 @@ export default function checkout({ url }: Props) {
     isLoading: boolean;
     refetch: () => void;
   }>({
-    UserAgent:
-      'd972045e-e95b-40c6-be47-238997fef4e9-gmbLgjJ0l6qb4HNf9nGxHkWme7WfsHxF-b600ecbf098431ae282945af21228d14',
-    area_branch: { 'x-area-id': 26 },
+    UserAgent: userAgent,
+    area_branch: destObj,
+    PromoCode: promocode,
     url,
   });
 

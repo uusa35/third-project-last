@@ -12,9 +12,8 @@ import {
 import { setLocale } from '@/redux/slices/localeSlice';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import MainAsideLayout from './MainAsideLayout';
-import { destinationObject } from '@/redux/slices/searchParamsSlice';
+import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import ToastAppContainer from '../ToastAppContainer';
 import moment from 'moment';
 import * as yup from 'yup';
@@ -38,7 +37,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const desObject = useAppSelector(destinationObject);
+  const desObject = useAppSelector(destinationHeaderObject);
+  const desID = useAppSelector(destinationId);
+
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
 
@@ -49,7 +50,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     getVendor();
-  }, [url]);
+  }, [url, , method, destination,desID]);
 
   const getVendor = () => {
     triggerGetVendor(

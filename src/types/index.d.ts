@@ -1,6 +1,5 @@
 import { Address } from '@/types/queries';
 
-
 export interface Product {
   id: number;
   amount: number;
@@ -58,6 +57,7 @@ export interface Vendor {
   delivery_pickup_type: string;
   theme_color: string;
   status: string;
+  slider: string[];
   phone: string;
   desc: string;
   cover: string;
@@ -354,4 +354,9 @@ export interface RadioBtnsAddons {
 export interface CheckBoxesAddons {
   addonID: number;
   addons: CartAddons[];
+}
+
+export interface Cart {
+  enable_promocode: boolean;
+  promocode: string;
 }

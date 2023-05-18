@@ -4,27 +4,23 @@ import PromotionIcon from '@/appIcons/promotion.svg';
 import PromocodeIcon from '@/appIcons/promocode.svg';
 import {
   useGetPromoCodesQuery,
-  useLazyCheckPromoCodeQuery,
 } from '@/redux/api/cartApi';
-import { useAppSelector } from '@/redux/hooks';
-import {
-  destinationObject,
-  destinationId,
-} from '@/redux/slices/searchParamsSlice';
 import { AppQueryResult } from '@/types/queries';
 import { isEmpty } from 'lodash';
 
-type Props = { url: string };
+type Props = {
+  url: string;
+  handelApplyPromoCode: (value: string | undefined) => void;
+};
 
-export default function PromoCode({ url }: Props) {
+export default function PromoCode({
+  url,
+  handelApplyPromoCode = () => {},
+}: Props) {
   const { t } = useTranslation();
-  const area_branch = useAppSelector(destinationObject);
-  const area_branch_id = useAppSelector(destinationId);
   const [promoCodeVal, setPromoCodeVal] = useState<string | undefined>(
     undefined
   );
-
-  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
   const {
     data: promoCodes,
@@ -42,31 +38,9 @@ export default function PromoCode({ url }: Props) {
     { refetchOnMountOrArgChange: true }
   );
 
-  // move this func to the index to refetch the cart from there and pass it as params
-  const handelApplyPromocode = () => {
-    /*
-    check if cart is not empty 
-    check if area or branch exists
-    check if promo val is not empty or undef
-    if user is logged in or guest   ===> later
 
-    */
+  // remove this part later line 81
 
-    triggerCheckPromoCode({
-      userAgent:
-        'd972045e-e95b-40c6-be47-238997fef4e9-gmbLgjJ0l6qb4HNf9nGxHkWme7WfsHxF-b600ecbf098431ae282945af21228d14',
-      PromoCode: promoCodeVal,
-      url,
-      area_branch: { 'x-area-id': 26 },
-    }).then((r: any) => {
-      console.log(r);
-      // refetch cart
-    });
-  };
-
-  if (promoCodesSuccess) {
-    console.log(promoCodes);
-  }
   return (
     <div>
       <p className="font-bold mt-3">{t('promotions')}</p>
@@ -83,7 +57,7 @@ export default function PromoCode({ url }: Props) {
             type="text"
           />
         </div>
-        <button onClick={() => handelApplyPromocode()}>{t('apply')}</button>
+        <button onClick={() => handelApplyPromoCode(promoCodeVal)}>{t('apply')}</button>
       </div>
 
       <div className="pb-4 border-b">
@@ -100,6 +74,8 @@ export default function PromoCode({ url }: Props) {
                 {prmocode}
               </div>;
             })}
+
+            {/* remove this part later */}
             <div
               onClick={() => {
                 setPromoCodeVal('hgjhgkjhkjhkj');

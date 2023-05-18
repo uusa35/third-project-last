@@ -101,7 +101,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
         <Link
           href={appLinks.vendorDetails.path}
           scroll={true}
-          className={`flex-none pt-4 grayscale`}
+          className={`flex-none grayscale`}
         >
           <InfoOutlined className="w-6 h-6 lg:w-8 lg:h-8" style={{ color }} />
         </Link>

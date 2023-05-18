@@ -34,7 +34,7 @@ import {
   BuildingStorefrontIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
-import { destinationObject } from '@/redux/slices/searchParamsSlice';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import HorizentalLine from './HorizentalLine';
 import AppFooter from './AppFooter';
 

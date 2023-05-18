@@ -156,6 +156,9 @@
   "order_items": "عناصر الطلب",
   "contact_us": "اتصل بنا",
   "cash_on_delivery": "الدفع عند الاستلام",
-  "order": "طلب"
-
+  "order": "طلب",
+  "cart_updated_successfully" : "تم تحديث عربة التسوق",
+  "quantity_of_out_of_stock" : "هذا المنتج غير متاح",
+  "promo_code_is_invalid" : "رقم الكوبون غير صحيح",
+  "promo_code_validation" : "تم تفعيل كود الخصم"
 }

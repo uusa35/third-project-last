@@ -44,15 +44,16 @@ export const cartApi = apiSlice.injectEndpoints({
       {
         UserAgent: string;
         url: string;
-        destination: any;
+        area_branch: any;
+        PromoCode: string;
       }
     >({
-      query: ({ UserAgent, url, destination }) => ({
-        url: `shoppingCart`,
-        params: { UserAgent },
+      query: ({ UserAgent, url, area_branch, PromoCode }) => ({
+        url: `cartPromoCode`,
+        params: { UserAgent, PromoCode },
         headers: {
           url,
-          ...destination,
+          ...area_branch,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

@@ -15,6 +15,7 @@ import { vendorSlice } from '@/redux/slices/vendorSlice';
 import { searchParamsSlice } from '@/redux/slices/searchParamsSlice';
 import { customerSlice } from '@/redux/slices/customerSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
+import { CartSlice } from '@/redux/slices/cartSlice';
 
 
 export const rootReducer = combineReducers({
@@ -35,5 +36,6 @@ export const rootReducer = combineReducers({
   [productApi.reducerPath]: productApi.reducer,
   [vendorApi.reducerPath]: vendorApi.reducer,
   [productCartSlice.name]: productCartSlice.reducer,
+  [CartSlice.name]: CartSlice.reducer,
   
 });
