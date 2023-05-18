@@ -10,7 +10,6 @@ import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import { filter, isEmpty, kebabCase, lowerCase } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import EmptyCart from '@/appImages/empty_cart.png';
 import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -18,7 +17,6 @@ import {
   destinationId,
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
-import Link from 'next/link';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import PromoCode from '@/components/cart/PromoCode';
@@ -30,6 +28,7 @@ import ContentLoader from '@/components/skeletons';
 import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
+import EmptyCart from '@/components/cart/EmptyCart';
 
 type Props = { url: string };
 
@@ -275,38 +274,7 @@ export default function Cart({ url }: Props) {
       {/* if cart is empty */}
       <div className={''}>
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
-          <div className="flex flex-col items-center justify-center p-5">
-            <CustomImage
-              src={EmptyCart.src}
-              alt="empty_cart"
-              className="w-2/3 h-auto my-5 px-3"
-              width={100}
-              height={100}
-            />
-            <div className="capitalize text-center">
-              <p
-                suppressHydrationWarning={suppressText}
-                className="font-bold pb-1"
-              >
-                {t('your_cart_is_empty')}
-              </p>
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-[#544A45] text-sm mb-5"
-              >
-                {t('add_some_items_to_your_cart')}
-              </p>
-
-              <Link
-                href={appLinks.home.path}
-                scroll={true}
-                className={`w-full text-sm px-4 py-2 text-white rounded-full`}
-                style={{ backgroundColor: color }}
-              >
-                {t('continue_shopping')}
-              </Link>
-            </div>
-          </div>
+          <EmptyCart />
         ) : isSuccess ? (
           <div>
             <SaleNotification />

@@ -156,6 +156,7 @@
   "your_address": "عنوانك",
   "contact_info": "معلومات الاتصال",
   "delivery_time": "وقت التوصيل",
+  "pickup_time":"وقت الاستلام",
   "payment_method": "طريقة الدفع",
   "your_card_will_not_be_charged_until_your_order_is_placed_minutes_before_scheduled_order_time":"لن يتم تحصيل الرسوم من بطاقتك حتى يتم تقديم طلبك قبل دقائق من موعد الطلب المحدد",
   "order_items": "عناصر الطلب",
@@ -163,6 +164,10 @@
   "cash_on_delivery": "الدفع عند الاستلام",
   "order": "طلب",
   "review_order":"مراجعة الطلب",
-  "please_select_payment_method": "من فضلك اختر طريقة الدفع"
+  "please_select_payment_method": "من فضلك اختر طريقة الدفع",
+  "no_notes_added":"لا يوجد ملاحظات",
+  "branch_address":"عنوان الفرع",
+  "apartment":"شقه",
+  "house":"منزل"
 
 }
