@@ -12,6 +12,7 @@ import { FC, Suspense } from 'react';
 import ErrorHandler from '@/components/ErrorBoundary';
 import { ErrorBoundary } from 'react-error-boundary';
 import '@/styles/index.css';
+import 'react-phone-number-input/style.css';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);

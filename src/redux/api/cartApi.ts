@@ -42,27 +42,17 @@ export const cartApi = apiSlice.injectEndpoints({
     GetCartProducts: builder.query<
       AppQueryResult<ServerCart>,
       {
-        userAgent: string;
+        UserAgent: string;
         url: string;
-<<<<<<< HEAD
         destination: any;
       }
     >({
       query: ({ UserAgent, url, destination }) => ({
         url: `shoppingCart`,
         params: { UserAgent },
-=======
-        area_branch: any;
-        PromoCode: string;
-      }
-    >({
-      query: ({ userAgent, url, area_branch, PromoCode }) => ({
-        url: `cartPromoCode`,
-        params: { userAgent, PromoCode },
->>>>>>> esraa
         headers: {
           url,
-          ...area_branch,
+          ...destination,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,

@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import { appLinks, mainBtnClass, suppressText, toEn } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -127,6 +126,7 @@ const GuestOrderModal: FC<Props> = ({
                   </div>
                 </label>
               </div>
+              {/* phone */}
               <div className="pt-6 pb-5">
                 <label
                   htmlFor="phone"
