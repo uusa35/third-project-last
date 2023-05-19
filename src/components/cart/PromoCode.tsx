@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PromotionIcon from '@/appIcons/promotion.svg';
 import PromocodeIcon from '@/appIcons/promocode.svg';
-import {
-  useGetPromoCodesQuery,
-} from '@/redux/api/cartApi';
+import { useGetPromoCodesQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { isEmpty } from 'lodash';
+import { useAppSelector } from '@/redux/hooks';
+import GreenCheckIcon from '@/appIcons/check.svg';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   url: string;
@@ -18,8 +19,12 @@ export default function PromoCode({
   handelApplyPromoCode = () => {},
 }: Props) {
   const { t } = useTranslation();
+  const {
+    Cart: { promocode, enable_promocode },
+  } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
   const [promoCodeVal, setPromoCodeVal] = useState<string | undefined>(
-    undefined
+    enable_promocode ? promocode : undefined
   );
 
   const {
@@ -33,11 +38,10 @@ export default function PromoCode({
   }>(
     {
       url: url,
-      area_branch: { 'x-area-id': 26 },
+      area_branch: destObj,
     },
     { refetchOnMountOrArgChange: true }
   );
-
 
   // remove this part later line 81
 
@@ -57,7 +61,9 @@ export default function PromoCode({
             type="text"
           />
         </div>
-        <button onClick={() => handelApplyPromoCode(promoCodeVal)}>{t('apply')}</button>
+        <button onClick={() => handelApplyPromoCode(promoCodeVal)}>
+          {enable_promocode ? t('remove') : t('apply')}
+        </button>
       </div>
 
       <div className="pb-4 border-b">
@@ -68,9 +74,17 @@ export default function PromoCode({
                 onClick={() => {
                   setPromoCodeVal(prmocode);
                 }}
-                className="flex items-center gap-x-1 rounded-full border border-[#B7B1AE] w-fit text-sm py-1 px-3 cursor-pointer"
+                className={`flex items-center gap-x-1 rounded-full border ${
+                  promocode === prmocode
+                    ? 'border-[#12B76A] text-[#12B76A]'
+                    : 'border-[#B7B1AE]'
+                } w-fit text-sm py-1 px-3 cursor-pointer`}
               >
-                <PromocodeIcon />
+                {promocode === prmocode ? (
+                  <GreenCheckIcon />
+                ) : (
+                  <PromocodeIcon />
+                )}
                 {prmocode}
               </div>;
             })}
@@ -78,12 +92,16 @@ export default function PromoCode({
             {/* remove this part later */}
             <div
               onClick={() => {
-                setPromoCodeVal('hgjhgkjhkjhkj');
+                setPromoCodeVal('qweqwe');
               }}
-              className="flex items-center gap-x-1 rounded-full border border-[#B7B1AE] w-fit text-sm py-1 px-3 cursor-pointer"
+              className={`flex items-center gap-x-1 rounded-full border ${
+                promocode === 'qweqwe'
+                  ? 'border-[#12B76A] text-[#12B76A]'
+                  : 'border-[#B7B1AE]'
+              } w-fit text-sm py-1 px-3 cursor-pointer`}
             >
-              <PromocodeIcon />
-              hgjhgkjhkjhkj
+              {promocode === 'qweqwe' ? <GreenCheckIcon /> : <PromocodeIcon />}
+              qweqwe
             </div>
           </>
         )}

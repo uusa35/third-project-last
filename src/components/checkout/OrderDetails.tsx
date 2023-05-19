@@ -1,6 +1,9 @@
 import React, { ReactNode } from 'react';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import OfficeIcon from '@/appIcons/office_checkout.svg';
+import HouseIcon from '@/appIcons/house_checkout.svg';
+import ApartmentIcon from '@/appIcons/apartment_checkout.svg';
+import AddressIcon from '@/appIcons/address_checkout.svg';
 import RemarksIcon from '@/appIcons/remarks_checkout.svg';
 import ContactsIcon from '@/appIcons/contacts_checkout.svg';
 import ClockIcon from '@/appIcons/time_checkout.svg';
@@ -21,6 +24,13 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
   const color = useAppSelector(themeColor);
   const {
     locale: { lang, otherLang },
+    customer: {
+      name,
+      phone,
+      notes,
+      address: { type: address_type },
+    },
+    searchParams: { method },
   } = useAppSelector((state) => state);
 
   const DetailComponent = ({
@@ -60,10 +70,10 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
         </div>
         {OrderStatus ? (
           <></>
-          // <Link href={editPath}>
-          //   <p suppressHydrationWarning={suppressText}>{t('edit')}</p>
-          // </Link>
-        ) : router.locale === 'en' ? (
+        ) : // <Link href={editPath}>
+        //   <p suppressHydrationWarning={suppressText}>{t('edit')}</p>
+        // </Link>
+        router.locale === 'en' ? (
           <KeyboardArrowRight className="text-[#A5A5A5]" />
         ) : (
           <KeyboardArrowLeft className="text-[#A5A5A5]" />
@@ -75,22 +85,47 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
   return (
     <div>
       <DetailComponent
-        icon={<OfficeIcon />}
-        p1="your_address"
-        p2="office"
+        icon={
+          method === 'pickup' ? (
+            <AddressIcon />
+          ) : (
+            {
+              [0]: <ApartmentIcon />,
+              ['HOUSE']: <HouseIcon />,
+              [2]: <ApartmentIcon />,
+              [3]: <OfficeIcon />,
+            }[address_type as string]
+          )
+        }
+        p1={method === 'delivery' ? 'your_address' : 'branch_address'}
+        p2={
+          method === 'delivery'
+            ? {
+                [0]: '',
+                ['HOUSE']: 'house',
+                [2]: 'apartment',
+                [3]: 'office',
+              }[address_type as number]
+            : ''
+        }
         p3="Kuwait city,25 El-Gallal St , building 2 ,floor 2 , office 1"
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
       <DetailComponent
         icon={<ContactsIcon />}
         p1="contacts_info"
-        p2="Mohaned tark , +966 000 000 00"
+        p2={`${name} , ${phone}`}
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
 
       <DetailComponent
         icon={<ClockIcon />}
-        p1="delivery_time"
+        p1={
+          {
+            ['delivery']: 'delivery_time',
+            ['pickup']: 'pickup_time',
+          }[method as string]
+        }
         p2="Today 11:00 AM - 2:00 AM"
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
@@ -98,7 +133,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       <DetailComponent
         icon={<RemarksIcon />}
         p1="special_remarks"
-        p2="Ring No 3 on left"
+        p2={`${notes ? notes : 'no_notes_added'}`}
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
     </div>

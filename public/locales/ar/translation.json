@@ -145,6 +145,16 @@
   "search_for_cities_and_areas": "ابحث عن مدن ومناطق",
   "multi_selection": "متعدد الخيارات",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+  "cart_updated_successfully" : "تم تحديث عربة التسوق",
+  "quantity_of_out_of_stock" : "هذا المنتج غير متاح",
+  "promo_code_is_invalid" : "رقم الكوبون غير صحيح",
+  "promo_code_validation" : "تم تفعيل كود الخصم",
+  "remove":"ازاله",
+>>>>>>> structure
+>>>>>>> esraa
   "your_order_is_successfully_done": ".تم الطلب بنجاح",
   "estimated_time": "الوقت المتوقع",
   "success_msg":"عندما ننتهي من تجهيز طلبك ، ستتلقى مكالمة صوتية منا. قد نتصل بك لتأكيد معلومات التسليم",
@@ -152,11 +162,13 @@
   "your_address": "عنوانك",
   "contact_info": "معلومات الاتصال",
   "delivery_time": "وقت التوصيل",
+  "pickup_time":"وقت الاستلام",
   "payment_method": "طريقة الدفع",
   "your_card_will_not_be_charged_until_your_order_is_placed_minutes_before_scheduled_order_time":"لن يتم تحصيل الرسوم من بطاقتك حتى يتم تقديم طلبك قبل دقائق من موعد الطلب المحدد",
   "order_items": "عناصر الطلب",
   "contact_us": "اتصل بنا",
   "cash_on_delivery": "الدفع عند الاستلام",
+<<<<<<< HEAD
   "order": "طلب"
 
 =======
@@ -165,4 +177,14 @@
   "promo_code_is_invalid" : "رقم الكوبون غير صحيح",
   "promo_code_validation" : "تم تفعيل كود الخصم"
 >>>>>>> structure
+=======
+  "order": "طلب",
+  "cart_updated_successfully" : "تم تحديث عربة التسوق",
+  "review_order":"مراجعة الطلب",
+  "please_select_payment_method": "من فضلك اختر طريقة الدفع",
+  "no_notes_added":"لا يوجد ملاحظات",
+  "branch_address":"عنوان الفرع",
+  "apartment":"شقه",
+  "house":"منزل"
+>>>>>>> esraa
 }

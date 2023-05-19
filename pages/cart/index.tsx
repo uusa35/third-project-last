@@ -9,8 +9,7 @@ import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import { filter, isEmpty, kebabCase, lowerCase } from 'lodash';
-import React, { useEffect } from 'react';
-import EmptyCart from '@/appImages/empty_cart.png';
+import React, { useEffect, useState } from 'react';
 import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -18,33 +17,45 @@ import {
   destinationId,
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
-import Link from 'next/link';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import PromoCode from '@/components/cart/PromoCode';
 import PaymentSummary from '@/components/PaymentSummary';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import SaleNotification from '@/components/cart/SaleNotification';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
+import GuestOrderModal from '@/components/modals/GuestOrderModal';
+import { useRouter } from 'next/router';
+import EmptyCart from '@/components/cart/EmptyCart';
 
 type Props = { url: string };
 
 export default function Cart({ url }: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const {
     customer: { userAgent },
     searchParams: { method },
     Cart: { enable_promocode, promocode },
+    customer: { id: customer_id },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
+  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+
+  // seturl
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   // get cart
   const {
@@ -58,7 +69,7 @@ export default function Cart({ url }: Props) {
     refetch: () => void;
   }>(
     {
-      UserAgent: userAgent,
+      userAgent,
       area_branch: destObj,
       PromoCode: promocode,
       url,
@@ -88,7 +99,7 @@ export default function Cart({ url }: Props) {
   const handelIncRequest = (item: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-      area_branch: destID,
+      destination: destID,
       body: {
         UserAgent: userAgent,
 
@@ -125,7 +136,7 @@ export default function Cart({ url }: Props) {
   const handelDecRequest = (item: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-      area_branch: destID,
+      destination: destID,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -162,7 +173,7 @@ export default function Cart({ url }: Props) {
     const currentItems = filter(cartItems.data.Cart, (i) => i.id !== item.id);
     triggerAddToCart({
       process_type: method,
-      area_branch: destID,
+      destination: destID,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -197,23 +208,18 @@ export default function Cart({ url }: Props) {
 
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
-    console.log('promo', value);
+    // console.log('promo', value);
+    //  don't check if dest is selected cause promo is not showing if cart is empty
+
     /*
-    check if area or branch exists
     check if promo val is not empty or undef
     if user is logged in or guest   ===> later
     */
-    if (!destID) {
-      // open pickup deliver model
-    } else if (!value) {
-      // enter your promocode
-      dispatch(
-        showToastMessage({
-          content: 'enter a promocode',
-          type: `info`,
-        })
-      );
-    } else {
+
+    // remove promo if exists
+    if (enable_promocode) {
+      dispatch(resetPromo());
+    } else if (value) {
       triggerCheckPromoCode({
         userAgent: userAgent,
         PromoCode: value,
@@ -222,7 +228,7 @@ export default function Cart({ url }: Props) {
       }).then((r: any) => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
-          dispatch(setPromocode(r.data.promoCode));
+          dispatch(setPromocode(value));
 
           dispatch(
             showToastMessage({
@@ -245,11 +251,22 @@ export default function Cart({ url }: Props) {
     }
   };
 
-  const handelContinue = () => {};
+  const handelContinue = () => {
+    /*
+    = check if area or branch is selected
+    = check  if guest or user 
+    = navigate
+    */
+    if (customer_id) {
+      router.push(appLinks.cheeckout.path);
+    } else {
+      // show sign in modal
+      setOpenAuthModal(true);
+    }
+  };
 
   /*
-  apply promo code ====> api modification
-  tempid and area_branch in cart req , remove , inc and dec
+  btn msg when min charge and  sale notification
   */
 
   return (
@@ -257,41 +274,10 @@ export default function Cart({ url }: Props) {
       {/* if cart is empty */}
       <div className={''}>
         {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
-          <div className="flex flex-col items-center justify-center p-5">
-            <CustomImage
-              src={EmptyCart.src}
-              alt="empty_cart"
-              className="w-2/3 h-auto my-5 px-3"
-              width={100}
-              height={100}
-            />
-            <div className="capitalize text-center">
-              <p
-                suppressHydrationWarning={suppressText}
-                className="font-bold pb-1"
-              >
-                {t('your_cart_is_empty')}
-              </p>
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-[#544A45] text-sm mb-5"
-              >
-                {t('add_some_items_to_your_cart')}
-              </p>
-
-              <Link
-                href={appLinks.home.path}
-                scroll={true}
-                className={`w-full text-sm px-4 py-2 text-white rounded-full`}
-                style={{ backgroundColor: color }}
-              >
-                {t('continue_shopping')}
-              </Link>
-            </div>
-          </div>
+          <EmptyCart />
         ) : isSuccess ? (
           <div>
-            {/* <SaleNotification /> */}
+            <SaleNotification />
             <div className="p-5">
               {cartItems?.data?.Cart.map((product) => (
                 <CartProduct
@@ -314,9 +300,15 @@ export default function Cart({ url }: Props) {
                 >
                   {t('order_review')}
                 </p>
-                <PaymentSummary />
+                <PaymentSummary data={cartItems?.data} />
               </div>
             </div>
+
+            <CheckoutFixedBtn
+              url={url}
+              cart={true}
+              handelContinueInCart={() => handelContinue()}
+            />
           </div>
         ) : (
           <div>
@@ -326,7 +318,11 @@ export default function Cart({ url }: Props) {
           </div>
         )}
       </div>
-      <CheckoutFixedBtn url={url} />
+      <GuestOrderModal
+        isOpen={openAuthModal}
+        url={url}
+        closeModal={() => setOpenAuthModal(false)}
+      />
     </MainContentLayout>
   );
 }
