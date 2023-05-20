@@ -206,20 +206,11 @@
   "this_area": "this area",
   "select_address": "select address",
   "search_for_cities_and_areas": "search for cities and areas",
-<<<<<<< HEAD
-<<<<<<< HEAD
-  "contact_us": "contact us"
-=======
-  "cart_updated_successfully": "cart updated",
   "quantity_of_out_of_stock": "quantity of out of stock",
   "promo_code_is_invalid": "promo code is invalid",
-  "promo_code_validation": "promo code activated and applied on your cart."
->>>>>>> structure
-=======
+  "promo_code_validation": "promo code activated and applied on your cart.",
   "contact_us": "contact us",
   "cart_updated_successfully": "cart updated",
-  "quantity_of_out_of_stock": "quantity of out of stock",
-  "promo_code_is_invalid": "promo code is invalid",
   "remove":"remove",
   "review_order":"review order",
   "please_select_payment_method": "please select payment method",
@@ -227,5 +218,4 @@
   "branch_address":"branch address",
   "apartment":"apartment",
   "house":"house"
->>>>>>> esraa
 }
