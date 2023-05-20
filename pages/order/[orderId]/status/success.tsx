@@ -50,9 +50,8 @@ export default function OrderSuccess({ element, url }: Props) {
     refetch: () => void;
   }>({
     UserAgent: userAgent,
-    area_branch: desObject,
-    url,
-    PromoCode: ''
+    destination: desObject,
+    url
   });
 
   if (!isSuccess) {

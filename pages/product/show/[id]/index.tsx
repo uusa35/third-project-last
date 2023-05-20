@@ -406,9 +406,8 @@ const ProductShow: NextPage<Props> = ({
 
   const { data: cartItems } = useGetCartProductsQuery({
     UserAgent: userAgent,
-    area_branch: desObject,
-    url,
-    PromoCode: ''
+    destination: desObject,
+    url
   });
   const handelCartPayload = () => {
     let items = map(cartItems?.data.Cart, (i) => {
@@ -479,9 +478,8 @@ const ProductShow: NextPage<Props> = ({
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({
               UserAgent: userAgent,
-              area_branch: desObject,
-              url,
-              PromoCode: ''
+              destination: desObject,
+              url
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
                 dispatch(
