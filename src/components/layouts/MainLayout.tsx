@@ -23,6 +23,7 @@ import * as yup from 'yup';
 import { useLazyCreateTempIdQuery } from '@/redux/api/CustomerApi';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
+import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   children: ReactNode | undefined;
@@ -33,7 +34,7 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const {
-    appSetting: { url },
+    appSetting: { url, sideMenuOpen },
     locale,
     searchParams: { destination, method },
     customer: { userAgent },
@@ -84,7 +85,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }, [vendorSuccess, tempIdSuccess, url]);
 
   const setAppDefaults = async () => {
-    console.log('userAgent',userAgent,isNull(userAgent),url)
+    console.log('userAgent', userAgent, isNull(userAgent), url);
 
     if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
@@ -135,16 +136,24 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     setLang(router.locale);
   }, [router.locale]);
 
-  // useEffect(() => {
-  //   const handleRouteChangeError = (err: any) => {
-  //     // return router.replace(router.asPath);
-  //   };
+  useEffect(() => {
+    const handleRouteChangeStart: Handler = (url, { shallow }) => {
+      dispatch(hideSideMenu());
+    };
+    const handleChangeComplete: Handler = (url, { shallow }) => {
+      if (sideMenuOpen) {
+        dispatch(hideSideMenu());
+      }
+    };
 
-  //   router.events.on('routeChangeError', handleRouteChangeError);
-  //   return () => {
-  //     router.events.off('routeChangeError', handleRouteChangeError);
-  //   };
-  // }, [router.pathname]);
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleChangeComplete);
+    };
+  }, [router.pathname]);
 
   return (
     <div

@@ -38,6 +38,7 @@ export default function OrderSuccess({ element, url }: Props) {
   console.log({ DestinationId, desObject  })
   const {
     customer: { userAgent },
+    Cart: { promocode }
   } = useAppSelector((state) => state);
   const {
     data: cartItems,
@@ -49,9 +50,10 @@ export default function OrderSuccess({ element, url }: Props) {
     isLoading: boolean;
     refetch: () => void;
   }>({
-    UserAgent: userAgent,
-    destination: desObject,
-    url
+    userAgent,
+    area_branch: desObject,
+    url,
+    PromoCode: promocode
   });
 
   if (!isSuccess) {
@@ -170,7 +172,7 @@ export default function OrderSuccess({ element, url }: Props) {
               </div>
               <p>{item.extra_notes}</p>
             </div>
-            <p>{item.price}</p>
+            <p>{item.total}</p>
           </div>
         ))}
       </div>

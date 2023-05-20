@@ -13,7 +13,7 @@ export const appLinks = {
   selectTime: { path: "/select/time" },
   addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
-  cheeckout: { path: "/order/checkout" },
+  checkout: { path: "/order/checkout" },
   privacyPolicy: { path: "/policies/privacy" },
   returnPolicy: { path: "/policies/return" },
   shippingPolicy: { path: "/policies/shipping" },

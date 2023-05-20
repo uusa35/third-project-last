@@ -118,7 +118,11 @@ const AddressCreate: NextPage<Props> = ({
           })
         );
         dispatch(setCustomerAddress(r.data.Data));
+<<<<<<< HEAD
         router.push(appLinks.cheeckout.path);
+=======
+        router.push(`${appLinks.checkout.path}`);
+>>>>>>> structure
         // checkTimeAvailability();
       } else {
         if (r.error) {

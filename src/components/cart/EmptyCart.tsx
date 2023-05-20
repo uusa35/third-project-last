@@ -1,15 +1,13 @@
 import React from 'react';
 import CustomImage from '../CustomImage';
 import Link from 'next/link';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import EmptyCartImage from '@/appImages/empty_cart.png';
 
-type Props = {};
-
-export default function EmptyCart({}: Props) {
+export default function EmptyCart() {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   return (
@@ -18,9 +16,9 @@ export default function EmptyCart({}: Props) {
         src={EmptyCartImage.src}
         alt="empty_cart"
         className="w-2/3 h-auto my-5 px-3"
-        width={100}
-        height={100}
-      />
+        width={imageSizes.xl}
+        height={imageSizes.xl}
+      /> 
       <div className="capitalize text-center">
         <p suppressHydrationWarning={suppressText} className="font-bold pb-1">
           {t('your_cart_is_empty')}

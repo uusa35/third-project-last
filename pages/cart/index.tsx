@@ -99,7 +99,7 @@ export default function Cart({ url }: Props) {
   const handelIncRequest = (item: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-      destination: destID,
+      destination: destObj,
       body: {
         UserAgent: userAgent,
 
@@ -136,7 +136,7 @@ export default function Cart({ url }: Props) {
   const handelDecRequest = (item: ProductCart) => {
     triggerAddToCart({
       process_type: method,
-      destination: destID,
+      destination: destObj,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -173,7 +173,7 @@ export default function Cart({ url }: Props) {
     const currentItems = filter(cartItems.data.Cart, (i) => i.id !== item.id);
     triggerAddToCart({
       process_type: method,
-      destination: destID,
+      destination: destObj,
       body: {
         UserAgent: userAgent,
         Cart:
@@ -258,7 +258,7 @@ export default function Cart({ url }: Props) {
     = navigate
     */
     if (customer_id) {
-      router.push(appLinks.cheeckout.path);
+      router.push(appLinks.checkout.path);
     } else {
       // show sign in modal
       setOpenAuthModal(true);
