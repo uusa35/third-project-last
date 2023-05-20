@@ -109,7 +109,6 @@ const AddressCreate: NextPage<Props> = ({
       url,
     }).then((r: any) => {
       if (r.data && r.data.status) {
-        console.log('inside');
         dispatch(
           showToastMessage({
             content: `address_saved_successfully`,
@@ -119,7 +118,6 @@ const AddressCreate: NextPage<Props> = ({
         dispatch(setCustomerAddress(r.data.Data));
         // checkTimeAvailability();
       } else {
-        console.log('else');
         if (r.error) {
           dispatch(
             showToastMessage({

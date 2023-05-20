@@ -14,6 +14,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'moment/locale/ar';
 import { suppressText } from '@/constants/*';
 
+// check availability in case no date will return else will just navigate to checkout.
 type Day = {
   day: string;
   date: string;

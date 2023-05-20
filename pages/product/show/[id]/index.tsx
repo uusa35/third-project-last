@@ -405,13 +405,10 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const { data: cartItems } = useGetCartProductsQuery({
-    userAgent,
-    PromoCode: promocode,
-    area_branch:
-      method === `pickup`
-        ? { 'x-branch-id': destination?.id }
-        : { 'x-area-id': destination?.id },
+    UserAgent: userAgent,
+    area_branch: desObject,
     url,
+    PromoCode: ''
   });
   const handelCartPayload = () => {
     let items = map(cartItems?.data.Cart, (i) => {
@@ -481,15 +478,10 @@ const ProductShow: NextPage<Props> = ({
         }).then((r: any) => {
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
             triggerGetCartProducts({
-              userAgent,
-              area_branch:
-                method === `pickup` && destination?.id
-                  ? { 'x-branch-id': destination?.id }
-                  : method === `delivery` && destination?.id
-                  ? { 'x-area-id': destination?.id }
-                  : {},
-                  PromoCode: promocode,
+              UserAgent: userAgent,
+              area_branch: desObject,
               url,
+              PromoCode: ''
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
                 dispatch(
