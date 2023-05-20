@@ -11,7 +11,7 @@ export const appLinks = {
   addressCreate: { path: "/guest/address/create" },
   addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
-  cheeckout: { path: "/order/checkout" },
+  checkout: { path: "/order/checkout" },
   privacyPolicy: { path: "/policies/privacy" },
   returnPolicy: { path: "/policies/return" },
   shippingPolicy: { path: "/policies/shipping" },

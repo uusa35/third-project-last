@@ -258,7 +258,7 @@ export default function Cart({ url }: Props) {
     = navigate
     */
     if (customer_id) {
-      router.push(appLinks.cheeckout.path);
+      router.push(appLinks.checkout.path);
     } else {
       // show sign in modal
       setOpenAuthModal(true);
