@@ -87,6 +87,8 @@ const AddressCreate: NextPage<Props> = ({
     },
   });
 
+  console.log('customer', customer);
+
   const handelSaveAddress = async (body: any) => {
     await triggerAddAddress({
       body: {
@@ -116,6 +118,7 @@ const AddressCreate: NextPage<Props> = ({
           })
         );
         dispatch(setCustomerAddress(r.data.Data));
+        router.push(appLinks.cheeckout.path);
         // checkTimeAvailability();
       } else {
         if (r.error) {
@@ -221,7 +224,10 @@ const AddressCreate: NextPage<Props> = ({
           </div>
 
           {/*  city / area   */}
-          <div className="w-full ">
+          <div
+            className="w-full"
+            onClick={() => router.push(appLinks.selectArea.path)}
+          >
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="city_and_area"
@@ -235,8 +241,9 @@ const AddressCreate: NextPage<Props> = ({
                 suppressHydrationWarning={suppressText}
                 {...register('city')}
                 name="city_and_area"
+                disabled
                 id="city_and_area"
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
                 onFocus={() => router.push(appLinks.selectArea.path)}
               />

@@ -8,7 +8,9 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: "/home" },
   home: { path: "/home" },
+  login: { path: "/login" },
   addressCreate: { path: "/guest/address/create" },
+  selectTime: { path: "/select/time" },
   addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
   cheeckout: { path: "/order/checkout" },

@@ -17,6 +17,20 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
+    checkTime: builder.query<
+      AppQueryResult<[string]>,
+      { type: string, date: string }
+    >({
+      query: ({ type, date }) => ({
+        url: `getAvailableTime`,
+        headers: {
+          type,
+          date
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
     addToCart: builder.mutation<
       AppQueryResult<ServerCart>,
       {
