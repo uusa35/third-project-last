@@ -5,7 +5,7 @@ import { appLinks, suppressText } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
-import EmptyCartImage from '@/appImages/empty_cart.png';
+import EmptyCartImage from '@/appImages/empty_cart.svg';
 
 type Props = {};
 
@@ -14,13 +14,14 @@ export default function EmptyCart({}: Props) {
   const color = useAppSelector(themeColor);
   return (
     <div className="flex flex-col items-center justify-center p-5">
-      <CustomImage
+      {/* <EmptyCartImage /> */}
+      {/* <CustomImage
         src={EmptyCartImage.src}
         alt="empty_cart"
         className="w-2/3 h-auto my-5 px-3"
         width={100}
         height={100}
-      />
+      /> */}
       <div className="capitalize text-center">
         <p suppressHydrationWarning={suppressText} className="font-bold pb-1">
           {t('your_cart_is_empty')}
