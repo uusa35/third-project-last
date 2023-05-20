@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { appLinks, suppressText } from '@/constants/*';
 import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
+import KnetIcon from '@/appIcons/KNETLogo.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import PaymentSummary from '@/components/PaymentSummary';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -65,7 +66,7 @@ export default function checkout({ url }: Props) {
   }[] = [
     { id: 'cash_on_delivery', src: <CashIcon />, name: 'cash_on_delivery' },
     { id: 'visa', src: <CreditIcon />, name: 'credit_card' },
-    { id: 'knet', src: <CashIcon />, name: 'pay_by_knet' },
+    { id: 'knet', src: <KnetIcon />, name: 'pay_by_knet' },
   ];
 
   // seturl
@@ -144,26 +145,23 @@ export default function checkout({ url }: Props) {
         area_branch: destObj,
         url,
       }).then((r: any) => {
-        console.log('create order', r);
         if (r.data) {
-          //   if (r.data.status) {
-          //     dispatch(setPaymentMethod(selectedPaymentMethod));
-          //     if (selectedPaymentMethod === 'cash_on_delivery') {
-          //       dispatch(setOrder(r.data.data));
-          //       // router.replace(`/order/status/${r.data.data.order_id}/success`);
-          //       router.replace(appLinks.orderSuccess(r.data.data.order_id));
-          //       dispatch(
-          //         showToastMessage({
-          //           content: `order_created_successfully`,
-          //           type: `success`,
-          //         })
-          //       );
-          //     } else {
-          //       window.open(r.data.Data, '_self');
-          //     }
-          //   } else {
-          //     router.replace(appLinks.orderFailure.path);
-          //   }
+          if (r.data.status) {
+            if (selectedPaymentMethod === 'cash_on_delivery') {
+              // dispatch(setOrder(r.data.data));
+              router.replace(appLinks.orderSuccess(r.data.data.order_id));
+              dispatch(
+                showToastMessage({
+                  content: `order_created_successfully`,
+                  type: `success`,
+                })
+              );
+            } else {
+              window.open(r.data.Data, '_self');
+            }
+          } else {
+            router.replace(appLinks.orderFailure(r.data.data.order_id));
+          }
         } else {
           if (r.error && r.error.data && r.error.data.msg) {
             dispatch(
