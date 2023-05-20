@@ -32,6 +32,21 @@ const nextConfig = withSvgr({
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/OrderConfirmation/failure/:slug',
+        destination: '/order/:slug/status/failure',
+        permanent: true,
+      },
+      {
+        source: '/OrderConfirmation/success/:orderId',
+        destination: '/order/:orderId/status/success',
+        permanent: true,
+      },
+    ];
+  },
   env: {
     SECRET_APP_KEY: '@#8!U.S.A.M.A.!@)8231',
     NEXT_PUBLIC_URL: '/',
