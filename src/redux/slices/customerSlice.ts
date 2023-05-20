@@ -85,7 +85,7 @@ export const customerSlice = createSlice({
       };
     },
 
-    setprefrences: (
+    setPreferences: (
       state: typeof initialState,
       action: PayloadAction<CustomerInfo['prefrences']>
     ) => {
@@ -95,7 +95,7 @@ export const customerSlice = createSlice({
       };
     },
 
-    resetPrefrences: (
+    resetPreferences: (
       state: typeof initialState,
       action: PayloadAction<void>
     ) => {
@@ -112,8 +112,8 @@ export const {
   removeCustomer,
   setCustomerAddress,
   resetCustomerAddress,
-  setprefrences,
-  resetPrefrences,
+  setPreferences,
+  resetPreferences,
   setUserAgent,
   setNotes,
 } = customerSlice.actions;

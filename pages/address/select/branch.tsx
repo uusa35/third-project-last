@@ -35,6 +35,7 @@ import {
   destinationId,
   setDestination,
 } from '@/redux/slices/searchParamsSlice';
+import { useRouter } from 'next/router';
 
 type Props = {
   element: Vendor;
@@ -49,6 +50,7 @@ const SelectBranch: NextPage<Props> = ({
     locale: { lang, isRTL },
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
+  const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -85,6 +87,7 @@ const SelectBranch: NextPage<Props> = ({
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
+    router.back();
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {

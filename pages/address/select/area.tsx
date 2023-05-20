@@ -98,6 +98,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         type: `success`,
       })
     );
+    router.back();
     // );
   };
   useEffect(() => {
