@@ -36,6 +36,7 @@ import {
   setDestination,
 } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
+import WhenClosedModal from '@/components/modals/WhenClosedModal';
 
 type Props = {
   element: Vendor;
@@ -55,6 +56,7 @@ const SelectBranch: NextPage<Props> = ({
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(0);
+  const [openStoreClosedModal, setOpenClosedStore] = useState(false);
   const [selectedData, setSelectedData] = useState({
     area: destinationId,
     branch: destinationId,
@@ -83,12 +85,16 @@ const SelectBranch: NextPage<Props> = ({
   }, []);
 
   const handleSelectMethod = (
-    destination: Area | Branch,
+    destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    if()
-    // dispatch(setDestination({ destination, type }));
-    // router.back();
+    dispatch(setDestination({ destination, type }));
+    if(destination.status === "CLOSE") {
+      setOpenClosedStore(true);
+    }
+    else {
+      router.back();
+    }
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
@@ -159,6 +165,7 @@ const SelectBranch: NextPage<Props> = ({
           </button>
         ))}
       </div>
+      <WhenClosedModal isOpen={openStoreClosedModal} onRequestClose={() => setOpenClosedStore(false)} />
     </MainContentLayout>
   );
 };

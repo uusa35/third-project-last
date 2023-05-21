@@ -206,12 +206,14 @@ console.log({ method })
                       } ${t('minutes')}` : t('select_time')}
                       </>
                     )
-                    : (
-                      <span>
-                        {prefrences?.date}
-                        {prefrences?.time}
-                      </span>
+                    : prefrences.type === 'delivery_later' || prefrences.type === 'pickup_later'
+                    ? (
+                      <div>
+                        <span className="pe-2">{prefrences?.date}</span>
+                        <span>{prefrences?.time}</span>
+                      </div>
                     )
+                    : t('select_time' )
                   }
                   </p>
                 </div>

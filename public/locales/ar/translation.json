@@ -169,5 +169,7 @@
   "branch_address":"عنوان الفرع",
   "apartment":"شقه",
   "house":"منزل",
-  "you_dont_have_any_orders_yet": "ليس لديك طلبات حتى الآن"
+  "you_dont_have_any_orders_yet": "ليس لديك طلبات حتى الآن",
+  "now_within": "الآن خلال",
+  "please_review_sections_some_r_required" : "اختيارات مطلوبة"
 }

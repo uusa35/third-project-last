@@ -217,5 +217,7 @@
   "no_notes_added":"no notes added",
   "branch_address":"branch address",
   "apartment":"apartment",
-  "house":"house"
+  "house":"house",
+  "now_within": "now within",
+  "please_review_sections_some_r_required": "required fields"
 }
