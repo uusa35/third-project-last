@@ -28,9 +28,9 @@ const ToastAppContainer = () => {
     <Suspense>
       <ToastContainer
         position={isRTL ? `top-center` : 'top-center'}
-        className={`${tajwalFont} opacity-90 shadow-inner font-extrabold text-white w-max text-center`}
-        autoClose={2000}
-        hideProgressBar={false}
+        className={`${tajwalFont}  opacity-90 shadow-inner font-extrabold text-white text-center`}
+        autoClose={3000}
+        hideProgressBar={true}
         newestOnTop={true}
         transition={Flip}
         limit={1}
@@ -39,14 +39,17 @@ const ToastAppContainer = () => {
         pauseOnFocusLoss
         pauseOnHover
         // bodyStyle={{ height: 'auto' }}
-        // style={{ width: `45vh` }}
-        // theme="light"
+        style={{
+          width: 'max-content'
+        }}
+        theme="colored"
         // progressClassName={`bg-red-900`}
-        // toastClassName={`p-0 m-0 w-full `}
-        // bodyClassName={`p-0 m-0 w-full `}
+        toastClassName={`p-0 m-0 w-full`}
+        //bodyClassName={`p-0 m-0 w-full`}
         toastStyle={{
           backgroundColor: type === `error` ? `red` : color,
           color: `white`,
+          fontSize: '14px'
         }}
         closeButton={
           <div>
