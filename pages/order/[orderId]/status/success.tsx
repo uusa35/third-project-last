@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SuccessScheduled from '@/appImages/Scheduled_Successfully.svg';
 import Success from '@/appImages/order_success.svg';
 import { useTranslation } from 'react-i18next';
@@ -13,54 +13,56 @@ import CartProduct from '@/components/widgets/product/CartProduct';
 import Link from 'next/link';
 import PaymentSummary from '@/components/PaymentSummary';
 import CashIcon from '@/appIcons/cash_checkout.svg';
+import CreditIcon from '@/appIcons/credit_checkout.svg';
+import KnetIcon from '@/appIcons/knet.svg';
 import InfoIcon from '@/appIcons/info_scheduled_order.svg';
-import { orderApi } from '@/redux/api/orderApi';
+import { orderApi, useLazyCheckOrderStatusQuery } from '@/redux/api/orderApi';
 import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
-import { map } from 'lodash';
+import { isUndefined, map } from 'lodash';
 import NeedHelpIcon from '@/appIcons/need_help.svg';
 import CancelIcon from '@/appIcons/cancel_order.svg';
 import HelpModal from '@/components/modals/HelpModal';
 import GuestOrderStatus from '@/components/order/GuestOrderStatus';
+import TextTrans from '@/components/TextTrans';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
-    element: Order;
     url: string;
+    orderId: string
 };
 
-export default function OrderSuccess({ element, url }: Props) {
+export default function OrderSuccess({ url,orderId }: Props) {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
+  const dispatch = useAppDispatch();
   console.log({ DestinationId, desObject  })
   const {
     customer: { userAgent },
     Cart: { promocode }
   } = useAppSelector((state) => state);
-  const {
-    data: cartItems,
-    isSuccess,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery<{
-    data: AppQueryResult<ServerCart>;
-    isSuccess: boolean;
+  const [triggerGetOrderStatus, { data: order, isLoading }] = useLazyCheckOrderStatusQuery<{
+    data: AppQueryResult<Order>;
     isLoading: boolean;
-    refetch: () => void;
-  }>({
-    userAgent,
-    area_branch: desObject,
-    url,
-    PromoCode: promocode
-  });
-
-  if (!isSuccess) {
-    <p>loading</p>;
-  }
+  }>();
+  console.log({ orderId })
+  useEffect(() => {
+    triggerGetOrderStatus({ status: 'success', order_id: orderId, url }, false);
+  }, [orderId]);
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+  console.log({ order })
   return (
-    <MainContentLayout showBackBtnHeader={true} currentModule={`${t('order')} #${element.order_id}`}>
+   <>
+   {order?.data ?  (
+     <MainContentLayout showBackBtnHeader={true} currentModule={`${t('order')} #${order.data.order_id}`}>
       {/* image and text */}
       {/* if guest */}
         <div className="px-5">
@@ -87,7 +89,7 @@ export default function OrderSuccess({ element, url }: Props) {
             >
               {t('estimated_time')}{' '}
               <span className="text-[#1A1615] font-bold">
-                :{element.estimated_time?.from} {element.estimated_time?.to && `- ${element.estimated_time?.to}`}
+                :{order.data.estimated_time?.from} {order.data.estimated_time?.to && `- ${order.data.estimated_time?.to}`}
               </span>
             </p>
 
@@ -95,7 +97,7 @@ export default function OrderSuccess({ element, url }: Props) {
               suppressHydrationWarning={suppressText}
               className="text-[#544A45] lg:w-3/4 text-xs"
             >
-              {t('order_id')} <span className="text-[#1A1615] font-bold">: # {element.order_id}</span>
+              {t('order_id')} <span className="text-[#1A1615] font-bold">: # {order.data.order_id}</span>
             </p>
           </div>
         </div>
@@ -116,7 +118,7 @@ export default function OrderSuccess({ element, url }: Props) {
 
       {/* orderDetails */}
       <div className="p-5 border-b-4">
-        <GuestOrderStatus order={element} />
+        <GuestOrderStatus order={order.data} />
       </div>
 
       {/* payment method */}
@@ -124,27 +126,24 @@ export default function OrderSuccess({ element, url }: Props) {
         <p suppressHydrationWarning={suppressText} className="font-bold mb-3">
           {t('payment_method')}
         </p>
-        {element.payment_method === 'C.O.D' && <div className="flex items-center gap-x-2 text-sm">
+        {order.data.payment_method === 'C.O.D' && <div className="flex items-center gap-x-2 text-sm">
           <CashIcon />
           <p suppressHydrationWarning={suppressText}>
             {t('cash_on_delivery')}
           </p>
         </div>}
-        <div className="flex gap-x-2 bg-[#F5F5F5] p-2 mt-3">
-          <div className="pt-1">
-            <InfoIcon />
-          </div>
-
-          {/* if card type !== cod */}
-          <p
-            suppressHydrationWarning={suppressText}
-            className="text-xs break-all"
-          >
-            {t(
-              'your_card_will_not_be_charged_until_your_order_is_placed_minutes_before_scheduled_order_time'
-            )}
+        {order.data.payment_method === 'knet' && <div className="flex items-center gap-x-2 text-sm">
+          <KnetIcon />
+          <p suppressHydrationWarning={suppressText}>
+          {order.data.payment_method}
           </p>
-        </div>
+        </div>}
+        {order.data.payment_method === 'visa' && <div className="flex items-center gap-x-2 text-sm">
+          <CreditIcon />
+          <p suppressHydrationWarning={suppressText}>
+            {order.data.payment_method}
+          </p>
+        </div>}
       </div>
 
       {/* items */}
@@ -152,11 +151,13 @@ export default function OrderSuccess({ element, url }: Props) {
         <p suppressHydrationWarning={suppressText} className="font-bold mb-3">
           {t('order_items')}
         </p>
-        {map(element.items, (item, index) => (
+        {map(order.data.items, (item, index) => (
           <div key={index} className="flex justify-between items-center">
             <div>
               <div className="flex pb-2">
-                <h5 className="pe-2">{item.item}</h5>
+                <h5 className="pe-2">
+                  <TextTrans en={item.item_en} ar={item.item_ar}  />
+                </h5>
                 <span>x{item.quantity}</span>
               </div>
               <div className="flex flex-wrap items-center">
@@ -165,7 +166,7 @@ export default function OrderSuccess({ element, url }: Props) {
                   <div
                     className="bg-gray-100 text-gray-500 rounded-2xl text-center h-8 px-3">
                     <span className="pe-2">x{a.addon_quantity}</span>
-                    <span>{a.addon_name}</span>
+                    <TextTrans en={a.addon_name_en} ar={a.addon_name_ar} />
                   </div>
                 </div>
               ))}
@@ -192,6 +193,10 @@ export default function OrderSuccess({ element, url }: Props) {
         onRequestClose={() => setIsOpen(false)}
       />
     </MainContentLayout>
+   ) : (
+    <p>loading</p>
+   )}
+   </>
   );
 }
 
@@ -205,27 +210,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
             notFound: true,
           };
         }
-        const {
-          data: element,
-          isError,
-        }: { data: AppQueryResult<Order>; isError: boolean } =
-          await store.dispatch(
-            orderApi.endpoints.checkOrderStatus.initiate({
-              status: 'success',
-              order_id: orderId ? orderId : 3,
-              url,
-            })
-          );
-        await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-        if (isError || !element.status || !element.data) {
-          return {
-            notFound: true,
-          };
-        }
         return {
           props: {
-            element: element.data,
-            url,
+            url: req.headers.host,
+            orderId
           },
         };
       }

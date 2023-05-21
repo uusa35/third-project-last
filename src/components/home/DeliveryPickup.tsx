@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/redux/hooks';
 import React, { useState } from 'react';
-import DeliveryIcon from '@/appIcons/delivery_home.svg';
-import PickupIcon from '@/appIcons/pickup_home.svg';
+import DeliveryIcon from '@/appIcons/delivery animation.json';
+import PickupIcon from '@/appIcons/pick up animation.json';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
 import TextTrans from '../TextTrans';
 import { suppressText } from '@/constants/*';
+import { Player } from '@lottiefiles/react-lottie-player';
 
 type Props = {};
 
@@ -26,8 +27,24 @@ function DeliveryPickup({}: Props) {
     <div className="px-4">
       {(method === 'pickup' || method === 'delivery') && (
         <div className="flex gap-x-2 text-sm cursor-pointer">
-          {method === 'pickup' && <PickupIcon />}
-          {method === 'delivery' && <DeliveryIcon />}
+          {method === 'pickup' && (
+            <Player
+              src={PickupIcon}
+              className="player w-10 h-10 bg-blue-100 rounded-full"
+              style={{ borderRadius: '100%', backgroundColor: '#F3F2F2' , padding:"8px" }}
+              loop={true}
+              autoplay={true}
+            />
+          )}
+          {method === 'delivery' && (
+            <Player
+              src={DeliveryIcon}
+              className="player w-10 h-10 bg-blue-100 rounded-full"
+              style={{ borderRadius: '100%', backgroundColor: '#F3F2F2' , padding:"8px" }}
+              loop={true}
+              autoplay={true}
+            />
+          )}
 
           <div className="flex items-end justify-between w-full">
             {method === 'pickup' && (

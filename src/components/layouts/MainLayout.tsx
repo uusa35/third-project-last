@@ -61,7 +61,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       {
         lang: locale.lang,
         url,
-        ...desObject,
+        destination: desObject,
       },
       false
     );
