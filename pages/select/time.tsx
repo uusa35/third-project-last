@@ -184,6 +184,7 @@ export default function index({ url }: Props) {
         type,
       })
     );
+    // put other scenario here if you want
     router.back();
   };
 

@@ -62,7 +62,11 @@ export interface Vendor {
   desc: string;
   cover: string;
   logo: string;
-  delivery: string;
+  delivery: {
+    delivery_time: string;
+    delivery_time_type: string;
+    minimum_order_price: string;
+  };
   location: string;
   WorkHours: string;
   DeliveryTime: string;
@@ -124,7 +128,7 @@ export interface ServerCart {
   promo_code_discount?: number;
   tax?: number;
   free_delivery?: boolean;
-  delivery_fee?:string
+  delivery_fee?: string;
   sub_total?: number;
   subTotal: number;
   total: number;
@@ -224,11 +228,11 @@ export interface Order {
       item_ar: string
     }
   ];
-  delivery_date_time: string,
+  delivery_date_time: string;
   estimated_time?: {
     from: string;
-    to: string
-  }
+    to: string;
+  };
 }
 
 export interface OrderInvoice {
@@ -316,7 +320,7 @@ export interface OrderUser {
   user_id: number;
   order_type: string;
   UserAgent: string;
-  PromoCode?:string
+  PromoCode?: string;
   Date?: string;
   Time?: string;
   Messg: string;
