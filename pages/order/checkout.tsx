@@ -148,7 +148,6 @@ export default function checkout({ url }: Props) {
         if (r.data) {
           if (r.data.status) {
             if (selectedPaymentMethod === 'cash_on_delivery') {
-              // dispatch(setOrder(r.data.data));
               router.replace(appLinks.orderSuccess(r.data.data.order_id));
               dispatch(
                 showToastMessage({

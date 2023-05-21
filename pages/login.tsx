@@ -73,9 +73,9 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
             <PhoneInput
               defaultCountry="KW"
               type="text"
-              defaultValue={``}
+              name="phone_auth"
               placeholder={`${startCase(`${t('enter_your_name')}`)}`}
-              // onChange={(e) => setValue('phone', e)}
+              onChange={(e) => console.log(e)}
               className="focus:outline-none mt-2 border-b border-gray-100 pb-3"
               style={{ borderBottomColor: '#e5e7eb' }}
               onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}

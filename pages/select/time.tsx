@@ -4,16 +4,23 @@ import { wrapper } from '@/redux/store';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { mainBtnClass } from '@/constants/*';
 import moment from 'moment';
-import { isUndefined } from 'lodash';
+import { isEmpty, isUndefined, map } from 'lodash';
 import Slider, { Settings } from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'moment/locale/ar';
 import { suppressText } from '@/constants/*';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import { useLazyGetTimingsQuery } from '@/redux/api/cartApi';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setPreferences } from '@/redux/slices/customerSlice';
+import { Router, useRouter } from 'next/router';
 
+// check availability in case no date will return else will just navigate to checkout.
 type Day = {
   day: string;
   date: string;
@@ -27,11 +34,18 @@ type Props = {
 
 export default function index({ url }: Props) {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const color = useAppSelector(themeColor);
+  const desObject = useAppSelector(destinationHeaderObject);
   const {
     locale: { lang, isRTL },
+    searchParams: { destination_type, method },
   } = useAppSelector((state) => state);
-  console.log({ isRTL });
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
+  const [triggerGetTimings, { data: timings, isSuccess: timingsSuccess }] =
+    useLazyGetTimingsQuery();
   const [sliderSettings, setSliderSettings] = useState<Settings>({
     dots: false,
     infinite: true,
@@ -41,11 +55,35 @@ export default function index({ url }: Props) {
     slidesToShow: 4,
     autoplay: false,
   });
-  const [isScheduled, setIsScheduled] = useState(false);
+  const [isScheduled, setIsScheduled] = useState<boolean>(false);
+  const [selectedDay, setSelectedDay] = useState({ day: ``, date: `` });
+  const [isBtnEnabled, setIsBtnEnabled] = useState<boolean>(true);
+  const [selectedHour, setSelectedHour] = useState<string | undefined>(
+    undefined
+  );
+  const [type, setType] = useState<
+    'delivery_now' | 'delivery_later' | 'pickup_now' | 'pickup_later'
+  >('delivery_now');
   moment.locale(lang);
   const today = moment();
   const days: Day[] = [];
   const daysInCurrentMonth = today.daysInMonth();
+
+  useEffect(() => {
+    triggerGetVendor(
+      {
+        lang,
+        url,
+        destination: desObject,
+      },
+      false
+    );
+    if (method === 'delivery') {
+      setType('delivery_now');
+    } else if (method === 'pickup') {
+      setType('pickup_now');
+    }
+  }, []);
 
   for (let i = 0; i < 31; i++) {
     const day = moment().startOf('day').add(i, 'days');
@@ -65,26 +103,62 @@ export default function index({ url }: Props) {
     }
   }
 
-  const hour = new Date();
-  hour.setHours(0);
-  hour.setMinutes(0);
-
-  const hours = [...Array(24)].map((_, index) => {
-    const newHour = new Date(hour.getTime());
-    newHour.setHours(index);
-    return newHour.toLocaleString(lang, {
-      hour: '2-digit',
-      hourCycle: 'h12',
-      minute: '2-digit',
-    });
-  });
-
-  const [selectedDay, setSelectedDay] = useState({ day: ``, date: `` });
-  const [selectedHour, setSelectedHour] = useState(``);
   useEffect(() => {
     setSelectedDay({ day: days[0].day, date: days[0].date });
-    setSelectedHour(`${hours[0]} - ${hours[1]}`);
-  }, [isScheduled, lang]);
+    if (isScheduled) {
+      setIsBtnEnabled(false);
+      if (method === 'delivery') {
+        setType('delivery_later');
+      } else if (method === 'pickup') {
+        setType('pickup_later');
+      }
+    } else {
+      setIsBtnEnabled(true);
+      setSelectedHour(moment().format('HH:mm a').toString());
+      if (method === 'delivery') {
+        setType('delivery_now');
+      } else if (method === 'pickup') {
+        setType('pickup_now');
+      }
+    }
+  }, [isScheduled]);
+
+  useEffect(() => {
+    triggerGetTimings(
+      {
+        type,
+        date: moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD'),
+        area_branch: desObject,
+        url,
+      },
+      false
+    ).then((r) => {
+      if (r?.error && r.error.data) {
+        setIsBtnEnabled(false);
+        setSelectedHour(undefined);
+        dispatch(
+          showToastMessage({ type: 'error', content: `no_timings_available` })
+        );
+      } else if (r && r.data && r.data.Data) {
+        setIsBtnEnabled(true);
+        if (
+          r.data.Data === 'OPEN' &&
+          (type === 'delivery_now' || type === 'pickup_now')
+        ) {
+          setSelectedHour(moment().format('HH:mm a').toString());
+        } else {
+          setSelectedHour(r.data.Data[0]);
+        }
+      }
+    });
+  }, [selectedDay]);
+
+  useEffect(() => {
+    if (!isUndefined(selectedHour)) {
+      setIsBtnEnabled(true);
+    }
+  }, [selectedHour]);
+
   useEffect(() => {
     setSliderSettings((prevSettings) => ({
       ...prevSettings,
@@ -93,18 +167,27 @@ export default function index({ url }: Props) {
       initialSlide: isRTL ? 2 : 0,
     }));
   }, [isRTL]);
+
   const handleRadioChange = (value: string) => {
     setIsScheduled(value === 'scheduled');
   };
 
   const handleDaySelect = ({ day, date }: { day: string; date: string }) => {
     setSelectedDay({ day, date });
-    setSelectedHour(hours[0]);
   };
 
-  const handleHourSelect = (hour: string) => {
-    setSelectedHour(hour);
+  const handleClick = () => {
+    dispatch(
+      setPreferences({
+        date: moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD'),
+        time: selectedHour,
+        type,
+      })
+    );
+    router.back();
   };
+
+  if (!vendorSuccess) return <div>loading</div>;
 
   return (
     <Suspense>
@@ -130,7 +213,11 @@ export default function index({ url }: Props) {
               style={{ accentColor: color }}
               suppressHydrationWarning={suppressText}
             />
-            {t('now_within_20_minutes')}
+            <span className={`font-bold mx-4`}>
+              {`${t('now_within')} ${
+                vendorElement?.Data?.delivery?.delivery_time
+              } ${t('minutes')}`}
+            </span>
           </label>
           <label className="flex items-center w-full py-4">
             <input
@@ -143,7 +230,7 @@ export default function index({ url }: Props) {
               style={{ accentColor: color }}
               suppressHydrationWarning={suppressText}
             />
-            {t('scheduled_order')}
+            <span className={`font-bold mx-4`}>{t('scheduled_order')}</span>
           </label>
           {isScheduled && (
             <div>
@@ -154,7 +241,7 @@ export default function index({ url }: Props) {
                 {days.map((day, index) => (
                   <div className="p-2 ps-0" key={index}>
                     <div
-                      className={`w-[90px] h-20 px-2 flex flex-col justify-center items-center text-center rounded-lg ${
+                      className={`w-[90px] h-20 p-2 flex flex-col justify-center items-center text-center rounded-lg capitlalize ${
                         selectedDay.date === day.date && 'text-white'
                       }`}
                       style={{
@@ -164,57 +251,50 @@ export default function index({ url }: Props) {
                       }}
                     >
                       <button
+                        className="capitalize flex flex-col justify-center items-center"
                         onClick={() =>
                           handleDaySelect({ day: day.day, date: day.date })
                         }
                       >
-                        {day.day}
+                        <span className="flex">{day.day}</span>
+                        <span className="flex flex-row">{day.date}</span>
                       </button>
-                      <div>
-                        <span>{day.date}</span>
-                      </div>
                     </div>
                   </div>
                 ))}
               </Slider>
 
               <div>
-                {selectedDay && (
-                  <div className="w-100">
-                    {hours.map((hour, index) => {
-                      const nextHour = index + 1;
-                      const hourRange = `${hour} - ${
-                        isUndefined(hours[nextHour])
-                          ? hours[0]
-                          : hours[nextHour]
-                      }`;
-                      return (
-                        <label
-                          key={index}
-                          className="flex items-center w-full pt-2 pb-4"
-                        >
-                          <input
-                            type="radio"
-                            name="hour"
-                            value={hour}
-                            checked={selectedHour === hourRange}
-                            onChange={() => setSelectedHour(hourRange)}
-                            className="h-4 w-4 me-1"
-                            style={{ accentColor: color }}
-                          />
-                          {hourRange}
-                        </label>
-                      );
-                    })}
+                {timings && timings.Data && timingsSuccess && (
+                  <div className="w-100 space-y-4 mt-4">
+                    {map(timings.Data, (time, i) => (
+                      <label key={i} className="flex items-center w-full">
+                        <input
+                          type="radio"
+                          name="hour"
+                          value={time}
+                          checked={selectedHour === time}
+                          onChange={() => setSelectedHour(time)}
+                          className="h-4 w-4 me-1"
+                          style={{ accentColor: color }}
+                        />
+                        <span className="mx-2">{time}</span>
+                      </label>
+                    ))}
                   </div>
                 )}
               </div>
             </div>
           )}
         </div>
+        {/* {`${t('now_within')} ${
+                vendorElement?.Data?.delivery?.delivery_time
+              } ${t('minutes')}`} */}
         <div className="flex justify-center px-5">
           <button
-            className={`${mainBtnClass} mb-5 ${!isScheduled ? 'mt-80' : ''}`}
+            onClick={() => handleClick()}
+            className={`${mainBtnClass} mb-5`}
+            disabled={!isBtnEnabled}
             style={{
               backgroundColor: color,
               color: `white`,
@@ -225,13 +305,15 @@ export default function index({ url }: Props) {
               className="px-1 inline-block"
               suppressHydrationWarning={suppressText}
             >
-              {isScheduled
+              {isScheduled && timings && timings.Data && !isEmpty(timings?.Data)
                 ? `${selectedDay.day} ${
                     selectedDay.day !== 'اليوم' && selectedDay.day !== 'today'
                       ? selectedDay.date
                       : ''
-                  } ${selectedHour}`
-                : `${t('now_within_20_minutes')}`}{' '}
+                  } ${!isUndefined(selectedHour) ? selectedHour : ``}`
+                : `${t('now_within')} ${
+                    vendorElement?.Data?.delivery?.delivery_time
+                  } ${t('minutes')}`}
             </span>
           </button>
         </div>
