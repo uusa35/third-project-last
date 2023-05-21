@@ -6,8 +6,10 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import CloseIcon from '@mui/icons-material/Close';
 import { toast, TypeOptions } from 'react-toastify';
 import { hideToastMessage } from '@/redux/slices/appSettingSlice';
+import { useTranslation } from 'react-i18next';
 
 const ToastAppContainer = () => {
+  const { t } = useTranslation();
   const {
     locale: { isRTL },
     appSetting: {
@@ -19,7 +21,7 @@ const ToastAppContainer = () => {
 
   useEffect(() => {
     if (showToast) {
-      toast(content, { type });
+      toast(t(content), { type });
       dispatch(hideToastMessage());
     }
   }, [showToast]);
@@ -40,7 +42,7 @@ const ToastAppContainer = () => {
         pauseOnHover
         // bodyStyle={{ height: 'auto' }}
         style={{
-          width: 'max-content'
+          width: 'max-content',
         }}
         theme="colored"
         // progressClassName={`bg-red-900`}
@@ -49,7 +51,7 @@ const ToastAppContainer = () => {
         toastStyle={{
           backgroundColor: type === `error` ? `red` : color,
           color: `white`,
-          fontSize: '14px'
+          fontSize: '14px',
         }}
         closeButton={
           <div>

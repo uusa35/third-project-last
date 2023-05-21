@@ -87,8 +87,6 @@ const AddressCreate: NextPage<Props> = ({
     },
   });
 
-  console.log('customer', customer);
-
   const handelSaveAddress = async (body: any) => {
     await triggerAddAddress({
       body: {
@@ -118,7 +116,7 @@ const AddressCreate: NextPage<Props> = ({
           })
         );
         dispatch(setCustomerAddress(r.data.Data));
-        router.push(`${appLinks.checkout.path}`);
+        // router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
         if (r.error) {
@@ -265,6 +263,22 @@ const AddressCreate: NextPage<Props> = ({
                 )}
               </div>
             </div>
+            {errors?.city?.message && (
+              <span
+                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('city_is_required')}
+              </span>
+            )}
+            {errors?.method?.message && (
+              <span
+                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('city_is_required')}
+              </span>
+            )}
           </div>
 
           {/*  street  */}
