@@ -9,11 +9,8 @@ import { useRouter } from 'next/router';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
 import TextTrans from '../TextTrans';
 import { suppressText } from '@/constants/*';
-<<<<<<< HEAD
 import { Player } from '@lottiefiles/react-lottie-player';
-=======
 import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
->>>>>>> esraa
 
 type Props = {};
 
@@ -36,7 +33,11 @@ function DeliveryPickup({}: Props) {
             <Player
               src={PickupIcon}
               className="player w-10 h-10 bg-blue-100 rounded-full"
-              style={{ borderRadius: '100%', backgroundColor: '#F3F2F2' , padding:"8px" }}
+              style={{
+                borderRadius: '100%',
+                backgroundColor: '#F3F2F2',
+                padding: '8px',
+              }}
               loop={true}
               autoplay={true}
             />
@@ -45,7 +46,11 @@ function DeliveryPickup({}: Props) {
             <Player
               src={DeliveryIcon}
               className="player w-10 h-10 bg-blue-100 rounded-full"
-              style={{ borderRadius: '100%', backgroundColor: '#F3F2F2' , padding:"8px" }}
+              style={{
+                borderRadius: '100%',
+                backgroundColor: '#F3F2F2',
+                padding: '8px',
+              }}
               loop={true}
               autoplay={true}
             />
@@ -122,8 +127,8 @@ function DeliveryPickup({}: Props) {
       )} */}
 
       <ChangeMoodModal
-        // isOpen={openPickupDeliveryModal}
-        // onRequestClose={() => setOpenPickupDeliveryModal(false)}
+      // isOpen={openPickupDeliveryModal}
+      // onRequestClose={() => setOpenPickupDeliveryModal(false)}
       />
     </div>
   );

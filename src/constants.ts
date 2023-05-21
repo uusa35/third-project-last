@@ -10,7 +10,6 @@ export const appLinks = {
   home: { path: "/home" },
   login: { path: "/login" },
   addressCreate: { path: "/guest/address/create" },
-
   addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
   checkout: { path: "/order/checkout" },
@@ -27,12 +26,9 @@ export const appLinks = {
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/user/orders' },
   wishlist: { path: '/user/wishlist' },
-
   vendorDetails: { path: '/vendor/info' },
-
   mobileVerification: { path: '/verification/mobile' },
   otpVerification: { path: '/verification/otp' },
-
   orderReceipt: (orderId: string) => `/order/${orderId}/receipt`,
   orderTrack: (orderId: string) => `/order/${orderId}/track`,
   orderFailure: (orderId: string) => `/order/${orderId}/status/failure`,
