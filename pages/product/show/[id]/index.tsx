@@ -80,6 +80,7 @@ import {
 import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
 import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
 
 type Props = {
   product: Product;
@@ -130,7 +131,7 @@ const ProductShow: NextPage<Props> = ({
     destination: desObject,
     url,
   });
-
+  const [requiredSection, setRequiredSection] = useState(false);
   // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
@@ -225,6 +226,11 @@ const ProductShow: NextPage<Props> = ({
     productCart.ExtraNotes,
   ]);
   
+  useEffect(() => {
+    if(productCart.enabled) {
+      setRequiredSection(false);
+    }
+  }, [productCart.enabled]);
   // useEffect(() => {
   //   if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
   //     setIsOpen(true)
@@ -448,18 +454,17 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const handleAddToCart = async () => {
-    if (
-      (method === `pickup` && !destination?.id) ||
-      (method === `delivery` && !destination?.id) ||
-      isNull(method)
-    ) {
-      setIsOpen(true);
+    if (isNull(destination)) {
+      dispatch(setAreaBranchModelStatus(true));
+      return;
     }
     if (!productCart.enabled) {
+      setRequiredSection(true);
       dispatch(
         showToastMessage({
           content: `please_review_sections_some_r_required`,
-          type: `info`,
+          type: `error`,
+          
         })
       );
     } else {
@@ -541,6 +546,8 @@ const ProductShow: NextPage<Props> = ({
       }
     }
   };
+  console.log({ resolvedUrl })
+
   return (
     <Suspense>
       <MainHead
@@ -710,7 +717,7 @@ const ProductShow: NextPage<Props> = ({
                           : t('multi_selection')}
                       </p>
                     </div>
-                    <div className="text-sm text-center bg-gray-100 rounded-full w-20 h-8 pt-1">
+                    <div className={`text-sm text-center rounded-full w-20 h-8 pt-1 ${requiredSection && s.selection_type === 'mandatory' ? 'bg-white border-red-600 border-[1px]' : 'bg-gray-100'}`}>
                       <span>
                         {s.selection_type === 'mandatory'
                           ? t('required')
@@ -968,12 +975,7 @@ const ProductShow: NextPage<Props> = ({
               className={`px-2 border-b-[1px] pb-5`}
             >
               <button
-                disabled={
-                  // no need for this case here cause in old Q method is delivery by default
-                  // (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
-                  //   !method) ||
-                  productOutStock
-                }
+                disabled={productOutStock}
                 onClick={debounce(() => handleAddToCart(), 400)}
                 className={`${mainBtnClass} py-2 flex justify-between px-5`}
                 style={{
@@ -981,16 +983,15 @@ const ProductShow: NextPage<Props> = ({
                   color: `white`,
                 }}>
               <div className="flex justify-between px-5">
-              {isNull(destination)
-              ? t(`start_ordering`)
-              : productOutStock
-              ? t('out_stock')
-              : t('add_to_cart')
-              }  
+              {productOutStock
+                ? t('out_of_stock')
+                : isNull(destination)
+                ? t(`start_ordering`) 
+                : t('add_to_cart')}
               </div>              
               <span className="flex">
-                <p className={`text-xl text-white`}>
-                  {parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000'
+                <p className={`text-white`}>
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' && productCart.price_on_selection
                     ? t(`price_on_selection`)
                     : parseFloat(productCart.grossTotalPrice).toFixed(3)}
                 </p>
@@ -1000,8 +1001,8 @@ const ProductShow: NextPage<Props> = ({
               </span>
               </button>
               <ChangeMoodModal  
-                  isOpen={isOpen}
-                  onRequestClose={() => setIsOpen(false)}
+                  // isOpen={isOpen}
+                  // onRequestClose={() => setIsOpen(false)}
                 />
                 <ChangeMood3Modal
                   isOpen={isNotAvailable}
@@ -1042,7 +1043,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           lang: locale,
           // ...(destination?.id ? { branch_id: destination?.id } : {}),
           // ...(destination?.id ? { area_id: destination?.id } : {}),
-          url: req.headers.host,
+          url: req.headers.host
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));

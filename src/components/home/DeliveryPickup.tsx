@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import React, { useState } from 'react';
 import DeliveryIcon from '@/appIcons/delivery animation.json';
 import PickupIcon from '@/appIcons/pick up animation.json';
@@ -10,6 +10,7 @@ import ChangeMoodModal from '../modals/ChangeMoodModal';
 import TextTrans from '../TextTrans';
 import { suppressText } from '@/constants/*';
 import { Player } from '@lottiefiles/react-lottie-player';
+import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
 
 type Props = {};
 
@@ -20,6 +21,7 @@ function DeliveryPickup({}: Props) {
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  const dispatch = useAppDispatch();
 
   const [openPickupDeliveryModal, setOpenPickupDeliveryModal] = useState(false);
 
@@ -63,7 +65,7 @@ function DeliveryPickup({}: Props) {
 
             <div
               className="flex items-center"
-              onClick={() => setOpenPickupDeliveryModal(true)}
+              onClick={() => dispatch(setAreaBranchModelStatus(true))}
             >
               <p
                 suppressHydrationWarning={suppressText}
@@ -115,11 +117,6 @@ function DeliveryPickup({}: Props) {
           </div>
         </div>
       )} */}
-
-      <ChangeMoodModal
-        isOpen={openPickupDeliveryModal}
-        onRequestClose={() => setOpenPickupDeliveryModal(false)}
-      />
     </div>
   );
 }

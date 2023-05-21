@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -20,27 +20,51 @@ import {
   ArrowForwardIos,
 } from '@mui/icons-material';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import TextTrans from '../TextTrans';
+import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import { wrapper } from '@/redux/store';
 
 type Props = {
-  isOpen: boolean;
-  onRequestClose: () => void;
-};
-const ChangeMoodModal: FC<Props> = ({
-  isOpen,
-  onRequestClose,
-}): JSX.Element => {
+  url: string
+}
+const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const { destination, method } = useAppSelector((state) => state);
+  const { 
+    searchParams: { destination, destination_type, method },
+    models: { areaBranchIsOpen },
+    customer: { prefrences },
+    locale: { lang, isRTL },
+  } = useAppSelector((state) => state);
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
+  const onRequestClose = () => {
+    dispatch(setAreaBranchModelStatus(false));
+  }
+  const desObject = useAppSelector(destinationHeaderObject);
+console.log({ method })
+  useEffect(() => {
+    triggerGetVendor(
+      {
+        url,
+        lang,
+        destination: desObject,
+      },
+      false
+    );
+  }, []);
   return (
     <>
-      <MainModal isOpen={isOpen} closeModal={onRequestClose}>
+      <MainModal isOpen={areaBranchIsOpen}>
         <div>
-          <div className="flex lg:grid lg:grid-cols-3 w-full pb-5 px-4">
-            <div className="w-1/3">
+          <div className="flex w-full pb-5 px-4">
+            <div className="w-[5%]">
               <button
                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                 onClick={onRequestClose}
@@ -49,7 +73,7 @@ const ChangeMoodModal: FC<Props> = ({
               </button>
             </div>
             <h5
-              className="font-semibold capitalize"
+              className="font-semibold capitalize text-center mx-auto"
               suppressHydrationWarning={suppressText}
             >
               {t('where_&_when?')}
@@ -107,8 +131,11 @@ const ChangeMoodModal: FC<Props> = ({
           <div>
             {activeTabIndex === 0 && (
               <>
-                <Link
-                  href={appLinks.selectArea.path}
+                <button
+                  onClick={() => {
+                    router.push(`${appLinks.selectArea.path}`);
+                    
+                  }}
                   className="w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 "
                 >
                   <div className="flex justify-between items-center">
@@ -120,11 +147,15 @@ const ChangeMoodModal: FC<Props> = ({
                       >
                         {t('delivering_to')}
                       </h6>
-                      <p>{t('select_address')}</p>
+                      <p>
+                        {method === 'delivery' ? (
+                          <TextTrans en={destination.name_en} ar={destination.name_ar} />
+                        ) : t('select_address')}
+                      </p>
                     </div>
                   </div>
                   <ArrowForwardIos className="text-zinc-500 mt-2" />
-                </Link>
+                </button>
               </>
             )}
             {activeTabIndex === 1 && (
@@ -142,7 +173,11 @@ const ChangeMoodModal: FC<Props> = ({
                       >
                         {t('pickup_from')}
                       </h6>
-                      <p>{t('select_branch')}</p>
+                      <p>
+                      {method === 'pickup' ? (
+                          <TextTrans en={destination.name_en} ar={destination.name_ar} />
+                        ) : t('select_branch')}
+                      </p>
                     </div>
                   </div>
                   <ArrowForwardIos className="text-zinc-500 mt-2" />
@@ -163,7 +198,21 @@ const ChangeMoodModal: FC<Props> = ({
                     {activeTabIndex === 0 ? t('delivery_in') : t('pickup_in')}
                   </h6>
                   <p suppressHydrationWarning={suppressText}>
-                    {t('now_within_20_minutes')}
+                  {prefrences.type === 'delivery_now' || prefrences.type === 'pickup_now'
+                    ? (
+                      <>
+                      {vendorElement?.Data?.delivery?.delivery_time ? `${t('now_within')} ${
+                        vendorElement?.Data?.delivery?.delivery_time
+                      } ${t('minutes')}` : t('select_time')}
+                      </>
+                    )
+                    : (
+                      <span>
+                        {prefrences?.date}
+                        {prefrences?.time}
+                      </span>
+                    )
+                  }
                   </p>
                 </div>
               </div>
@@ -175,7 +224,8 @@ const ChangeMoodModal: FC<Props> = ({
               className={`${mainBtnClass} disabled:bg-stone-400`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
-              disabled
+              onClick={onRequestClose}
+              disabled={prefrences.data === '' && prefrences.time === ''}
             >
               {t('confirm')}
             </button>
@@ -186,3 +236,19 @@ const ChangeMoodModal: FC<Props> = ({
   );
 };
 export default ChangeMoodModal;
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ req }) => {
+      if (!req.headers.host) {
+        return {
+          notFound: true,
+        };
+      }
+      return {
+        props: {
+          url: req.headers.host,
+        },
+      };
+    }
+);
