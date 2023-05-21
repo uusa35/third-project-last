@@ -124,7 +124,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={'#'}
+                href={appLinks.home.path}
               >
                 <Restaurant className={`h-8 w-8`} style={{ color }} />
                 <p

@@ -17,6 +17,24 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
+    getTimings: builder.query<
+      AppQueryResult<[string]>,
+      { type: string, date: string, area_branch: any; url: string }
+    >({
+      query: ({ type, date, area_branch, url }) => ({
+        url: `getAvailableTime`,
+        params: {
+          type,
+          date,
+        },
+        headers: {
+          url,
+          ...area_branch
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
     addToCart: builder.mutation<
       AppQueryResult<ServerCart>,
       {
@@ -127,4 +145,5 @@ export const {
   useLazyCheckPromoCodeQuery,
   useLazyGetCartProductsQuery,
   useLazyChangeLocationQuery,
+  useLazyGetTimingsQuery
 } = cartApi;

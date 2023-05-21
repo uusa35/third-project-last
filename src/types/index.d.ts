@@ -224,6 +224,8 @@ export interface Order {
       price: string;
       total: number;
       extra_notes: string;
+      item_en: string;
+      item_ar: string
     }
   ];
   delivery_date_time: string;
@@ -291,6 +293,8 @@ export interface OrderInvoice {
 export interface InvoiceAddon {
   addon_id: string | number;
   addon_name: string;
+  addon_name_en: string;
+  addon_name_ar: string;
   addon_quantity: string | number;
   addon_unit_price: string | number;
 }

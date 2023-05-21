@@ -19,11 +19,11 @@ type Props = {
 
 export default function GuestOrderStatus({ order }: Props) {
   const handelDisplayAddress = () => {
-    if (order?.customer && !isUndefined(order?.customer.address) && isObject(order?.customer.address.address)) {
-      const addressValues = !isUndefined(order.customer.address) && Object.values(order.customer.address.address)
+    if (order?.customer && !isUndefined(order?.customer?.address) && isObject(order?.customer.address?.address)) {
+      const addressValues = !isUndefined(order.customer?.address) && Object.values(order.customer.address?.address)
         .filter(value => value !== null); 
   
-      const allAddress = addressValues ? addressValues.join(' / ') : ''; 
+      const allAddress = addressValues ? addressValues.join(', ') : ''; 
   
       return allAddress;
     }

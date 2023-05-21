@@ -8,7 +8,9 @@ export const apiUrl = `${baseUrl}api/`;
 export const appLinks = {
   root: { path: "/home" },
   home: { path: "/home" },
+  login: { path: "/login" },
   addressCreate: { path: "/guest/address/create" },
+
   addressMap: { path: "/address/map" },
   cart: { path: "/cart" },
   checkout: { path: "/order/checkout" },
@@ -18,9 +20,9 @@ export const appLinks = {
   productSearch: { path: "/product/search" },
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number) => `/product/show/${id}`,
-  selectArea: { path: '/address/select/area' },
-  selectBranch: { path: '/address/select/branch' },
-  orderSchedule: { path: '/select/time' },
+  selectArea: { path: '/select/area' },
+  selectBranch: { path: '/select/branch' },
+  selectTime: { path: "/select/time" },
   userAddresses: { path: '/user/addresses' },
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/user/orders' },
