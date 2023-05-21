@@ -27,7 +27,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
   const storeStatus = [
     { id: 1, status: 'open', className: 'text-[#12B76A]' },
     { id: 2, status: 'busy', className: 'text-[#E30015]' },
-    { id: 3, status: 'closed', className: 'text-[#E30015]' },
+    { id: 3, status: 'close', className: 'text-[#E30015]' },
   ];
   const currentStoreStatus = filter(
     storeStatus,
@@ -81,7 +81,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
 
               {/* status */}
               {element?.Data?.status && !isEmpty(currentStoreStatus) && (
-                <span
+                <div
                   className={`flex flex-row items-center text-xs`}
                   suppressHydrationWarning={suppressText}
                 >
@@ -91,7 +91,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
                   >
                     {t(`${currentStoreStatus[0].status}`)}
                   </p>
-                </span>
+                </div>
               )}
             </div>
           </div>

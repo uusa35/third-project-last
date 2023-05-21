@@ -45,7 +45,6 @@ export default function Cart({ url }: Props) {
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
-  const [openAuthModal, setOpenAuthModal] = useState<boolean>(false);
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
@@ -257,12 +256,8 @@ export default function Cart({ url }: Props) {
     = check  if guest or user 
     = navigate
     */
-    if (customer_id) {
-      router.push(appLinks.checkout.path);
-    } else {
-      // show sign in modal
-      setOpenAuthModal(true);
-    }
+
+    router.push(appLinks.mobileVerification.path);
   };
 
   /*
@@ -318,11 +313,6 @@ export default function Cart({ url }: Props) {
           </div>
         )}
       </div>
-      <GuestOrderModal
-        isOpen={openAuthModal}
-        url={url}
-        closeModal={() => setOpenAuthModal(false)}
-      />
     </MainContentLayout>
   );
 }
