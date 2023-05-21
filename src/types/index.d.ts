@@ -371,3 +371,8 @@ export interface Cart {
   enable_promocode: boolean;
   promocode: string;
 }
+
+export interface Models {
+  areaBranchIsOpen: boolean,
+  closedStoreIsOpen: boolean
+}

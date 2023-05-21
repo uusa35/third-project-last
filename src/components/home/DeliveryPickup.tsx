@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import React, { useState } from 'react';
 import DeliveryIcon from '@/appIcons/delivery_home.svg';
 import PickupIcon from '@/appIcons/pickup_home.svg';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
 import TextTrans from '../TextTrans';
 import { suppressText } from '@/constants/*';
+import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
 
 type Props = {};
 
@@ -19,6 +20,7 @@ function DeliveryPickup({}: Props) {
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+  const dispatch = useAppDispatch();
 
   const [openPickupDeliveryModal, setOpenPickupDeliveryModal] = useState(false);
 
@@ -46,7 +48,7 @@ function DeliveryPickup({}: Props) {
 
             <div
               className="flex items-center"
-              onClick={() => setOpenPickupDeliveryModal(true)}
+              onClick={() => dispatch(setAreaBranchModelStatus(true))}
             >
               <p
                 suppressHydrationWarning={suppressText}
@@ -100,8 +102,8 @@ function DeliveryPickup({}: Props) {
       )} */}
 
       <ChangeMoodModal
-        isOpen={openPickupDeliveryModal}
-        onRequestClose={() => setOpenPickupDeliveryModal(false)}
+        // isOpen={openPickupDeliveryModal}
+        // onRequestClose={() => setOpenPickupDeliveryModal(false)}
       />
     </div>
   );
