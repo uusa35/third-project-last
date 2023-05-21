@@ -15,7 +15,7 @@ import Link from 'next/link';
 import { appLinks, suppressText } from '@/constants/*';
 import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
-import KnetIcon from '@/appIcons/KNETLogo.svg';
+import KnetIcon from '@/appIcons/knet.svg';
 import { isEmpty, isNull, map } from 'lodash';
 import PaymentSummary from '@/components/PaymentSummary';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';

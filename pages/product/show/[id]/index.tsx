@@ -969,35 +969,36 @@ const ProductShow: NextPage<Props> = ({
             >
               <button
                 disabled={
-                  (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000') ||
+                  // no need for this case here cause in old Q method is delivery by default
+                  // (parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' &&
+                  //   !method) ||
                   productOutStock
                 }
                 onClick={debounce(() => handleAddToCart(), 400)}
-                className={`${mainBtnClass} py-2`}
+                className={`${mainBtnClass} py-2 flex justify-between px-5`}
                 style={{
                   backgroundColor: color,
                   color: `white`,
                 }}>
+              <div className="flex justify-between px-5">
               {isNull(destination)
               ? t(`start_ordering`)
               : productOutStock
               ? t('out_stock')
-              : <div className="flex justify-between px-5">
-                {t('add_to_cart')}
-                <span className={`flex flex-row items-center gap-2 text-white`}>
-                      <p>
-                        {parseFloat(productCart?.grossTotalPrice).toFixed(3) === '0.000'
-                          ? t(`price_on_selection`)
-                          : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                      </p>
-                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                      <span className={`uppercase`}>{t('kwd')}</span>
-                    )}
-                    </span>
-                </div>
+              : t('add_to_cart')
               }  
+              </div>              
+              <span className="flex">
+                <p className={`text-xl text-white`}>
+                  {parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000'
+                    ? t(`price_on_selection`)
+                    : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                </p>
+                {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                  <span className={`text-white uppercase px-2`}>{t('kwd')}</span>
+                )}
+              </span>
               </button>
-              
               <ChangeMoodModal  
                   isOpen={isOpen}
                   onRequestClose={() => setIsOpen(false)}
