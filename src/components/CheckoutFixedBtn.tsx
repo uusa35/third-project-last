@@ -105,7 +105,7 @@ export default function CheckoutFixedBtn({
           )}
 
         {/* order status  btn*/}
-        {!cart && (
+        {/* {!cart && (
           <div
             className="flex items-center gap-x-2 justify-between rounded-full text-white w-full py-2 px-4 my-3"
             style={{ backgroundColor: color }}
@@ -127,7 +127,7 @@ export default function CheckoutFixedBtn({
               <ArrowUpStatusIcon />
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

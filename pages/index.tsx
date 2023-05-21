@@ -102,14 +102,15 @@ export default function Home({ url, element, currentLocale }: Props) {
     );
   }, [router.locale, DestinationId, method]);
 
-  // vendor info check if delivery or pickup
+  // vendor info open at , close at (api)
+
   // delivery and pickup section====>  where to get the date
   // store is closed modal====> api
   // in checkout btn get cart and render if cart not empty
-  // if category doesnot contain items should i render it in ProductListView
+
   // status btn where to get the data
   // close modal when to show it
-  // in main layout get vendor un comment destobj
+ 
   // line 149 in index home mdify category
 
   return (

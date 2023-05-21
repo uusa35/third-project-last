@@ -39,15 +39,20 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
     p2,
     p3 = '',
     editPath = '#',
+    onclick = () => {},
   }: {
     icon: ReactNode;
     p1: string;
     p2: string;
     p3?: string;
     editPath?: string;
+    onclick?: () => void;
   }) => {
     return (
-      <div className="flex justify-between items-center gap-x-2 py-2 text-xs">
+      <div
+        onClick={() => onclick()}
+        className="flex justify-between items-center gap-x-2 py-2 text-xs cursor-pointer"
+      >
         <div className="flex gap-x-3">
           {icon}
           <div>
@@ -85,6 +90,11 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
   return (
     <div>
       <DetailComponent
+        onclick={() =>
+          method === 'delivery'
+            ? router.push(appLinks.addressCreate.path)
+            : router.push(appLinks.selectBranch.path)
+        }
         icon={
           method === 'pickup' ? (
             <AddressIcon />
@@ -112,6 +122,9 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
       <DetailComponent
+        onclick={() => {
+          router.push(appLinks.mobileVerification.path);
+        }}
         icon={<ContactsIcon />}
         p1="contacts_info"
         p2={`${name} , ${phone}`}
@@ -119,6 +132,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       />
 
       <DetailComponent
+        onclick={() => router.push(appLinks.selectTime.path)}
         icon={<ClockIcon />}
         p1={
           {
@@ -131,6 +145,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       />
 
       <DetailComponent
+        // onclick={() => router.push(appLinks.addressCreate.path)}
         icon={<RemarksIcon />}
         p1="special_remarks"
         p2={`${notes ? notes : 'no_notes_added'}`}

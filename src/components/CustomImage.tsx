@@ -23,6 +23,7 @@ const CustomImage: FC<Props> = ({
 }): JSX.Element => {
   const [imgSrc, setImageSrc] = useState<string>(src);
 
+  // set img def val with loading skelton and on load complete set it with actual src
   return (
     <Image
       {...rest}
@@ -31,6 +32,8 @@ const CustomImage: FC<Props> = ({
       width={width}
       height={height}
       fill={fill}
+      // onLoad={()=>{setImageSrc()}}
+      onLoadingComplete={()=>{}}
       onError={(e) => {
         setImageSrc(NoFoundImage.src);
       }}

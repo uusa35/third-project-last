@@ -49,14 +49,14 @@ function DeliveryPickup({}: Props) {
           <div className="flex items-end justify-between w-full">
             {method === 'pickup' && (
               <div>
-                <p suppressHydrationWarning={suppressText}>pickup from</p>
+                <p className='text-xs' suppressHydrationWarning={suppressText}>pickup from</p>
                 <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
 
             {method === 'delivery' && (
               <div>
-                <p suppressHydrationWarning={suppressText}>deliver now to</p>
+                <p className='text-xs' suppressHydrationWarning={suppressText}>deliver now to</p>
                 <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
@@ -68,7 +68,7 @@ function DeliveryPickup({}: Props) {
               <p
                 suppressHydrationWarning={suppressText}
                 style={{ color: color }}
-                className="font-bold"
+                className="font-bold text-sm"
               >
                 {t('change')}
               </p>
