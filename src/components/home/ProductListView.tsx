@@ -30,8 +30,8 @@ export default function ProductListView({ CategoriesProducts }: Props) {
     <div>
       {/* sticky header */}
       <header
-        className="flex gap-x-2 bg-white py-4 sticky top-0 z-10 border-b-2 px-4"
-        // style={{ boxShadow: ' 0 6px 9px -2px #cbcbcb' }}
+        className="flex gap-x-2 bg-white py-4 sticky top-0 z-10 px-4"
+        style={{ boxShadow: '0px 4px 8px #00000026' }}
       >
         <div
           className="rounded-full bg-gray-100 w-fit h-fit p-1 cursor-pointer"

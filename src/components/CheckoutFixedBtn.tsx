@@ -20,11 +20,13 @@ type Props = {
   url: string;
   cart?: boolean;
   handelContinueInCart?: () => void;
+  cartLessThanMin?: boolean;
 };
 
 export default function CheckoutFixedBtn({
   url,
   cart = false,
+  cartLessThanMin = false,
   handelContinueInCart = () => {},
 }: Props) {
   const { t } = useTranslation();
@@ -58,10 +60,7 @@ export default function CheckoutFixedBtn({
     { refetchOnMountOrArgChange: true }
   );
 
-  useEffect(() => {
-    refetchCart();
-  }, []);
-
+  console.log(cartLessThanMin)
   return (
     <div>
       <div className="h-48"></div>
@@ -74,8 +73,7 @@ export default function CheckoutFixedBtn({
           cartItems?.data?.Cart.length > 0 && (
             <>
               {/* min cart msg */}
-              {parseFloat(cartItems?.data?.minimum_order_price.toString()) >
-                parseFloat(cartItems?.data?.total.toString()) && (
+              {cartLessThanMin && (
                 <p
                   suppressHydrationWarning={suppressText}
                   className="w-full text-xs text-[#877D78] text-center py-2"
@@ -87,32 +85,21 @@ export default function CheckoutFixedBtn({
               {/* checkout btn */}
               <div
                 onClick={() => {
-                  if (
-                    parseFloat(
-                      cartItems?.data?.minimum_order_price.toString()
-                    ) < parseFloat(cartItems?.data?.total.toString())
-                  ) {
-                    if (cart) {
-                      handelContinueInCart();
-                    } else {
-                      router.push(appLinks.cart.path);
-                    }
+                  if (cart) {
+                    if (!cartLessThanMin) handelContinueInCart();
+                  } else {
+                    router.push(appLinks.cart.path);
                   }
                 }}
                 className={`flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer`}
                 style={{
-                  backgroundColor:
-                    parseFloat(
-                      cartItems?.data?.minimum_order_price.toString()
-                    ) > parseFloat(cartItems?.data?.total.toString())
-                      ? '#B7B1AE'
-                      : color,
+                  backgroundColor: cartLessThanMin ? '#B7B1AE' : color,
                 }}
               >
                 <div className="flex items-center gap-x-3">
                   <p
                     suppressHydrationWarning={suppressText}
-                    className="flex items-center justify-center rounded-full w-8 h-8 bg-red-800"
+                    className={`flex items-center justify-center rounded-full w-8 h-8 ${cartLessThanMin ?'bg-black bg-opacity-10' : 'bg-red-800'}`}
                   >
                     {cartItems?.data?.Cart.length}
                   </p>

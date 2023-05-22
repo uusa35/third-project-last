@@ -102,13 +102,9 @@ export default function Home({ url, element, currentLocale }: Props) {
     );
   }, [router.locale, DestinationId, method]);
 
-  // vendor info open at , close at (api)
-
-  // delivery and pickup section====>  where to get the date
   // store is closed modal====> api
-  // in checkout btn get cart and render if cart not empty
 
-  // status btn where to get the data
+  // order status 
   // close modal when to show it
 
   // line 149 in index home mdify category

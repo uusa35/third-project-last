@@ -256,7 +256,7 @@ export default function Cart({ url }: Props) {
     = check  if guest or user 
     = navigate
     */
-  //  check if user id is null 
+    //  check if user id is null
 
     router.push(appLinks.login.path);
   };
@@ -302,6 +302,10 @@ export default function Cart({ url }: Props) {
             </div>
 
             <CheckoutFixedBtn
+              cartLessThanMin={
+                parseFloat(cartItems?.data?.minimum_order_price.toString()) >
+                parseFloat(cartItems?.data?.total.toString())
+              }
               url={url}
               cart={true}
               handelContinueInCart={() => handelContinue()}
