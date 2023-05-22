@@ -21,8 +21,12 @@ const ToastAppContainer = () => {
 
   useEffect(() => {
     if (showToast) {
-      toast(t(content), { type });
-      dispatch(hideToastMessage());
+      toast(t(content), {
+        type,
+        onClose: () => {
+          dispatch(hideToastMessage());
+        },
+      });
     }
   }, [showToast]);
 
@@ -43,7 +47,7 @@ const ToastAppContainer = () => {
         // bodyStyle={{ height: 'auto' }}
         style={{
           width: 'max-content',
-          minWidth: '300px'
+          minWidth: '300px',
         }}
         theme="colored"
         // progressClassName={`bg-red-900`}

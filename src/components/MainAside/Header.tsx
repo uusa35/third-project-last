@@ -46,7 +46,7 @@ export default function AsideHeader({ url }: Props) {
           dispatch(
             showToastMessage({
               content: `language_changed_successfully`,
-              type: `info`,
+              type: `success`,
             })
           );
         });

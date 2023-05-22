@@ -230,5 +230,11 @@
   "info_saved": "info saved",
   "save_address": "save address",
   "order_created_successfully": "thank you .. your order has been placed.",
-  "fill_name": "fill name"
+  "fill_name": "fill name",
+  "language_changed_successfully": "language changed",
+  "pickup_now":"pick up now",
+  "delivery_now":"delivery now to",
+  "pickup_later":"pick up",
+  "delivery_later":"delivery",
+  "deliver_to":"deliver to"
 }

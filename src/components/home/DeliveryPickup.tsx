@@ -6,19 +6,22 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
-import ChangeMoodModal from '../modals/ChangeMoodModal';
 import TextTrans from '../TextTrans';
 import { suppressText } from '@/constants/*';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import ChangeMoodModal from '../modals/ChangeMoodModal';
 
-type Props = {};
+type Props = { url: string };
 
-function DeliveryPickup({}: Props) {
+function DeliveryPickup({ url }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const {
     searchParams: { method, destination },
+    customer: {
+      prefrences: { type: prefType, date, time },
+    },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -59,14 +62,39 @@ function DeliveryPickup({}: Props) {
           <div className="flex items-end justify-between w-full">
             {method === 'pickup' && (
               <div>
-                <p className='text-xs' suppressHydrationWarning={suppressText}>pickup from</p>
-                <TextTrans ar={destination.name_ar} en={destination.name_en} />
+                <p className="text-xs" suppressHydrationWarning={suppressText}>
+                  {
+                    {
+                      ['pickup_now']: t('pickup_now'),
+                      ['pickup_later']: `${t('pickup_later')} ${date} ${time}`,
+                      ['']: t('pickup_from'),
+                    }[prefType as string]
+                  }
+                </p>
+                <div className="flex items-center">
+                  <TextTrans
+                    ar={destination.name_ar}
+                    en={destination.name_en}
+                  />
+                  <p suppressHydrationWarning={suppressText}>
+                    {' '}
+                    , {destination.location}
+                  </p>
+                </div>
               </div>
             )}
 
             {method === 'delivery' && (
               <div>
-                <p className='text-xs' suppressHydrationWarning={suppressText}>deliver now to</p>
+                <p className="text-xs" suppressHydrationWarning={suppressText}>
+                  {
+                    {
+                      ['delivery_now']: t('delivery_now'),
+                      ['delivery_later']: t('delivery_later'),
+                      ['']: t('deliver_to'),
+                    }[prefType as string]
+                  }
+                </p>
                 <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
@@ -96,35 +124,7 @@ function DeliveryPickup({}: Props) {
           </div>
         </div>
       )}
-      {/* {method === 'delivery' && (
-        <div className="flex gap-x-2 text-sm cursor-pointer">
-          <DeliveryIcon />
-          <div className="flex items-end justify-between w-full">
-            <div>
-              <p>deliver now to</p>
-              <p>jhdkjfkjsdhkjj</p>
-            </div>
-            <div
-              className="flex items-center"
-              onClick={() => setOpenPickupDeliveryModal(true)}
-            >
-              <p style={{ color: color }} className="font-bold">
-                {t('change')}
-              </p>
-
-              {router.locale === 'en' ? (
-                <KeyboardArrowRight
-                  style={{ color: color, fontSize: 16, textAlign: 'center' }}
-                />
-              ) : (
-                <KeyboardArrowLeft
-                  style={{ color: color, fontSize: 16, textAlign: 'center' }}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      )} */}
+      <ChangeMoodModal url={url} />
     </div>
   );
 }
