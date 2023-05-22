@@ -245,7 +245,7 @@ export default function checkout({ url }: Props) {
               ))}
 
               <Link
-                href={'#'}
+                href={appLinks.home.path}
                 className="flex items-center gap-x-1 rounded-full border border-[#E30015] text-[#E30015] w-fit text-xs py-1 px-3  mt-3"
               >
                 <AddIcon />

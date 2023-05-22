@@ -206,5 +206,7 @@
   "notice": "ملاحظة",
   "other_phone_no": "رقم هاتف آخر",
   "address_details": "تفاصيل العنوان",
-  "office": "مكتب"
+  "office": "مكتب",
+  "add_a_minimum_of":"اضف علي الاقل",
+  "to_place_your_order":"لكي تحجز الطلب"
 }

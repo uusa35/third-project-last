@@ -252,5 +252,7 @@
   "office_no": "office number",
   "notice": "notice",
   "other_phone_no": "other phone number",
-  "address_details": "address details"
+  "address_details": "address details",
+  "add_a_minimum_of":"add a minimum of",
+  "to_place_your_order":"to place your order"
 }

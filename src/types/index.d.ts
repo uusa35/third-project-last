@@ -3,7 +3,7 @@ import { Address } from '@/types/queries';
 export interface Product {
   id: number;
   amount: number;
-  limited_qty:boolean
+  limited_qty: boolean;
   never_out_of_stock: number;
   name: string;
   name_ar: string;
@@ -129,6 +129,7 @@ export interface ServerCart {
   Cart: ProductCart[];
   total_cart_after_tax?: number;
   promo_code_discount?: number;
+  minimum_order_price: string;
   tax?: number;
   free_delivery?: boolean;
   delivery_fee?: string;
