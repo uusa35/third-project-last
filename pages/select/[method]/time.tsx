@@ -30,9 +30,11 @@ type Props = {
   days: Day[];
   selectedDay: Day;
   handleDaySelect: (day: Day) => void;
+  method: 'pickup | delivery';
 };
 
-export default function index({ url }: Props) {
+export default function index({ url, method }: Props) {
+  console.log('method', method);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -40,7 +42,7 @@ export default function index({ url }: Props) {
   const desObject = useAppSelector(destinationHeaderObject);
   const {
     locale: { lang, isRTL },
-    searchParams: { destination_type, method },
+    searchParams: { destination_type },
   } = useAppSelector((state) => state);
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
@@ -325,16 +327,23 @@ export default function index({ url }: Props) {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req }) => {
+    async ({ req, query }) => {
+      console.log('query', query.method !== 'pickup');
+      const { method }: any = query;
       if (!req.headers.host) {
         return {
           notFound: true,
         };
       }
-      return {
-        props: {
-          url: req.headers.host,
-        },
-      };
+      if (method === `pickup` || method === `delivery`) {
+        return {
+          props: {
+            url: req.headers.host,
+            method: query.method,
+          },
+        };
+      } else {
+        return { notFound: true };
+      }
     }
 );
