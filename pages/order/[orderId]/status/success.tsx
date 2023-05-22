@@ -29,6 +29,7 @@ import GuestOrderStatus from '@/components/order/GuestOrderStatus';
 import TextTrans from '@/components/TextTrans';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import OrderSuccessSkeleton from '@/components/skeletons/OrderSuccessSkeleton';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
     url: string;
@@ -195,7 +196,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
       />
     </MainContentLayout>
    ) : (
-    <OrderSuccessSkeleton />
+    <ContentLoader type="OrderSuccess" sections={1} />
    )}
    </>
   );

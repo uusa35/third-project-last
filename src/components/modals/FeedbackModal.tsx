@@ -72,8 +72,8 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                 closeModal={onRequestClose}
             >
                 <div>
-                    <div className="flex lg:grid lg:grid-cols-3 w-full pb-5 px-4 border-b-[1px] border-gray-200">
-                        <div className="w-1/3">
+                    <div className="flex w-full pb-5 px-4 border-b-[1px] border-gray-200">
+                        <div className="w-[5%]">
                             <button
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                                 onClick={onRequestClose}
@@ -81,7 +81,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                                 <ExpandMoreIcon />
                             </button>
                         </div>
-                        <h5 className="font-semibold capitalize md:ps-16 lg:ps-4 xl:ps-0" suppressHydrationWarning={suppressText}>
+                        <h5 className="font-semibold capitalize text-center w-[95%]" suppressHydrationWarning={suppressText}>
                             {t('leave_a_feedback')}
                         </h5>
                     </div>

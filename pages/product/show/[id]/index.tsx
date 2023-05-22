@@ -999,7 +999,7 @@ const ProductShow: NextPage<Props> = ({
                 }}>
               <div className="px-5 text-center w-full">
               {productOutStock
-                ? t('out_of_stock')
+                ? t('out_stock')
                 : isNull(destination)
                 ? t(`start_ordering`)
                 : (

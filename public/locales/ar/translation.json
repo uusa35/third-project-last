@@ -189,5 +189,22 @@
   "delivery_now":"توصيل الان الي",
   "pickup_later":"استلام",
   "delivery_later":"توصيل",
-  "deliver_to":"توصيل الي"
+  "deliver_to":"توصيل الي",
+  "our_branches": "فروعنا",
+  "min_order_with_delivery": "أقل طلب للتوصيل",
+  "opening_hours": "ساعات العمل",
+  "payment_options": "خيارات الدفع",
+  "leave_feedback_desc": "رأيك يهمنا، قم بالتقييم الآن",
+  "phone_no": "رقم الهاتف",
+  "city_and_area": "مدينة ومنطقة",
+  "street": "شارع",
+  "house_no": "رقم المنزل",
+  "building_no": "رقم المبنى",
+  "floor_no": "رقم الدور",
+  "apartment_no": "رقم الشقة",
+  "office_no": "رقم المكتب",
+  "notice": "ملاحظة",
+  "other_phone_no": "رقم هاتف آخر",
+  "address_details": "تفاصيل العنوان",
+  "office": "مكتب"
 }

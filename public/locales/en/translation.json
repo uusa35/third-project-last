@@ -236,5 +236,21 @@
   "delivery_now":"delivery now to",
   "pickup_later":"pick up",
   "delivery_later":"delivery",
-  "deliver_to":"deliver to"
+  "deliver_to":"deliver to",
+  "our_branches": "our branches",
+  "min_order_with_delivery": "min order with delivery",
+  "opening_hours": "opening hours",
+  "payment_options": "payment options",
+  "leave_feedback_desc": "your opinion matters, rate us now",
+  "phone_no": "phone number",
+  "city_and_area": "city and area",
+  "street": "street",
+  "house_no": "house number",
+  "building_no": "building number",
+  "floor_no": "floor number",
+  "apartment_no": "apartment number",
+  "office_no": "office number",
+  "notice": "notice",
+  "other_phone_no": "other phone number",
+  "address_details": "address details"
 }

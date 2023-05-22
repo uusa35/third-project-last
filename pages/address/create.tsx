@@ -7,7 +7,7 @@ import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
-import HomeIcon from '@mui/icons-material/Home';
+import { CottageOutlined, BusinessOutlined, WorkOutlineTwoTone } from '@mui/icons-material';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -34,20 +34,20 @@ const AddressCreate: NextPage<Props> = ({
     <MainContentLayout
       url={url}
       showBackBtnHeader={true}
-      currentModule="addresses"
+      currentModule="address_details"
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <div className="flex mx-3 flex-row justify-center items-start">
           <button className="flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize ">
-            <HomeIcon fontSize="large" />
-            <p>{t('home')}</p>
+            <CottageOutlined fontSize="large" />
+            <p>{t('house')}</p>
           </button>
           <button className="flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3">
-            <HomeIcon fontSize="large" />
-            <p>{t('appartment')}</p>
+            <BusinessOutlined fontSize="large" />
+            <p>{t('apartment')}</p>
           </button>
           <button className="flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize">
-            <HomeIcon fontSize="large" />
+            <WorkOutlineTwoTone fontSize="large" />
             <p>{t('office')}</p>
           </button>
         </div>
@@ -63,7 +63,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="phone"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('phone')}
+              {t('phone_no')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -84,7 +84,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="full_name"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('full_name')}
+              {t('full_name')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -105,7 +105,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="city_and_area"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('city_and_area')}
+              {t('city_and_area')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -143,7 +143,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="street"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('street')}
+              {t('street')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -237,7 +237,7 @@ const AddressCreate: NextPage<Props> = ({
                 name="appartment_no"
                 id="appartment_no"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={`${t('appartment_no')}`}
+                placeholder={`${t('apartment_no')}`}
               />
             </div>
           </div>
@@ -292,7 +292,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="other_phone"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('other_phone')}{' '}
+              {t('other_phone_no')}{' '}
               <span className="text-[10px]">({t('optional')})</span>
             </label>
             <div className="relative rounded-md shadow-sm">
@@ -302,7 +302,7 @@ const AddressCreate: NextPage<Props> = ({
                 name="other_phone"
                 id="other_phone"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={`${t('other_phone')}`}
+                placeholder={`${t('other_phone_no')}`}
               />
             </div>
           </div>
