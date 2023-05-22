@@ -73,7 +73,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
                     <MinOrderIcon />
                     <p suppressHydrationWarning={suppressText}>
                       {t('min_order')} :{' '}
-                      {element?.Data?.delivery?.minimum_order_price} {t('KD')}
+                      {element?.Data?.delivery?.minimum_order_price} {t('kwd')}
                     </p>
                   </div>
                 </>
