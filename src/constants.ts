@@ -21,7 +21,7 @@ export const appLinks = {
   productShow: (id: number) => `/product/show/${id}`,
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
-  selectTime: { path: "/select/time" },
+  selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
   userAddresses: { path: '/user/addresses' },
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/user/orders' },
