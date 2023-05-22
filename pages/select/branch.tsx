@@ -37,6 +37,7 @@ import {
 } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -88,10 +89,17 @@ const SelectBranch: NextPage<Props> = ({
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    dispatch(setDestination({ destination, type }));
+    console.log('des', destination);
     if (destination.status === 'CLOSE') {
+      dispatch(
+        showToastMessage({
+          type: 'warning',
+          content: `branch_is_closed`,
+        })
+      );
       setOpenClosedStore(true);
     } else {
+      dispatch(setDestination({ destination, type }));
       router.back();
     }
   };
