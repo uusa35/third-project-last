@@ -111,14 +111,30 @@ const VerProductWidget: FC<Props> = ({
               )}
             </div>
 
-            <div className="h-16 w-16 sm:h-24 sm:w-24  aspect-square rounded-lg">
-              <CustomImage
-                src={`${element.cover ?? NoFoundImage.src}`}
-                alt={element.name}
-                width={imageSizes.sm}
-                height={imageSizes.sm}
-                className="w-full h-full object-cover object-center rounded-lg"
-              />
+            <div className="flex flex-col items-end">
+              <div className="relative h-16 w-16 sm:h-24 sm:w-24  aspect-square rounded-lg me-2">
+                <CustomImage
+                  src={`${element.cover ?? NoFoundImage.src}`}
+                  alt={element.name}
+                  width={imageSizes.sm}
+                  height={imageSizes.sm}
+                  className="w-full h-full object-cover object-center rounded-lg"
+                />
+              </div>
+              {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+                <p
+                  className="absolute text-white text-xxs w-fit rounded-full px-1 py-px bg-amber-400 -top-1"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('out_stock')}
+                </p>
+              ) : (
+                <></>
+                // <p
+                //   className="absolute text-white text-xxs w-fit rounded-full px-1 py-px bg-amber-400"
+                //   suppressHydrationWarning={suppressText}
+                // ></p>
+              )}
             </div>
           </div>
         </div>

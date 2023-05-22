@@ -224,5 +224,6 @@
   "open_at":"open at",
   "now_within": "now within",
   "please_review_sections_some_r_required": "required fields",
-  "address_saved_successfully": "address saved successfully"
+  "address_saved_successfully": "address saved successfully",
+  "out_stock":"out stock"
 }

@@ -178,5 +178,6 @@
   "limited_quantity_will_end_soon": "كميه محدود ستنتهي قريبًا",
   "now_within": "الآن خلال",
   "please_review_sections_some_r_required" : "اختيارات مطلوبة",
-  "address_saved_successfully": "تم حفظ العنوان بنجاح"
+  "address_saved_successfully": "تم حفظ العنوان بنجاح",
+  "out_stock":"نفذت الكمية"
 }

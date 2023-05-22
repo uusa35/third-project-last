@@ -171,7 +171,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         suppressHydrationWarning={suppressText}
       >
         {vendorSuccess && vendorElement && vendorElement.Data && (
-          <MainAsideLayout element={vendorElement.Data} />
+          <MainAsideLayout url={url} element={vendorElement.Data} />
         )}
       </div>
     </div>
