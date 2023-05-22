@@ -982,28 +982,31 @@ const ProductShow: NextPage<Props> = ({
                   backgroundColor: color,
                   color: `white`,
                 }}>
-              <div className="flex justify-between px-5">
+              <div className="px-5 text-center w-full">
               {productOutStock
                 ? t('out_of_stock')
                 : isNull(destination)
-                ? t(`start_ordering`) 
-                : t('add_to_cart')}
+                ? t(`start_ordering`)
+                : (
+                  <div className="w-full flex justify-between">
+                    {t('add_to_cart')}
+                    <span className="flex">
+                    <p className={`text-white`}>
+                      {parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' && productCart.price_on_selection
+                        ? t(`price_on_selection`)
+                        : parseFloat(productCart.grossTotalPrice).toFixed(3)}
+                    </p>
+                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
+                      <span className={`text-white uppercase px-2`}>{t('kwd')}</span>
+                    )}
+                  </span>
+                  </div>
+                )
+                }
               </div>              
-              <span className="flex">
-                <p className={`text-white`}>
-                  {parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' && productCart.price_on_selection
-                    ? t(`price_on_selection`)
-                    : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                </p>
-                {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                  <span className={`text-white uppercase px-2`}>{t('kwd')}</span>
-                )}
-              </span>
+              
               </button>
-              <ChangeMoodModal  
-                  // isOpen={isOpen}
-                  // onRequestClose={() => setIsOpen(false)}
-                />
+              <ChangeMoodModal url={url} />
                 <ChangeMood3Modal
                   isOpen={isNotAvailable}
                   onRequestClose={() => setIsOpenNotAvailable(false)}

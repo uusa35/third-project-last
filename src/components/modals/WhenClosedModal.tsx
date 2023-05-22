@@ -6,19 +6,24 @@ import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
 import { themeColor } from '@/redux/slices/vendorSlice';
-
 import CustomImage from "../CustomImage";
 import { useAppSelector } from "@/redux/hooks";
-const WhenClosedModal: FC = ():JSX.Element => {
-    const [isOpen,setIsOpen] = useState<boolean>(false);
+import { useRouter } from "next/router";
+
+type Props = {
+    isOpen: boolean;
+    onRequestClose: () => void;
+};
+const WhenClosedModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const color = useAppSelector(themeColor);
+    const router = useRouter();
     
     return (
         <>
             <MainModal 
                 isOpen={isOpen} 
-                closeModal={() => setIsOpen(false)}
+                closeModal={onRequestClose}
             >
                 <div>
                     <div className="flex flex-col items-center px-5 pt-4">
@@ -49,7 +54,10 @@ const WhenClosedModal: FC = ():JSX.Element => {
                             className={`${mainBtnClass}`}
                             style={{ backgroundColor: color }}
                             suppressHydrationWarning={suppressText}
-                            onClick={() => setIsOpen(false)}
+                            onClick={()=> {
+                                onRequestClose();
+                                router.back();
+                            }}
                         >
                             {t('ok_get_it')}
                         </button>    
