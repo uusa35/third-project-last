@@ -60,7 +60,6 @@ function DeliveryPickup({ url }: Props) {
           <div className="flex items-end justify-between w-full">
             {method === 'pickup' && (
               <div>
-<<<<<<< HEAD
                 <p className="text-xs" suppressHydrationWarning={suppressText}>
                   {
                     {
@@ -80,16 +79,11 @@ function DeliveryPickup({ url }: Props) {
                     , {destination.location}
                   </p>
                 </div>
-=======
-                <p className='text-xs' suppressHydrationWarning={suppressText}>{t('pickup_from')}</p>
-                <TextTrans ar={destination.name_ar} en={destination.name_en} />
->>>>>>> esraa
               </div>
             )}
 
             {method === 'delivery' && (
               <div>
-<<<<<<< HEAD
                 <p className="text-xs" suppressHydrationWarning={suppressText}>
                   {
                     {
@@ -99,9 +93,6 @@ function DeliveryPickup({ url }: Props) {
                     }[prefType as string]
                   }
                 </p>
-=======
-                <p className='text-xs' suppressHydrationWarning={suppressText}>{t('deliver_now_to')}</p>
->>>>>>> esraa
                 <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
