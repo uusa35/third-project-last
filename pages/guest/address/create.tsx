@@ -15,7 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useCreateAddressMutation } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -25,6 +25,7 @@ import { setCustomerAddress } from '@/redux/slices/customerSlice';
 import { kebabCase, lowerCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { CottageOutlined, BusinessOutlined, WorkOutlineTwoTone } from '@mui/icons-material';
 
 type Props = {
   element: Vendor;
@@ -50,7 +51,6 @@ const AddressCreate: NextPage<Props> = ({
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
-  console.log('method', method);
   const {
     register,
     handleSubmit,
@@ -62,12 +62,7 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method,
-      address_type:
-        currentAddressType === 'appartment'
-          ? 2
-          : currentAddressType === 'office'
-          ? 3
-          : 1,
+      address_type: 1,
       longitude: ``,
       latitude: ``,
       customer_id: customer.id?.toString(),
@@ -86,6 +81,17 @@ const AddressCreate: NextPage<Props> = ({
       additional: customer.address.additional,
     },
   });
+
+  useMemo(() => {
+    setValue(
+      'address_type',
+      currentAddressType === 'appartment'
+        ? 2
+        : currentAddressType === 'office'
+        ? 3
+        : 1
+    );
+  }, [currentAddressType]);
 
   const handelSaveAddress = async (body: any) => {
     await triggerAddAddress({
@@ -154,8 +160,10 @@ const AddressCreate: NextPage<Props> = ({
               currentAddressType === 'home' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize `}
           >
-            <HomeIcon fontSize="large" />
-            <p>{t('home')}</p>
+            <CottageOutlined fontSize="large"className={`${
+              currentAddressType === 'home' && `text-red-600`
+            }`} />
+            <p>{t('house')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('appartment')}
@@ -163,8 +171,10 @@ const AddressCreate: NextPage<Props> = ({
               currentAddressType === 'appartment' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize mx-3`}
           >
-            <HomeIcon fontSize="large" />
-            <p>{t('appartment')}</p>
+            <BusinessOutlined fontSize="large" className={`${
+              currentAddressType === 'appartment' && `text-red-600`
+            }`} />
+            <p>{t('apartment')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('office')}
@@ -172,7 +182,9 @@ const AddressCreate: NextPage<Props> = ({
               currentAddressType === 'office' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize`}
           >
-            <HomeIcon fontSize="large" />
+            <WorkOutlineTwoTone fontSize="large" className={`${
+              currentAddressType === 'office' && `text-red-600`
+            }`} />
             <p>{t('office')}</p>
           </button>
         </div>
@@ -183,6 +195,7 @@ const AddressCreate: NextPage<Props> = ({
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
           <input type="hidden" {...register('customer_id')} />
+
           {/*  phone  */}
           <div className="w-full ">
             <label
@@ -190,7 +203,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="phone"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('phone_no')}
+              {t('phone_no')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -209,7 +222,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="full_name"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('full_name')}
+              {t('full_name')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -231,7 +244,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="city_and_area"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('city_and_area')}
+              {t('city_and_area')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -288,7 +301,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="street"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('street')}
+              {t('street')}*
             </label>
             <div className="relative rounded-md shadow-sm">
               <input
@@ -489,7 +502,7 @@ const AddressCreate: NextPage<Props> = ({
               htmlFor="other_phone"
               className="block text-sm font-medium text-gray-900"
             >
-              {t('other_phone')}{' '}
+              {t('other_phone_no')}{' '}
               <span className="text-[10px]">({t('optional')})</span>
             </label>
             <div className="relative rounded-md shadow-sm">
@@ -497,7 +510,7 @@ const AddressCreate: NextPage<Props> = ({
                 {...register('other_phone')}
                 suppressHydrationWarning={suppressText}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                placeholder={`${t('other_phone')}`}
+                placeholder={`${t('other_phone_no')}`}
               />
             </div>
           </div>

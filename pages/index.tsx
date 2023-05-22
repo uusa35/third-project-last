@@ -128,15 +128,12 @@ export default function Home({ url, element, currentLocale }: Props) {
             <>
               {/* sm screen header */}
               <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
-
               {/*  HomePage vendor info */}
               <div className={`px-4 mt-3 lg:mt-0`}>
                 <HomeVendorMainInfo element={vendorElement} />
               </div>
-
               {/* ads scroller */}
               <AdsScrollBar slider={vendorElement?.Data?.slider ?? []} />
-
               <DeliveryPickup url={url} />
             </>
           ) : (
@@ -188,8 +185,8 @@ export default function Home({ url, element, currentLocale }: Props) {
               </div>
 
               {/* in sm screens only */}
-              <Footer element={vendorElement?.Data} />
-              <CheckoutFixedBtn url={url} />
+              {/* <Footer element={vendorElement?.Data} /> */}
+              {/* <CheckoutFixedBtn url={url} /> */}
             </>
           )}
         </div>

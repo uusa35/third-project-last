@@ -26,7 +26,11 @@ const GuestOrderModal: FC<Props> = ({
   url,
 }): JSX.Element => {
   const { t } = useTranslation();
-  const { customer } = useAppSelector((state) => state);
+  const {
+    customer,
+    locale: { isRTL },
+    searchParams: { method },
+  } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -60,7 +64,11 @@ const GuestOrderModal: FC<Props> = ({
             type: 'success',
           })
         );
-        router.push(appLinks.addressCreate.path);
+        if (method === 'pickup') {
+          router.push(appLinks.checkout.path);
+        } else {
+          router.push(appLinks.addressCreate.path);
+        }
         // .then(() => dispatch(setCustomer(r.data.Data)));
       } else {
         dispatch(
@@ -110,7 +118,9 @@ const GuestOrderModal: FC<Props> = ({
                 />
                 <label
                   htmlFor="name"
-                  className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
+                  className={`absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full ${
+                    isRTL ? 'text-end' : 'text-start'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('fill_name')}</div>
@@ -130,7 +140,9 @@ const GuestOrderModal: FC<Props> = ({
               <div className="pt-6 pb-5">
                 <label
                   htmlFor="phone"
-                  className="text-gray-500"
+                  className={`text-gray-500 ${
+                    isRTL ? 'text-end' : 'text-start'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('phone_number')}</div>
@@ -177,7 +189,9 @@ const GuestOrderModal: FC<Props> = ({
                 />
                 <label
                   htmlFor="email"
-                  className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
+                  className={`absolute text-gray-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full ${
+                    isRTL ? 'text-end' : 'text-start'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('email_optional')}</div>

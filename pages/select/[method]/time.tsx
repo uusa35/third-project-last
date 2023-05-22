@@ -50,7 +50,7 @@ export default function index({ url, method }: Props) {
     useLazyGetTimingsQuery();
   const [sliderSettings, setSliderSettings] = useState<Settings>({
     dots: false,
-    infinite: true,
+    infinite: false,
     slidesToScroll: isRTL ? 1 : 4,
     initialSlide: isRTL ? 2 : 0,
     rtl: isRTL,
@@ -191,8 +191,6 @@ export default function index({ url, method }: Props) {
   };
 
   if (!vendorSuccess) return <div>loading</div>;
-
-  console.log('vendor', vendorElement);
 
   return (
     <Suspense>

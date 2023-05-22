@@ -87,32 +87,32 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
             />
           </div>
           <div className="px-6 flex flex-col space-y-4">
-            <div className="flex flex-row space-x-3 items-center">
+            <div className="flex flex-row items-center">
               <div>
                 <SaveAddressIcon className="text-gray-600 h-6 h-6" />
               </div>
-              <div>{t('save_ur_address')}</div>
+              <div className="px-3">{t('save_ur_address')}</div>
             </div>
             {/*  user info  */}
-            <div className="flex flex-row space-x-3 items-center">
+            <div className="flex flex-row items-center">
               <div>
                 <SaveContactInfo className="text-gray-600 h-6 h-6" />
               </div>
-              <div>{t('save_ur_contact_information')}</div>
+              <div className="px-3">{t('save_ur_contact_information')}</div>
             </div>
             {/*  re-order  */}
-            <div className="flex flex-row space-x-3 items-center">
+            <div className="flex flex-row items-center">
               <div>
                 <ReOrderIcon className="text-gray-600 h-6 h-6" />
               </div>
-              <div>{t('one_tap_re_order')}</div>
+              <div className="px-3">{t('one_tap_re_order')}</div>
             </div>
             {/*  track  */}
-            <div className="flex flex-row space-x-3 items-center">
+            <div className="flex flex-row items-center">
               <div>
                 <TrackOrderIcon className="text-gray-600 h-6 h-6" />
               </div>
-              <div>{t('track_order')}</div>
+              <div className="px-3">{t('track_order')}</div>
             </div>
           </div>
           <button
