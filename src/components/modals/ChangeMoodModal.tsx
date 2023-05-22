@@ -35,20 +35,22 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
   const { 
     searchParams: { destination, destination_type, method },
     models: { areaBranchIsOpen },
     customer: { prefrences },
     locale: { lang, isRTL },
   } = useAppSelector((state) => state);
+  const [activeTabIndex, setActiveTabIndex] = useState(
+    method === 'delivery' || method === null ? 0 : 1
+  );
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
   const onRequestClose = () => {
     dispatch(setAreaBranchModelStatus(false));
   }
   const desObject = useAppSelector(destinationHeaderObject);
-console.log({ method })
+  console.log({ method });
   useEffect(() => {
     triggerGetVendor(
       {
@@ -61,7 +63,7 @@ console.log({ method })
   }, []);
   return (
     <>
-      <MainModal isOpen={areaBranchIsOpen}>
+      <MainModal isOpen={areaBranchIsOpen} closeModal={onRequestClose}>
         <div>
           <div className="flex w-full pb-5 px-4">
             <div className="w-[5%]">
@@ -147,7 +149,7 @@ console.log({ method })
                       >
                         {t('delivering_to')}
                       </h6>
-                      <p>
+                      <p className="text-start">
                         {method === 'delivery' ? (
                           <TextTrans en={destination.name_en} ar={destination.name_ar} />
                         ) : t('select_address')}
@@ -227,7 +229,7 @@ console.log({ method })
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
               onClick={onRequestClose}
-              disabled={prefrences.data === '' && prefrences.time === ''}
+              disabled={prefrences.date === '' && prefrences.time === ''}
             >
               {t('confirm')}
             </button>

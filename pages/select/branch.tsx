@@ -91,6 +91,7 @@ const SelectBranch: NextPage<Props> = ({
     dispatch(setDestination({ destination, type }));
     if(destination.status === "CLOSE") {
       setOpenClosedStore(true);
+      
     }
     else {
       router.back();
@@ -165,7 +166,10 @@ const SelectBranch: NextPage<Props> = ({
           </button>
         ))}
       </div>
-      <WhenClosedModal isOpen={openStoreClosedModal} onRequestClose={() => setOpenClosedStore(false)} />
+      <WhenClosedModal 
+        isOpen={openStoreClosedModal} 
+        onRequestClose={() => setOpenClosedStore(false)} 
+      />
     </MainContentLayout>
   );
 };

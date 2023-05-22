@@ -179,5 +179,9 @@
   "now_within": "الآن خلال",
   "please_review_sections_some_r_required" : "اختيارات مطلوبة",
   "address_saved_successfully": "تم حفظ العنوان بنجاح",
-  "out_stock":"نفذت الكمية"
+  "out_stock":"نفذت الكمية",
+  "no_timing_available": "لا يوجد أوقات",
+  "info_saved": "تم حفظ البيانات",
+  "save_address": "حفظ العنوان",
+  "order_created_successfully" : "شكرا .. تم إتمام طلبك"
 }

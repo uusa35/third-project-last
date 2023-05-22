@@ -68,7 +68,7 @@
   "has_been_issued_back_to_your_original_payment_method.": "has been issued back to your original payment method.",
   "this_may_take_3_business_days_to_reflect.": "this may take 3 business days to reflect.",
   "confirm_cancellation": "confirm cancellation",
-  "need_help?": "need help?",
+  "need_help?": "need help ?",
   "how_can_we_help_you?": "how can we help you?",
   "if_you_have_any_technical_problem_or_problem_with_the_order_please_contact_us_via_voice_call_or_by_chatting_via_whatsapp_or_our_messenger.": "if you have any technical problem or problem with the order please contact us via voice call or by chatting via whatsapp or our messenger.",
   "call_us": "call us",
@@ -122,7 +122,7 @@
   "field_must_select_at_least_one": "field must select at least one",
   "select": "select",
   "select1": "select 1",
-  "multi_selection": "multi selection",
+  "multi_selection": "multi-selection",
   "categories": "categories",
   "whishlist": "whish list",
   "no_wish_list_for_you_yet": "no wish list for you yet",
@@ -225,5 +225,10 @@
   "now_within": "now within",
   "please_review_sections_some_r_required": "required fields",
   "address_saved_successfully": "address saved successfully",
-  "out_stock":"out stock"
+  "out_stock":"out stock",
+  "no_timing_available": "no timing available",
+  "info_saved": "info saved",
+  "save_address": "save address",
+  "order_created_successfully": "thank you .. your order has been placed.",
+  "fill_name": "fill name"
 }

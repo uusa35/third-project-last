@@ -28,6 +28,7 @@ import HelpModal from '@/components/modals/HelpModal';
 import GuestOrderStatus from '@/components/order/GuestOrderStatus';
 import TextTrans from '@/components/TextTrans';
 import { setUrl } from '@/redux/slices/appSettingSlice';
+import OrderSuccessSkeleton from '@/components/skeletons/OrderSuccessSkeleton';
 
 type Props = {
     url: string;
@@ -61,7 +62,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
   console.log({ order })
   return (
    <>
-   {order?.data ?  (
+   {!isUndefined(order?.data) ?  (
      <MainContentLayout showBackBtnHeader={true} currentModule={`${t('order')} #${order.data.order_id}`}>
       {/* image and text */}
       {/* if guest */}
@@ -72,20 +73,20 @@ export default function OrderSuccess({ url,orderId }: Props) {
           <div className="flex flex-col items-center justify-center text-center mb-7">
             <p
               suppressHydrationWarning={suppressText}
-              className="font-bold lg:w-3/4"
+              className="font-semibold lg:w-3/4 text-lg"
             >
               {t('your_order_is_successfully_done')}
             </p>
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 py-2 text-xs"
+              className="text-[#544A45] lg:w-3/4 py-2 text-sm"
             >
               {t('success_msg')}
             </p>
 
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 text-xs py-1"
+              className="text-[#544A45] lg:w-3/4 text-sm py-1"
             >
               {t('estimated_time')}{' '}
               <span className="text-[#1A1615] font-bold">
@@ -95,7 +96,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
 
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 text-xs"
+              className="text-[#544A45] lg:w-3/4 text-sm"
             >
               {t('order_id')} <span className="text-[#1A1615] font-bold">: # {order.data.order_id}</span>
             </p>
@@ -148,14 +149,14 @@ export default function OrderSuccess({ url,orderId }: Props) {
 
       {/* items */}
       <div className="p-5 border-b-4">
-        <p suppressHydrationWarning={suppressText} className="font-bold mb-3">
+        <p suppressHydrationWarning={suppressText} className="font-bold pb-5">
           {t('order_items')}
         </p>
         {map(order.data.items, (item, index) => (
-          <div key={index} className="flex justify-between items-center">
+          <div key={index} className="flex justify-between items-center border-t-2 border-gray-200 py-5">
             <div>
               <div className="flex pb-2">
-                <h5 className="pe-2">
+                <h5 className="pe-6">
                   <TextTrans en={item.item_en} ar={item.item_ar}  />
                 </h5>
                 <span>x{item.quantity}</span>
@@ -164,7 +165,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
               {map(item.addon, (a) => (
                 <div key={a.addon_id} className="pe-3 pb-4">
                   <div
-                    className="bg-gray-100 text-gray-500 rounded-2xl text-center h-8 px-3">
+                    className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3">
                     <span className="pe-2">x{a.addon_quantity}</span>
                     <TextTrans en={a.addon_name_en} ar={a.addon_name_ar} />
                   </div>
@@ -194,7 +195,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
       />
     </MainContentLayout>
    ) : (
-    <p>loading</p>
+    <OrderSuccessSkeleton />
    )}
    </>
   );

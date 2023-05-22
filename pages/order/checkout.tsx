@@ -29,6 +29,7 @@ import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import EmptyCart from '@/components/cart/EmptyCart';
+// import WhenClosedModal from '@/components/modals/WhenClosedModal';
 
 type Props = {
   url: string;
@@ -55,7 +56,7 @@ export default function checkout({ url }: Props) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     'visa' | 'knet' | 'cash_on_delivery' | null
   >(null);
-
+  // const [openStoreClosedModal, setOpenClosedStore] = useState(false);
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
   // payment methoda array to map
@@ -112,7 +113,7 @@ export default function checkout({ url }: Props) {
       dispatch(
         showToastMessage({
           content: 'please_select_payment_method',
-          type: 'error',
+          type: `error`,
         })
       );
     }
@@ -167,9 +168,12 @@ export default function checkout({ url }: Props) {
             dispatch(
               showToastMessage({
                 content: r.error.data.msg,
-                type: `error`,
+                type: `error`
               })
             );
+            // if(r?.error?.data?.msg?.includes("CLOSE")) {
+            //   setOpenClosedStore(true);
+            // }
           }
         }
       });
@@ -295,6 +299,10 @@ export default function checkout({ url }: Props) {
             </div>
           </>
         ))}
+        {/* <WhenClosedModal 
+        isOpen={openStoreClosedModal} 
+        onRequestClose={() => setOpenClosedStore(false)} 
+        /> */}
     </MainContentLayout>
   );
 }

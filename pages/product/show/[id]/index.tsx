@@ -100,7 +100,7 @@ const ProductShow: NextPage<Props> = ({
     productCart,
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent },
+    customer: { userAgent, prefrences },
     vendor: { logo },
     Cart: { promocode }
   } = useAppSelector((state) => state);
@@ -134,6 +134,14 @@ const ProductShow: NextPage<Props> = ({
   const [requiredSection, setRequiredSection] = useState(false);
   // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
+  useEffect(() => {
+    const onScroll = () => setOffset(window.pageYOffset);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', debounce(onScroll, 400));
+    };
+  }, [router.pathname]);
+
   useEffect(() => {
     if (isSuccess && element.Data) {
       setProductOutStock(
@@ -454,7 +462,10 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const handleAddToCart = async () => {
-    if (isNull(destination)) {
+    if (isNull(destination) || 
+        prefrences.type === '' || 
+        prefrences.date === '' || 
+        prefrences.time === '') {
       dispatch(setAreaBranchModelStatus(true));
       return;
     }
@@ -546,7 +557,6 @@ const ProductShow: NextPage<Props> = ({
       }
     }
   };
-  console.log({ resolvedUrl })
 
   return (
     <Suspense>
@@ -567,21 +577,26 @@ const ProductShow: NextPage<Props> = ({
         {isSuccess && !isNull(element) && element.Data ? (
           <>
             <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
-              <button onClick={() => router.back()}>
-                {router.locale === 'en' ? <West /> : <East />}
-              </button>
-              <TextTrans
-                ar={element?.Data?.name_ar}
-                en={element?.Data?.name_en}
-                style={{
-                  maxWidth: '30ch',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  display: 'block',
-                  color: `black`,
-                }}
-              />
+              <div className="flex">
+                <button onClick={() => router.back()}>
+                  {router.locale === 'en' ? <West /> : <East />}
+                </button>
+                {offset > 80 && (
+                  <TextTrans
+                  ar={element?.Data?.name_ar}
+                  en={element?.Data?.name_en}
+                  style={{
+                    maxWidth: '30ch',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    display: 'block',
+                    color: `black`,
+                  }}
+                  className="px-6"
+                />
+                )}
+              </div>
               <FavouriteAndShare />
             </div>
             <div className="relative w-full capitalize">
@@ -589,7 +604,7 @@ const ProductShow: NextPage<Props> = ({
                 {!isEmpty(element?.Data?.img) ? (
                   <Carousel
                     className={`w-full h-full`}
-                    height={'40vh'}
+                    height={'45vh'}
                     navButtonsAlwaysInvisible={true}
                     indicatorIconButtonProps={{
                       style: {
@@ -977,7 +992,7 @@ const ProductShow: NextPage<Props> = ({
               <button
                 disabled={productOutStock}
                 onClick={debounce(() => handleAddToCart(), 400)}
-                className={`${mainBtnClass} py-2 flex justify-between px-5`}
+                className={`font-light ${mainBtnClass} py-2 flex justify-between px-5`}
                 style={{
                   backgroundColor: color,
                   color: `white`,

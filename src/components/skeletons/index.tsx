@@ -14,6 +14,7 @@ import ReturnPolicySkeleton from './ReturnPolicySkeleton';
 import ProductCartSkelton from './ProductCartSkelton';
 import PromoCodeSkelton from './PromoCodeSkelton';
 import PaymentSummarySkelton from './PaymentSummarySkelton';
+import OrderSuccessSkeleton from './OrderSuccessSkeleton';
 
 type Props = {
   type: string;
@@ -68,6 +69,9 @@ export default function ContentLoader({ type, sections }: Props) {
     break;
     case 'PaymentSummary':
         SkeletonComponent = PaymentSummarySkelton;
+    break;
+    case 'OrderSuccess':
+        SkeletonComponent = OrderSuccessSkeleton;
     break;
     default:
       return null; 

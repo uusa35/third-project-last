@@ -18,6 +18,13 @@ type Props = {
 };
 
 export default function GuestOrderStatus({ order }: Props) {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const color = useAppSelector(themeColor);
+  const {
+    locale: { lang, otherLang },
+  } = useAppSelector((state) => state);
+
   const handelDisplayAddress = () => {
     if (order?.customer && !isUndefined(order?.customer?.address) && isObject(order?.customer.address?.address)) {
       const addressValues = !isUndefined(order.customer?.address) && Object.values(order.customer.address?.address)
@@ -33,16 +40,6 @@ export default function GuestOrderStatus({ order }: Props) {
     }
   };
   
-  
-
-  console.log({ order })
-  const router = useRouter();
-  const { t } = useTranslation();
-  const color = useAppSelector(themeColor);
-  const {
-    locale: { lang, otherLang },
-  } = useAppSelector((state) => state);
-
   const DetailComponent = ({
     icon,
     p1,
@@ -61,7 +58,7 @@ export default function GuestOrderStatus({ order }: Props) {
           <div>
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#B7B1AE] pb-1"
+              className="text-[#B7B1AE] pb-1 uppercase"
             >
               {t(p1)}
             </p>

@@ -41,7 +41,7 @@ const MainModal: FC<Props> = ({
             isRTL ? ' right-0' : 'left-0'
           }`}
         >
-          <div className="grid grid-cols-3 pt-3">
+          <div className="grid grid-cols-3 pt-3 ms-[5%]">
             <div></div>
             <button onClick={closeModal}>
               <span className="block w-32 h-1 bg-zinc-300 rounded-md mx-auto"></span>
