@@ -12,6 +12,12 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        'Tajawal-Medium': ['Tajawal-Medium', 'sans-serif'],
+        'Arboria-Light': ['Arboria-Light', 'sans-serif'],
+        'Arboria-Medium': ['Arboria-Medium', 'sans-serif'],
+        GE_SS_Text_Medium: ['GE_SS_Text_Medium', 'sans-serif'],
+      },
       fontSize: {
         xxs: '.6rem',
       },

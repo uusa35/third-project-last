@@ -45,6 +45,60 @@ body {
     )
     rgb(var(--background-start-rgb));
 }  */
+
+@font-face {
+  font-family: 'Tajawal-Medium';
+  src: url('../public/fonts/Tajawal-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Arboria-Light';
+  src: url('../public/fonts/Arboria-Light.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Arboria-Medium';
+  src: url('../public/fonts/Arboria-Medium.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GE_SS_Text_Light';
+  src: url('../public/fonts/GE_SS_Text_Light.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-arboria-light {
+  font-family: 'Arboria-Light', 'sans-serif' !important;
+}
+
+.font-arboria-medium {
+  font-family: 'Arboria-Medium', 'sans-serif' !important;
+}
+
+.font-gess-medium {
+  font-family: 'GE_SS_Text_Light', 'sans-serif' !important;
+}
+
+.font-tajwal-medium,
+.Toastify__toast-body>div {
+  font-family: 'Tajawal-Medium', 'sans-serif' !important;
+}
+
+.font-future-bold {
+  font-family: 'Futura-Bold-font', 'sans-serif';
+}
+
 .PhoneInputCountrySelectArrow {
   margin-left: 10px;
   margin-right: 10px;

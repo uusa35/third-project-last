@@ -22,6 +22,10 @@ import { startCase } from 'lodash';
 import PhoneInput from 'react-phone-number-input';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppSelector } from '@/redux/hooks';
+import SaveAddressIcon from '@/appIcons/save_address.svg';
+import SaveContactInfo from '@/appIcons/save_contact_info.svg';
+import ReOrderIcon from '@/appIcons/re-order_icon.svg';
+import TrackOrderIcon from '@/appIcons/track_order_icon.svg';
 
 type Props = {
   element: Vendor;
@@ -85,28 +89,28 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
           <div className="px-6 flex flex-col space-y-4">
             <div className="flex flex-row space-x-3 items-center">
               <div>
-                <BuildingOfficeIcon className="text-gray-600 h-6 h-6" />
+                <SaveAddressIcon className="text-gray-600 h-6 h-6" />
               </div>
               <div>{t('save_ur_address')}</div>
             </div>
             {/*  user info  */}
             <div className="flex flex-row space-x-3 items-center">
               <div>
-                <UserIcon className="text-gray-600 h-6 h-6" />
+                <SaveContactInfo className="text-gray-600 h-6 h-6" />
               </div>
               <div>{t('save_ur_contact_information')}</div>
             </div>
             {/*  re-order  */}
             <div className="flex flex-row space-x-3 items-center">
               <div>
-                <ArrowPathIcon className="text-gray-600 h-6 h-6" />
+                <ReOrderIcon className="text-gray-600 h-6 h-6" />
               </div>
               <div>{t('one_tap_re_order')}</div>
             </div>
             {/*  track  */}
             <div className="flex flex-row space-x-3 items-center">
               <div>
-                <ArrowPathIcon className="text-gray-600 h-6 h-6" />
+                <TrackOrderIcon className="text-gray-600 h-6 h-6" />
               </div>
               <div>{t('track_order')}</div>
             </div>

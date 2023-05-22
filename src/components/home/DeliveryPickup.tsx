@@ -33,7 +33,11 @@ function DeliveryPickup({}: Props) {
             <Player
               src={PickupIcon}
               className="player w-10 h-10 bg-blue-100 rounded-full"
-              style={{ borderRadius: '100%', backgroundColor: '#F3F2F2' , padding:"8px" }}
+              style={{
+                borderRadius: '100%',
+                backgroundColor: '#F3F2F2',
+                padding: '8px',
+              }}
               loop={true}
               autoplay={true}
             />
@@ -42,7 +46,11 @@ function DeliveryPickup({}: Props) {
             <Player
               src={DeliveryIcon}
               className="player w-10 h-10 bg-blue-100 rounded-full"
-              style={{ borderRadius: '100%', backgroundColor: '#F3F2F2' , padding:"8px" }}
+              style={{
+                borderRadius: '100%',
+                backgroundColor: '#F3F2F2',
+                padding: '8px',
+              }}
               loop={true}
               autoplay={true}
             />

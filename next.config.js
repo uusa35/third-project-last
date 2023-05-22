@@ -78,7 +78,7 @@ const nextConfig = withSvgr({
         issuer: /\.[jt]sx?$/,
         use: ['@svgr/webpack'],
       });
-
+      config.resolve.fallback = { fs: false };
       return config;
     },
   },
