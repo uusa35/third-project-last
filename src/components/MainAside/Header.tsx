@@ -101,7 +101,7 @@ export default function AsideHeader({ url }: Props) {
             {isSuccess &&
               cartItems.data &&
               cartItems.data?.Cart?.length > 0 && (
-                <div className="absolute -top-3 left-2 opacity-90  rounded-full bg-red-600 w-4 h-4 shadow-xl flex items-center justify-center text-white text-xxs">
+                <div className="absolute -top-3 left-3 opacity-90  rounded-full bg-red-600 w-4 h-4 shadow-xl flex items-center justify-center text-white text-xxs">
                   <span className={`pt-[2.5px] shadow-md`}>
                     {cartItems.data?.Cart?.length}
                   </span>
