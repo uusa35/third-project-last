@@ -26,8 +26,6 @@ function DeliveryPickup({ url }: Props) {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
 
-  const [openPickupDeliveryModal, setOpenPickupDeliveryModal] = useState(false);
-
   return (
     <div className="px-4">
       {(method === 'pickup' || method === 'delivery') && (
