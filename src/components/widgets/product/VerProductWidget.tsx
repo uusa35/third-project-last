@@ -10,6 +10,7 @@ import TextTrans from '@/components/TextTrans';
 import { motion } from 'framer-motion';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
+import PlusIcon from '@/appIcons/add.svg';
 
 type Props = {
   element: Product;
@@ -33,66 +34,81 @@ const VerProductWidget: FC<Props> = ({
         className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
       >
         <div className="relative">
-          <div className="flex gap-x-2 justify-between items-center ">
-            <div className="">
-              <p className="text-lg truncate pb-5">
+          <div className="flex gap-x-2 justify-between">
+            <div className="w-2/3">
+              <p className=" flex flex-col gap-y-2 text-md">
                 <TextTrans
-                  className={`text-black font-semibold`}
+                  className={`text-black`}
                   ar={element.name_ar}
                   en={element.name_en}
                   length={20}
                 />
                 <TextTrans
-                  className={`text-[#877D78] text-sm`}
+                  className={`text-[#877D78] text-xs md:text-sm whitespace-wrap break-all pt-3`}
                   ar={element.description_ar}
                   en={element.description_en}
-                  length={30}
+                  length={500}
                 />
               </p>
-              <div>
-                <div className={`flex flex-row justify-start items-center`}>
-                  {element.new_price && element.new_price !== element.price ? (
-                    <div className="text-end">
-                      <p
-                        className="uppercase line-through"
-                        style={{ color }}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {element.price} {t('kwd')}
-                      </p>
-                      <p
-                        className=" uppercase"
-                        // style={{ color }}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {element.new_price} {t('kwd')}
-                      </p>
-                    </div>
-                  ) : (
+
+              <div
+                className={`flex flex-row justify-start items-center text-xs md:text-sm`}
+              >
+                {element.new_price && element.new_price !== element.price ? (
+                  <div
+                    className="flex justify-center items-center flex-wrap gap-x-2 rounded-full p-1 md:py-1 md:px-2 text-center"
+                    style={{ color, borderColor: color, border: '1px solid' }}
+                  >
                     <p
-                      className="w-fit text-center text-sm uppercase p-1 rounded-full border border-red-500"
+                      className=" uppercase"
                       suppressHydrationWarning={suppressText}
-                      style={{ color: `black` }}
                     >
-                      {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                        <span className="text-xs">
-                          {t(`price_on_selection`)}
-                        </span>
-                      ) : (
-                        parseFloat(element.price).toFixed(3)
-                      )}
-                      {parseFloat(element.price).toFixed(3) !== '0.000' && (
-                        <span className={`uppercase px-1`}>{t('kwd')}</span>
-                      )}
+                      {element.new_price} {t('kd')}
                     </p>
-                  )}
-                  <div className="text-end mx-2">
-                    <button className="w-8 h-8 rounded-full bg-red-600 text-white border border-red-500  uppercase text-center text-xl">
-                      +
-                    </button>
+                    <p
+                      className="uppercase line-through text-[#877D78]"
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {element.price} {t('kd')}
+                    </p>
                   </div>
+                ) : (
+                  <p
+                    className="uppercase  rounded-full p-1 md:py-1 md:px-2 text-center"
+                    suppressHydrationWarning={suppressText}
+                    style={{ color, borderColor: color, border: '1px solid' }}
+                  >
+                    {parseFloat(element.price).toFixed(3) === '0.000' ? (
+                      <span className="text-xs">{t(`price_on_selection`)}</span>
+                    ) : (
+                      parseFloat(element.price).toFixed(3)
+                    )}
+                    {parseFloat(element.price).toFixed(3) !== '0.000' && (
+                      <span className={`uppercase px-1`}>{t('kd')}</span>
+                    )}
+                  </p>
+                )}
+                <div className="text-end mx-2">
+                  <button
+                    style={{
+                      backgroundColor: color,
+                    }}
+                    className="p-2 rounded-full text-white uppercase text-center"
+                  >
+                    <PlusIcon />
+                  </button>
                 </div>
               </div>
+
+              {/* Limited quantity, will end soon */}
+              {element.limited_qty && (
+                <p
+                  className="bg-[#F5F5F5] text-xxs w-fit rounded-full mt-3 px-2 py-px"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('limited_quantity_will_end_soon')}
+                </p>
+              )}
             </div>
 
             <div className="h-16 w-16 sm:h-24 sm:w-24  aspect-square rounded-lg">
@@ -105,12 +121,6 @@ const VerProductWidget: FC<Props> = ({
               />
             </div>
           </div>
-          {/* <div className="absolute inset-x-0 top-0 flex h-full items-end overflow-hidden rounded-lg">
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black opacity-60"
-          />
-        </div> */}
         </div>
       </Link>
     </motion.div>

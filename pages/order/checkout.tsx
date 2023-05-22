@@ -43,7 +43,7 @@ export default function checkout({ url }: Props) {
       userAgent,
       id: customer_id,
       notes,
-      address: { id: addressID },
+      address: { id: addressID, longitude, latitude },
     },
     searchParams: { method, destination },
     Cart: { enable_promocode, promocode },
@@ -78,9 +78,10 @@ export default function checkout({ url }: Props) {
   }, []);
 
   // map marker
-  const LocationMarker = ({ icon }: any) => (
-    <Image src={icon} alt="map marker" width={30} height={30} />
-  );
+  const LocationMarker = ({ icon ,longitude,latitude}: any) => {
+    console.log('longitude,latitude',longitude,latitude)
+    return <Image src={icon} alt="map marker" width={30} height={30} />
+  };
 
   // get cart
   const {
@@ -209,8 +210,20 @@ export default function checkout({ url }: Props) {
                 defaultZoom={11}
               >
                 <LocationMarker
-                  lat={59.955413}
-                  lng={30.337844}
+                  latitude={
+                    method
+                      ? method === 'delivery'
+                        ? latitude // customer address
+                        : destination.lat // branch address
+                      : 59.955413
+                  }
+                  longitude={
+                    method
+                      ? method === 'delivery'
+                        ? longitude // customer address
+                        : destination.lang // branch address
+                      : 59.955413
+                  }
                   icon={MapMarker}
                 />
               </GoogleMapReact>

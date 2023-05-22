@@ -102,14 +102,15 @@ export default function Home({ url, element, currentLocale }: Props) {
     );
   }, [router.locale, DestinationId, method]);
 
-  // vendor info check if delivery or pickup
+  // vendor info open at , close at (api)
+
   // delivery and pickup section====>  where to get the date
   // store is closed modal====> api
   // in checkout btn get cart and render if cart not empty
-  // if category doesnot contain items should i render it in ProductListView
+
   // status btn where to get the data
   // close modal when to show it
-  // in main layout get vendor un comment destobj
+
   // line 149 in index home mdify category
 
   return (
@@ -126,7 +127,7 @@ export default function Home({ url, element, currentLocale }: Props) {
         instagram={element.instagram}
       />
       <MainContentLayout>
-        <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
+        <div className="bg-white lg:border-t-4 lg:border-stone-100 border-none relative lg:top-auto  pt-0 lg:pt-1 min-h-screen">
           {vendorSuccess || vendorElement || vendorElement?.Data ? (
             <>
               {/* sm screen header */}

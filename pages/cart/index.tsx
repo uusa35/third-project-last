@@ -256,12 +256,14 @@ export default function Cart({ url }: Props) {
     = check  if guest or user 
     = navigate
     */
+  //  check if user id is null 
 
-    router.push(appLinks.mobileVerification.path);
+    router.push(appLinks.login.path);
   };
 
   /*
   btn msg when min charge and  sale notification
+  min cart disable btn
   */
 
   return (

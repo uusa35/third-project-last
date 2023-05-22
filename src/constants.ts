@@ -40,6 +40,7 @@ export const isLocal = process.env.NODE_ENV !== "production";
 export const tajwalFont = `font-tajwal-medium`;
 export const arboriaFont = `font-arboria-medium`;
 export const gessFont = `font-gess-medium`;
+export const alexandriaFont = `font-alexandria-Light`;
 export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;
 export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
 export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0 ${arboriaFont}`;

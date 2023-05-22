@@ -90,6 +90,21 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
                     className={`${currentStoreStatus[0].className}`}
                   >
                     {t(`${currentStoreStatus[0].status}`)}
+
+                    <span className="text-xxs text-[#544A45]">
+                      {element?.Data?.close_at &&
+                        currentStoreStatus[0].status === 'open' && (
+                          <>
+                            . {t(`close_at`)} {element?.Data?.close_at}
+                          </>
+                        )}
+                      {element?.Data?.open_at &&
+                        currentStoreStatus[0].status === 'close' && (
+                          <>
+                            . {t(`open_at`)} {element?.Data?.open_at}
+                          </>
+                        )}
+                    </span>
                   </p>
                 </div>
               )}

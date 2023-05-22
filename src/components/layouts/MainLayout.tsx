@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import {
+  alexandriaFont,
   arboriaFont,
   gessFont,
   scrollClass,
@@ -158,7 +159,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${router.locale === 'ar' ? gessFont : arboriaFont}
+      className={`${router.locale === 'ar' ? 'font-alexandria-medium' : alexandriaFont}
         flex-col justify-start items-start grow lg:flex lg:flex-row flex flex-row h-screen capitalize`}
     >
       {children}
