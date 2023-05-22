@@ -175,5 +175,9 @@
   "open": "مفتوح الان",
   "close": "مغلق",
   "busy": "مشغول",
-  "address_saved_successfully": "تم حفظ العنوان بنجاح"
+  "address_saved_successfully": "تم حفظ العنوان بنجاح",
+  "no_timing_available": "لا يوجد أوقات",
+  "info_saved": "تم حفظ البيانات",
+  "save_address": "حفظ العنوان",
+  "order_created_successfully" : "شكرا .. تم إتمام طلبك"
 }

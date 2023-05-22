@@ -77,8 +77,8 @@ const GuestOrderModal: FC<Props> = ({
     <>
       <MainModal isOpen={isOpen} closeModal={closeModal}>
         <div>
-          <div className="flex lg:grid lg:grid-cols-3 w-full px-4 py-4">
-            <div className="w-1/3">
+          <div className="flex lg:grid lg:grid-cols-3 w-full px-4 py-3">
+            <div className="w-[5%]">
               <button
                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                 onClick={closeModal}
@@ -87,7 +87,7 @@ const GuestOrderModal: FC<Props> = ({
               </button>
             </div>
             <h5
-              className="font-semibold capitalize text-center"
+              className="font-semibold capitalize text-center mx-auto"
               suppressHydrationWarning={suppressText}
             >
               {t('guest_info')}

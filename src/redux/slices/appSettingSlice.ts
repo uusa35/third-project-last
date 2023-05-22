@@ -148,7 +148,7 @@ export const appSettingSlice = createSlice({
         toastMessage: {
           content: action.payload.content,
           showToast: true,
-          type: `info`,
+          type: action.payload.type,
           title: action.payload.title ?? ``,
         },
       };

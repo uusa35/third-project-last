@@ -111,9 +111,10 @@ export default function MobileVerifications({ url }: Props) {
               {upperFirst(`${t('or_continue_as')}`)}
               <span className={`${'px-1'}`}>{upperFirst(`${t('guest')}`)}</span>
             </button>
-            <GuestOrderModal  
+            <GuestOrderModal 
+              url={url} 
               isOpen={isOpen}
-              onRequestClose={() => setIsOpen(false)}
+              closeModal={() => setIsOpen(false)}
             />
           </div>
         </div>
