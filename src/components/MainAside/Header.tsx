@@ -73,7 +73,7 @@ export default function AsideHeader({ url }: Props) {
   );
   return (
     <div
-      className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white p-4
+      className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white px-4 py-2
            `}
     >
       {/* burger menu */}
