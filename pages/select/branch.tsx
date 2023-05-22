@@ -86,9 +86,8 @@ const SelectBranch: NextPage<Props> = ({
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    if()
-    // dispatch(setDestination({ destination, type }));
-    // router.back();
+    dispatch(setDestination({ destination, type }));
+    router.back();
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
