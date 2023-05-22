@@ -128,7 +128,7 @@ export default function checkout({ url }: Props) {
           user_id: customer_id,
           ...(method === `delivery` ? { address_id: addressID } : {}),
           // order_type: prefrences.type,
-          order_type: 'delivery_now',
+          order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
           UserAgent: userAgent,
           Messg: notes,
           PaymentMethod: selectedPaymentMethod,
