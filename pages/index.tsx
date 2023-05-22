@@ -110,7 +110,7 @@ export default function Home({ url, element, currentLocale }: Props) {
 
   // status btn where to get the data
   // close modal when to show it
- 
+
   // line 149 in index home mdify category
 
   return (
@@ -127,7 +127,7 @@ export default function Home({ url, element, currentLocale }: Props) {
         instagram={element.instagram}
       />
       <MainContentLayout>
-        <div className="bg-white border-t-4 border-stone-100 lg:border-none rounded-none relative lg:top-auto  pt-1 lg:pt-0 min-h-screen">
+        <div className="bg-white lg:border-t-4 lg:border-stone-100 border-none relative lg:top-auto  pt-0 lg:pt-1 min-h-screen">
           {vendorSuccess || vendorElement || vendorElement?.Data ? (
             <>
               {/* sm screen header */}

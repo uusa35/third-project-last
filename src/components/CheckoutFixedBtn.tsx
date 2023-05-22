@@ -7,9 +7,7 @@ import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
 import PrepareStatusIcon from '@/appIcons/status_home_prepare.svg';
 import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
 import ArrowUpStatusIcon from '@/appIcons/status_home_up_arrow.svg';
-import {
-  useGetCartProductsQuery,
-} from '@/redux/api/cartApi';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '../types';
 import { useRouter } from 'next/router';
@@ -68,7 +66,7 @@ export default function CheckoutFixedBtn({
     <div>
       <div className="h-48"></div>
       {/* sticky fooer */}
-      <div className="fixed bottom-0 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
+      <div className="fixed bottom-0 z-50 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
         {/* checkout btn */}
         {isSuccess &&
           cartItems &&

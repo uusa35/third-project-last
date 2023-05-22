@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Alexandria-Light';
+  src: url('../public/fonts/Alexandria-Light.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-alexandria-Light {
+  font-family: 'Alexandria-Light', 'sans-serif' !important;
+}
+
+/* @font-face {
+  font-family: 'Arboria-Light';
+  src: url('../public/fonts/Arboria-Light.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+} */
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

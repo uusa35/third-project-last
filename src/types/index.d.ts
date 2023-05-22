@@ -3,6 +3,7 @@ import { Address } from '@/types/queries';
 export interface Product {
   id: number;
   amount: number;
+  limited_qty:boolean
   never_out_of_stock: number;
   name: string;
   name_ar: string;
@@ -55,6 +56,8 @@ export interface Vendor {
   name_en: string;
   template_type: string;
   delivery_pickup_type: string;
+  close_at: string;
+  open_at: string;
   theme_color: string;
   status: string;
   slider: string[];
@@ -225,7 +228,7 @@ export interface Order {
       total: number;
       extra_notes: string;
       item_en: string;
-      item_ar: string
+      item_ar: string;
     }
   ];
   delivery_date_time: string;
@@ -377,6 +380,6 @@ export interface Cart {
 }
 
 export interface Models {
-  areaBranchIsOpen: boolean,
-  closedStoreIsOpen: boolean
+  areaBranchIsOpen: boolean;
+  closedStoreIsOpen: boolean;
 }
