@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { map } from 'lodash';
+import { isNull, map } from 'lodash';
 import Link from 'next/link';
 import {
   appLinks,
@@ -18,6 +18,7 @@ import {
   PlaceOutlined,
   WatchLaterOutlined,
   ArrowForwardIos,
+  ArrowBackIos,
 } from '@mui/icons-material';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -138,7 +139,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     router.push(`${appLinks.selectArea.path}`);
                     
                   }}
-                  className="w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 "
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${isRTL && 'flex-row-reverse'}`}
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
@@ -156,7 +157,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                       </p>
                     </div>
                   </div>
-                  <ArrowForwardIos className="text-zinc-500 mt-2" />
+                  {isRTL ? <ArrowBackIos className="text-zinc-500 mt-2" />: <ArrowForwardIos className="text-zinc-500 mt-2" />}
                 </button>
               </>
             )}
@@ -164,7 +165,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               <>
                 <Link
                   href={appLinks.selectBranch.path}
-                  className="w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 "
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${isRTL && 'flex-row-reverse'}`}
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
@@ -182,13 +183,14 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                       </p>
                     </div>
                   </div>
-                  <ArrowForwardIos className="text-zinc-500 mt-2" />
+                  {isRTL ? <ArrowBackIos className="text-zinc-500 mt-2" />: <ArrowForwardIos className="text-zinc-500 mt-2" />}
                 </Link>
               </>
             )}
             <Link
               href={appLinks.selectTime.path}
-              className="w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 "
+              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 
+              ${isRTL && 'flex-row-reverse'} ${isNull(method) && 'pointer-events-none'}`}
             >
               <div className="flex justify-between items-center">
                 <WatchLaterOutlined style={{ color }} />
@@ -220,7 +222,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                   </p>
                 </div>
               </div>
-              <ArrowForwardIos className="text-zinc-500 mt-2" />
+              {isRTL ? <ArrowBackIos className="text-zinc-500 mt-2" />: <ArrowForwardIos className="text-zinc-500 mt-2" />}
             </Link>
           </div>
           <div className="px-5 mt-10">

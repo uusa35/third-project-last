@@ -59,14 +59,14 @@ function DeliveryPickup({}: Props) {
           <div className="flex items-end justify-between w-full">
             {method === 'pickup' && (
               <div>
-                <p className='text-xs' suppressHydrationWarning={suppressText}>pickup from</p>
+                <p className='text-xs' suppressHydrationWarning={suppressText}>{t('pickup_from')}</p>
                 <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
 
             {method === 'delivery' && (
               <div>
-                <p className='text-xs' suppressHydrationWarning={suppressText}>deliver now to</p>
+                <p className='text-xs' suppressHydrationWarning={suppressText}>{t('deliver_now_to')}</p>
                 <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
