@@ -15,7 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useCreateAddressMutation } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -51,7 +51,6 @@ const AddressCreate: NextPage<Props> = ({
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
-  console.log('method', method);
   const {
     register,
     handleSubmit,
@@ -63,12 +62,7 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method,
-      address_type:
-        currentAddressType === 'appartment'
-          ? 2
-          : currentAddressType === 'office'
-          ? 3
-          : 1,
+      address_type: 1,
       longitude: ``,
       latitude: ``,
       customer_id: customer.id?.toString(),
@@ -87,6 +81,17 @@ const AddressCreate: NextPage<Props> = ({
       additional: customer.address.additional,
     },
   });
+
+  useMemo(() => {
+    setValue(
+      'address_type',
+      currentAddressType === 'appartment'
+        ? 2
+        : currentAddressType === 'office'
+        ? 3
+        : 1
+    );
+  }, [currentAddressType]);
 
   const handelSaveAddress = async (body: any) => {
     await triggerAddAddress({
@@ -190,6 +195,7 @@ const AddressCreate: NextPage<Props> = ({
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
           <input type="hidden" {...register('customer_id')} />
+
           {/*  phone  */}
           <div className="w-full ">
             <label

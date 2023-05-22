@@ -5,7 +5,7 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { mainBtnClass } from '@/constants/*';
+import { mainBtnClass, toEn } from '@/constants/*';
 import moment from 'moment';
 import { isEmpty, isUndefined, map } from 'lodash';
 import Slider, { Settings } from 'react-slick';
@@ -30,9 +30,11 @@ type Props = {
   days: Day[];
   selectedDay: Day;
   handleDaySelect: (day: Day) => void;
+  method: 'pickup | delivery';
 };
 
-export default function index({ url }: Props) {
+export default function index({ url, method }: Props) {
+  console.log('method', method);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -40,7 +42,7 @@ export default function index({ url }: Props) {
   const desObject = useAppSelector(destinationHeaderObject);
   const {
     locale: { lang, isRTL },
-    searchParams: { destination_type, method },
+    searchParams: { destination_type },
   } = useAppSelector((state) => state);
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
@@ -127,7 +129,7 @@ export default function index({ url }: Props) {
     triggerGetTimings(
       {
         type,
-        date: moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD'),
+        date: toEn(moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD')),
         area_branch: desObject,
         url,
       },
@@ -179,7 +181,7 @@ export default function index({ url }: Props) {
   const handleClick = () => {
     dispatch(
       setPreferences({
-        date: moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD'),
+        date: toEn(moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD')),
         time: selectedHour,
         type,
       })
@@ -311,7 +313,7 @@ export default function index({ url }: Props) {
                     selectedDay.day !== 'اليوم' && selectedDay.day !== 'today'
                       ? selectedDay.date
                       : ''
-                  } ${!isUndefined(selectedHour) ? selectedHour : ``}`
+                  } ${selectedHour ?? ``}`
                 : `${t('now_within')} ${
                     vendorElement?.Data?.delivery?.delivery_time
                   } ${t('minutes')}`}
@@ -325,16 +327,23 @@ export default function index({ url }: Props) {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req }) => {
+    async ({ req, query }) => {
+      console.log('query', query.method !== 'pickup');
+      const { method }: any = query;
       if (!req.headers.host) {
         return {
           notFound: true,
         };
       }
-      return {
-        props: {
-          url: req.headers.host,
-        },
-      };
+      if (method === `pickup` || method === `delivery`) {
+        return {
+          props: {
+            url: req.headers.host,
+            method: query.method,
+          },
+        };
+      } else {
+        return { notFound: true };
+      }
     }
 );

@@ -29,14 +29,14 @@ import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { wrapper } from '@/redux/store';
 
 type Props = {
-  url: string
-}
+  url: string;
+};
 const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const color = useAppSelector(themeColor);
-  const { 
+  const {
     searchParams: { destination, destination_type, method },
     models: { areaBranchIsOpen },
     customer: { prefrences },
@@ -49,7 +49,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
     useLazyGetVendorQuery();
   const onRequestClose = () => {
     dispatch(setAreaBranchModelStatus(false));
-  }
+  };
   const desObject = useAppSelector(destinationHeaderObject);
   console.log({ method });
   useEffect(() => {
@@ -137,7 +137,6 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 <button
                   onClick={() => {
                     router.push(`${appLinks.selectArea.path}`);
-                    
                   }}
                   className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${isRTL && 'flex-row-reverse'}`}
                 >
@@ -152,8 +151,13 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                       </h6>
                       <p className="text-start">
                         {method === 'delivery' ? (
-                          <TextTrans en={destination.name_en} ar={destination.name_ar} />
-                        ) : t('select_address')}
+                          <TextTrans
+                            en={destination.name_en}
+                            ar={destination.name_ar}
+                          />
+                        ) : (
+                          t('select_address')
+                        )}
                       </p>
                     </div>
                   </div>
@@ -177,9 +181,14 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                         {t('pickup_from')}
                       </h6>
                       <p>
-                      {method === 'pickup' ? (
-                          <TextTrans en={destination.name_en} ar={destination.name_ar} />
-                        ) : t('select_branch')}
+                        {method === 'pickup' ? (
+                          <TextTrans
+                            en={destination.name_en}
+                            ar={destination.name_ar}
+                          />
+                        ) : (
+                          t('select_branch')
+                        )}
                       </p>
                     </div>
                   </div>
@@ -188,8 +197,8 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               </>
             )}
             <Link
-              href={appLinks.selectTime.path}
-              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 
+              href={appLinks.selectTime(method)}
+              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 "
               ${isRTL && 'flex-row-reverse'} ${isNull(method) && 'pointer-events-none'}`}
             >
               <div className="flex justify-between items-center">
@@ -202,23 +211,24 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     {activeTabIndex === 0 ? t('delivery_in') : t('pickup_in')}
                   </h6>
                   <p suppressHydrationWarning={suppressText}>
-                  {prefrences.type === 'delivery_now' || prefrences.type === 'pickup_now'
-                    ? (
+                    {prefrences.type === 'delivery_now' ||
+                    prefrences.type === 'pickup_now' ? (
                       <>
-                      {vendorElement?.Data?.delivery?.delivery_time ? `${t('now_within')} ${
-                        vendorElement?.Data?.delivery?.delivery_time
-                      } ${t('minutes')}` : t('select_time')}
+                        {vendorElement?.Data?.delivery?.delivery_time
+                          ? `${t('now_within')} ${
+                              vendorElement?.Data?.delivery?.delivery_time
+                            } ${t('minutes')}`
+                          : t('select_time')}
                       </>
-                    )
-                    : prefrences.type === 'delivery_later' || prefrences.type === 'pickup_later'
-                    ? (
+                    ) : prefrences.type === 'delivery_later' ||
+                      prefrences.type === 'pickup_later' ? (
                       <div>
                         <span className="pe-2">{prefrences?.date}</span>
                         <span>{prefrences?.time}</span>
                       </div>
-                    )
-                    : t('select_time' )
-                  }
+                    ) : (
+                      t('select_time')
+                    )}
                   </p>
                 </div>
               </div>
