@@ -192,6 +192,8 @@ export default function index({ url, method }: Props) {
 
   if (!vendorSuccess) return <div>loading</div>;
 
+  console.log('vendor', vendorElement);
+
   return (
     <Suspense>
       <MainHead
@@ -313,7 +315,7 @@ export default function index({ url, method }: Props) {
                     selectedDay.day !== 'اليوم' && selectedDay.day !== 'today'
                       ? selectedDay.date
                       : ''
-                  } ${!isUndefined(selectedHour) ? selectedHour : ``}`
+                  } ${selectedHour ?? ``}`
                 : `${t('now_within')} ${
                     vendorElement?.Data?.delivery?.delivery_time
                   } ${t('minutes')}`}
