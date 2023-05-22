@@ -192,8 +192,6 @@ export default function index({ url, method }: Props) {
 
   if (!vendorSuccess) return <div>loading</div>;
 
-  console.log('vendor', vendorElement);
-
   return (
     <Suspense>
       <MainHead
