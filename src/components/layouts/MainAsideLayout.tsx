@@ -9,8 +9,9 @@ import AsideContent from "../MainAside/Content";
 
 type Props = {
   element: Vendor;
+  url:string
 };
-const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
+const MainAsideLayout: FC<Props> = ({ element ,url}): JSX.Element => {
   return (
     <Suspense fallback={<div>loading skelton</div>}>
       <div
@@ -23,7 +24,7 @@ const MainAsideLayout: FC<Props> = ({ element }): JSX.Element => {
           width={imageSizes.xxl}
           height={imageSizes.xxl}
         />
-        <AsideHeader />
+        <AsideHeader url={url} />
 
         <div className={`flex flex-col justify-center items-center`}>
           {/* vendor info and media */}

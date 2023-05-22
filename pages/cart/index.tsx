@@ -274,7 +274,7 @@ export default function Cart({ url }: Props) {
           <EmptyCart />
         ) : isSuccess ? (
           <div>
-            <SaleNotification />
+            {/* <SaleNotification /> */}
             <div className="p-5">
               {cartItems?.data?.Cart.map((product) => (
                 <CartProduct

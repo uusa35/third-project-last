@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Alexandria-Light';
-  src: url('../public/fonts/Alexandria-Light.ttf') format('truetype');
+  font-family: 'Alexandria-Regular';
+  src: url('../public/fonts/Alexandria-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-.font-alexandria-Light {
-  font-family: 'Alexandria-Light', 'sans-serif' !important;
+.font-alexandria-Regular {
+  font-family: 'Alexandria-Regular', 'sans-serif' !important;
 }
 
 /* @font-face {

@@ -141,7 +141,7 @@ export default function Home({ url, element, currentLocale }: Props) {
               {/* ads scroller */}
               <AdsScrollBar slider={vendorElement?.Data?.slider ?? []} />
 
-              <DeliveryPickup />
+              <DeliveryPickup url={url} />
             </>
           ) : (
             <div>

@@ -67,39 +67,65 @@ export default function CheckoutFixedBtn({
       <div className="h-48"></div>
       {/* sticky fooer */}
       <div className="fixed bottom-0 z-50 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
-        {/* checkout btn */}
         {isSuccess &&
           cartItems &&
           cartItems.data &&
           cartItems?.data?.Cart &&
           cartItems?.data?.Cart.length > 0 && (
-            <div
-              onClick={() => {
-                if (cart) {
-                  handelContinueInCart();
-                } else {
-                  router.push(appLinks.cart.path);
-                }
-              }}
-              className="flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer"
-              style={{ backgroundColor: color }}
-            >
-              <div className="flex items-center gap-x-3">
+            <>
+              {/* min cart msg */}
+              {parseFloat(cartItems?.data?.minimum_order_price.toString()) >
+                parseFloat(cartItems?.data?.total.toString()) && (
                 <p
                   suppressHydrationWarning={suppressText}
-                  className="flex items-center justify-center rounded-full w-8 h-8 bg-red-800"
-                >
-                  {cartItems?.data?.Cart.length}
-                </p>
+                  className="w-full text-xs text-[#877D78] text-center py-2"
+                >{`${t('add_a_minimum_of')} ${
+                  cartItems?.data?.minimum_order_price
+                }  ${t('kd')} ${t('to_place_your_order')}`}</p>
+              )}
+
+              {/* checkout btn */}
+              <div
+                onClick={() => {
+                  if (
+                    parseFloat(
+                      cartItems?.data?.minimum_order_price.toString()
+                    ) < parseFloat(cartItems?.data?.total.toString())
+                  ) {
+                    if (cart) {
+                      handelContinueInCart();
+                    } else {
+                      router.push(appLinks.cart.path);
+                    }
+                  }
+                }}
+                className={`flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer`}
+                style={{
+                  backgroundColor:
+                    parseFloat(
+                      cartItems?.data?.minimum_order_price.toString()
+                    ) > parseFloat(cartItems?.data?.total.toString())
+                      ? '#B7B1AE'
+                      : color,
+                }}
+              >
+                <div className="flex items-center gap-x-3">
+                  <p
+                    suppressHydrationWarning={suppressText}
+                    className="flex items-center justify-center rounded-full w-8 h-8 bg-red-800"
+                  >
+                    {cartItems?.data?.Cart.length}
+                  </p>
+                  <p suppressHydrationWarning={suppressText}>
+                    {cart ? t('go_to_checkout') : t('review_order')}
+                  </p>
+                </div>
+
                 <p suppressHydrationWarning={suppressText}>
-                  {cart ? t('go_to_checkout') : t('review_order')}
+                  {cartItems?.data?.total} {t('kwd')}
                 </p>
               </div>
-
-              <p suppressHydrationWarning={suppressText}>
-                {cartItems?.data?.total} {t('kwd')}
-              </p>
-            </div>
+            </>
           )}
 
         {/* order status  btn*/}

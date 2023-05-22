@@ -32,7 +32,7 @@ const MainModal: FC<Props> = ({
           isRTL ? 'right-0' : 'left-0'
         }`}
         style={{
-          overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 30 },
+          overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 100 },
         }}
         shouldFocusAfterRender={false}
       >

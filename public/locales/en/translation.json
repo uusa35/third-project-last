@@ -225,11 +225,18 @@
   "now_within": "now within",
   "please_review_sections_some_r_required": "required fields",
   "address_saved_successfully": "address saved successfully",
+  "out_stock":"out stock",
   "no_timing_available": "no timing available",
   "info_saved": "info saved",
   "save_address": "save address",
   "order_created_successfully": "thank you .. your order has been placed.",
   "fill_name": "fill name",
+  "language_changed_successfully": "language changed",
+  "pickup_now":"pick up now",
+  "delivery_now":"delivery now to",
+  "pickup_later":"pick up",
+  "delivery_later":"delivery",
+  "deliver_to":"deliver to",
   "our_branches": "our branches",
   "min_order_with_delivery": "min order with delivery",
   "opening_hours": "opening hours",
@@ -246,5 +253,6 @@
   "notice": "notice",
   "other_phone_no": "other phone number",
   "address_details": "address details",
-  "out_stock": "out stock"
+  "add_a_minimum_of":"add a minimum of",
+  "to_place_your_order":"to place your order"
 }
