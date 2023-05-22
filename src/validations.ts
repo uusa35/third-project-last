@@ -62,6 +62,15 @@ export const addressSchema = (method: string, t: any) =>
           }
           return schema.nullable(true);
         }),
+      appartment_no: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (address_type === 2 && method === `delivery`) {
+            return schema.required(t(`validation.required`));
+          }
+          return schema.nullable(true);
+        }),
       office_no: yup.mixed().when('address_type', (address_type, schema) => {
         if (address_type === 3 && method === `delivery`) {
           return schema.required(t(`validation.required`));
