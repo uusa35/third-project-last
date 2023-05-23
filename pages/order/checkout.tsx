@@ -56,7 +56,7 @@ export default function checkout({ url }: Props) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     'visa' | 'knet' | 'cash_on_delivery' | null
   >(null);
-  // const [openStoreClosedModal, setOpenClosedStore] = useState(false);
+  const [openStoreClosedModal, setOpenClosedStore] = useState(false);
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
 
   // payment methoda array to map
@@ -164,9 +164,9 @@ export default function checkout({ url }: Props) {
                 type: `error`,
               })
             );
-            // if(r?.error?.data?.msg?.includes("CLOSE")) {
-            //   setOpenClosedStore(true);
-            // }
+            if(r?.error?.data?.msg?.includes("CLOSE")) {
+              setOpenClosedStore(true);
+            }
           }
         }
       });
@@ -292,10 +292,10 @@ export default function checkout({ url }: Props) {
             </div>
           </>
         ))}
-      {/* <WhenClosedModal 
+      <WhenClosedModal 
         isOpen={openStoreClosedModal} 
         onRequestClose={() => setOpenClosedStore(false)} 
-        /> */}
+        />
     </MainContentLayout>
   );
 }
