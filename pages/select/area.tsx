@@ -91,7 +91,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
-    // router.replace(appLinks.home.path).then(() =>
+
     dispatch(
       showToastMessage({
         content: `area_selected`,
@@ -99,7 +99,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       })
     );
     return router.back();
-    // );
   };
   useEffect(() => {
     setAllLocations(locations?.Data);

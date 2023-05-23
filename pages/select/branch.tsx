@@ -99,7 +99,7 @@ const SelectBranch: NextPage<Props> = ({
       );
       setOpenClosedStore(true);
     }
-    return router.back();
+    router.back();
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
