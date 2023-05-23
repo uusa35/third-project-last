@@ -34,10 +34,6 @@ export default function GuestOrderStatus({ order }: Props) {
   
       return allAddress;
     }
-    else {
-      const addressValues  = order?.customer?.address?.address;
-      return addressValues;
-    }
   };
   
   const DetailComponent = ({
@@ -79,12 +75,14 @@ export default function GuestOrderStatus({ order }: Props) {
 
   return (
     <div>
-      <DetailComponent
-        icon={<OfficeIcon />}
-        p1="your_address"
-        p2={order?.customer?.address?.address?.type}
-        p3={handelDisplayAddress()}
-      />
+      {isObject(order?.customer.address?.address) && (
+        <DetailComponent
+          icon={<OfficeIcon />}
+          p1="your_address"
+          p2={order?.customer?.address?.address?.type}
+          p3={handelDisplayAddress()}
+        />
+      )}
       <DetailComponent
         icon={<ContactsIcon />}
         p1="contact_info"

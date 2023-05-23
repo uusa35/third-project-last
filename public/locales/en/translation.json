@@ -256,7 +256,6 @@
   "must_select_min_and_max": "must choose min {{min}} qty or {{max}} qty.",
   "field_must_select_at_least_one": "you must select at least one choice.",
   "confirm": "confirm",
-  "language_changed_successfully": "language changed",
   "deliver_now_to": "deliver now to",
   "change": "change",
   "yes": "yes",

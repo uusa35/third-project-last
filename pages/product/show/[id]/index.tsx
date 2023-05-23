@@ -865,7 +865,7 @@ const ProductShow: NextPage<Props> = ({
                                 >
                                   -
                                 </button>
-                                <span className="text-black text-xl font-semibold px-5">
+                                <span className="text-black text-xl font-semibold inline-block text-center w-10 h-4">
                                   {filter(
                                     productCart?.QuantityMeters,
                                     (q) => q.uId === `${s.id}${c.id}`
@@ -972,7 +972,7 @@ const ProductShow: NextPage<Props> = ({
                   >
                     +
                   </button>
-                  <span className="px-5 text-xl font-semibold">
+                  <span className="text-black text-xl font-semibold inline-block text-center w-10 h-7">
                     {currentQty}
                   </span>
                   <button

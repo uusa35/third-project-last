@@ -38,6 +38,7 @@ import {
 import { useRouter } from 'next/router';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   element: Vendor;
@@ -120,7 +121,11 @@ const SelectBranch: NextPage<Props> = ({
     !locations ||
     !locations.Data
   ) {
-    return <div>loading ...</div>;
+    return (
+      <MainContentLayout>
+        <ContentLoader type="AreaBranch" sections={8} />
+      </MainContentLayout>
+    )
   }
 
   return (
