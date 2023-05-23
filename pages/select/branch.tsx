@@ -85,12 +85,12 @@ const SelectBranch: NextPage<Props> = ({
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = (
+  const handleSelectMethod = async (
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
-    router.back();
+    return router.back();
     // if (destination.status === 'CLOSE') {
     //   dispatch(
     //     showToastMessage({

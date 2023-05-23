@@ -86,7 +86,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = (
+  const handleSelectMethod = async (
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
@@ -98,7 +98,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         type: `success`,
       })
     );
-    router.back();
+    return router.back();
     // );
   };
   useEffect(() => {
