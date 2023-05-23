@@ -66,27 +66,29 @@ export default function PromoCode({
         </button>
       </div>
 
-      <div className="pb-4 border-b">
+      <div className="flex flex-wrap gap-3 pb-4 border-b">
         {promoCodesSuccess && promoCodes && !isEmpty(promoCodes.data) && (
           <>
-            {promoCodes.data.map((prmocode) => {
-              <div
-                onClick={() => {
-                  setPromoCodeVal(prmocode);
-                }}
-                className={`flex items-center gap-x-1 rounded-full border ${
-                  promocode === prmocode
-                    ? 'border-[#12B76A] text-[#12B76A]'
-                    : 'border-[#B7B1AE]'
-                } w-fit text-sm py-1 px-3 cursor-pointer`}
-              >
-                {promocode === prmocode ? (
-                  <GreenCheckIcon />
-                ) : (
-                  <PromocodeIcon />
-                )}
-                {prmocode}
-              </div>;
+            {promoCodes.data.map((prmocode_item) => {
+              return (
+                <div
+                  onClick={() => {
+                    setPromoCodeVal(prmocode_item);
+                  }}
+                  className={`flex items-center gap-x-1 rounded-full border ${
+                    promocode === prmocode_item
+                      ? 'border-[#12B76A] text-[#12B76A]'
+                      : 'border-[#B7B1AE]'
+                  } w-fit text-sm py-1 px-3 cursor-pointer`}
+                >
+                  {promocode === prmocode_item ? (
+                    <GreenCheckIcon />
+                  ) : (
+                    <PromocodeIcon />
+                  )}
+                  {prmocode_item}
+                </div>
+              );
             })}
 
             {/* remove this part later */}
