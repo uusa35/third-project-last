@@ -123,61 +123,53 @@ export default function checkout({ url }: Props) {
       selectedPaymentMethod &&
       !isNull(userAgent)
     ) {
-      console.log({ method }, prefrences.date, prefrences.time);
-      // await triggerCreateOrder({
-      //   params: {
-      //     user_id: customer_id,
-      //     ...(method === `delivery` ? { address_id: addressID } : {}),
-      //     // order_type: prefrences.type,
-      //     order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
-      //     UserAgent: userAgent,
-      //     Messg: notes,
-      //     PaymentMethod: selectedPaymentMethod,
-      //     PromoCode: promocode,
-      //     // Date: `${new Date(prefrences.date as Date).getFullYear()}-${
-      //     //   new Date(prefrences.date as Date).getMonth() + 1
-      //     // }-${new Date(prefrences.date as Date).getDate()}`,
-      //     // Time: `${('0' + new Date(prefrences.time as Date).getHours()).slice(
-      //     //   -2
-      //     // )}:${('0' + new Date(prefrences.time as Date).getMinutes()).slice(
-      //     //   -2
-      //     // )}:${('0' + new Date(prefrences.time as Date).getSeconds()).slice(
-      //     //   -2
-      //     // )}`,
-      //   },
-      //   area_branch: destObj,
-      //   url,
-      // }).then((r: any) => {
-      //   if (r.data) {
-      //     if (r.data.status) {
-      //       if (selectedPaymentMethod === 'cash_on_delivery') {
-      //         router.replace(appLinks.orderSuccess(r.data.data.order_id));
-      //         dispatch(
-      //           showToastMessage({
-      //             content: `order_created_successfully`,
-      //             type: `success`,
-      //           })
-      //         );
-      //       } else {
-      //         window.open(r.data.Data, '_self');
-      //       }
-      //     } else {
-      //       router.replace(appLinks.orderFailure(r.data.data.order_id));
-      //     }
-      //   } else {
-      //     if (r.error && r.error.data && r.error.data.msg) {
-      //       dispatch(
-      //         showToastMessage({
-      //           content: r.error.data.msg,
-      //           type: `error`,
-      //         })
-      //       );
-      //       // if(r?.error?.data?.msg?.includes("CLOSE")) {
-      //       //   setOpenClosedStore(true);
-      //       // }
-      //     }
-      //   }
-      // });
+      console.log({ method }, prefrences.date, prefrences.time,prefrences.type);
+      await triggerCreateOrder({
+        params: {
+          user_id: customer_id,
+          ...(method === `delivery` ? { address_id: addressID } : {}),
+          order_type: prefrences.type,
+          // order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
+          UserAgent: userAgent,
+          Messg: notes,
+          PaymentMethod: selectedPaymentMethod,
+          PromoCode: promocode,
+          Date: prefrences.date,
+          Time: prefrences.time,
+        },
+        area_branch: destObj,
+        url,
+      }).then((r: any) => {
+        if (r.data) {
+          if (r.data.status) {
+            if (selectedPaymentMethod === 'cash_on_delivery') {
+              router.replace(appLinks.orderSuccess(r.data.data.order_id));
+              dispatch(
+                showToastMessage({
+                  content: `order_created_successfully`,
+                  type: `success`,
+                })
+              );
+            } else {
+              window.open(r.data.Data, '_self');
+            }
+          } else {
+            router.replace(appLinks.orderFailure(r.data.data.order_id));
+          }
+        } else {
+          if (r.error && r.error.data && r.error.data.msg) {
+            dispatch(
+              showToastMessage({
+                content: r.error.data.msg,
+                type: `error`,
+              })
+            );
+            // if(r?.error?.data?.msg?.includes("CLOSE")) {
+            //   setOpenClosedStore(true);
+            // }
+          }
+        }
+      });
     }
   };
 
