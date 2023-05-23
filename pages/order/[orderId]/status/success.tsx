@@ -47,6 +47,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
     customer: { userAgent },
     Cart: { promocode }
   } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
   const [triggerGetOrderStatus, { data: order, isLoading }] = useLazyCheckOrderStatusQuery<{
     data: AppQueryResult<Order>;
     isLoading: boolean;
@@ -60,6 +61,30 @@ export default function OrderSuccess({ url,orderId }: Props) {
       dispatch(setUrl(url));
     }
   }, []);
+  
+  const {
+    data: cartItems,
+    isSuccess,
+    refetch: refetchCart,
+  } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  }>(
+    {
+      userAgent,
+      area_branch: destObj,
+      PromoCode: promocode,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
+  useEffect(() => {
+    refetchCart();
+  }, []);
+
   console.log({ order })
   return (
    <>

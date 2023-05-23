@@ -3,7 +3,7 @@ import CategorySkeleton from './CategorySkeleton';
 import ContactDetailsSkeleton from './ContactDetailsSkeleton';
 import DeliveryAddressSkeleton from './DeliveryAddressSkeleton';
 import HomePageSMSkeleton from './HomePageSMSkeleton';
-import MenuItemSkeleton from './MenuItemSkeleton';
+import AreaBranchSkeleton from './AreaBranchSkeleton';
 import OrderItemSkeleton from './OrderItemSkeleton';
 import OrderSkeleton from './OrderSkeleton';
 import PopularSearchSkeleton from './PopularSearchSkeleton';
@@ -29,8 +29,8 @@ export default function ContentLoader({ type, sections }: Props) {
     case 'ProductHorizontal':
       SkeletonComponent = ProductHorizontalSkeleton;
       break;
-    case 'MenuItem':
-      SkeletonComponent = MenuItemSkeleton;
+    case 'AreaBranch':
+      SkeletonComponent = AreaBranchSkeleton;
       break;
     case 'Category':
       SkeletonComponent = CategorySkeleton;
