@@ -91,7 +91,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
-
     dispatch(
       showToastMessage({
         content: `area_selected`,
