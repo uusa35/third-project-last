@@ -87,20 +87,18 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = (
+  const handleSelectMethod = async (
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
-    // router.replace(appLinks.home.path).then(() =>
     dispatch(
       showToastMessage({
         content: `area_selected`,
         type: `success`,
       })
     );
-    router.back();
-    // );
+    return router.back();
   };
   useEffect(() => {
     setAllLocations(locations?.Data);

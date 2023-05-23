@@ -4,7 +4,7 @@ export const customerInfoSchema = yup
   .object({
     id: yup.number().nullable(),
     name: yup.string().required().min(2).max(50),
-    email: yup.string().email().required(),
+    email: yup.string().email().nullable(),
     // phone: yup.number().min(100000).max(999999999999).required(),
     phone: yup.string().required(),
   })
