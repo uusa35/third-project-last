@@ -90,17 +90,16 @@ const SelectBranch: NextPage<Props> = ({
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
+    if (destination.status === 'CLOSE') {
+      dispatch(
+        showToastMessage({
+          type: 'warning',
+          content: `branch_is_closed`,
+        })
+      );
+      setOpenClosedStore(true);
+    }
     return router.back();
-    // if (destination.status === 'CLOSE') {
-    //   dispatch(
-    //     showToastMessage({
-    //       type: 'warning',
-    //       content: `branch_is_closed`,
-    //     })
-    //   );
-    //   setOpenClosedStore(true);
-    // } else {
-    // }
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
