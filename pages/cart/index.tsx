@@ -303,8 +303,16 @@ export default function Cart({ url }: Props) {
 
             <CheckoutFixedBtn
               cartLessThanMin={
-                parseFloat(cartItems?.data?.minimum_order_price.toString()) >
-                parseFloat(cartItems?.data?.total.toString())
+                promocode
+                  ? parseFloat(
+                      cartItems?.data?.minimum_order_price.toString()
+                    ) >
+                    parseFloat(
+                      cartItems?.data?.total_cart_after_tax?.toString()
+                    )
+                  : parseFloat(
+                      cartItems?.data?.minimum_order_price.toString()
+                    ) > parseFloat(cartItems?.data?.total?.toString())
               }
               url={url}
               cart={true}

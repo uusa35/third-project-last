@@ -67,7 +67,7 @@ export default function PromoCode({
       </div>
 
       <div className="pb-4 border-b">
-        {promoCodesSuccess && promoCodes && isEmpty(promoCodes.data) && (
+        {promoCodesSuccess && promoCodes && !isEmpty(promoCodes.data) && (
           <>
             {promoCodes.data.map((prmocode) => {
               <div
