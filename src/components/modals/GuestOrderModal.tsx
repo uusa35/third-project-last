@@ -118,7 +118,7 @@ const GuestOrderModal: FC<Props> = ({
                 />
                 <label
                   htmlFor="name"
-                  className={`absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full ${
+                  className={`absolute text-gray-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full ${
                     isRTL ? 'text-end' : 'text-start'
                   }`}
                   suppressHydrationWarning={suppressText}

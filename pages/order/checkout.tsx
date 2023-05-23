@@ -29,7 +29,7 @@ import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import EmptyCart from '@/components/cart/EmptyCart';
-// import WhenClosedModal from '@/components/modals/WhenClosedModal';
+import WhenClosedModal from '@/components/modals/WhenClosedModal';
 
 type Props = {
   url: string;

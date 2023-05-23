@@ -840,7 +840,7 @@ const ProductShow: NextPage<Props> = ({
                                   </span>
                                 </div>
                               </div>
-                              <div>
+                              <div className={`flex items-center ${isRTL && 'flex-row-reverse'}`}>
                                 <button
                                   disabled={
                                     currentQty === 0 ||
@@ -963,11 +963,11 @@ const ProductShow: NextPage<Props> = ({
               <div
                 className={`flex flex-row justify-center items-center my-4 capitalize`}
               >
-                <div className="flex flex-row-reverse items-center">
+                <div className={`flex items-center ${!isRTL && 'flex-row-reverse'}`}>
                   <button
                     onClick={handleIncrease}
                     type="button"
-                    className="w-8 h-8 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                    className="w-7 h-7 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
                     style={{ backgroundColor: color }}
                   >
                     +
@@ -979,7 +979,8 @@ const ProductShow: NextPage<Props> = ({
                     disabled={currentQty === 0}
                     onClick={handleDecrease}
                     type="button"
-                    className="w-8 h-8 bg-gray-300 text-white text-xl font-semibold rounded-full pb-3"
+                    className={`w-7 h-7 text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                    style={{ borderColor: color, color }}
                   >
                     -
                   </button>

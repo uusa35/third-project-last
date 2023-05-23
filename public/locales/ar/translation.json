@@ -232,6 +232,11 @@
   "enter_your_name": "أدخِل اسمك ",
   "guest_info": "بيانات الضيف",
   "email_optional": "الإيميل (اختياري)",
-  "promo_is_saved_and_will_be_applied_to_your_cart":"تم حفظ كود الخصم و سيتم تطبيقه علي عبه التسوق الخاصة بك"
-
+  "promo_is_saved_and_will_be_applied_to_your_cart":"تم حفظ كود الخصم و سيتم تطبيقه علي عبه التسوق الخاصة بك",
+  "min": "دقيقة",
+  "delivery_fees": "مصاريف التوصيل",
+  "language_changed_successfully": "تم تغيير اللغة",
+  "appartment_no": "رقم الشقة",
+  "contacts_info": "بيانات الاتصال",
+  "special_remarks": "علامات خاصة"
 }
