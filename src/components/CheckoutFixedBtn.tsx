@@ -60,18 +60,18 @@ export default function CheckoutFixedBtn({
     { refetchOnMountOrArgChange: true }
   );
 
-  console.log(cartLessThanMin)
+  console.log(cartLessThanMin);
   return (
     <div>
-      <div className="h-48"></div>
-      {/* sticky fooer */}
-      <div className="fixed bottom-0 z-50 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
-        {isSuccess &&
-          cartItems &&
-          cartItems.data &&
-          cartItems?.data?.Cart &&
-          cartItems?.data?.Cart.length > 0 && (
-            <>
+      {isSuccess &&
+        cartItems &&
+        cartItems.data &&
+        cartItems?.data?.Cart &&
+        cartItems?.data?.Cart.length > 0 && (
+          <>
+            <div className="h-48"></div>
+            {/* sticky fooer */}
+            <div className="fixed bottom-0 z-50 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
               {/* min cart msg */}
               {cartLessThanMin && (
                 <p
@@ -99,7 +99,9 @@ export default function CheckoutFixedBtn({
                 <div className="flex items-center gap-x-3">
                   <p
                     suppressHydrationWarning={suppressText}
-                    className={`flex items-center justify-center rounded-full w-8 h-8 ${cartLessThanMin ?'bg-black bg-opacity-10' : 'bg-red-800'}`}
+                    className={`flex items-center justify-center rounded-full w-8 h-8 ${
+                      cartLessThanMin ? 'bg-black bg-opacity-10' : 'bg-red-800'
+                    }`}
                   >
                     {cartItems?.data?.Cart.length}
                   </p>
@@ -109,14 +111,15 @@ export default function CheckoutFixedBtn({
                 </div>
 
                 <p suppressHydrationWarning={suppressText}>
-                  {cartItems?.data?.total} {t('kwd')}
+                  {promocode
+                    ? cartItems?.data?.total_cart_after_tax
+                    : cartItems?.data?.total}{' '}
+                  {t('kwd')}
                 </p>
               </div>
-            </>
-          )}
 
-        {/* order status  btn*/}
-        {/* {!cart && (
+              {/* order status  btn*/}
+              {/* {!cart && (
           <div
             className="flex items-center gap-x-2 justify-between rounded-full text-white w-full py-2 px-4 my-3"
             style={{ backgroundColor: color }}
@@ -139,7 +142,9 @@ export default function CheckoutFixedBtn({
             </div>
           </div>
         )} */}
-      </div>
+            </div>
+          </>
+        )}
     </div>
   );
 }

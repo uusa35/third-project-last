@@ -29,6 +29,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       phone,
       notes,
       address: { type: address_type },
+      prefrences
     },
     searchParams: { method },
   } = useAppSelector((state) => state);
@@ -140,17 +141,19 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
             ['pickup']: 'pickup_time',
           }[method as string]
         }
-        p2="Today 11:00 AM - 2:00 AM"
+        p2={`${prefrences.date}  ,  ${prefrences.time}`}
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
 
-      <DetailComponent
-        // onclick={() => router.push(appLinks.addressCreate.path)}
-        icon={<RemarksIcon />}
-        p1="special_remarks"
-        p2={`${notes ? notes : 'no_notes_added'}`}
-        editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
-      />
+      {method === 'delivery' && (
+        <DetailComponent
+          // onclick={() => router.push(appLinks.addressCreate.path)}
+          icon={<RemarksIcon />}
+          p1="special_remarks"
+          p2={`${notes ? notes : 'no_notes_added'}`}
+          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
+        />
+      )}
     </div>
   );
 }

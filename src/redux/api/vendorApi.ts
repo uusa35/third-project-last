@@ -1,6 +1,6 @@
 import { apiSlice } from './index';
 import { AppQueryResult, DeliveryPickupDetails } from '@/types/queries';
-import { Locale, Vendor } from '@/types/index';
+import { HomePromoCode, Locale, Vendor } from '@/types/index';
 
 export const vendorApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -18,6 +18,25 @@ export const vendorApi = apiSlice.injectEndpoints({
           lang,
           url,
           ...destination,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+        keepUnusedDataFor: 0,
+      }),
+    }),
+
+    getHomePromocode: builder.query<
+      AppQueryResult<HomePromoCode>,
+      {
+        lang: Locale['lang'] | string | undefined;
+        url: string | undefined;
+      }
+    >({
+      query: ({ lang, url }) => ({
+        url: `promocodehome`,
+        headers: {
+          lang,
+          url,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -53,4 +72,5 @@ export const {
   useGetVendorQuery,
   useGetDeliveryPickupDetailsQuery,
   useLazyGetVendorQuery,
+  useGetHomePromocodeQuery
 } = vendorApi;

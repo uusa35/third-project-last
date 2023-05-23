@@ -384,3 +384,9 @@ export interface Models {
   areaBranchIsOpen: boolean;
   closedStoreIsOpen: boolean;
 }
+
+export interface HomePromoCode {
+  promo_code_id: number;
+  promo_code: string;
+  promo_image: string;
+}

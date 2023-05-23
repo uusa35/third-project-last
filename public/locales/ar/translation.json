@@ -232,5 +232,7 @@
   "track_order": "تتبع الطلب",
   "enter_your_name": "أدخِل اسمك ",
   "guest_info": "بيانات الضيف",
-  "email_optional": "الإيميل (اختياري)"
+  "email_optional": "الإيميل (اختياري)",
+  "promo_is_saved_and_will_be_applied_to_your_cart":"تم حفظ كود الخصم و سيتم تطبيقه علي عبه التسوق الخاصة بك"
+
 }
