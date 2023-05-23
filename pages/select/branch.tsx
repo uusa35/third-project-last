@@ -89,18 +89,18 @@ const SelectBranch: NextPage<Props> = ({
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    if (destination.status === 'CLOSE') {
-      dispatch(
-        showToastMessage({
-          type: 'warning',
-          content: `branch_is_closed`,
-        })
-      );
-      setOpenClosedStore(true);
-    } else {
-      dispatch(setDestination({ destination, type }));
-      router.back();
-    }
+    dispatch(setDestination({ destination, type }));
+    router.back();
+    // if (destination.status === 'CLOSE') {
+    //   dispatch(
+    //     showToastMessage({
+    //       type: 'warning',
+    //       content: `branch_is_closed`,
+    //     })
+    //   );
+    //   setOpenClosedStore(true);
+    // } else {
+    // }
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
