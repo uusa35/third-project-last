@@ -89,7 +89,6 @@ const SelectBranch: NextPage<Props> = ({
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    console.log('des', destination);
     if (destination.status === 'CLOSE') {
       dispatch(
         showToastMessage({

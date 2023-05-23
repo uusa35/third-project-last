@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CustomerInfo } from '@/types/index';
+import { searchParamsSlice } from './searchParamsSlice';
 
 const initialState: CustomerInfo = {
   id: null,
@@ -84,7 +85,6 @@ export const customerSlice = createSlice({
         address: initialState.address,
       };
     },
-
     setPreferences: (
       state: typeof initialState,
       action: PayloadAction<CustomerInfo['prefrences']>
@@ -104,6 +104,11 @@ export const customerSlice = createSlice({
         prefrences: initialState.prefrences,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(searchParamsSlice.actions.setDestination, (state, action) => {
+      state.prefrences = initialState.prefrences;
+    });
   },
 });
 
