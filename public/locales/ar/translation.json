@@ -179,16 +179,11 @@
   "now_within": "الآن خلال",
   "please_review_sections_some_r_required": "اختيارات مطلوبة",
   "address_saved_successfully": "تم حفظ العنوان بنجاح",
-<<<<<<< HEAD
-  "out_stock": "نفذت الكمية",
   "no_timing_available": "لا يوجد أوقات",
-=======
   "no_timings_available": "لا يوجد أوقات متاحة",
->>>>>>> esraa
   "info_saved": "تم حفظ البيانات",
   "save_address": "حفظ العنوان",
   "order_created_successfully": "شكرا .. تم إتمام طلبك",
-  "language_changed_successfully": "تم تغير اللغة",
   "pickup_now": "استلام الان",
   "delivery_now": "توصيل الان الي",
   "pickup_later": "استلام",
@@ -211,10 +206,8 @@
   "other_phone_no": "رقم هاتف آخر",
   "address_details": "تفاصيل العنوان",
   "office": "مكتب",
-<<<<<<< HEAD
   "add_a_minimum_of": "اضف علي الاقل",
-  "to_place_your_order": "لكي تحجز الطلب"
-=======
+  "to_place_your_order": "لكي تحجز الطلب",
   "out_stock": "نفذت الكمية",
   "must_select_min_and_max": "يجب اختيار أقل كمية {{min}} وأقصى كمية {{max}}",
   "select1": "اختيار واحد",

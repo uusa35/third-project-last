@@ -223,12 +223,8 @@
   "now_within": "now within",
   "please_review_sections_some_r_required": "required fields",
   "address_saved_successfully": "address saved successfully",
-<<<<<<< HEAD
-  "out_stock": "out stock",
   "no_timing_available": "no timing available",
-=======
   "no_timings_available": "no timings available",
->>>>>>> esraa
   "info_saved": "info saved",
   "save_address": "save address",
   "order_created_successfully": "thank you .. your order has been placed.",
@@ -255,15 +251,12 @@
   "notice": "notice",
   "other_phone_no": "other phone number",
   "address_details": "address details",
-<<<<<<< HEAD
   "add_a_minimum_of": "add a minimum of",
-  "to_place_your_order": "to place your order"
-=======
+  "to_place_your_order": "to place your order",
   "out_stock": "out stock",
   "must_select_min_and_max": "must choose min {{min}} qty or {{max}} qty.",
   "field_must_select_at_least_one": "you must select at least one choice.",
   "confirm": "confirm",
-  "language_changed_successfully": "language changed",
   "deliver_now_to": "deliver now to",
   "change": "change",
   "yes": "yes",
