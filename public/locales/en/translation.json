@@ -272,5 +272,6 @@
   "promo_is_saved_and_will_be_applied_to_your_cart":"promo is saved and will be applied to your cart",
   "min": "minute",
   "deivery_fees": "delivery fees",
-  "language_changed_successfully": "language changed"
+  "language_changed_successfully": "language changed",
+  "coupon_value": "discount"
 }

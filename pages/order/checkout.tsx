@@ -123,7 +123,12 @@ export default function checkout({ url }: Props) {
       selectedPaymentMethod &&
       !isNull(userAgent)
     ) {
-      console.log({ method }, prefrences.date, prefrences.time,prefrences.type);
+      console.log(
+        { method },
+        prefrences.date,
+        prefrences.time,
+        prefrences.type
+      );
       await triggerCreateOrder({
         params: {
           user_id: customer_id,
@@ -134,8 +139,9 @@ export default function checkout({ url }: Props) {
           Messg: notes,
           PaymentMethod: selectedPaymentMethod,
           PromoCode: promocode,
-          Date: prefrences.date,
-          Time: prefrences.time,
+          ...(prefrences.date && prefrences.time
+            ? { Date: prefrences.date, Time: prefrences.time }
+            : {}),
         },
         area_branch: destObj,
         url,
@@ -164,7 +170,7 @@ export default function checkout({ url }: Props) {
                 type: `error`,
               })
             );
-            if(r?.error?.data?.msg?.includes("CLOSE")) {
+            if (r?.error?.data?.msg?.includes('CLOSE')) {
               setOpenClosedStore(true);
             }
           }
@@ -292,10 +298,10 @@ export default function checkout({ url }: Props) {
             </div>
           </>
         ))}
-      <WhenClosedModal 
-        isOpen={openStoreClosedModal} 
-        onRequestClose={() => setOpenClosedStore(false)} 
-        />
+      <WhenClosedModal
+        isOpen={openStoreClosedModal}
+        onRequestClose={() => setOpenClosedStore(false)}
+      />
     </MainContentLayout>
   );
 }
