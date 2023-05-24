@@ -52,7 +52,6 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
     } else {
       await setLang(lang).then(() => {
         router.back();
-        router.reload()
       });
     }
   };

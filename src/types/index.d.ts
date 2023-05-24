@@ -129,7 +129,8 @@ export interface ServerCart {
   Cart: ProductCart[];
   total_cart_after_tax?: number;
   promo_code_discount?: number;
-  minimum_order_price: string;
+  minimum_order_price?: string;
+  free_delivery_data?:string
   tax?: number;
   free_delivery?: boolean;
   delivery_fee?: string;
@@ -383,4 +384,10 @@ export interface Cart {
 export interface Models {
   areaBranchIsOpen: boolean;
   closedStoreIsOpen: boolean;
+}
+
+export interface HomePromoCode {
+  promo_code_id: number;
+  promo_code: string;
+  promo_image: string;
 }

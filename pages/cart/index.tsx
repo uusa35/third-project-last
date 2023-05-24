@@ -8,7 +8,7 @@ import {
 import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
-import { filter, isEmpty, kebabCase, lowerCase } from 'lodash';
+import { StringIterator, filter, isEmpty, kebabCase, lowerCase } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -256,7 +256,7 @@ export default function Cart({ url }: Props) {
     = check  if guest or user 
     = navigate
     */
-  //  check if user id is null 
+    //  check if user id is null
 
     router.push(appLinks.login.path);
   };
@@ -274,7 +274,23 @@ export default function Cart({ url }: Props) {
           <EmptyCart />
         ) : isSuccess ? (
           <div>
-            {/* <SaleNotification /> */}
+            {/* <SaleNotification
+              delivery_fees={
+                enable_promocode
+                  ? parseFloat(cartItems?.data?.delivery_fee ?? '')
+                  : parseFloat(cartItems?.data?.delivery_fees)
+              }
+              min_for_free_delivery={parseFloat(
+                cartItems?.data?.free_delivery_data ?? ''
+              )}
+              total={
+                enable_promocode
+                  ? parseFloat(
+                      cartItems?.data?.total_cart_after_tax?.toString() ?? ''
+                    )
+                  : parseFloat(cartItems?.data?.total?.toString() ?? '')
+              }
+            /> */}
             <div className="p-5">
               {cartItems?.data?.Cart.map((product) => (
                 <CartProduct
@@ -302,6 +318,18 @@ export default function Cart({ url }: Props) {
             </div>
 
             <CheckoutFixedBtn
+              cartLessThanMin={
+                promocode
+                  ? parseFloat(
+                      cartItems?.data?.minimum_order_price?.toString() ?? ''
+                    ) >
+                    parseFloat(
+                      cartItems?.data?.total_cart_after_tax?.toString() ?? ''
+                    )
+                  : parseFloat(
+                      cartItems?.data?.minimum_order_price?.toString() ?? ''
+                    ) > parseFloat(cartItems?.data?.total?.toString())
+              }
               url={url}
               cart={true}
               handelContinueInCart={() => handelContinue()}

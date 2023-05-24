@@ -37,6 +37,8 @@ import {
 } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   element: Vendor;
@@ -84,16 +86,21 @@ const SelectBranch: NextPage<Props> = ({
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = (
+  const handleSelectMethod = async (
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
     if (destination.status === 'CLOSE') {
+      dispatch(
+        showToastMessage({
+          type: 'warning',
+          content: `branch_is_closed`,
+        })
+      );
       setOpenClosedStore(true);
-    } else {
-      router.back();
     }
+    router.back();
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
@@ -112,7 +119,11 @@ const SelectBranch: NextPage<Props> = ({
     !locations ||
     !locations.Data
   ) {
-    return <div>loading ...</div>;
+    return (
+      <MainContentLayout>
+        <ContentLoader type="AreaBranch" sections={8} />
+      </MainContentLayout>
+    )
   }
 
   return (

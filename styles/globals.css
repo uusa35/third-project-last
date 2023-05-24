@@ -10,94 +10,70 @@
   font-display: swap;
 }
 
-.font-alexandria-Regular {
+@font-face {
+  font-family: 'Alexandria-Medium';
+  src: url('../public/fonts/Alexandria-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alexandria-SemiBold';
+  src: url('../public/fonts/Alexandria-SemiBold.ttf') format('truetype');
+  font-weight:normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alexandria-Light';
+  src: url('../public/fonts/Alexandria-Light.ttf') format('truetype');
+  font-weight:normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alexandria-Bold';
+  src: url('../public/fonts/Alexandria-Bold.ttf') format('truetype');
+  font-weight:normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat-Arabic-Regular';
+  src: url('../public/fonts/Montserrat-Arabic-Regular.ttf') format('truetype');
+  font-weight:normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-Alexandria-Regular {
   font-family: 'Alexandria-Regular', 'sans-serif' !important;
 }
 
-/* @font-face {
-  font-family: 'Arboria-Light';
-  src: url('../public/fonts/Arboria-Light.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-} */
-
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.font-Alexandria-Medium {
+  font-family: 'Alexandria-Medium', 'sans-serif' !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} 
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}  */
-
-@font-face {
-  font-family: 'Tajawal-Medium';
-  src: url('../public/fonts/Tajawal-Medium.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+.font-Alexandria-SemiBold {
+  font-family: 'Alexandria-SemiBold', 'sans-serif' !important;
 }
 
-@font-face {
-  font-family: 'Arboria-Light';
-  src: url('../public/fonts/Arboria-Light.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+.font-Alexandria-Light {
+  font-family: 'Alexandria-Light', 'sans-serif' !important;
 }
 
-@font-face {
-  font-family: 'Arboria-Medium';
-  src: url('../public/fonts/Arboria-Medium.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+.font-Alexandria-Bold {
+  font-family: 'Alexandria-Bold', 'sans-serif' !important;
 }
 
-@font-face {
-  font-family: 'GE_SS_Text_Light';
-  src: url('../public/fonts/GE_SS_Text_Light.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+.Montserrat-Arabic-Regular {
+  font-family: 'Montserrat-Arabic-Regular', 'sans-serif' !important;
 }
 
-.font-arboria-light {
-  font-family: 'Arboria-Light', 'sans-serif' !important;
-}
-
-.font-arboria-medium {
-  font-family: 'Arboria-Medium', 'sans-serif' !important;
-}
-
-.font-gess-medium {
-  font-family: 'GE_SS_Text_Light', 'sans-serif' !important;
-}
-
-.font-tajwal-medium,
-.Toastify__toast-body>div {
-  font-family: 'Tajawal-Medium', 'sans-serif' !important;
-}
-
-.font-future-bold {
-  font-family: 'Futura-Bold-font', 'sans-serif';
-}
 
 .PhoneInputCountrySelectArrow {
   margin-left: 10px;
@@ -108,10 +84,4 @@ button:disabled {
   border-color: #d6d6d6 !important;
   color: #FFF !important
 }
-/* input:focus, 
-.PhoneInputInput:focus {
-  border-color: #dc2626 !important;
-  caret-color: #dc2626 !important;
-  outline: none;
-} */
 

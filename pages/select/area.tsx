@@ -37,6 +37,7 @@ import {
 } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   element: Vendor;
@@ -86,20 +87,18 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = (
+  const handleSelectMethod = async (
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
-    // router.replace(appLinks.home.path).then(() =>
     dispatch(
       showToastMessage({
         content: `area_selected`,
         type: `success`,
       })
     );
-    router.back();
-    // );
+    return router.back();
   };
   useEffect(() => {
     setAllLocations(locations?.Data);
@@ -137,7 +136,11 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     !locations ||
     !locations.Data
   ) {
-    return <div>loading ...</div>;
+    return (
+      <MainContentLayout>
+        <ContentLoader type="AreaBranch" sections={8} />
+      </MainContentLayout>
+    )
   }
 
   return (

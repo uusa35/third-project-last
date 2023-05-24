@@ -11,6 +11,7 @@ import { suppressText } from '@/constants/*';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
+import { truncate } from 'lodash';
 
 type Props = { url: string };
 
@@ -57,7 +58,7 @@ function DeliveryPickup({ url }: Props) {
             />
           )}
 
-          <div className="flex items-end justify-between w-full">
+          <div className="flex items-end justify-between gap-x-2 w-full">
             {method === 'pickup' && (
               <div>
                 <p className="text-xs" suppressHydrationWarning={suppressText}>
@@ -69,16 +70,17 @@ function DeliveryPickup({ url }: Props) {
                     }[prefType as string]
                   }
                 </p>
-                <div className="flex items-center">
+                <p suppressHydrationWarning={suppressText}>
                   <TextTrans
                     ar={destination.name_ar}
                     en={destination.name_en}
                   />
-                  <p suppressHydrationWarning={suppressText}>
-                    {' '}
-                    , {destination.location}
-                  </p>
-                </div>
+                  ,{' '}
+                  {truncate(destination.location, {
+                    length: 30,
+                    omission: '...',
+                  })}
+                </p>
               </div>
             )}
 
@@ -104,7 +106,7 @@ function DeliveryPickup({ url }: Props) {
               <p
                 suppressHydrationWarning={suppressText}
                 style={{ color: color }}
-                className="font-bold text-sm"
+                className="font-semibold text-xs"
               >
                 {t('change')}
               </p>

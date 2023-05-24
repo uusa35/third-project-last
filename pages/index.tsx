@@ -4,10 +4,14 @@ import { setLocale } from '@/redux/slices/localeSlice';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { AppQueryResult } from '@/types/queries';
-import { Vendor } from '@/types/index';
-import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
+import { HomePromoCode, Vendor } from '@/types/index';
+import {
+  useGetHomePromocodeQuery,
+  useLazyGetVendorQuery,
+  vendorApi,
+} from '@/redux/api/vendorApi';
 import MainHead from '@/components/MainHead';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +33,7 @@ import {
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
 import { setUrl } from '@/redux/slices/appSettingSlice';
+import HomeModal from '@/components/modals/HomeModal';
 
 type Props = {
   element: Vendor;
@@ -45,8 +50,9 @@ export default function Home({ url, element, currentLocale }: Props) {
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const router = useRouter();
+  const [openPromoModel, setOpenPromoModel] = useState(true);
 
-  console.log('desObject', desObject);
+  // console.log('desObject', desObject);
 
   // seturl
   useEffect(() => {
@@ -102,13 +108,26 @@ export default function Home({ url, element, currentLocale }: Props) {
     );
   }, [router.locale, DestinationId, method]);
 
-  // vendor info open at , close at (api)
+  // get promo modal data
+  const {
+    data: HomePromocodeData,
+    isLoading: HomePromocodeLoading,
+    isSuccess: HomePromocodeSuccess,
+  } = useGetHomePromocodeQuery<{
+    data: AppQueryResult<HomePromoCode>;
+    isSuccess: boolean;
+    isLoading: boolean;
+  }>(
+    {
+      lang,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
-  // delivery and pickup section====>  where to get the date
   // store is closed modal====> api
-  // in checkout btn get cart and render if cart not empty
 
-  // status btn where to get the data
+  // order status
   // close modal when to show it
 
   // line 149 in index home mdify category
@@ -132,15 +151,12 @@ export default function Home({ url, element, currentLocale }: Props) {
             <>
               {/* sm screen header */}
               <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
-
               {/*  HomePage vendor info */}
               <div className={`px-4 mt-3 lg:mt-0`}>
                 <HomeVendorMainInfo element={vendorElement} />
               </div>
-
               {/* ads scroller */}
               <AdsScrollBar slider={vendorElement?.Data?.slider ?? []} />
-
               <DeliveryPickup url={url} />
             </>
           ) : (
@@ -194,6 +210,15 @@ export default function Home({ url, element, currentLocale }: Props) {
               {/* in sm screens only */}
               <Footer element={vendorElement?.Data} />
               <CheckoutFixedBtn url={url} />
+              {HomePromocodeSuccess && (
+                <HomeModal
+                  data={HomePromocodeData?.data}
+                  isOpen={openPromoModel}
+                  onRequestClose={() => {
+                    setOpenPromoModel(false);
+                  }}
+                />
+              )}
             </>
           )}
         </div>

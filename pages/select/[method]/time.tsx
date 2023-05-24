@@ -19,6 +19,7 @@ import { useLazyGetTimingsQuery } from '@/redux/api/cartApi';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setPreferences } from '@/redux/slices/customerSlice';
 import { Router, useRouter } from 'next/router';
+import ContentLoader from '@/components/skeletons';
 
 // check availability in case no date will return else will just navigate to checkout.
 type Day = {
@@ -109,9 +110,9 @@ export default function index({ url, method }: Props) {
     setSelectedDay({ day: days[0].day, date: days[0].date });
     if (isScheduled) {
       setIsBtnEnabled(false);
-      if (method === 'delivery') {
+      if (method == 'delivery') {
         setType('delivery_later');
-      } else if (method === 'pickup') {
+      } else if (method == 'pickup') {
         setType('pickup_later');
       }
     } else {
@@ -190,7 +191,11 @@ export default function index({ url, method }: Props) {
     router.back();
   };
 
-  if (!vendorSuccess) return <div>loading</div>;
+  if (!vendorSuccess) return (
+    <MainContentLayout>
+      <ContentLoader type="AreaBranch" sections={8} />
+    </MainContentLayout>
+  )
 
   return (
     <Suspense>
