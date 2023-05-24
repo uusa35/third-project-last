@@ -110,9 +110,9 @@ export default function index({ url, method }: Props) {
     setSelectedDay({ day: days[0].day, date: days[0].date });
     if (isScheduled) {
       setIsBtnEnabled(false);
-      if (method === 'delivery') {
+      if (method == 'delivery') {
         setType('delivery_later');
-      } else if (method === 'pickup') {
+      } else if (method == 'pickup') {
         setType('pickup_later');
       }
     } else {

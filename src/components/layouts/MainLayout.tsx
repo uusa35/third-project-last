@@ -139,6 +139,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     const handleRouteChangeStart: Handler = (url, { shallow }) => {
+      console.log({ url });
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
@@ -147,8 +148,16 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
       }
     };
 
+    const handleRouteChangeError = (err, url) => {
+      console.log(err,url)
+      if (err.cancelled) {
+        console.log(`Route to ${url} was cancelled!`);
+      }
+    };
+
     router.events.on('routeChangeStart', handleRouteChangeStart);
     router.events.on('routeChangeComplete', handleChangeComplete);
+    router.events.on('routeChangeError', handleRouteChangeError);
 
     return () => {
       router.events.off('routeChangeStart', handleRouteChangeStart);

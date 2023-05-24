@@ -47,7 +47,11 @@ const HomeModal: FC<Props> = ({
       }}
       shouldFocusAfterRender={false}
     >
-      <div className="w-full h-full flex justify-start">
+      <div
+        className={`w-full h-full flex  ${
+          isRTL ? 'justify-end' : 'justify-start'
+        }`}
+      >
         <div className="absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/2">
           <div
             className={`relative flex flex-col items-end justify-between rounded-lg h-full`}

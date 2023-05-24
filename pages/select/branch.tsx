@@ -86,11 +86,11 @@ const SelectBranch: NextPage<Props> = ({
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = (
+  const handleSelectMethod = async (
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    console.log('des', destination);
+    dispatch(setDestination({ destination, type }));
     if (destination.status === 'CLOSE') {
       dispatch(
         showToastMessage({
@@ -99,10 +99,8 @@ const SelectBranch: NextPage<Props> = ({
         })
       );
       setOpenClosedStore(true);
-    } else {
-      dispatch(setDestination({ destination, type }));
-      router.back();
     }
+    router.back();
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {

@@ -240,5 +240,6 @@
   "contacts_info": "بيانات الاتصال",
   "special_remarks": "علامات خاصة",
   "credit_card": "بطاقة ائتمان",
-  "pay_by_knet": "الدفع بـ كي نت"
+  "pay_by_knet": "الدفع بـ كي نت",
+  "coupon_value" : "قيمة الخصم"
 }

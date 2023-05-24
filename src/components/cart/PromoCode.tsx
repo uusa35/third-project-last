@@ -90,21 +90,6 @@ export default function PromoCode({
                 </div>
               );
             })}
-
-            {/* remove this part later */}
-            <div
-              onClick={() => {
-                setPromoCodeVal('qweqwe');
-              }}
-              className={`flex items-center gap-x-1 rounded-full border ${
-                promocode === 'qweqwe'
-                  ? 'border-[#12B76A] text-[#12B76A]'
-                  : 'border-[#B7B1AE]'
-              } w-fit text-sm py-1 px-3 cursor-pointer`}
-            >
-              {promocode === 'qweqwe' ? <GreenCheckIcon /> : <PromocodeIcon />}
-              qweqwe
-            </div>
           </>
         )}
       </div>
