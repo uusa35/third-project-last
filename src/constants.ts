@@ -44,7 +44,7 @@ export const alexandriaFontMeduim = `font-Alexandria-Medium`;
 export const alexandriaFontSemiBold = `font-Alexandria-SemiBold`;
 export const alexandriaFontLight = `font-Alexandria-Light`;
 export const alexandriaFontBold = `font-Alexandria-Bold`;
-export const montserratFontRegular ="Montserrat-Arabic-Regular"
+export const montserratFontRegular = 'Montserrat-Arabic-Regular';
 
 // classes
 export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;
@@ -101,3 +101,7 @@ export const setLang = (lang: any) =>
     },
     body: JSON.stringify({ lang }),
   });
+
+export const displayUserAddress = (address: any) => {
+  let formattedAddress = '';
+};

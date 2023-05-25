@@ -27,6 +27,7 @@ import Footer from '@/components/home/Footer';
 import ContentLoader from '@/components/skeletons';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import DeliveryPickup from '@/components/home/DeliveryPickup';
+
 import {
   destinationId,
   destinationHeaderObject,
@@ -158,12 +159,15 @@ export default function Home({ url, element, currentLocale }: Props) {
               {/* ads scroller */}
               <AdsScrollBar slider={vendorElement?.Data?.slider ?? []} />
               <DeliveryPickup url={url} />
+              
             </>
           ) : (
             <div>
               <ContentLoader type="Home" sections={1} />
             </div>
           )}
+
+          
 
           {!vendorSuccess ||
           !vendorElement ||

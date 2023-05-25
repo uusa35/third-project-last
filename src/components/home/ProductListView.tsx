@@ -6,6 +6,7 @@ import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-ui-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
 import MenuModal from '../modals/MenuModal';
+import UpcomingOrders from '@/components/home/UpcomingOrders';
 
 type Props = {
   CategoriesProducts: Product[];
@@ -60,6 +61,8 @@ export default function ProductListView({ CategoriesProducts }: Props) {
           })}
         </div>
       </header>
+
+      <UpcomingOrders/>
 
       {/* products and cats names */}
       <ScrollSpy>
