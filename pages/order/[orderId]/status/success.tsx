@@ -54,7 +54,13 @@ export default function OrderSuccess({ url,orderId }: Props) {
   }>();
   console.log({ orderId })
   useEffect(() => {
-    triggerGetOrderStatus({ status: 'success', order_id: orderId, url, userAgent }, false);
+    triggerGetOrderStatus({ 
+      status: 'success', 
+      order_id: orderId, 
+      url, 
+      area_branch: destObj, 
+      userAgent 
+    }, false);
   }, [orderId]);
   useEffect(() => {
     if (url) {

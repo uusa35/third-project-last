@@ -70,12 +70,13 @@ export const orderApi = apiSlice.injectEndpoints({
           status: string;
           order_id: string;
           url: string;
-          userAgent: string
+          userAgent: string;
+          area_branch: any
         }
       >({
-        query: ({ status, order_id, url, userAgent }) => ({
+        query: ({ status, order_id, url, area_branch, userAgent }) => ({
           url: `order/payment/status`,
-          headers: { url },
+          headers: { url, ...area_branch, },
           params: { status, order_id, userAgent },
         }),
       }),

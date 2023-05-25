@@ -414,14 +414,14 @@ const AddressCreate: NextPage<Props> = ({
                   htmlFor="appartment_no"
                   className="block text-sm font-medium text-gray-900"
                 >
-                  {t('appartment_no')}*
+                  {t('apartment_no')}*
                 </label>
                 <div className="relative rounded-md shadow-sm">
                   <input
                     {...register('appartment_no')}
                     suppressHydrationWarning={suppressText}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                    placeholder={`${t('appartment_no')}`}
+                    placeholder={`${t('apartment_no')}`}
                   />
                 </div>
                 {errors?.appartment_no?.message && (
@@ -429,7 +429,7 @@ const AddressCreate: NextPage<Props> = ({
                     className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                     suppressHydrationWarning={suppressText}
                   >
-                    {t('appartment_no_is_required')}
+                    {t('apartment_no_is_required')}
                   </span>
                 )}
               </div>
