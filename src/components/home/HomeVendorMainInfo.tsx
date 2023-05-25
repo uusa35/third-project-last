@@ -1,6 +1,13 @@
 import { FC, useEffect } from 'react';
 import CustomImage from '@/components/CustomImage';
-import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import {
+  alexandriaFontSemiBold,
+  alexandriaFont,
+  appLinks,
+  imageSizes,
+  imgUrl,
+  suppressText,
+} from '@/constants/*';
 import Link from 'next/link';
 import { InfoOutlined, Check } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
@@ -49,7 +56,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
           </Link>
           <div className={`flex flex-col w-full p-1`}>
             {/* name */}
-            <h1 className="font-bold text-lg">
+            <h1 className={`font-bold text-lg ${alexandriaFontSemiBold}`}>
               <TextTrans
                 ar={element?.Data?.name_ar ?? ''}
                 en={element?.Data?.name_en ?? ''}
@@ -57,7 +64,9 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
             </h1>
 
             {/*info */}
-            <div className="text-xs space-y-1 text-[#544A45]">
+            <div
+              className={`text-xs space-y-1 text-[#544A45] ${alexandriaFont}`}
+            >
               {element?.Data?.delivery && (
                 // check if method is pickup or deliery
                 <>

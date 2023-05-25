@@ -1,6 +1,12 @@
 import CustomImage from '@/components/CustomImage';
 import TextTrans from '@/components/TextTrans';
-import { imageSizes, suppressText } from '@/constants/*';
+import {
+  alexandriaFontLight,
+  alexandriaFontSemiBold,
+  imageSizes,
+  montserratFontRegular,
+  suppressText,
+} from '@/constants/*';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import {
@@ -44,7 +50,7 @@ export default function CartProduct({
         {/* name and addons and qty meter*/}
         <div>
           <TextTrans
-            className={`font-semibold capitalize`}
+            className={`capitalize ${alexandriaFontSemiBold}`}
             ar={product.ProductNameAr}
             en={product.ProductNameEn}
             length={15}
@@ -53,7 +59,7 @@ export default function CartProduct({
           {(!isEmpty(product.QuantityMeters) ||
             !isEmpty(product.RadioBtnsAddons) ||
             !isEmpty(product.CheckBoxes)) && (
-            <div className="flex mb-1">
+            <div className={`flex mb-1 ${alexandriaFontLight}`}>
               <div className="w-fit pb-2 pt-1">
                 <div className={`flex gap-1 w-auto flex-wrap`}>
                   {!isEmpty(product.QuantityMeters) &&
@@ -136,14 +142,15 @@ export default function CartProduct({
                 // style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {product.Price} {t('kwd')}
+                {parseFloat(product.Price.toString()).toFixed(3)} {t('kwd')}
               </p>
               <p
-                className=" uppercase"
+                className={`uppercase`}
                 // style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {product.SalePrice} {t('kwd')}
+                {parseFloat(product?.SalePrice?.toString()).toFixed(3)}{' '}
+                {t('kwd')}
               </p>
             </div>
           ) : (
@@ -152,7 +159,7 @@ export default function CartProduct({
               //   style={{ color }}
               suppressHydrationWarning={suppressText}
             >
-              {product.Price} {t('kwd')}
+              {parseFloat(product.Price?.toString()).toFixed(3)} {t('kwd')}
             </p>
           )}
         </div>

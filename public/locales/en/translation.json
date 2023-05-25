@@ -270,5 +270,8 @@
   "one_tap_re_order": "one tap re_order",
   "or_continue_as_guest": "or continue as guest",
   "promo_is_saved_and_will_be_applied_to_your_cart":"promo is saved and will be applied to your cart",
-  "coupon_value": "discount"
+  "coupon_value": "discount",
+  "to_your_cart_to_free_delivery":"to your cart to free delivery",
+  "add":"add",
+  "free_delivery_on_orders_above":"free delivery on orders above"
 }
