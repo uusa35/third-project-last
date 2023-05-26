@@ -2,18 +2,19 @@ import { FC, useEffect, useState } from 'react';
 import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { isNull, map } from 'lodash';
+import { isNull, map, startCase, upperFirst } from 'lodash';
 import Link from 'next/link';
 import {
+  alexandriaFont,
   appLinks,
-  arboriaFont,
-  gessFont,
   mainBtnClass,
   suppressText,
 } from '@/constants/*';
 import { useRouter } from 'next/router';
 import PickupIcon from '@/appIcons/pickup.svg';
 import DeliveryIcon from '@/appIcons/delivery.svg';
+import NonActiveDeliveryIcon from '@/appIcons/nonactive_delivery.svg';
+import ActivePickupIcon from '@/appIcons/active_pickup.svg';
 import {
   PlaceOutlined,
   WatchLaterOutlined,
@@ -72,11 +73,11 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                 onClick={onRequestClose}
               >
-                <ExpandMoreIcon />
+                <ExpandMoreIcon className="text-stone-600" />
               </button>
             </div>
             <h5
-              className="font-semibold capitalize text-center mx-auto"
+              className={`font-bold capitalize text-center mx-auto`}
               suppressHydrationWarning={suppressText}
             >
               {t('where_&_when?')}
@@ -87,17 +88,15 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             <ul className="flex justify-between w-full">
               <li
                 onClick={() => setActiveTabIndex(0)}
-                className={activeTabIndex === 0 ? 'active' : ''}
+                className={`${activeTabIndex === 0 ? 'active' : ''} w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm font-semibold text-center ${
-                    router.locale === 'ar' ? gessFont : arboriaFont
-                  }`}
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm font-semibold text-center w-full ${activeTabIndex === 1 && 'text-gray-500'}`}
                   suppressHydrationWarning={suppressText}
                 >
-                  <span className="flex items-center px-5 capitalize">
-                    <DeliveryIcon />
-                    <span className="px-3">{t('delivery')}</span>
+                  <span className="flex justify-center items-center px-5 capitalize">
+                    {activeTabIndex === 0 ? <DeliveryIcon /> : <NonActiveDeliveryIcon />}
+                    <span className="px-3 font-semibold text-base">{t('delivery')}</span>
                   </span>
                   {activeTabIndex === 0 && (
                     <div
@@ -109,17 +108,15 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               </li>
               <li
                 onClick={() => setActiveTabIndex(1)}
-                className={activeTabIndex === 1 ? 'active' : ''}
+                className={`${activeTabIndex === 1 ? 'active' : ''} w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm font-semibold text-center text-gray-500 ${
-                    router.locale === 'ar' ? gessFont : arboriaFont
-                  }`}
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm font-semibold text-center w-full ${activeTabIndex === 0 && 'text-gray-500'}`}
                   suppressHydrationWarning={suppressText}
                 >
-                  <span className="flex items-center px-7 capitalize">
-                    <PickupIcon />
-                    <span className="px-5">{t('pickup')}</span>
+                  <span className="flex justify-center items-center px-7 capitalize">
+                    {activeTabIndex === 1 ? <ActivePickupIcon /> : <PickupIcon />}
+                    <span className="px-3 font-semibold text-base">{t('pickup')}</span>
                   </span>
                   {activeTabIndex === 1 && (
                     <div
@@ -142,14 +139,14 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
-                    <div className="px-3 capitalize font-semibold">
+                    <div className="px-3 font-semibold">
                       <h6
-                        className="text-sm text-gray-500 capitalize"
+                        className="text-sm text-gray-500 text-capitalize pb-1"
                         suppressHydrationWarning={suppressText}
                       >
-                        {t('delivering_to')}
+                        {upperFirst(`${t('delivering_to')}`)}
                       </h6>
-                      <p className="text-start">
+                      <p className="text-start capitalize">
                         {method === 'delivery' ? (
                           <TextTrans
                             en={destination.name_en}
@@ -179,14 +176,14 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
-                    <div className="px-3 capitalize font-semibold">
+                    <div className="px-3 font-semibold">
                       <h6
-                        className="text-sm text-gray-500 capitalize"
+                        className={`text-sm text-gray-500 pb-1`}
                         suppressHydrationWarning={suppressText}
                       >
-                        {t('pickup_from')}
+                        {upperFirst(`${t('pickup_from')}`)}
                       </h6>
-                      <p>
+                      <p className="capitalize">
                         {method === 'pickup' ? (
                           <TextTrans
                             en={destination.name_en}
@@ -215,14 +212,14 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             >
               <div className="flex justify-between items-center">
                 <WatchLaterOutlined style={{ color }} />
-                <div className="px-3 capitalize text-sm font-semibold">
+                <div className="px-3 text-sm font-semibold">
                   <h6
-                    className="text-sm text-gray-500"
+                    className="text-sm text-gray-500 pb-1"
                     suppressHydrationWarning={suppressText}
                   >
-                    {activeTabIndex === 0 ? t('delivery_in') : t('pickup_in')}
+                    {activeTabIndex === 0 ? upperFirst(`${t('delivery_in')}`) : upperFirst(`${t('pickup_in')}`)}
                   </h6>
-                  <p suppressHydrationWarning={suppressText}>
+                  <p suppressHydrationWarning={suppressText} className="text-base capitalize">
                     {prefrences.type === 'delivery_now' ||
                     prefrences.type === 'pickup_now' ? (
                       <>
@@ -253,7 +250,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
           </div>
           <div className="px-5 mt-10">
             <button
-              className={`${mainBtnClass} disabled:bg-stone-400`}
+              className={`${mainBtnClass} disabled:!bg-[#B7B1AE]`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
               onClick={onRequestClose}

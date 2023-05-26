@@ -133,7 +133,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       />
 
       <DetailComponent
-        onclick={() => router.push(appLinks.selectTime.path)}
+        onclick={() => router.push(appLinks.selectTime(method))}
         icon={<ClockIcon />}
         p1={
           {

@@ -121,7 +121,7 @@ const VerProductWidget: FC<Props> = ({
                   className="w-full h-full object-cover object-center rounded-lg"
                 />
               </div>
-              {element.never_out_of_stock === 0 && element.amount <= 1 ? (
+              {element.never_out_of_stock === 0 && element.amount < 1 ? (
                 <p
                   className="absolute text-white text-xxs w-fit rounded-full px-1 py-px bg-amber-400"
                   suppressHydrationWarning={suppressText}

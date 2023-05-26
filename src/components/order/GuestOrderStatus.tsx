@@ -23,6 +23,7 @@ export default function GuestOrderStatus({ order }: Props) {
   const color = useAppSelector(themeColor);
   const {
     locale: { lang, otherLang },
+    searchParams: { method }
   } = useAppSelector((state) => state);
 
   const handelDisplayAddress = () => {
@@ -91,7 +92,7 @@ export default function GuestOrderStatus({ order }: Props) {
 
       <DetailComponent
         icon={<ClockIcon />}
-        p1="delivery_time"
+        p1={method === 'delivery' ? 'delivery_time' : 'pickup_time'}
         p2={order.delivery_date_time.replace(",", " ")}
       />
     </div>
