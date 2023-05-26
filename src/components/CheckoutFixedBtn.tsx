@@ -2,7 +2,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { appLinks, suppressText } from '../constants';
+import { alexandriaFont, alexandriaFontMeduim, appLinks, suppressText } from '../constants';
 import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
 import PrepareStatusIcon from '@/appIcons/status_home_prepare.svg';
 import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
@@ -76,7 +76,7 @@ export default function CheckoutFixedBtn({
               {cartLessThanMin && (
                 <p
                   suppressHydrationWarning={suppressText}
-                  className="w-full text-xs text-[#877D78] text-center py-2"
+                  className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
                 >{`${t('add_a_minimum_of')} ${
                   cartItems?.data?.minimum_order_price
                 }  ${t('kd')} ${t('to_place_your_order')}`}</p>
@@ -91,7 +91,7 @@ export default function CheckoutFixedBtn({
                     router.push(appLinks.cart.path);
                   }
                 }}
-                className={`flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer`}
+                className={`flex items-center gap-x-2 justify-between rounded-full w-full py-2 px-4 cursor-pointer ${alexandriaFontMeduim}`}
                 style={{
                   backgroundColor: cartLessThanMin ? '#B7B1AE' : color,
                 }}

@@ -233,6 +233,12 @@
   "guest_info": "بيانات الزائر",
   "email_optional": "الإيميل (اختياري)",
   "promo_is_saved_and_will_be_applied_to_your_cart":"تم حفظ كود الخصم و سيتم تطبيقه علي عبه التسوق الخاصة بك",
+
+  "to_your_cart_to_free_delivery":"الي عربه التسوق لتسليم مجانا",
+  "add":"اضف",
+  "free_delivery_on_orders_above":"تسليم مجانا علي الطلبات الاعلي من",
+
+
   "min": "دقيقة",
   "delivery_fees": "مصاريف التوصيل",
   "language_changed_successfully": "تم تغيير اللغة",

@@ -93,8 +93,8 @@ export default function Home({ url, element, currentLocale }: Props) {
         url,
         lang: router.locale,
         category_id: ``,
-        page: `1`,
-        limit: `30`,
+        // page: `1`,
+        // limit: `30`,
         destination: desObject,
       },
       true

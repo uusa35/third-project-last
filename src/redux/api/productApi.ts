@@ -7,8 +7,8 @@ export const productApi = apiSlice.injectEndpoints({
     getProducts: builder.query<
       AppQueryResult<Product[]>,
       {
-        page: string;
-        limit: string;
+        page?: string;
+        limit?: string;
         lang: Locale['lang'] | string | undefined;
         url: string;
         category_id: string | number;
@@ -19,8 +19,6 @@ export const productApi = apiSlice.injectEndpoints({
         category_id,
         page,
         limit,
-        branch_id,
-        area_id,
         lang,
         url,
         destination = {},

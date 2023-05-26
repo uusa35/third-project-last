@@ -10,7 +10,7 @@ import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import { StringIterator, filter, isEmpty, kebabCase, lowerCase } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { appLinks, suppressText } from '@/constants/*';
+import { alexandriaFontMeduim, appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
@@ -274,7 +274,8 @@ export default function Cart({ url }: Props) {
           <EmptyCart />
         ) : isSuccess ? (
           <div>
-            {/* <SaleNotification
+            {/* delivery fees always come with 0 but in dashboard it is not 0 */}
+            <SaleNotification
               delivery_fees={
                 enable_promocode
                   ? parseFloat(cartItems?.data?.delivery_fee ?? '')
@@ -285,12 +286,10 @@ export default function Cart({ url }: Props) {
               )}
               total={
                 enable_promocode
-                  ? parseFloat(
-                      cartItems?.data?.total_cart_after_tax?.toString() ?? ''
-                    )
-                  : parseFloat(cartItems?.data?.total?.toString() ?? '')
+                  ? parseFloat(cartItems?.data?.sub_total?.toString() ?? '')
+                  : parseFloat(cartItems?.data?.subTotal?.toString() ?? '')
               }
-            /> */}
+            />
             <div className="p-5">
               {cartItems?.data?.Cart.map((product) => (
                 <CartProduct
@@ -306,10 +305,10 @@ export default function Cart({ url }: Props) {
               />
 
               {/* payment summary */}
-              <div className="py-3">
+              <div className="py-5">
                 <p
                   suppressHydrationWarning={suppressText}
-                  className="font-bold"
+                  className={`${alexandriaFontMeduim} mb-1`}
                 >
                   {t('order_review')}
                 </p>

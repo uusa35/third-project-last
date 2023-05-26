@@ -1,4 +1,4 @@
-import { suppressText } from '@/constants/*';
+import { alexandriaFont, alexandriaFontSemiBold, suppressText } from '@/constants/*';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {  ServerCart } from '../types';
@@ -17,7 +17,7 @@ export default function PaymentSummary({data}: Props) {
   } = useAppSelector((state) => state);
 
   return (
-    <div className={`px-4 py-2 capitalize text-sm`}>
+    <div className={`py-2 capitalize text-sm ${alexandriaFont}`}>
       <>
         <div className="flex justify-between mb-2">
           <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>
@@ -109,7 +109,7 @@ export default function PaymentSummary({data}: Props) {
           <></>
         )}
 
-        <div className="flex justify-between mb-2 border-t pt-1 mt-1">
+        <div className={`flex justify-between mb-2 border-t pt-2 mt-1 ${alexandriaFontSemiBold}`}>
           <p suppressHydrationWarning={suppressText}>{t('net_total')}</p>
           <div className={`flex flex-row`}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
