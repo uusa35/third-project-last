@@ -36,7 +36,7 @@ const Product6Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             {`${upperFirst(`${t('register')}`)}`}
                             <span className="px-1">{t('to_add_favourite')}</span>
                         </h5>
-                        <div className="space-x-1 pb-8 pt-2 text-center text-sm text-slate-500 w-[80%] mx-auto break-words">
+                        <div className="space-x-1 pb-8 pt-2 text-center text-sm text-stone-500 w-[80%] mx-auto break-words">
                             <span suppressHydrationWarning={suppressText}>
                                 {`${upperFirst(`${t('you_first_need_to_sign_in_register_to_add_something_to_your_favourite_list')}`)}`}
                             </span>
@@ -53,7 +53,7 @@ const Product6Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                                 {`${upperFirst(`${t('register_an_account')}`)}`}
                             </button>   
                             <button 
-                                className="bg-slate-100 text-black w-full text-md font-semibold rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
+                                className={`${mainBtnClass} !bg-gray-200 !text-black mt-3`}
                                 suppressHydrationWarning={suppressText}
                                 onClick={onRequestClose}
                             >

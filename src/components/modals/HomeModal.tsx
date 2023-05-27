@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { imageSizes, suppressText } from '@/constants/*';
+import { alexandriaFont, imageSizes, suppressText } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { HomePromoCode } from '@/types/index';
 import CustomImage from '../CustomImage';
@@ -73,7 +73,7 @@ const HomeModal: FC<Props> = ({
             <div className="px-5 pb-5 w-full">
               <button
                 onClick={() => ApplyPromocode()}
-                className="bg-white text-black w-full text-md font-semibold rounded-full h-8 pt-1 pb-8 mx-auto capitalize"
+                className={`bg-white text-black w-full text-md rounded-full h-8 pt-2 pb-8 mx-auto capitalize ${alexandriaFont}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('apply_coupon')}

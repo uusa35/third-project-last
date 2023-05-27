@@ -32,7 +32,7 @@ const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
             >
                 <div>
                     <div className="flex justify-between w-full px-4">
-                        <h5 className="text-gray-500" suppressHydrationWarning={suppressText}>
+                        <h5 className="text-gray-500 pb-2 pt-4" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('cancel_order')}`)}`} 
                         </h5>
                         <button
@@ -46,19 +46,19 @@ const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                         <h4 className="font-bold text-lg pb-2" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('why_did_you_cancel_this_order?')}`)}`}
                         </h4>
-                        <p className="text-sm font-semibold pb-4" suppressHydrationWarning={suppressText}>
+                        <p className="text-sm pb-4 w-full md:w-[75%]" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('to_help_provide_the_right_next_step_please_let_us_know_why_you_canceled_your_order')}`)}`}
                         </p>
                         {map(reasons, (reason) => (
                             <label 
                                 key={reason.id} 
                                 htmlFor={`${reason.id}`}
-                                className="border-t-[1px] border-slate-200 px-4 py-3 text-sm font-semibold capitalize flex items-center space-x-2 cursor-pointer">
+                                className="border-t-[1px] border-slate-200 px-4 py-3 text-sm flex items-center space-x-2 cursor-pointer">
                                 <input 
                                     type="radio"
                                     name="cancelReason" 
                                     id={`${reason.id}`} 
-                                    className="h-4 w-4"
+                                    className="h-5 w-5"
                                     style={{ accentColor: color }} 
                                 />
                                 <span suppressHydrationWarning={suppressText}>

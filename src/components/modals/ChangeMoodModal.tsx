@@ -67,7 +67,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
     <>
       <MainModal isOpen={areaBranchIsOpen} closeModal={onRequestClose}>
         <div>
-          <div className="flex w-full pb-5 px-4">
+          <div className="flex w-full pb-5 px-4 pt-3">
             <div className="w-[5%]">
               <button
                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
@@ -77,26 +77,26 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               </button>
             </div>
             <h5
-              className={`font-bold capitalize text-center mx-auto`}
+              className={`font-semibold capitalize text-center mx-auto`}
               suppressHydrationWarning={suppressText}
             >
               {t('where_&_when?')}
             </h5>
           </div>
 
-          <div className="border-b-[1px] border-slate-200 flex justify-between px-8">
+          <div className="border-b-[1px] border-slate-200 flex justify-between">
             <ul className="flex justify-between w-full">
               <li
                 onClick={() => setActiveTabIndex(0)}
                 className={`${activeTabIndex === 0 ? 'active' : ''} w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm font-semibold text-center w-full ${activeTabIndex === 1 && 'text-gray-500'}`}
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${activeTabIndex === 1 ? 'text-stone-500' : 'font-semibold'}`}
                   suppressHydrationWarning={suppressText}
                 >
                   <span className="flex justify-center items-center px-5 capitalize">
                     {activeTabIndex === 0 ? <DeliveryIcon /> : <NonActiveDeliveryIcon />}
-                    <span className="px-3 font-semibold text-base">{t('delivery')}</span>
+                    <span className="px-3 text-base">{t('delivery')}</span>
                   </span>
                   {activeTabIndex === 0 && (
                     <div
@@ -111,12 +111,12 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 className={`${activeTabIndex === 1 ? 'active' : ''} w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm font-semibold text-center w-full ${activeTabIndex === 0 && 'text-gray-500'}`}
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${activeTabIndex === 0 ? 'text-stone-500' : 'font-semibold'}`}
                   suppressHydrationWarning={suppressText}
                 >
                   <span className="flex justify-center items-center px-7 capitalize">
                     {activeTabIndex === 1 ? <ActivePickupIcon /> : <PickupIcon />}
-                    <span className="px-3 font-semibold text-base">{t('pickup')}</span>
+                    <span className="px-3 text-base">{t('pickup')}</span>
                   </span>
                   {activeTabIndex === 1 && (
                     <div
@@ -139,9 +139,9 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
-                    <div className="px-3 font-semibold">
+                    <div className="px-3">
                       <h6
-                        className="text-sm text-gray-500 text-capitalize pb-1"
+                        className="text-sm text-stone-500 text-capitalize pb-1"
                         suppressHydrationWarning={suppressText}
                       >
                         {upperFirst(`${t('delivering_to')}`)}
@@ -176,9 +176,9 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
-                    <div className="px-3 font-semibold">
+                    <div className="px-3">
                       <h6
-                        className={`text-sm text-gray-500 pb-1`}
+                        className={`text-sm text-stone-500 pb-1`}
                         suppressHydrationWarning={suppressText}
                       >
                         {upperFirst(`${t('pickup_from')}`)}
@@ -205,16 +205,16 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             )}
             <Link
               href={appLinks.selectTime(method)}
-              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 "
+              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200"
               ${isRTL && 'flex-row-reverse'} ${
                 isNull(method) && 'pointer-events-none'
               }`}
             >
               <div className="flex justify-between items-center">
                 <WatchLaterOutlined style={{ color }} />
-                <div className="px-3 text-sm font-semibold">
+                <div className="px-3 text-sm">
                   <h6
-                    className="text-sm text-gray-500 pb-1"
+                    className="text-sm text-stone-500 pb-1"
                     suppressHydrationWarning={suppressText}
                   >
                     {activeTabIndex === 0 ? upperFirst(`${t('delivery_in')}`) : upperFirst(`${t('pickup_in')}`)}
@@ -250,7 +250,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
           </div>
           <div className="px-5 mt-10">
             <button
-              className={`${mainBtnClass} disabled:!bg-[#B7B1AE]`}
+              className={`${mainBtnClass}`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
               onClick={onRequestClose}
