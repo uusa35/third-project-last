@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 // import SideMenuSkelton from '@/components/sideMenu/SideMenuSkelton';
 import Link from 'next/link';
 import {
+  alexandriaFontBold,
+  alexandriaFontMeduim,
   appLinks,
   convertColor,
   imageSizes,
@@ -37,6 +39,13 @@ import {
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import HorizentalLine from './HorizentalLine';
 import AppFooter from './AppFooter';
+
+import FastSignInIcon from '@/appIcons/fast_signin.svg';
+import MenuIcon from '@/appIcons/more_menu.svg';
+import CartIcon from '@/appIcons/more_cart.svg';
+import OrdersIcon from '@/appIcons/more_orders.svg';
+import WishlistIcon from '@/appIcons/more_love.svg';
+import AddressIcon from '@/appIcons/more_address.svg';
 
 type Props = {};
 
@@ -81,7 +90,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 >
                   <Close fontSize="small" className={`h-4 w-4`} />
                 </p>
-                <p className="w-full text-center font-bold">{t('more')}</p>
+                <p className="w-full text-center font-semibold">{t('more')}</p>
               </div>
               <HorizentalLine className="h-1" />
 
@@ -93,10 +102,15 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                       className="flex justify-between items-center"
                       href={appLinks.login.path}
                     >
-                      <div className="flex gap-x-1">
-                        <BoltOutlined style={{ color: '#facc15' }} />
-                        <p>
-                          <span className="font-bold">{t('sign_in')}</span>{' '}
+                      <div className="flex gap-x-2">
+                        <FastSignInIcon />
+                        <p
+                          className={`${alexandriaFontMeduim}`}
+                          suppressHydrationWarning={suppressText}
+                        >
+                          <span className={`${alexandriaFontBold}`}>
+                            {t('sign_in')}
+                          </span>{' '}
                           {t('to_orderfast_now')}
                         </p>
                       </div>
@@ -130,7 +144,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 replace={false}
                 href={appLinks.home.path}
               >
-                <Restaurant className={`h-8 w-8`} style={{ color }} />
+                <MenuIcon fill={color} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
@@ -146,7 +160,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 scroll={true}
                 href={appLinks.cart.path}
               >
-                <ShoppingBagOutlined className={`h-8 w-8`} style={{ color }} />
+                <CartIcon stroke={color} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
@@ -161,7 +175,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 scroll={true}
                 href={appLinks.orderHistory.path}
               >
-                <ListAltOutlined className={`h-8 w-8`} style={{ color }} />
+                <OrdersIcon stroke={color} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
@@ -176,10 +190,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 scroll={true}
                 href={appLinks.wishlist.path}
               >
-                <FavoriteBorderOutlined
-                  className={`h-8 w-8`}
-                  style={{ color }}
-                />
+                <WishlistIcon stroke={color} fill="none" />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
@@ -194,7 +205,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 scroll={true}
                 href={appLinks.userAddresses.path}
               >
-                <LocationOnOutlined className={`h-8 w-8`} style={{ color }} />
+                <AddressIcon stroke={color} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
