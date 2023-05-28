@@ -16,6 +16,7 @@ import PromoCodeSkelton from './PromoCodeSkelton';
 import PaymentSummarySkelton from './PaymentSummarySkelton';
 import OrderSuccessSkeleton from './OrderSuccessSkeleton';
 import VendorInfoSkeleton from './VendorInfoSkeleton';
+import MainAsideSkelton from './MainAsideSkelton';
 
 type Props = {
   type: string;
@@ -76,6 +77,9 @@ export default function ContentLoader({ type, sections }: Props) {
     break;
     case 'VendorInfo':
       SkeletonComponent = VendorInfoSkeleton;
+    break;
+    case 'AsideSkelton':
+      SkeletonComponent = MainAsideSkelton;
     break;
     default:
       return null; 

@@ -1,7 +1,12 @@
 import { FC, Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { debounce, isNull } from 'lodash';
-import { setLang, suppressText } from '@/constants/*';
+import {
+  alexandriaFontSemiBold,
+  appLinks,
+  setLang,
+  suppressText,
+} from '@/constants/*';
 import Backbtn from '@/appIcons/backbtn.svg';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -11,7 +16,7 @@ import { West, East } from '@mui/icons-material';
 type Props = {
   backHome?: boolean;
   backRoute?: string | null;
-  currentModule?:string;
+  currentModule?: string;
 };
 type CurrentModule = 'your_number' | 'otp_verification' | 'account_info';
 
@@ -19,7 +24,11 @@ type ModuleWidths = {
   [key in CurrentModule]: string;
 };
 
-const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModule='home' }) => {
+const AppHeader: FC<Props> = ({
+  backHome = false,
+  backRoute = null,
+  currentModule = 'home',
+}) => {
   // const [offset, setOffset] = useState(0);
   const router = useRouter();
   const { t } = useTranslation();
@@ -32,8 +41,7 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
     otp_verification: 'w-2/3',
     account_info: 'w-full',
   };
-  
-  
+
   const widthClass: string = moduleWidths[currentModule as CurrentModule] || '';
   const handleGoHome = () => {
     router.push(`/`, ``, {
@@ -52,9 +60,28 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
     } else {
       await setLang(lang).then(() => {
         router.back();
+        console.log('hhh', window.location.href);
+        if (window.location.href.includes('#')) {
+          router.push(appLinks.home.path);
+        }
       });
     }
   };
+
+   useEffect(() => {
+    console.log(
+      'path name',
+      'hash',
+      window.location.hash,
+      'window path',
+      window.location.pathname,
+      'window href',
+      window.location.href,
+      'router pathnm',
+      router.pathname
+    );
+  }, [window.location]);
+
   // const {
   //   appSetting: { currentModule },
   // } = useAppSelector((state) => state);
@@ -77,27 +104,26 @@ const AppHeader: FC<Props> = ({ backHome = false, backRoute = null, currentModul
       suppressHydrationWarning={suppressText}
     >
       <div className={`flex items-center py-3 px-2`}>
-      <button
+        <button
           onClick={() => handleBack()}
           className={`flex justify-start items-center pt-1`}
         >
-          {router.locale === 'en' ? (
-            <West />
-          ) : (
-            <East />
-          )}
-      </button>
-      <div className={`flex flex-1 justify-center items-center pt-1`}>
-        <span
-          className={`text-md capitalize truncate font-bold`}
-          suppressHydrationWarning={suppressText}
-          style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
-        >
-          {t(currentModule)}
-        </span>
+          {router.locale === 'en' ? <West /> : <East />}
+        </button>
+        <div className={`flex flex-1 justify-center items-center pt-1`}>
+          <span
+            className={`text-md capitalize truncate ${alexandriaFontSemiBold}`}
+            suppressHydrationWarning={suppressText}
+            style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
+          >
+            {t(currentModule)}
+          </span>
+        </div>
       </div>
-      </div>
-      <div className={`h-[2px] absolute -bottom-[2px] ${widthClass}`} style={{backgroundColor: color}}></div>
+      <div
+        className={`h-[2px] absolute -bottom-[2px] ${widthClass}`}
+        style={{ backgroundColor: color }}
+      ></div>
     </header>
   );
 };

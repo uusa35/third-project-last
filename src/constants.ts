@@ -1,4 +1,5 @@
 import NoFoundImage from '@/appImages/not_found.png';
+import { filter, map, toString } from 'lodash';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 // export const xDomain = `next2-q.testbedbynd.com`;
 export const xDomain = `next-q.testbedbynd.com`;
@@ -44,7 +45,7 @@ export const alexandriaFontMeduim = `font-Alexandria-Medium`;
 export const alexandriaFontSemiBold = `font-Alexandria-SemiBold`;
 export const alexandriaFontLight = `font-Alexandria-Light`;
 export const alexandriaFontBold = `font-Alexandria-Bold`;
-export const montserratFontRegular ="Montserrat-Arabic-Regular"
+export const montserratFontRegular = 'Montserrat-Arabic-Regular';
 
 // classes
 export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;
@@ -101,3 +102,19 @@ export const setLang = (lang: any) =>
     },
     body: JSON.stringify({ lang }),
   });
+
+export const displayUserAddress = (address: any) => {
+  let formattedAddress;
+
+  formattedAddress = filter(
+    map(
+      address,
+      (value, key) => value !== null && key !== `id` && `${key} : ${value}  `
+    ),
+    (a) => a
+  );
+  console.log({ formattedAddress });
+  formattedAddress = toString(formattedAddress).replaceAll(',', ' / ');
+
+  return formattedAddress;
+};

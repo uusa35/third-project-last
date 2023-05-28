@@ -7,7 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
 import TextTrans from '../TextTrans';
-import { suppressText } from '@/constants/*';
+import {
+  alexandriaFont,
+  alexandriaFontMeduim,
+  displayUserAddress,
+  suppressText,
+} from '@/constants/*';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
@@ -22,6 +27,7 @@ function DeliveryPickup({ url }: Props) {
     searchParams: { method, destination },
     customer: {
       prefrences: { type: prefType, date, time },
+      address: customerAddress,
     },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -61,16 +67,34 @@ function DeliveryPickup({ url }: Props) {
           <div className="flex items-end justify-between gap-x-2 w-full">
             {method === 'pickup' && (
               <div>
-                <p className="text-xs" suppressHydrationWarning={suppressText}>
-                  {
+                <div className="flex gap-x-1">
+                  <p
+                    className={`text-xs ${alexandriaFont}`}
+                    suppressHydrationWarning={suppressText}
+                  >
                     {
-                      ['pickup_now']: t('pickup_now'),
-                      ['pickup_later']: `${t('pickup_later')} ${date} ${time}`,
-                      ['']: t('pickup_from'),
-                    }[prefType as string]
-                  }
-                </p>
-                <p suppressHydrationWarning={suppressText}>
+                      {
+                        ['pickup_now']: t('pickup_now'),
+                        ['pickup_later']: `${t(
+                          'pickup_later'
+                        )} ${date} ${time}`,
+                        ['']: t('pickup_from'),
+                      }[prefType as string]
+                    }
+                  </p>
+                  {prefType === 'pickup_later' && (
+                    <p
+                      className={`text-xs ${alexandriaFont}`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {date} {time} {t('to')}
+                    </p>
+                  )}
+                </div>
+                <p
+                  className={`${alexandriaFontMeduim}`}
+                  suppressHydrationWarning={suppressText}
+                >
                   <TextTrans
                     ar={destination.name_ar}
                     en={destination.name_en}
@@ -86,16 +110,44 @@ function DeliveryPickup({ url }: Props) {
 
             {method === 'delivery' && (
               <div>
-                <p className="text-xs" suppressHydrationWarning={suppressText}>
-                  {
+                <div className="flex gap-x-1">
+                  <p
+                    className={`text-xs ${alexandriaFont}`}
+                    suppressHydrationWarning={suppressText}
+                  >
                     {
-                      ['delivery_now']: t('delivery_now'),
-                      ['delivery_later']: t('delivery_later'),
-                      ['']: t('deliver_to'),
-                    }[prefType as string]
-                  }
+                      {
+                        ['delivery_now']: t('delivery_now'),
+                        ['delivery_later']: t('delivery_later'),
+                        ['']: t('deliver_to'),
+                      }[prefType as string]
+                    }
+                  </p>
+
+                  {prefType === 'delivery_later' && (
+                    <p
+                      className={`text-xs ${alexandriaFont}`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {date} {time} {t('to')}
+                    </p>
+                  )}
+                </div>
+
+                <p
+                  className={`${alexandriaFontMeduim}`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  <TextTrans
+                    ar={destination.name_ar}
+                    en={destination.name_en}
+                  />
+                  ,{' '}
+                  {truncate(displayUserAddress(customerAddress), {
+                    length: 30,
+                    omission: '...',
+                  })}
                 </p>
-                <TextTrans ar={destination.name_ar} en={destination.name_en} />
               </div>
             )}
 
@@ -106,7 +158,7 @@ function DeliveryPickup({ url }: Props) {
               <p
                 suppressHydrationWarning={suppressText}
                 style={{ color: color }}
-                className="font-semibold text-xs"
+                className={`text-xs ${alexandriaFontMeduim}`}
               >
                 {t('change')}
               </p>

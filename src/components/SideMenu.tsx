@@ -44,10 +44,13 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { appSetting, vendor } = useAppSelector((state) => state);
+  const {
+    appSetting,
+    customer: { id: guest_id },
+  } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   // for test
-  const auth = { guest: false, user: true };
+  const auth = { guest: true, user: false };
 
   return (
     <Suspense fallback={<div>loading skeleton</div>}>
@@ -83,12 +86,12 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <HorizentalLine className="h-1" />
 
               {/* user or guest section */}
-              {(auth.guest || auth.user) && (
+              {(guest_id || auth.user) && (
                 <div className="bg-slate-100 rounded-md mx-4 my-2 p-3">
-                  {auth.guest && (
+                  {guest_id && (
                     <Link
                       className="flex justify-between items-center"
-                      href={appLinks.mobileVerification.path}
+                      href={appLinks.login.path}
                     >
                       <div className="flex gap-x-1">
                         <BoltOutlined style={{ color: '#facc15' }} />

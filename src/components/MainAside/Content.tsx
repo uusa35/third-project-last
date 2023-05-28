@@ -19,7 +19,7 @@ export default function AsideContent({ element }: Props) {
         <CustomImage
           src={`${imgUrl(element.logo)}`}
           alt={element.name}
-          className={`relative object-contain w-28 h-28 shadow-2xl rounded-full mb-4 border border-stone-200 bg-white`}
+          className={`relative object-fill w-28 h-28 shadow-2xl rounded-full mb-4 border border-stone-200 bg-white`}
           width={imageSizes.md}
           height={imageSizes.md}
         />
