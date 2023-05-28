@@ -55,29 +55,43 @@ const HomeModal: FC<Props> = ({
         <div className="absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/2">
           <div
             className={`relative flex flex-col items-end justify-between rounded-lg h-full`}
-            style={{
-              backgroundColor: color,
-              backgroundImage: `url(${data[0].promo_image})`,
-              backgroundSize: 'auto',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-            }}
+            // style={{
+            //   backgroundColor: color,
+            //   backgroundImage: `url(${data[0].promo_image})`,
+            //   backgroundSize: 'auto',
+            //   backgroundRepeat: 'no-repeat',
+            //   backgroundPosition: 'center',
+            // }}
           >
-            <button className={`mt-2 px-5 pb-5`} onClick={onRequestClose}>
-              <XMarkIcon
-                className={`w-6 h-6 text-black text-base bg-white rounded-full p-1`}
+            <div className="h-full w-full">
+              <CustomImage
+                // src={
+                //   'https://html.com/wp-content/uploads/very-large-flamingo.jpg'
+                // }
+                src={data[0].promo_image}
+                width={100}
+                height={100}
+                alt="cover img"
+                className="object-fill w-full h-full rounded-lg"
               />
-            </button>
-
-            {/* apply copon btn */}
-            <div className="px-5 pb-5 w-full">
-              <button
-                onClick={() => ApplyPromocode()}
-                className="bg-white text-black w-full text-md font-semibold rounded-full h-8 pt-1 pb-8 mx-auto capitalize"
-                suppressHydrationWarning={suppressText}
-              >
-                {t('apply_coupon')}
+            </div>
+            <div className="absolute h-full w-full flex flex-col justify-between items-end z-10 py-5 rounded-lg">
+              <button className={`mt-2 px-5 pb-5`} onClick={onRequestClose}>
+                <XMarkIcon
+                  className={`w-6 h-6 text-black text-base bg-white rounded-full p-1`}
+                />
               </button>
+
+              {/* apply copon btn */}
+              <div className="px-5 pb-5 w-full">
+                <button
+                  onClick={() => ApplyPromocode()}
+                  className="bg-white text-black w-full text-md font-semibold rounded-full h-8 pt-1 pb-8 mx-auto capitalize"
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('apply_coupon')}
+                </button>
+              </div>
             </div>
           </div>
         </div>
