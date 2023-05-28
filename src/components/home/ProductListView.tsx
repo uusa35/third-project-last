@@ -6,6 +6,8 @@ import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-ui-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
 import MenuModal from '../modals/MenuModal';
+import UpcomingOrders from '@/components/home/UpcomingOrders';
+import { alexandriaFont, alexandriaFontBold } from '@/constants/*';
 
 type Props = {
   CategoriesProducts: Product[];
@@ -30,7 +32,7 @@ export default function ProductListView({ CategoriesProducts }: Props) {
     <div>
       {/* sticky header */}
       <header
-        className="flex gap-x-2 bg-white py-4 sticky top-0 z-10 px-4"
+        className="flex gap-x-2 bg-white pt-2 pb-4 sticky top-0 z-10 px-4"
         style={{ boxShadow: '0px 4px 8px #00000026' }}
       >
         <div
@@ -44,13 +46,9 @@ export default function ProductListView({ CategoriesProducts }: Props) {
         <div className="flex gap-x-2 overflow-x-scroll scrollbar-hide">
           {CategoriesProducts.map((category) => {
             return (
-              <a
-                className=""
-                onClick={(e) => onPress(e)}
-                href={`#${category?.cat_id}`}
-              >
+              <a onClick={(e) => onPress(e)} href={`#${category?.cat_id}`}>
                 <p
-                  className="text-sm rounded-full px-2 py-1 rounded-full whitespace-nowrap bg-zinc-100"
+                  className={`${alexandriaFont} text-sm rounded-full px-4 py-2 rounded-full whitespace-nowrap bg-zinc-100`}
                   data-to-scrollspy-id={`${category?.cat_id}`}
                 >
                   {category.name}
@@ -61,14 +59,16 @@ export default function ProductListView({ CategoriesProducts }: Props) {
         </div>
       </header>
 
+      <UpcomingOrders />
+
       {/* products and cats names */}
       <ScrollSpy>
         {CategoriesProducts.map((category) => {
           return (
-            <div id={`${category.cat_id}`} className="mt-10 px-4">
+            <div id={`${category.cat_id}`} className="mt-5 px-4">
               {/* cat name */}
               <TextTrans
-                className="font-extrabold text-lg mt-5"
+                className={`text-lg mt-5 ${alexandriaFontBold}`}
                 ar={category.name_ar}
                 en={category.name_en}
               />

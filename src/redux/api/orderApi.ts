@@ -1,5 +1,5 @@
 import { apiSlice } from './index';
-import { AppQueryResult } from '@/types/queries';
+import { AppQueryResult, UpcomingOrders } from '@/types/queries';
 import {
   OrderUser,
   Order,
@@ -7,6 +7,7 @@ import {
   OrderTrack,
   OrderInvoice,
 } from '@/types/index';
+import { Locale } from '@/types/index';
 
 export const orderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => {
@@ -71,12 +72,12 @@ export const orderApi = apiSlice.injectEndpoints({
           order_id: string;
           url: string;
           userAgent: string;
-          area_branch: any
+          area_branch: any;
         }
       >({
         query: ({ status, order_id, url, area_branch, userAgent }) => ({
           url: `order/payment/status`,
-          headers: { url, ...area_branch, },
+          headers: { url, ...area_branch },
           params: { status, order_id, userAgent },
         }),
       }),
@@ -125,6 +126,16 @@ export const orderApi = apiSlice.injectEndpoints({
           method: 'POST',
         }),
       }),
+
+      getUpcomingOrders: builder.query<
+        AppQueryResult<UpcomingOrders[]>,
+        {lang: Locale['lang'], destination: any; url: string }
+      >({
+        query: ({ lang,destination, url }) => ({
+          url: `order/live`,
+          headers: {lang, url, ...destination },
+        }),
+      }),
     };
   },
 });
@@ -138,4 +149,5 @@ export const {
   useLazyGetCustomerInfoQuery,
   useLazyGetInvoiceQuery,
   useGetInvoiceQuery,
+  useGetUpcomingOrdersQuery
 } = orderApi;

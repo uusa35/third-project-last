@@ -54,14 +54,13 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
               src={imgUrl(element?.Data?.logo ?? '')}
             />
           </Link>
-          <div className={`flex flex-col w-full p-1`}>
+          <div className={`flex flex-col w-full px-1`}>
             {/* name */}
-            <h1 className={`font-bold text-lg ${alexandriaFontSemiBold}`}>
-              <TextTrans
-                ar={element?.Data?.name_ar ?? ''}
-                en={element?.Data?.name_en ?? ''}
-              />
-            </h1>
+            <TextTrans
+              className={`text-lg ${alexandriaFontSemiBold}`}
+              ar={element?.Data?.name_ar ?? ''}
+              en={element?.Data?.name_en ?? ''}
+            />
 
             {/*info */}
             <div

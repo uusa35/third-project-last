@@ -4,6 +4,7 @@ import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import {
   alexandriaFont,
+  appLinks,
   arboriaFont,
   gessFont,
   scrollClass,
@@ -25,6 +26,7 @@ import { useLazyCreateTempIdQuery } from '@/redux/api/CustomerApi';
 import { setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
+import ContentLoader from '../skeletons';
 
 type Props = {
   children: ReactNode | undefined;
@@ -149,21 +151,50 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     };
 
     const handleRouteChangeError = (err, url) => {
-      console.log(err,url)
+      console.log(err, url);
       if (err.cancelled) {
         console.log(`Route to ${url} was cancelled!`);
       }
     };
 
+    const handleHashChangeStart: Handler = (url) => {
+      console.log({ url });
+    };
+
+    const handleHashChangeComplete: Handler = (url, { shallow }) => {
+      console.log({ url });
+    };
+
     router.events.on('routeChangeStart', handleRouteChangeStart);
     router.events.on('routeChangeComplete', handleChangeComplete);
     router.events.on('routeChangeError', handleRouteChangeError);
+    router.events.on('hashChangeStart', handleHashChangeStart);
+    router.events.on('hashChangeComplete', handleHashChangeComplete);
+    window.addEventListener('hashchange', handleHashChangeStart);
 
     return () => {
       router.events.off('routeChangeStart', handleRouteChangeStart);
       router.events.off('routeChangeComplete', handleChangeComplete);
+      window.removeEventListener('hashchange', handleHashChangeStart);
     };
   }, [router.pathname]);
+
+  // useEffect(() => {
+  //   console.log(
+  //     'path name',
+  //     'hash',
+  //     window.location.hash,
+  //     'window path',
+  //     window.location.pathname,
+  //     'window href',
+  //     window.location.href,
+  //     'router pathnm',
+  //     router.pathname
+  //   );
+  //   if (window.location.href.includes('#')) {
+  //     router.push(appLinks.home.path);
+  //   }
+  // }, [window.location.href]);
 
   return (
     <div
@@ -179,8 +210,10 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
         }`}
         suppressHydrationWarning={suppressText}
       >
-        {vendorSuccess && vendorElement && vendorElement.Data && (
+        {vendorSuccess && vendorElement && vendorElement.Data ? (
           <MainAsideLayout url={url} element={vendorElement.Data} />
+        ) : (
+          <ContentLoader type="AsideSkelton" sections={1} />
         )}
       </div>
     </div>

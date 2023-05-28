@@ -61,6 +61,16 @@ const MainHead: FC<Props> = ({
           type="image/png"
           sizes="any"
         />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        />
         <meta property="og:image:alt" content={`${title}`} />
         <meta property="og:mobile" content={phone} />
         <meta property="og:whatsapp" content={phone} />

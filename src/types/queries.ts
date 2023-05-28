@@ -81,4 +81,12 @@ export interface DeliveryPickupDetails {
   id: number;
 }
 
-
+export interface UpcomingOrders {
+  id: number;
+  order_code: string;
+  order_status: string;
+  order_type: string;
+  total: string;
+  created_at: string;
+  estimated_time: string;
+}
