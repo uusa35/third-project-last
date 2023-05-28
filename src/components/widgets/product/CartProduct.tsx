@@ -31,7 +31,11 @@ export default function CartProduct({
   HandelDecIncRmv = () => {},
 }: Props) {
   const { t } = useTranslation();
+  const {
+    locale: { lang },
+  } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
+
   return (
     <div className={`flex border-b ${checkoutProduct ? 'py-2' : 'py-4'}`}>
       {!checkoutProduct && (
@@ -115,7 +119,11 @@ export default function CartProduct({
 
           {/* quantity meter */}
           {!checkoutProduct && (
-            <div className="flex items-center gap-x-2">
+            <div
+              className={`flex items-center gap-x-2 ${
+                lang === 'ar' && 'flex-row-reverse'
+              }`}
+            >
               <div
                 onClick={() => HandelDecIncRmv(product, 'dec')}
                 className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center"

@@ -73,12 +73,12 @@ export default function AsideHeader({ url }: Props) {
   );
   return (
     <div
-      className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white px-4 py-2
+      className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white px-4 mt-5
            `}
     >
       {/* burger menu */}
       <div
-        className="flex items-center gap-3 mt-8 z-50 w-10 h-10 rounded-full flex justify-center items-center bg-white text-black capitalize cursor-pointer"
+        className="flex items-center gap-3  z-50 w-10 h-10 rounded-full flex justify-center items-center bg-white text-black capitalize cursor-pointer"
         onClick={() =>
           sideMenuOpen ? dispatch(hideSideMenu()) : dispatch(showSideMenu())
         }
@@ -88,7 +88,7 @@ export default function AsideHeader({ url }: Props) {
 
       {/* cart , search , lang right icons */}
       <div
-        className={`flex flex-row justify-start items-start gap-3 mt-8 z-50`}
+        className={`flex flex-row justify-start items-start gap-3  z-50`}
       >
         <Link
           scroll={true}

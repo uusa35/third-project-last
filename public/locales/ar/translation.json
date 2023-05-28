@@ -244,5 +244,7 @@
   "special_remarks": "علامات خاصة",
   "credit_card": "بطاقة ائتمان",
   "pay_by_knet": "الدفع بـ كي نت",
-  "coupon_value" : "قيمة الخصم"
+  "coupon_value" : "قيمة الخصم",
+  "your_upcoming_order":"الطلبات الحاليه",
+  "to":"الي"
 }

@@ -1,5 +1,12 @@
 import { FC } from 'react';
-import { appLinks, imageSizes, suppressText } from '@/constants/*';
+import {
+  alexandriaFontLight,
+  alexandriaFontSemiBold,
+  appLinks,
+  imageSizes,
+  montserratFontRegular,
+  suppressText,
+} from '@/constants/*';
 import { Product } from '@/types/index';
 import { kebabCase, lowerCase } from 'lodash';
 import Link from 'next/link';
@@ -36,15 +43,15 @@ const VerProductWidget: FC<Props> = ({
         <div className="relative">
           <div className="flex gap-x-2 justify-between">
             <div className="w-2/3">
-              <p className=" flex flex-col gap-y-2 text-md">
+              <p className=" flex flex-col text-md">
                 <TextTrans
-                  className={`text-black`}
+                  className={`text-black ${alexandriaFontSemiBold} mb-2`}
                   ar={element.name_ar}
                   en={element.name_en}
                   length={20}
                 />
                 <TextTrans
-                  className={`text-[#877D78] text-xs md:text-sm whitespace-wrap break-all pt-3`}
+                  className={`${alexandriaFontLight} text-[#877D78] text-xs md:text-sm whitespace-wrap break-all pt-3`}
                   ar={element.description_ar}
                   en={element.description_en}
                   length={500}
@@ -52,7 +59,7 @@ const VerProductWidget: FC<Props> = ({
               </p>
 
               <div
-                className={`flex flex-row justify-start items-center text-xs md:text-sm`}
+                className={`flex flex-row justify-start items-center text-xs md:text-sm mt-3`}
               >
                 {element.new_price && element.new_price !== element.price ? (
                   <div
@@ -60,13 +67,13 @@ const VerProductWidget: FC<Props> = ({
                     style={{ color, borderColor: color, border: '1px solid' }}
                   >
                     <p
-                      className=" uppercase"
+                      className={`uppercase ${montserratFontRegular}`}
                       suppressHydrationWarning={suppressText}
                     >
                       {element.new_price} {t('kd')}
                     </p>
                     <p
-                      className="uppercase line-through text-[#877D78]"
+                      className={`uppercase line-through text-[#877D78] ${montserratFontRegular}`}
                       suppressHydrationWarning={suppressText}
                     >
                       {element.price} {t('kd')}
@@ -79,12 +86,18 @@ const VerProductWidget: FC<Props> = ({
                     style={{ color, borderColor: color, border: '1px solid' }}
                   >
                     {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                      <span className="text-xs">{t(`price_on_selection`)}</span>
+                      <span className={`text-xs ${montserratFontRegular}`}>
+                        {t(`price_on_selection`)}
+                      </span>
                     ) : (
                       parseFloat(element.price).toFixed(3)
                     )}
                     {parseFloat(element.price).toFixed(3) !== '0.000' && (
-                      <span className={`uppercase px-1`}>{t('kd')}</span>
+                      <span
+                        className={`uppercase px-1 ${montserratFontRegular}`}
+                      >
+                        {t('kd')}
+                      </span>
                     )}
                   </p>
                 )}

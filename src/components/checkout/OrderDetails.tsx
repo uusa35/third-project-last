@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { appLinks, suppressText } from '@/constants/*';
+import { appLinks, displayUserAddress, suppressText } from '@/constants/*';
 import Link from 'next/link';
 
 type Props = {
@@ -28,8 +28,9 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       name,
       phone,
       notes,
+      address: UserAddress,
       address: { type: address_type },
-      prefrences
+      prefrences,
     },
     searchParams: { method },
   } = useAppSelector((state) => state);
@@ -55,7 +56,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
         className="flex justify-between items-center gap-x-2 py-2 text-xs cursor-pointer"
       >
         <div className="flex gap-x-3">
-          {icon}
+          <div>{icon}</div>
           <div>
             <p
               suppressHydrationWarning={suppressText}
@@ -103,8 +104,8 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
             {
               [0]: <ApartmentIcon />,
               ['HOUSE']: <HouseIcon />,
-              [2]: <ApartmentIcon />,
-              [3]: <OfficeIcon />,
+              ['APARTMENT']: <ApartmentIcon />,
+              ['OFFICE']: <OfficeIcon />,
             }[address_type as string]
           )
         }
@@ -114,12 +115,12 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
             ? {
                 [0]: '',
                 ['HOUSE']: 'house',
-                [2]: 'apartment',
-                [3]: 'office',
+                ['APARTMENT']: 'apartment',
+                ['OFFICE']: 'office',
               }[address_type as number]
             : ''
         }
-        p3="Kuwait city,25 El-Gallal St , building 2 ,floor 2 , office 1"
+        p3={displayUserAddress(UserAddress)}
         editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
       />
       <DetailComponent

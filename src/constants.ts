@@ -1,4 +1,5 @@
 import NoFoundImage from '@/appImages/not_found.png';
+import { filter, map, toString } from 'lodash';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 // export const xDomain = `next2-q.testbedbynd.com`;
 export const xDomain = `next-q.testbedbynd.com`;
@@ -103,5 +104,17 @@ export const setLang = (lang: any) =>
   });
 
 export const displayUserAddress = (address: any) => {
-  let formattedAddress = '';
+  let formattedAddress;
+
+  formattedAddress = filter(
+    map(
+      address,
+      (value, key) => value !== null && key !== `id` && `${key} : ${value}  `
+    ),
+    (a) => a
+  );
+  console.log({ formattedAddress });
+  formattedAddress = toString(formattedAddress).replaceAll(',', ' / ');
+
+  return formattedAddress;
 };

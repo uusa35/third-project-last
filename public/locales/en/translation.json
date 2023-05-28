@@ -276,5 +276,7 @@
   "min": "minute",
   "deivery_fees": "delivery fees",
   "language_changed_successfully": "language changed",
-  "coupon_value": "discount"
+  "coupon_value": "discount",
+  "your_upcoming_order":"your upcoming order",
+  "to":"to"
 }
