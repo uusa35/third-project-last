@@ -41,7 +41,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
     searchParams: { destination, destination_type, method },
     models: { areaBranchIsOpen },
     customer: { prefrences },
-    locale: { lang, isRTL },
+    locale: { lang, isRTL, dir },
   } = useAppSelector((state) => state);
   const [activeTabIndex, setActiveTabIndex] = useState(
     method === 'delivery' || method === null ? 0 : 1
@@ -84,7 +84,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             </h5>
           </div>
 
-          <div className="border-b-[1px] border-slate-200 flex justify-between">
+          <div className="border-b-[1px] border-slate-200 flex justify-between" dir={dir}>
             <ul className="flex justify-between w-full">
               <li
                 onClick={() => setActiveTabIndex(0)}
@@ -94,7 +94,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                   className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${activeTabIndex === 1 ? 'text-stone-500' : 'font-semibold'}`}
                   suppressHydrationWarning={suppressText}
                 >
-                  <span className="flex justify-center items-center px-5 capitalize">
+                  <span className="flex justify-center items-center px-5 capitalize" dir={dir}>
                     {activeTabIndex === 0 ? <DeliveryIcon /> : <NonActiveDeliveryIcon />}
                     <span className="px-3 text-base">{t('delivery')}</span>
                   </span>
@@ -133,9 +133,8 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               <>
                 <Link
                   href={appLinks.selectArea.path}
-                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${
-                    isRTL && 'flex-row-reverse'
-                  }`}
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200`}
+                  dir={dir}
                 >
                   <div className="flex justify-between items-center">
                     <PlaceOutlined style={{ color }} />
@@ -174,7 +173,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     isRTL && 'flex-row-reverse'
                   }`}
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center" dir={dir}>
                     <PlaceOutlined style={{ color }} />
                     <div className="px-3">
                       <h6
@@ -205,10 +204,8 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             )}
             <Link
               href={appLinks.selectTime(method)}
-              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200"
-              ${isRTL && 'flex-row-reverse'} ${
-                isNull(method) && 'pointer-events-none'
-              }`}
+              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200"`}
+              dir={dir}
             >
               <div className="flex justify-between items-center">
                 <WatchLaterOutlined style={{ color }} />
