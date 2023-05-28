@@ -46,7 +46,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const router = useRouter();
   const desObject = useAppSelector(destinationHeaderObject);
   const desID = useAppSelector(destinationId);
-
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
 
@@ -54,7 +53,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     useLazyCreateTempIdQuery();
 
   // vendor..................................
-
   useEffect(() => {
     getVendor();
   }, [url, , method, destination, desID]);
@@ -89,7 +87,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   const setAppDefaults = async () => {
     console.log('userAgent', userAgent, isNull(userAgent), url);
-
     if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
         if (r && r.data && r.data.Data && r.data.Data.Id) {
