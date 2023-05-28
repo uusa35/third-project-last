@@ -11,7 +11,14 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { appLinks, displayUserAddress, suppressText } from '@/constants/*';
+import {
+  alexandriaFont,
+  alexandriaFontLight,
+  alexandriaFontSemiBold,
+  appLinks,
+  displayUserAddress,
+  suppressText,
+} from '@/constants/*';
 import Link from 'next/link';
 
 type Props = {
@@ -24,7 +31,9 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
   const color = useAppSelector(themeColor);
   const {
     locale: { lang, otherLang },
+
     customer: {
+      id,
       name,
       phone,
       notes,
@@ -60,16 +69,21 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
           <div>
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#B7B1AE] pb-1"
+              className={`text-[#B7B1AE] pb-1 ${alexandriaFont}`}
             >
               {t(p1)}
             </p>
-            <p suppressHydrationWarning={suppressText} className="font-bold">
+            <p
+              suppressHydrationWarning={suppressText}
+              className={`${alexandriaFontSemiBold}`}
+            >
               {t(p2)}
             </p>
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#1A1615]"
+              className={`text-[#1A1615] ${
+                p2 ? alexandriaFontLight : alexandriaFont
+              }`}
             >
               {p3}
             </p>
@@ -91,50 +105,60 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
 
   return (
     <div>
-      <DetailComponent
-        onclick={() =>
-          method === 'delivery'
-            ? router.push(appLinks.addressCreate.path)
-            : router.push(appLinks.selectBranch.path)
-        }
-        icon={
-          method === 'pickup' ? (
-            <AddressIcon />
-          ) : (
-            {
-              [0]: <ApartmentIcon />,
-              ['HOUSE']: <HouseIcon />,
-              ['APARTMENT']: <ApartmentIcon />,
-              ['OFFICE']: <OfficeIcon />,
-            }[address_type as string]
-          )
-        }
-        p1={method === 'delivery' ? 'your_address' : 'branch_address'}
-        p2={
-          method === 'delivery'
-            ? {
-                [0]: '',
-                ['HOUSE']: 'house',
-                ['APARTMENT']: 'apartment',
-                ['OFFICE']: 'office',
-              }[address_type as number]
-            : ''
-        }
-        p3={displayUserAddress(UserAddress)}
-        editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
-      />
-      <DetailComponent
-        onclick={() => {
-          router.push(appLinks.mobileVerification.path);
-        }}
-        icon={<ContactsIcon />}
-        p1="contacts_info"
-        p2={`${name} , ${phone}`}
-        editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
-      />
+      {(method === 'delivery' && UserAddress.id) ||
+      (method === 'pickup' && destination.id) ? (
+        <DetailComponent
+          onclick={() =>
+            method === 'delivery'
+              ? router.push(appLinks.addressCreate.path)
+              : router.push(appLinks.selectBranch.path)
+          }
+          icon={
+            method === 'pickup' ? (
+              <AddressIcon />
+            ) : (
+              {
+                [0]: <ApartmentIcon />,
+                ['HOUSE']: <HouseIcon />,
+                ['APARTMENT']: <ApartmentIcon />,
+                ['OFFICE']: <OfficeIcon />,
+              }[address_type as string]
+            )
+          }
+          p1={method === 'delivery' ? 'your_address' : 'branch_address'}
+          p2={
+            method === 'delivery'
+              ? {
+                  [0]: '',
+                  ['HOUSE']: 'house',
+                  ['APARTMENT']: 'apartment',
+                  ['OFFICE']: 'office',
+                }[address_type as number]
+              : ''
+          }
+          p3={displayUserAddress(UserAddress)}
+          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
+        />
+      ) : (
+        <></>
+      )}
+
+      {id ? (
+        <DetailComponent
+          onclick={() => {
+            router.push(appLinks.login.path);
+          }}
+          icon={<ContactsIcon />}
+          p1="contacts_info"
+          p2={`${name} , ${phone}`}
+          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
+        />
+      ) : (
+        <></>
+      )}
 
       <DetailComponent
-        onclick={() => router.push(appLinks.selectTime.path)}
+        onclick={() => router.push(appLinks.selectTime(method))}
         icon={<ClockIcon />}
         p1={
           {
@@ -148,11 +172,10 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
 
       {method === 'delivery' && (
         <DetailComponent
-          // onclick={() => router.push(appLinks.addressCreate.path)}
+          onclick={() => router.push(appLinks.addressCreate.path)}
           icon={<RemarksIcon />}
           p1="special_remarks"
           p2={`${notes ? notes : 'no_notes_added'}`}
-          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       )}
     </div>

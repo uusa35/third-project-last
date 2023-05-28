@@ -12,7 +12,13 @@ import { wrapper } from '@/redux/store';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import AddIcon from '@/appIcons/add_checkout.svg';
 import Link from 'next/link';
-import { appLinks, suppressText } from '@/constants/*';
+import {
+  alexandriaFont,
+  alexandriaFontMeduim,
+  alexandriaFontSemiBold,
+  appLinks,
+  suppressText,
+} from '@/constants/*';
 import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
 import KnetIcon from '@/appIcons/knet.svg';
@@ -30,6 +36,7 @@ import { useRouter } from 'next/router';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import EmptyCart from '@/components/cart/EmptyCart';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
+import { RadioButtonCheckedOutlined, CircleOutlined } from '@mui/icons-material';
 
 type Props = {
   url: string;
@@ -104,31 +111,23 @@ export default function checkout({ url }: Props) {
   );
 
   const handleCreateOrder = async () => {
-    if (isNull(customer_id)) {
-      // show guest modal or sign in page later
+    if (!customer_id) {
+      router.push(appLinks.login.path);
     } else if (!addressID && method === `delivery`) {
       router.push(appLinks.addressCreate.path);
-    }
-    if (isNull(selectedPaymentMethod)) {
+    } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({
           content: 'please_select_payment_method',
           type: `error`,
         })
       );
-    }
-    if (
+    } else if (
       !isNull(customer_id) &&
       !isNull(selectedPaymentMethod) &&
       selectedPaymentMethod &&
       !isNull(userAgent)
     ) {
-      console.log(
-        { method },
-        prefrences.date,
-        prefrences.time,
-        prefrences.type
-      );
       await triggerCreateOrder({
         params: {
           user_id: customer_id,
@@ -235,7 +234,7 @@ export default function checkout({ url }: Props) {
             <div className=" p-5 border-b-4">
               <p
                 suppressHydrationWarning={suppressText}
-                className="font-bold mb-3"
+                className={`mb-3 ${alexandriaFontSemiBold}`}
               >
                 {t('order_items')}
               </p>
@@ -248,7 +247,12 @@ export default function checkout({ url }: Props) {
                 className="flex items-center gap-x-1 rounded-full border border-[#E30015] text-[#E30015] w-fit text-xs py-1 px-3  mt-3"
               >
                 <AddIcon />
-                <p suppressHydrationWarning={suppressText}>{t('add_items')}</p>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className={`${alexandriaFont}`}
+                >
+                  {t('add_items')}
+                </p>
               </Link>
             </div>
 
@@ -256,7 +260,7 @@ export default function checkout({ url }: Props) {
             <div className="p-5 border-b-4">
               <p
                 suppressHydrationWarning={suppressText}
-                className="font-bold mb-3"
+                className={`mb-3 ${alexandriaFontSemiBold}`}
               >
                 {t('payment_method')}
               </p>
@@ -270,13 +274,19 @@ export default function checkout({ url }: Props) {
                       }}
                       className="flex items-center gap-x-2 text-sm mb-3"
                     >
-                      <input
-                        checked={selectedPaymentMethod === m.id}
-                        type="radio"
-                        name="paymentMethod"
-                      />
+                      {selectedPaymentMethod === m.id ? (
+                        <RadioButtonCheckedOutlined
+                          style={{ color }}
+                          className="text-black w-6 h-6 "
+                        />
+                      ) : (
+                        <CircleOutlined className="text-black w-6 h-6 " />
+                      )}
                       {m.src}
-                      <p suppressHydrationWarning={suppressText} className="">
+                      <p
+                        suppressHydrationWarning={suppressText}
+                        className={`${alexandriaFont}`}
+                      >
                         {t(m.name)}
                       </p>
                     </div>
@@ -290,7 +300,7 @@ export default function checkout({ url }: Props) {
               <PaymentSummary data={cartItems.data} />
               <button
                 onClick={() => handleCreateOrder()}
-                className="w-full rounded-full py-2 my-4 text-white"
+                className={`w-full rounded-full py-2 my-4 text-white ${alexandriaFontMeduim}`}
                 style={{ backgroundColor: color }}
               >
                 {t('place_order')}
