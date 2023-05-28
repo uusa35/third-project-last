@@ -7,7 +7,7 @@ import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
 import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import MainHead from '@/components/MainHead';
-import Clock from '@/appIcons/clock.svg';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PaymentIcon from '@/appIcons/payment.svg';
 import Knet from '@/appIcons/knet.svg';
 import CashOnDelivery from '@/appIcons/cash_checkout.svg';
@@ -165,12 +165,7 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
               <div
                 className={`flex flex-row space-x-3 justify-center items-center`}
               >
-                <Clock
-                  width={imageSizes.xs}
-                  height={imageSizes.xs}
-                  alt={t('work_hours')}
-                  className={`w-5 h-5 ml-2 ${iconColor}`}
-                />
+                <AccessTimeIcon />
                 <span className={`text-lg`}>{t('opening_hours')}</span>
               </div>
               <div className={`text-lg`}>{vendorElement?.Data?.WorkHours}</div>
