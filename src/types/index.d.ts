@@ -60,6 +60,7 @@ export interface Vendor {
   open_at: string;
   theme_color: string;
   status: string;
+  delivery: any;
   slider: string[];
   phone: string;
   desc: string;
@@ -130,7 +131,7 @@ export interface ServerCart {
   total_cart_after_tax?: number;
   promo_code_discount?: number;
   minimum_order_price?: string;
-  free_delivery_data?:string
+  free_delivery_data?: string
   tax?: number;
   free_delivery?: boolean;
   delivery_fee?: string;
