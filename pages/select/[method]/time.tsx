@@ -96,11 +96,11 @@ export default function index({ url, method }: Props) {
       day.isBefore(today.clone().add(1, 'month'));
 
     if (isToday) {
-      days.push({ day: `${t('today')}`, date: day.format('DD MMM') });
+      days.push({ day: `${t('today')}`, date: day.format('DD MMM Y') });
     } else if (isTomorrow) {
-      days.push({ day: `${t('tomorrow')}`, date: day.format('DD MMM') });
+      days.push({ day: `${t('tomorrow')}`, date: day.format('DD MMM Y') });
     } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
-      days.push({ day: day.format('dddd'), date: day.format('DD MMM') });
+      days.push({ day: day.format('dddd'), date: day.format('DD MMM Y') });
     }
   }
 
@@ -128,7 +128,7 @@ export default function index({ url, method }: Props) {
     triggerGetTimings(
       {
         type,
-        date: toEn(moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD')),
+        date: toEn(moment(selectedDay?.date).format('YYYY-MM-DD')),
         area_branch: desObject,
         url,
       },
@@ -160,15 +160,6 @@ export default function index({ url, method }: Props) {
     }
   }, [selectedHour]);
 
-  // useEffect(() => {
-  //   setSliderSettings((prevSettings) => ({
-  //     ...prevSettings,
-  //     rtl: isRTL,
-  //     slidesToScroll: isRTL ? 1 : 4,
-  //     initialSlide: isRTL ? 2 : 0,
-  //   }));
-  // }, [isRTL]);
-
   const handleRadioChange = (value: string) => {
     setIsScheduled(value === 'scheduled');
   };
@@ -180,7 +171,7 @@ export default function index({ url, method }: Props) {
   const handleClick = () => {
     dispatch(
       setPreferences({
-        date: toEn(moment(selectedDay?.date, 'DD M').format('YYYY-MM-DD')),
+        date: toEn(moment(selectedDay?.date).format('YYYY-MM-DD')),
         time: selectedHour,
         type,
       })
@@ -260,7 +251,9 @@ export default function index({ url, method }: Props) {
                       }
                     >
                       <span className="flex text-md">{day.day}</span>
-                      <span className="flex flex-row text-md">{day.date}</span>
+                      <span className="flex flex-row text-md">
+                        {moment(day.date).format('DD MMM')}
+                      </span>
                     </button>
                   </div>
                 </div>
