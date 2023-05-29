@@ -16,8 +16,6 @@ type Props = {
 export default function ProductListView({ CategoriesProducts }: Props) {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
 
-  console.log(CategoriesProducts.map((i) => i.cat_id));
-
   return (
     <div>
       {/* sticky header */}

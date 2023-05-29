@@ -37,7 +37,7 @@ export default function UpcomingOrders({}: Props) {
 
   var settings = {
     // dots: true,
-    // className: 'slider variable-width flex',
+    className: 'transform-none',
     arrows: false,
     infinite: false,
     speed: 500,
@@ -45,13 +45,14 @@ export default function UpcomingOrders({}: Props) {
     slidesToScroll: 1,
     initialSlide: 0,
     // variableWidth: true,
+    useTransform:false,
     centerMode: true,
     centerPadding: '50px 0px 0px',
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           //   infinite: true,
           //   dots: true,
@@ -60,7 +61,7 @@ export default function UpcomingOrders({}: Props) {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           centerPadding: '30px 0px 0px',
           //   initialSlide: 2,
