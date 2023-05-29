@@ -23,8 +23,8 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                 closeModal={onRequestClose}
             >
                 <div>
-                    <div className="flex justify-between w-full px-4 pt-5">
-                        <h5 className="text-gray-500" suppressHydrationWarning={suppressText}>
+                    <div className="flex justify-between w-full px-4 pt-7">
+                        <h5 className="text-gray-500 pb-2" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('cancel_order')}`)}`} 
                         </h5>
                         <button
@@ -35,10 +35,10 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                         </button>
                     </div>
                     <div className="px-4 pb-2">
-                        <h4 className="font-bold text-lg pb-2" suppressHydrationWarning={suppressText}>
+                        <h4 className="font-semibold text-lg pb-2" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('why_did_you_cancel_this_order?')}`)}`}
                         </h4>
-                        <p className="text-sm font-semibold pb-4 space-x-1" suppressHydrationWarning={suppressText}>
+                        <p className="text-sm pb-4 space-x-1" suppressHydrationWarning={suppressText}>
                             <span>
                                 {`${upperFirst(`${t('a_cancellation_of')}`)}`}
                             </span>
@@ -60,7 +60,7 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                         className="border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4" 
                         suppressHydrationWarning={suppressText}>
                             <button 
-                                className={`${mainBtnClass}`}
+                                className={`${mainBtnClass} !font-light`}
                                 style={{ backgroundColor: color }}
                             >
                                 {`${upperFirst(`${t('confirm_cancellation')}`)}`}

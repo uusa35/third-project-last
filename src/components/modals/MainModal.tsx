@@ -1,6 +1,7 @@
 import Modal from 'react-modal';
 import { FC, useEffect, useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
+import { alexandriaFont } from '@/constants/*';
 type Props = {
   isOpen: boolean;
   children: JSX.Element;
@@ -37,14 +38,14 @@ const MainModal: FC<Props> = ({
         shouldFocusAfterRender={false}
       >
         <div
-          className={`bg-white text-black rounded-t-lg absolute w-full lg:w-2/4 xl:w-1/3 bottom-0 ${contentClass} ${
+          className={`bg-white text-black rounded-t-lg absolute w-full lg:w-2/4 xl:w-1/3 bottom-0 ${contentClass} ${alexandriaFont} ${
             isRTL ? ' right-0' : 'left-0'
           }`}
         >
-          <div className="grid grid-cols-3 pt-3 ms-[5%]">
+          <div className="grid grid-cols-3 pt-2 ms-[5%]">
             <div></div>
             <button onClick={closeModal}>
-              <span className="block w-32 h-1 bg-zinc-300 rounded-md mx-auto"></span>
+              <span className="block w-32 h-1 mb-2 bg-zinc-300 rounded-md mx-auto"></span>
             </button>
           </div>
           <div className="pb-4">{children}</div>

@@ -5,7 +5,7 @@ import User from '@/appImages/user.png';
 import { useTranslation } from "react-i18next";
 import { upperFirst } from "lodash";
 import { useRouter } from "next/router";
-import { mainBtnClass, suppressText } from "@/constants/*";
+import { alexandriaFont, mainBtnClass, suppressText } from "@/constants/*";
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppSelector } from "@/redux/hooks";
 
@@ -24,12 +24,12 @@ const Address2Modal: FC<Props>  = ({ isOpen, onRequestClose }):JSX.Element => {
                 isOpen={isOpen} 
                 closeModal={onRequestClose}
             >
-                <div>
-                    <div className="flex flex-col items-center px-5">
+                <div className={`${alexandriaFont}`}>
+                    <div className="flex flex-col items-center px-5 pt-5">
                         <h5 className="font-bold capitalize pt-1" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('we_ve_noticed_it_s_a_different_area')}`)}`}
                         </h5>
-                        <div className="space-x-1 pb-8 pt-2 text-center text-sm text-slate-500 w-[80%] mx-auto break-words">
+                        <div className="space-x-1 pb-8 pt-2 text-center text-base text-stone-500 w-[80%] mx-auto break-words">
                             <span suppressHydrationWarning={suppressText}>
                                 {`${upperFirst(`${t('this_location_is_out_of_the_selected_area.')}`)}`}
                             </span>
@@ -39,16 +39,16 @@ const Address2Modal: FC<Props>  = ({ isOpen, onRequestClose }):JSX.Element => {
                         </div>
                         
                     </div>
-                    <div className="border-t-[1px] border-gray-200 px-4 flex items-end space-x-5">
+                    <div className="border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4">
                             <button 
-                                className={`${mainBtnClass}`}
+                                className={`${mainBtnClass} !font-light`}
                                 style={{ backgroundColor: color }}
                                 suppressHydrationWarning={suppressText}
                             >
                                 {`${upperFirst(`${t('change_area')}`)}`}
                             </button>   
                             <button 
-                                className="bg-slate-100 text-black w-full text-md font-semibold rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
+                                className={`${mainBtnClass} !bg-[#E8E5E3] !text-black !font-light`}
                                 suppressHydrationWarning={suppressText}
                                 onClick={() => router.back()}
                             >

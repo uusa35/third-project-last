@@ -4,6 +4,8 @@ import {
   alexandriaFontLight,
   alexandriaFontSemiBold,
   imageSizes,
+  imgUrl,
+  appLinks,
   montserratFontRegular,
   suppressText,
 } from '@/constants/*';
@@ -16,6 +18,7 @@ import {
   RadioBtns,
 } from '@/types/index';
 import { isEmpty, map } from 'lodash';
+import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -39,26 +42,28 @@ export default function CartProduct({
   return (
     <div className={`flex border-b ${checkoutProduct ? 'py-2' : 'py-4'}`}>
       {!checkoutProduct && (
-        <div className="w-1/4">
+        <Link className="w-1/4" href={`${appLinks.productShow(product.ProductID)}`}>
           <CustomImage
-            src={''}
+            src={imgUrl(product.ProductImage)}
             alt={'product img'}
             className=""
             width={imageSizes.xs}
             height={imageSizes.xs}
           />
-        </div>
+        </Link>
       )}
 
       <div className="flex justify-between gap-x-1 w-full">
         {/* name and addons and qty meter*/}
         <div>
-          <TextTrans
-            className={`capitalize ${alexandriaFontSemiBold}`}
-            ar={product.ProductNameAr}
-            en={product.ProductNameEn}
-            length={15}
-          />
+          <Link href={`${appLinks.productShow(product.ProductID)}`}> 
+            <TextTrans
+              className={`capitalize ${alexandriaFontSemiBold}`}
+              ar={product.ProductNameAr}
+              en={product.ProductNameEn}
+              length={15}
+            />
+          </Link>
           {/* addons products */}
           {(!isEmpty(product.QuantityMeters) ||
             !isEmpty(product.RadioBtnsAddons) ||

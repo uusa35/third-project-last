@@ -79,9 +79,12 @@
   margin-left: 10px;
   margin-right: 10px;
 } 
+.PhoneInputInput {
+  outline:  none;
+}
 button:disabled {
-  background-color: #d6d6d6 !important;
-  border-color: #d6d6d6 !important;
+  background-color: #B7B1AE !important;
+  border-color: #B7B1AE !important;
   color: #FFF !important
 }
 

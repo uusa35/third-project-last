@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import Image from "next/image";
 import { 
     SentimentDissatisfied, 
     SentimentVeryDissatisfied,
@@ -15,7 +14,7 @@ import {
 } from '@mui/icons-material';
 import { map } from "lodash";
 import { useRouter } from "next/router";
-import { arboriaFont, gessFont, modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
+import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
 import { useAppSelector } from "@/redux/hooks";
 import { themeColor } from '@/redux/slices/vendorSlice';
 
@@ -54,8 +53,8 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
               cols={10}
               onChange={event => setFormattedContent(event.target.value)}
               value={content}
-              className="bg-gray-100 w-full resize-none h-32 placeholder:text-gray-500 focus:outline-none"
-              placeholder={`${t('your_comment')}`}
+              className="bg-gray-100 w-full resize-none h-32 capitalize placeholder:text-gray-500 focus:outline-none"
+              placeholder={`${t('your_feedback')}`}
             />
             <p className="text-end text-gray-500">
               {content.length}/{460}
@@ -72,13 +71,13 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                 closeModal={onRequestClose}
             >
                 <div>
-                    <div className="flex w-full pb-5 px-4 border-b-[1px] border-gray-200">
+                    <div className="flex w-full pb-5 pt-2 px-4 border-b-[1px] border-gray-200">
                         <div className="w-[5%]">
                             <button
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                                 onClick={onRequestClose}
                             >
-                                <ExpandMoreIcon />
+                                <ExpandMoreIcon className="text-stone-600" />
                             </button>
                         </div>
                         <h5 className="font-semibold capitalize text-center w-[95%]" suppressHydrationWarning={suppressText}>
@@ -95,16 +94,15 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                         <button
                         key={rate.id}
                         dir={`${isRTL ? 'rtl' : 'ltr'}`}
-                        className={`${router.locale === 'ar' ? gessFont : arboriaFont}`}
                         style={{
-                            color: rateVal === rate.id ? color : 'text-zinc-400'
+                            color: rateVal === rate.id ? color : '#877D78'
                         }}
                         suppressHydrationWarning={suppressText}
                         onClick={() => {
                             setRateVal(rate.id);
                         }}
                         >
-                        {rate.icon}
+                        {rate.icon}  
                         </button>
                     ))}
             </div>
@@ -116,18 +114,18 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             type="text" 
                             name="name" 
                             id="name"  
-                            className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer" placeholder=" "
+                            className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer placeholder:text-stone-500" placeholder=" "
                         />
                         <label 
                             htmlFor="full_name" 
-                            className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
+                            className="absolute text-stone-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
                             suppressHydrationWarning={suppressText}
                         >
                             {t('your_name_optional')}
                         </label>
                     </div>
                     <div className="py-5">
-                        <label htmlFor="phone number" className="text-gray-500" suppressHydrationWarning={suppressText}>
+                        <label htmlFor="phone number" className="text-stone-500" suppressHydrationWarning={suppressText}>
                             {t('phone_number_optional')}
                         </label>
                         <PhoneInput

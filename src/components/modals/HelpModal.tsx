@@ -27,18 +27,18 @@ const HelpModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                                 onClick={onRequestClose}
                             >
-                                <ExpandMoreIcon />
+                                <ExpandMoreIcon className="text-stone-600" />
                             </button>
                         </div>
-                        <h5 className="font-bold capitalize ps-6 md:ps-28 lg:ps-8" suppressHydrationWarning={suppressText}>
+                        <h5 className="font-semibold capitalize ps-6 md:ps-28 lg:ps-8" suppressHydrationWarning={suppressText}>
                             {t('need_help?')}
                         </h5>
                     </div>
                     <div className="p-4">
-                        <h4 className="font-bold text-lg capitalize pb-2" suppressHydrationWarning={suppressText}>
+                        <h4 className="font-semibold text-lg capitalize pb-2" suppressHydrationWarning={suppressText}>
                             {t('how_can_we_help_you?')}
                         </h4>
-                        <p className="text-base text-gray-500 pb-4" suppressHydrationWarning={suppressText}>
+                        <p className="text-base text-stone-500 pb-4" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('if_you_have_any_technical_problem_or_problem_with_the_order_please_contact_us_via_voice_call_or_by_chatting_via_whatsapp_or_our_messenger.')}`)}`}
                         </p>
                     </div>
@@ -52,7 +52,7 @@ const HelpModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                             {`${upperFirst(`${t('call_us')}`)}`}
                         </button>   
                         <button 
-                            className="bg-white w-full text-md font-semibold border-2 rounded-full h-10 pt-2 pb-8 mx-auto mt-3"
+                            className={`${mainBtnClass} !bg-white border-2 mt-3`}
                             style={{ color, borderColor: color }}
                             onClick={onRequestClose}
                         >

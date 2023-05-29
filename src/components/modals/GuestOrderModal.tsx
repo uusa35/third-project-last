@@ -28,7 +28,7 @@ const GuestOrderModal: FC<Props> = ({
   const { t } = useTranslation();
   const {
     customer,
-    locale: { isRTL },
+    locale: { isRTL, dir },
     searchParams: { method },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
@@ -85,13 +85,13 @@ const GuestOrderModal: FC<Props> = ({
     <>
       <MainModal isOpen={isOpen} closeModal={closeModal}>
         <div>
-          <div className="flex lg:grid lg:grid-cols-3 w-full px-4 py-3">
+          <div className="flex lg:grid lg:grid-cols-3 w-full px-4 py-1">
             <div className="w-[5%]">
               <button
                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
                 onClick={closeModal}
               >
-                <ExpandMoreIcon />
+                <ExpandMoreIcon className="text-stone-600" />
               </button>
             </div>
             <h5
@@ -101,14 +101,14 @@ const GuestOrderModal: FC<Props> = ({
               {t('guest_info')}
             </h5>
           </div>
-          <div className="px-4">
+          <div className="px-4" dir={dir}>
             <form className="capitalize" onSubmit={handleSubmit(onSubmit)}>
               <div className="relative">
                 <input
                   {...register('name')}
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   //   onChange={(e) => setValue('name', toEn(e.target.value))}
-                  className="block px-2.5 pb-2.5 pt-5 w-full text-black border-b-[1px] appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
+                  className="block px-2.5 pb-2.5 pt-5 w-full text-black border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
                   placeholder=" "
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) =>
@@ -118,9 +118,7 @@ const GuestOrderModal: FC<Props> = ({
                 />
                 <label
                   htmlFor="name"
-                  className={`absolute text-gray-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full ${
-                    isRTL ? 'text-end' : 'text-start'
-                  }`}
+                  className={`absolute text-stone-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full`}
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('fill_name')}</div>
@@ -140,13 +138,10 @@ const GuestOrderModal: FC<Props> = ({
               <div className="pt-6 pb-5">
                 <label
                   htmlFor="phone"
-                  className={`text-gray-500 ${
-                    isRTL ? 'text-end' : 'text-start'
-                  }`}
+                  className={`text-gray-500`}
                   suppressHydrationWarning={suppressText}
                 >
-                  <div>{t('phone_number')}</div>
-
+                  <div>{t('phone_number')} *</div>
                   <div>
                     {errors?.phone?.message && (
                       <p
@@ -169,7 +164,7 @@ const GuestOrderModal: FC<Props> = ({
                     customer.phone ?? startCase(`${t('enter_your_name')}`)
                   }`}
                   onChange={(e) => setValue('phone', e)}
-                  className="focus:outline-none"
+                  className="border-b-[1px] pb-3"
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) =>
                     (e.target.style.borderBottomColor = '#3f3f46')
@@ -182,16 +177,17 @@ const GuestOrderModal: FC<Props> = ({
                   {...register('email')}
                   //   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                   //   onChange={(e) => setValue('email', e?.target?.value)}
-                  className="block px-2.5 pb-2.5 py-12 w-full text-black border-b-[1px] border-t-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
+                  className="block px-2.5 pb-2.5 pt-5 w-full text-black border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-gray-400 peer"
+                  placeholder=" "
                   style={{ borderBottomColor: '#e5e7eb' }}
-                  onFocus={(e) => (e.target.style.borderColor = color)}
-                  onBlur={(e) => (e.target.style.borderColor = '#e5e7eb')}
+                  onFocus={(e) =>
+                    (e.target.style.borderBottomColor = '#3f3f46')
+                  }
+                  onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                 />
                 <label
                   htmlFor="email"
-                  className={`absolute text-gray-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full ${
-                    isRTL ? 'text-end' : 'text-start'
-                  }`}
+                  className={`absolute text-stone-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full`}
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('email_optional')}</div>

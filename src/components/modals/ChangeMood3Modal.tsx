@@ -35,7 +35,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                     <h5 className="font-bold pt-3" suppressHydrationWarning={suppressText}>
                         {`${upperFirst(`${t('your_item_is_not_available')}`)}`}
                     </h5>
-                    <div className="space-x-1 pb-8 pt-2 text-center text-sm text-slate-500 w-[80%] mx-auto break-words">
+                    <div className="space-x-1 pb-8 pt-2 text-center text-sm text-stone-500 w-[80%] mx-auto break-words">
                         <span suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('we_are_sorry_about_that_the_item_is_not_available_in')}
                             ${method === 'delivery' ? t('area'): t('branch')}
@@ -52,7 +52,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                             method === 'delivery'? appLinks.selectArea.path  
                             : appLinks.selectBranch.path
                         }
-                        className={`h-11 pt-2 pb-6 ${mainBtnClass} text-center`}
+                        className={`${mainBtnClass} text-center`}
                         style={{ backgroundColor: color }}
                         suppressHydrationWarning={suppressText}
                     >
@@ -60,7 +60,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                     </Link>   
                     <Link 
                         href={appLinks.home.path}
-                        className={`h-11 pt-2 pb-6 bg-gray-200 text-black w-full text-md font-semibold rounded-full mx-auto mt-3 capitalize text-center`}
+                        className={`bg-gray-200 !text-black text-center ${mainBtnClass} mt-3`}
                         suppressHydrationWarning={suppressText}
                     >
                         {t('change_order')}

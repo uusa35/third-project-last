@@ -146,7 +146,7 @@ const ProductShow: NextPage<Props> = ({
     if (isSuccess && element.Data) {
       setProductOutStock(
         element.Data.never_out_of_stock === 0 &&
-          element.Data.amount <= currentQty
+          element.Data.amount < currentQty
       );
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
@@ -462,10 +462,7 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const handleAddToCart = async () => {
-    if (isNull(destination) || 
-        prefrences.type === '' || 
-        prefrences.date === '' || 
-        prefrences.time === '') {
+    if (isNull(destination) || prefrences.type === '') {
       dispatch(setAreaBranchModelStatus(true));
       return;
     }
@@ -475,7 +472,6 @@ const ProductShow: NextPage<Props> = ({
         showToastMessage({
           content: `please_review_sections_some_r_required`,
           type: `error`,
-          
         })
       );
     } else {
@@ -656,7 +652,7 @@ const ProductShow: NextPage<Props> = ({
               {/*   name and desc */}
               <div className="flex flex-row w-full justify-between items-center px-4 md:px-8 pb-4 border-b-2 border-stone-200">
                 <div className={`flex-1 space-y-2`}>
-                  <p className="font-bold text-xl">
+                  <p className="font-bold text-base lg:text-xl">
                     <TextTrans
                       ar={element?.Data?.name_ar}
                       en={element?.Data?.name_en}
@@ -685,7 +681,7 @@ const ProductShow: NextPage<Props> = ({
                             : element?.Data?.description_en.length
                           : 99
                       }
-                      className="text-zinc-500"
+                      className="text-[#877D78] text-sm lg:text-base"
                     />
                     {((element?.Data?.description_ar.length >= 99 && isRTL) ||
                       (element?.Data?.description_en.length >= 99 &&
@@ -717,22 +713,22 @@ const ProductShow: NextPage<Props> = ({
               {/*     sections  */}
               {map(element?.Data?.sections, (s: ProductSection, i) => (
                 <div
-                  className={`border-b-8 border-stone-100 px-8 py-4`}
+                  className={`border-b-8 border-stone-100 px-4 lg:px-8 py-4`}
                   key={i}
                 >
                   <div className="flex justify-between">
                     <div>
-                      <p className="text-lg">
+                      <p className="text-base lg:text-lg pb-2">
                         {t('select')}{' '}
                         <TextTrans ar={s.title_ar} en={s.title_en} />
                       </p>
-                      <p>
+                      <p className="text-[#877D78] text-sm lg:text-base">
                         {s.must_select === 'single'
                           ? t('select1')
                           : t('multi_selection')}
                       </p>
                     </div>
-                    <div className={`text-sm text-center rounded-full w-20 h-8 pt-1 ${requiredSection && s.selection_type === 'mandatory' ? 'bg-white border-red-600 border-[1px]' : 'bg-gray-100'}`}>
+                    <div className={`text-xs lg:text-sm text-center rounded-full w-20 h-8 pt-2 lg:pt-1 ${requiredSection && s.selection_type === 'mandatory' ? 'bg-white border-red-600 border-[1px]' : 'bg-gray-100'}`}>
                       <span>
                         {s.selection_type === 'mandatory'
                           ? t('required')
@@ -742,7 +738,7 @@ const ProductShow: NextPage<Props> = ({
                   </div>
                   {s.hidden ? (
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
-                      <div className={`flex flex-row`}>
+                      <div className={`flex pb-1`}>
                         <input
                           id={s.title}
                           name={s.title}
@@ -753,7 +749,7 @@ const ProductShow: NextPage<Props> = ({
                           onClick={() =>
                             setTabsOpen([...tabsOpen, { id: s.id }])
                           }
-                          className="h-4 w-4"
+                          className="h-4 w-4 lg:h-5 lg:w-5"
                           style={{ accentColor: color }}
                         />
                         <label htmlFor={s.title} className="mx-3 block text-sm">
@@ -779,7 +775,7 @@ const ProductShow: NextPage<Props> = ({
                             }
                             setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
                           }}
-                          className="h-4 w-4"
+                          className="h-4 w-4 lg:h-5 lg:w-5"
                           style={{ accentColor: color }}
                         />
                         <label htmlFor={s.title} className="mx-3 block text-sm">
@@ -804,7 +800,7 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                      {s.must_select === 'q_meter' &&
+                      {/* {s.must_select === 'q_meter' &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-600 pb-3`}>
                           {t(`must_select_min_and_max`, {
@@ -818,7 +814,7 @@ const ProductShow: NextPage<Props> = ({
                             {t(`field_must_select_at_least_one`)}
                           </p>
                         )
-                      )}
+                      )} */}
                       {map(s.choices, (c, i) => (
                         <div className="flex items-center w-full pb-2" key={i}>
                           {s.must_select === 'q_meter' ? (
@@ -830,7 +826,6 @@ const ProductShow: NextPage<Props> = ({
                                   <TextTrans
                                     ar={c.name_ar}
                                     en={c.name_en}
-                                    style={{ color }}
                                   />
                                 </div>
                                 <div>
@@ -860,12 +855,12 @@ const ProductShow: NextPage<Props> = ({
                                     )
                                   }
                                   type="button"
-                                  className={`w-7 h-7 text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                                  className={`w-6 h-6 lg:w-7 lg:h-7 text-base lg:text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
                                   style={{ borderColor: color, color }}
                                 >
                                   -
                                 </button>
-                                <span className="text-black text-xl font-semibold inline-block text-center w-10 h-4">
+                                <span className="text-black text-xl inline-block text-center w-10 h-7">
                                   {filter(
                                     productCart?.QuantityMeters,
                                     (q) => q.uId === `${s.id}${c.id}`
@@ -877,14 +872,15 @@ const ProductShow: NextPage<Props> = ({
                                     handleSelectAddOn(s, c, s.must_select, true)
                                   }
                                   type="button"
-                                  className="w-7 h-7 text-white text-lg font-semibold rounded-full pb-3 bg-red-600 disabled:bg-gray-200 disabled:cursor-not-allowed"
+                                  className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-lg font-semibold rounded-full pb-3 bg-red-600 disabled:bg-gray-200 disabled:cursor-not-allowed"
                                 >
                                   +
                                 </button>
                               </div>
                             </div>
                           ) : (
-                            <Fragment key={i}>
+                            <div key={i} className="pb-2 flex flex-1 justify-between">
+                              <div className="flex">
                               <input
                                 id={c.name}
                                 name={c.name}
@@ -915,28 +911,23 @@ const ProductShow: NextPage<Props> = ({
                                     e.target.checked
                                   )
                                 }
-                                className="h-4 w-4 border-gray-200 checked:ring-0 focus:ring-0"
+                                className="h-4 w-4 lg:h-5 lg:w-5 border-red-600 checked:ring-0 focus:ring-0"
                                 style={{ accentColor: color }}
                               />
-                              <div
-                                className={`flex w-full flex-1 justify-between items-center `}
+                              <label
+                                htmlFor={c.name}
+                                className="ltr:ml-3 rtl:mr-3 block text-sm"
                               >
-                                <div>
-                                  <label
-                                    htmlFor={c.name}
-                                    className="ltr:ml-3 rtl:mr-3 block text-sm"
-                                  >
-                                    <TextTrans ar={c.name_ar} en={c.name_en} />
-                                  </label>
-                                </div>
+                                <TextTrans ar={c.name_ar} en={c.name_en} />
+                              </label>
+                              </div>
                                 <div>
                                   {parseFloat(c.price).toFixed(3)}
                                   <span className={`mx-1 uppercase`}>
                                     {t(`kwd`)}
                                   </span>
                                 </div>
-                              </div>
-                            </Fragment>
+                            </div>
                           )}
                         </div>
                       ))}
@@ -946,40 +937,41 @@ const ProductShow: NextPage<Props> = ({
               ))}
 
               {/* notes */}
-              <div className="px-8 py-4">
-                <p className="mb-2">{t('special_instructions')}</p>
+              <div className="px-4 lg:px-8 py-4">
+                <p className="pb-3 text-sm lg:text-base">{t('special_instructions')}</p>
                 <input
                   type="text"
                   placeholder={`${t('add_instructions')}`}
                   suppressHydrationWarning={suppressText}
                   value={productCart?.ExtraNotes}
                   onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
-                  className={`bg-gray-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize ${arboriaFont}`}
+                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 text-sm lg:text-base ${arboriaFont}`}
                 />
               </div>
             </div>
-          <div className="sticky bottom-0 bg-white">
-            <div className="flex justify-center items-center w-full px-8">
+          <div className="lg:sticky bottom-0 bg-white">
+            <div className="flex justify-center items-center w-full px-4 lg:px-8">
               <div
                 className={`flex flex-row justify-center items-center my-4 capitalize`}
               >
                 <div className={`flex items-center ${!isRTL && 'flex-row-reverse'}`}>
                   <button
+                    disabled={currentQty === element.Data?.amount}
                     onClick={handleIncrease}
                     type="button"
-                    className="w-7 h-7 text-white text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                    className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
                     style={{ backgroundColor: color }}
                   >
                     +
                   </button>
-                  <span className="text-black text-xl font-semibold inline-block text-center w-10 h-7">
+                  <span className="text-black text-xl inline-block text-center w-10 h-7">
                     {currentQty}
                   </span>
                   <button
                     disabled={currentQty === 0}
                     onClick={handleDecrease}
                     type="button"
-                    className={`w-7 h-7 text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                    className={`w-6 h-6 lg:w-7 lg:h-7 text-base lg:text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
                     style={{ borderColor: color, color }}
                   >
                     -
@@ -988,7 +980,7 @@ const ProductShow: NextPage<Props> = ({
               </div>
             </div>
             <div
-              className={`px-2 border-b-[1px] pb-5`}
+              className={`px-4 border-b-[1px] pb-5`}
             >
               <button
                 disabled={productOutStock}
