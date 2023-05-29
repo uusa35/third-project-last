@@ -279,5 +279,6 @@
   "coupon_value": "discount",
   "your_upcoming_order":"your upcoming order",
   "to":"to",
-  "info": "info"
+  "info": "info",
+  "from":"from"
 }

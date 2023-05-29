@@ -13,7 +13,6 @@ import Carousel from 'react-material-ui-carousel';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
-  arboriaFont,
   imageSizes,
   imgUrl,
   mainBtnClass,

@@ -77,19 +77,19 @@ function DeliveryPickup({ url }: Props) {
                         ['pickup_now']: t('pickup_now'),
                         ['pickup_later']: `${t(
                           'pickup_later'
-                        )} ${date} ${time}`,
+                        )} ${date} ${time} ${t('from')}`,
                         ['']: t('pickup_from'),
                       }[prefType as string]
                     }
                   </p>
-                  {prefType === 'pickup_later' && (
+                  {/* {prefType === 'pickup_later' && (
                     <p
                       className={`text-xs ${alexandriaFont}`}
                       suppressHydrationWarning={suppressText}
                     >
-                      {date} {time} {t('to')}
+                      {date} {time} {t('from')}
                     </p>
-                  )}
+                  )} */}
                 </div>
                 <p
                   className={`${alexandriaFontMeduim}`}

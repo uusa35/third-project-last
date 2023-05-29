@@ -40,13 +40,13 @@ export default function CartProduct({
   const color = useAppSelector(themeColor);
 
   return (
-    <div className={`flex border-b ${checkoutProduct ? 'py-2' : 'py-4'}`}>
+    <div className={`flex border-b gap-x-2 ${checkoutProduct ? 'py-2' : 'py-4'}`}>
       {!checkoutProduct && (
         <Link className="w-1/4" href={`${appLinks.productShow(product.ProductID)}`}>
           <CustomImage
             src={imgUrl(product.ProductImage)}
             alt={'product img'}
-            className=""
+            className="rounded-md"
             width={imageSizes.xs}
             height={imageSizes.xs}
           />
