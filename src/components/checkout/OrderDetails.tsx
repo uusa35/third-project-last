@@ -82,7 +82,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
             <p
               suppressHydrationWarning={suppressText}
               className={`text-[#1A1615] ${
-                p2 ? alexandriaFontLight : alexandriaFont
+                p2 ? alexandriaFontLight : alexandriaFontSemiBold
               }`}
             >
               {p3}
