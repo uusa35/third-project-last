@@ -9,7 +9,7 @@
   "my_orders": "الطلبات",
   "wishlist": "المفضلة",
   "my_addresses": "العناوين",
-  "rights_reserved": "All Rights Reserved To Mcdonald's 2023 ©",
+  "rights_reserved": "© جميع الحقوق محفوظة لماكدونالدز 2023",
   "sign_in": "تسجيل الدخول",
   "to_orderfast_now": "لتسريع الطلب الان",
   "Welcome_back": "مرحبا بعودتك",
@@ -246,5 +246,6 @@
   "pay_by_knet": "الدفع بـ كي نت",
   "coupon_value" : "قيمة الخصم",
   "your_upcoming_order":"الطلبات الحاليه",
-  "to":"الي"
+  "to":"إلى",
+  "info": "معلومات"
 }

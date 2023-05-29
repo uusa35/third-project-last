@@ -26,7 +26,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
     const {
-        locale: { isRTL },
+        locale: { isRTL, dir },
       } = useAppSelector((state) => state);
       const color = useAppSelector(themeColor);
     const [rateVal, setRateVal] = useState<number>();
@@ -86,9 +86,8 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </div>
                     <div>
                     <div
-                        className={`flex justify-between w-[80%] m-auto py-4 ${
-                        isRTL && `flex-row-reverse`
-                        }`}
+                        className={`flex justify-between w-[80%] m-auto py-4`}
+                        dir={dir}
                     >
                     {map(ratings, (rate) => (
                         <button
@@ -107,7 +106,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     ))}
             </div>
             </div>
-            <div className="px-4">
+            <div className="px-4" dir={dir}>
                 <form className="capitalize">
                     <div className="relative">
                         <input 
@@ -118,13 +117,13 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                         />
                         <label 
                             htmlFor="full_name" 
-                            className="absolute text-stone-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
+                            className={`absolute text-stone-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start ${isRTL && 'ps-4'}`}
                             suppressHydrationWarning={suppressText}
                         >
                             {t('your_name_optional')}
                         </label>
                     </div>
-                    <div className="py-5">
+                    <div className="py-5 ms-1">
                         <label htmlFor="phone number" className="text-stone-500" suppressHydrationWarning={suppressText}>
                             {t('phone_number_optional')}
                         </label>
