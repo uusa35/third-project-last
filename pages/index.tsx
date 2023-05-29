@@ -158,7 +158,6 @@ export default function Home({ url, element, currentLocale }: Props) {
               {/* ads scroller */}
               <AdsScrollBar slider={vendorElement?.Data?.slider ?? []} />
               <DeliveryPickup url={url} />
-              
             </>
           ) : (
             <div>
@@ -166,12 +165,9 @@ export default function Home({ url, element, currentLocale }: Props) {
             </div>
           )}
 
-          
-
           {!vendorSuccess ||
           !vendorElement ||
           !vendorElement.Data ||
-          
           !categoriesSuccess ||
           !categories ||
           !categories.Data ||

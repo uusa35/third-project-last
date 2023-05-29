@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import {
   alexandriaFont,
   appLinks,
-  arboriaFont,
-  gessFont,
   scrollClass,
   setLang,
   suppressText,
@@ -68,25 +66,11 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     );
   };
 
-  // useEffect(() => {
-  //   getVendor();
-  //   if (vendorSuccess && vendorElement && vendorElement.Data) {
-  //     if (vendorElement?.Data?.delivery_pickup_type === 'pickup') {
-  //       dispatch(setCartMethod('pickup'));
-  //       dispatch(removeArea());
-  //     } else if (vendorElement?.Data?.delivery_pickup_type === 'delivery') {
-  //       dispatch(setCartMethod('delivery'));
-  //       dispatch(removeBranch());
-  //     }
-  //   }
-  // }, [branch.id, area.id, method]);
-
   useEffect(() => {
     setAppDefaults();
   }, [vendorSuccess, tempIdSuccess, url]);
 
   const setAppDefaults = async () => {
-    console.log('userAgent', userAgent, isNull(userAgent), url);
     if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
         if (r && r.data && r.data.Data && r.data.Data.Id) {
@@ -172,26 +156,12 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     return () => {
       router.events.off('routeChangeStart', handleRouteChangeStart);
       router.events.off('routeChangeComplete', handleChangeComplete);
+      router.events.off('routeChangeError', handleRouteChangeError);
+      router.events.off('hashChangeStart', handleHashChangeStart);
+      router.events.off('hashChangeComplete', handleHashChangeComplete);
       window.removeEventListener('hashchange', handleHashChangeStart);
     };
   }, [router.pathname]);
-
-  // useEffect(() => {
-  //   console.log(
-  //     'path name',
-  //     'hash',
-  //     window.location.hash,
-  //     'window path',
-  //     window.location.pathname,
-  //     'window href',
-  //     window.location.href,
-  //     'router pathnm',
-  //     router.pathname
-  //   );
-  //   if (window.location.href.includes('#')) {
-  //     router.push(appLinks.home.path);
-  //   }
-  // }, [window.location.href]);
 
   return (
     <div

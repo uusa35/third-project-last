@@ -60,27 +60,13 @@ const AppHeader: FC<Props> = ({
     } else {
       await setLang(lang).then(() => {
         router.back();
-        console.log('hhh', window.location.href);
-        if (window.location.href.includes('#')) {
-          router.push(appLinks.home.path);
-        }
+        // if (window.location.href.includes('#')) {
+        //   router.push(appLinks.home.path);
+        // }
       });
     }
   };
 
-   useEffect(() => {
-    console.log(
-      'path name',
-      'hash',
-      window.location.hash,
-      'window path',
-      window.location.pathname,
-      'window href',
-      window.location.href,
-      'router pathnm',
-      router.pathname
-    );
-  }, [window.location]);
 
   // const {
   //   appSetting: { currentModule },

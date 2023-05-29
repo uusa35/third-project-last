@@ -3,7 +3,7 @@ import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
 import React, { useState } from 'react';
 import TextTrans from '../TextTrans';
-import ScrollSpy from 'react-ui-scrollspy';
+import ScrollSpy from 'react-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
 import MenuModal from '../modals/MenuModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
@@ -16,17 +16,7 @@ type Props = {
 export default function ProductListView({ CategoriesProducts }: Props) {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
 
-  //   scroll function
-  const onPress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
-
-    const target = window.document.getElementById(
-      e.currentTarget.href.split('#')[1]
-    );
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  console.log(CategoriesProducts.map((i) => i.cat_id));
 
   return (
     <div>
@@ -43,51 +33,60 @@ export default function ProductListView({ CategoriesProducts }: Props) {
         >
           <ListOutlined />
         </div>
-        <div className="flex gap-x-2 overflow-x-scroll scrollbar-hide">
+        <ScrollSpy
+          currentClassName="active_cat"
+          // rootEl="div"
+          componentTag="div"
+          items={CategoriesProducts.map((i) => i.cat_id)}
+          style={{ display: 'flex' }}
+          className="flex gap-x-2 overflow-x-scroll scrollbar-hide"
+          offset={-100}
+        >
           {CategoriesProducts.map((category) => {
             return (
-              <a onClick={(e) => onPress(e)} href={`#${category?.cat_id}`}>
-                <p
-                  className={`${alexandriaFont} text-sm rounded-full px-4 py-2 rounded-full whitespace-nowrap bg-zinc-100`}
-                  data-to-scrollspy-id={`${category?.cat_id}`}
-                >
-                  {category.name}
-                </p>
+              <a
+                href={`#${category.cat_id}`}
+                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 rounded-full whitespace-nowrap bg-zinc-100`}
+              >
+                {category.name}
               </a>
             );
           })}
-        </div>
+        </ScrollSpy>
       </header>
 
       <UpcomingOrders />
 
       {/* products and cats names */}
-      <ScrollSpy>
+
+      <div>
         {CategoriesProducts.map((category) => {
           return (
-            <div id={`${category.cat_id}`} className="mt-5 px-4">
-              {/* cat name */}
-              <TextTrans
-                className={`text-lg mt-5 ${alexandriaFontBold}`}
-                ar={category.name_ar}
-                en={category.name_en}
-              />
+            <section id={`${category.cat_id}`}>
+              <div className="mt-5 px-4">
+                {/* cat name */}
+                <TextTrans
+                  className={`text-lg mt-5 ${alexandriaFontBold}`}
+                  ar={category.name_ar}
+                  en={category.name_en}
+                />
 
-              {/* products */}
-              <div>
-                {category.items?.map((product) => {
-                  return (
-                    <VerProductWidget
-                      element={product}
-                      category_id={category?.cat_id}
-                    />
-                  );
-                })}
+                {/* products */}
+                <div>
+                  {category.items?.map((product) => {
+                    return (
+                      <VerProductWidget
+                        element={product}
+                        category_id={category?.cat_id}
+                      />
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            </section>
           );
         })}
-      </ScrollSpy>
+      </div>
 
       <MenuModal
         isOpen={openCategoryModal}
@@ -97,3 +96,4 @@ export default function ProductListView({ CategoriesProducts }: Props) {
     </div>
   );
 }
+
