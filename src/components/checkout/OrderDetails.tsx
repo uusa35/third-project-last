@@ -41,7 +41,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       address: { type: address_type },
       prefrences,
     },
-    searchParams: { method },
+    searchParams: { method, destination },
   } = useAppSelector((state) => state);
 
   const DetailComponent = ({
@@ -136,7 +136,11 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
                 }[address_type as number]
               : ''
           }
-          p3={displayUserAddress(UserAddress)}
+          p3={
+            method === 'delivery'
+              ? displayUserAddress(UserAddress)
+              : destination.location
+          }
           editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       ) : (
