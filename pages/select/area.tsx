@@ -201,7 +201,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                             <TextTrans
                               ar={a.name_ar}
                               en={a.name_en}
-                              className="flex   text-lg font-bold"
+                              className="flex text-lg"
                               length={60}
                             />
                             <div className="flex flex-1 justify-end items-end">

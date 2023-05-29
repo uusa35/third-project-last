@@ -278,5 +278,6 @@
   "language_changed_successfully": "language changed",
   "coupon_value": "discount",
   "your_upcoming_order":"your upcoming order",
-  "to":"to"
+  "to":"to",
+  "info": "info"
 }

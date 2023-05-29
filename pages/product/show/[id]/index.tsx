@@ -239,11 +239,7 @@ const ProductShow: NextPage<Props> = ({
       setRequiredSection(false);
     }
   }, [productCart.enabled]);
-  // useEffect(() => {
-  //   if(document.referrer === '/address/select/area' || document.referrer === '/address/select/branch') {
-  //     setIsOpen(true)
-  //   }
-  // }, []);
+
   const customAnimation = {
     mount: { scale: 1 },
     unmount: { scale: 0.9 },

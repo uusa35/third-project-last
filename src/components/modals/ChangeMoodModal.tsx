@@ -204,7 +204,8 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             )}
             <Link
               href={appLinks.selectTime(method)}
-              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200"`}
+              className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${
+              isNull(method) && 'pointer-events-none'}`}
               dir={dir}
             >
               <div className="flex justify-between items-center">
@@ -228,8 +229,8 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                       </>
                     ) : prefrences.type === 'delivery_later' ||
                       prefrences.type === 'pickup_later' ? (
-                      <div>
-                        <span className="pe-2">{prefrences?.date}</span>
+                      <div dir={dir}>
+                        <span className={`pe-2`}>{prefrences?.date}</span>
                         <span>{prefrences?.time}</span>
                       </div>
                     ) : (
