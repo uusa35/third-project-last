@@ -69,7 +69,7 @@ export default function CheckoutFixedBtn({
         cartItems?.data?.Cart &&
         cartItems?.data?.Cart.length > 0 && (
           <>
-            <div className="h-48"></div>
+            <div className="h-28"></div>
             {/* sticky fooer */}
             <div className="fixed bottom-0 z-50 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5">
               {/* min cart msg */}
@@ -117,31 +117,6 @@ export default function CheckoutFixedBtn({
                   {t('kwd')}
                 </p>
               </div>
-
-              {/* order status  btn*/}
-              {/* {!cart && (
-          <div
-            className="flex items-center gap-x-2 justify-between rounded-full text-white w-full py-2 px-4 my-3"
-            style={{ backgroundColor: color }}
-          >
-            <div className="flex items-center gap-x-2">
-              <div>
-                <DeliveryStatusIcon />
-              </div>
-              <div>
-                <p suppressHydrationWarning={suppressText} className="">
-                  Order Ready For Deliver
-                </p>
-                <p suppressHydrationWarning={suppressText} className="text-xs">
-                  Estimated Time 2:00-2:30 PM
-                </p>
-              </div>
-            </div>
-            <div>
-              <ArrowUpStatusIcon />
-            </div>
-          </div>
-        )} */}
             </div>
           </>
         )}
