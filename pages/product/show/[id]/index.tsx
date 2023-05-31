@@ -76,7 +76,6 @@ import {
   useAddToCartMutation,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
-import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
 import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
@@ -113,7 +112,7 @@ const ProductShow: NextPage<Props> = ({
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
+  
   const [productOutStock, setProductOutStock] = useState<boolean>();
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
@@ -588,7 +587,7 @@ const ProductShow: NextPage<Props> = ({
                 />
                 )}
               </div>
-              <FavouriteAndShare />
+              <FavouriteAndShare/>
             </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
@@ -940,7 +939,7 @@ const ProductShow: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   value={productCart?.ExtraNotes}
                   onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
-                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 text-sm lg:text-base ${arboriaFont}`}
+                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 text-sm lg:text-base`}
                 />
               </div>
             </div>
@@ -1010,10 +1009,8 @@ const ProductShow: NextPage<Props> = ({
               
               </button>
               <ChangeMoodModal url={url} />
-                <ChangeMood3Modal
-                  isOpen={isNotAvailable}
-                  onRequestClose={() => setIsOpenNotAvailable(false)}
-                />
+                
+                
               </div>
             </div>
           </>

@@ -61,6 +61,14 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   // for test
   const auth = { guest: true, user: false };
 
+  const handleProtectedRouteNavigation = (path: string) => {
+    if (auth.user) {
+      return path;
+    } else {
+      return appLinks.login.path;
+    }
+  };
+
   return (
     <Suspense fallback={<div>loading skeleton</div>}>
       <Menu
@@ -173,7 +181,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={appLinks.orderHistory.path}
+                href={handleProtectedRouteNavigation(
+                  appLinks.orderHistory.path
+                )}
               >
                 <OrdersIcon stroke={color} />
                 <p
@@ -188,7 +198,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={appLinks.wishlist.path}
+                href={handleProtectedRouteNavigation(appLinks.wishlist.path)}
               >
                 <WishlistIcon stroke={color} fill="none" />
                 <p
@@ -203,7 +213,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={appLinks.userAddresses.path}
+                href={handleProtectedRouteNavigation(
+                  appLinks.userAddresses.path
+                )}
               >
                 <AddressIcon stroke={color} />
                 <p

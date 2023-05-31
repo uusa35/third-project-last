@@ -25,6 +25,7 @@ export default function UpcomingOrders({}: Props) {
   const {
     locale: { lang },
     appSetting: { url },
+    customer: { phone },
   } = useAppSelector((state) => state);
   const desObject = useAppSelector(destinationHeaderObject);
 
@@ -33,8 +34,9 @@ export default function UpcomingOrders({}: Props) {
       lang,
       destination: desObject,
       url,
+      phone,
     },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: true, skip: !phone }
   );
 
   var settings = {
@@ -84,80 +86,84 @@ export default function UpcomingOrders({}: Props) {
 
   return (
     <>
-      {isSuccess ? (
-        !isEmpty(data.data) && (
-          <div className="px-4 mt-7">
-            <p
-              className={`${alexandriaFontBold} mb-3 mt-5 text-lg`}
-              suppressHydrationWarning={suppressText}
-            >
-              {t('your_upcoming_order')}
-            </p>
-            <Slider {...settings}>
-              {data.data.map((order) => (
-                <div className="px-2">
-                  <div
-                    className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full`}
-                  >
-                    <div className="flex justify-between gap-x-2 text-[#544A45] text-xs border-b border-dashed border-[#E8E5E3] pb-3 mb-3">
-                      <p
-                        className={`${alexandriaFont}`}
-                        suppressHydrationWarning={suppressText}
+      {phone && (
+        <>
+          {isSuccess ? (
+            !isEmpty(data.data) && (
+              <div className="px-4 mt-7">
+                <p
+                  className={`${alexandriaFontBold} mb-3 mt-5 text-lg`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('your_upcoming_order')}
+                </p>
+                <Slider {...settings}>
+                  {data?.data.map((order) => (
+                    <div className="px-2">
+                      <div
+                        className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full`}
                       >
-                        {order.created_at}
-                      </p>
-                      <p
-                        className={`${alexandriaFontSemiBold}`}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {order.total} {t('kd')}
-                      </p>
-                    </div>
-
-                    <div className="flex justify-between gap-2 flex-wrap md:flex-nowrap">
-                      <div className="flex gap-x-2">
-                        <div>
-                          {order.order_type === 'pickup_later' ||
-                          order.order_type === 'pickup_now' ? (
-                            <PreparingIcon />
-                          ) : (
-                            <DeliveryIcon />
-                          )}
-                        </div>
-
-                        <div
-                          className={`text-[#544A45] text-xs ${alexandriaFontLight}`}
-                        >
+                        <div className="flex justify-between gap-x-2 text-[#544A45] text-xs border-b border-dashed border-[#E8E5E3] pb-3 mb-3">
                           <p
-                            className={`${alexandriaFontMeduim}`}
+                            className={`${alexandriaFont}`}
                             suppressHydrationWarning={suppressText}
                           >
-                            {order.order_status}
+                            {order.created_at}
                           </p>
-                          <p suppressHydrationWarning={suppressText}>
-                            {t('order_id')} : #{order.order_code}
-                          </p>
-                          <p suppressHydrationWarning={suppressText}>
-                            {t('estimated_time')} {order.estimated_time}
+                          <p
+                            className={`${alexandriaFontSemiBold}`}
+                            suppressHydrationWarning={suppressText}
+                          >
+                            {order.total} {t('kd')}
                           </p>
                         </div>
-                      </div>
-                      <div className="flex md:block justify-end w-full md:w-auto">
-                        <button
-                          className={`whitespace-nowrap bg-[#F3F2F2] text-[#1A1615] h-fit rounded-full px-2 text-xxs ${alexandriaFontSemiBold}`}
-                        >
-                          {t('track_order')}
-                        </button>
+
+                        <div className="flex justify-between gap-2 flex-wrap md:flex-nowrap">
+                          <div className="flex gap-x-2">
+                            <div>
+                              {order.order_type === 'pickup_later' ||
+                              order.order_type === 'pickup_now' ? (
+                                <PreparingIcon />
+                              ) : (
+                                <DeliveryIcon />
+                              )}
+                            </div>
+
+                            <div
+                              className={`text-[#544A45] text-xs ${alexandriaFontLight}`}
+                            >
+                              <p
+                                className={`${alexandriaFontMeduim}`}
+                                suppressHydrationWarning={suppressText}
+                              >
+                                {order.order_status}
+                              </p>
+                              <p suppressHydrationWarning={suppressText}>
+                                {t('order_id')} : #{order.order_code}
+                              </p>
+                              <p suppressHydrationWarning={suppressText}>
+                                {t('estimated_time')} {order.estimated_time}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex md:block justify-end w-full md:w-auto">
+                            <button
+                              className={`whitespace-nowrap bg-[#F3F2F2] text-[#1A1615] h-fit rounded-full px-2 text-xxs ${alexandriaFontSemiBold}`}
+                            >
+                              {t('track_order')}
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </Slider>
-          </div>
-        )
-      ) : (
-        <ContentLoader type="SliderSkelton" sections={1} />
+                  ))}
+                </Slider>
+              </div>
+            )
+          ) : (
+            <ContentLoader type="SliderSkelton" sections={1} />
+          )}
+        </>
       )}
     </>
   );
