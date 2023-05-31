@@ -19,7 +19,7 @@ export interface Product {
   cover: string;
   img: img[];
   sections?: ProductSection[];
-  cover: string;
+  cover: string
 }
 
 export interface ProductSection {
