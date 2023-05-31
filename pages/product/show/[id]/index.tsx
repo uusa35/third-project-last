@@ -76,8 +76,12 @@ import {
   useAddToCartMutation,
   useLazyGetCartProductsQuery,
 } from '@/redux/api/cartApi';
+import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
-import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationId,
+  destinationHeaderObject,
+} from '@/redux/slices/searchParamsSlice';
 import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
 
 type Props = {
@@ -100,7 +104,7 @@ const ProductShow: NextPage<Props> = ({
     searchParams: { method, destination },
     customer: { userAgent, prefrences },
     vendor: { logo },
-    Cart: { promocode }
+    Cart: { promocode },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   console.log({ destination, method });
@@ -110,9 +114,10 @@ const ProductShow: NextPage<Props> = ({
   );
   const [tabsOpen, setTabsOpen] = useState<{ id: number }[]>([]);
   const [isReadMoreShown, setIsReadMoreShown] = useState<boolean>(false);
+  const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const [productOutStock, setProductOutStock] = useState<boolean>();
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
@@ -183,17 +188,27 @@ const ProductShow: NextPage<Props> = ({
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
-      const requiredMeters = filter(element?.Data?.sections, (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory');
-      const requiredRadioBtns = filter(element?.Data?.sections, (c) => c.must_select === 'single' && c.selection_type === 'mandatory');
-      const requiredCheckboxes = filter(element?.Data?.sections, (c) => c.must_select === 'multi' && c.selection_type === 'mandatory');
+      const requiredMeters = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory'
+      );
+      const requiredRadioBtns = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'single' && c.selection_type === 'mandatory'
+      );
+      const requiredCheckboxes = filter(
+        element?.Data?.sections,
+        (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
+      );
       if (
-        element?.Data?.sections?.length !== 0 &&
-        element?.Data?.sections?.filter(
-          (itm) => itm.selection_type === 'mandatory'
-        ).length !== 0 &&
-        (requiredRadioBtns.length > 0 && isEmpty(allRadioBtns)) ||
-        (requiredMeters.length > 0 && isEmpty(allMeters)) || 
-        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))  
+        (element?.Data?.sections?.length !== 0 &&
+          element?.Data?.sections?.filter(
+            (itm) => itm.selection_type === 'mandatory'
+          ).length !== 0 &&
+          requiredRadioBtns.length > 0 &&
+          isEmpty(allRadioBtns)) ||
+        (requiredMeters.length > 0 && isEmpty(allMeters)) ||
+        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))
       ) {
         dispatch(disableAddToCart());
       } else {
@@ -232,9 +247,9 @@ const ProductShow: NextPage<Props> = ({
     currentQty,
     productCart.ExtraNotes,
   ]);
-  
+
   useEffect(() => {
-    if(productCart.enabled) {
+    if (productCart.enabled) {
       setRequiredSection(false);
     }
   }, [productCart.enabled]);
@@ -417,7 +432,7 @@ const ProductShow: NextPage<Props> = ({
     userAgent,
     area_branch: desObject,
     url,
-    PromoCode: promocode
+    PromoCode: promocode,
   });
   const handelCartPayload = () => {
     let items = map(cartItems?.data.Cart, (i) => {
@@ -488,7 +503,7 @@ const ProductShow: NextPage<Props> = ({
               userAgent,
               area_branch: desObject,
               url,
-              PromoCode: promocode
+              PromoCode: promocode,
             }).then((r) => {
               if ((r.data && r.data.data) || r.data?.data.Cart) {
                 dispatch(
@@ -574,21 +589,21 @@ const ProductShow: NextPage<Props> = ({
                 </button>
                 {offset > 80 && (
                   <TextTrans
-                  ar={element?.Data?.name_ar}
-                  en={element?.Data?.name_en}
-                  style={{
-                    maxWidth: '30ch',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    display: 'block',
-                    color: `black`,
-                  }}
-                  className="px-6"
-                />
+                    ar={element?.Data?.name_ar}
+                    en={element?.Data?.name_en}
+                    style={{
+                      maxWidth: '30ch',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      display: 'block',
+                      color: `black`,
+                    }}
+                    className="px-6"
+                  />
                 )}
               </div>
-              <FavouriteAndShare/>
+              <FavouriteAndShare />
             </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
@@ -723,7 +738,13 @@ const ProductShow: NextPage<Props> = ({
                           : t('multi_selection')}
                       </p>
                     </div>
-                    <div className={`text-xs lg:text-sm text-center rounded-full w-20 h-8 pt-2 lg:pt-1 ${requiredSection && s.selection_type === 'mandatory' ? 'bg-white border-red-600 border-[1px]' : 'bg-gray-100'}`}>
+                    <div
+                      className={`text-xs lg:text-sm text-center rounded-full w-20 h-8 pt-2 lg:pt-1 ${
+                        requiredSection && s.selection_type === 'mandatory'
+                          ? 'bg-white border-red-600 border-[1px]'
+                          : 'bg-gray-100'
+                      }`}
+                    >
                       <span>
                         {s.selection_type === 'mandatory'
                           ? t('required')
@@ -735,8 +756,8 @@ const ProductShow: NextPage<Props> = ({
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                       <div className={`flex pb-1`}>
                         <input
-                          id={`${s.id}${s.selection_type}`} 
-                          name={`${s.id}${s.selection_type}`} 
+                          id={`${s.id}${s.selection_type}`}
+                          name={`${s.id}${s.selection_type}`}
                           type="radio"
                           checked={
                             !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
@@ -747,14 +768,17 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4 lg:h-5 lg:w-5"
                           style={{ accentColor: color }}
                         />
-                        <label htmlFor={`${s.id}${s.selection_type}`} className="mx-3 block text-sm">
+                        <label
+                          htmlFor={`${s.id}${s.selection_type}`}
+                          className="mx-3 block text-sm"
+                        >
                           {t('yes')}
                         </label>
                       </div>
                       <div className={`flex flex-row`}>
                         <input
-                          id={`${s.id}${s.selection_type}`} 
-                          name={`${s.id}${s.selection_type}`} 
+                          id={`${s.id}${s.selection_type}`}
+                          name={`${s.id}${s.selection_type}`}
                           type="radio"
                           checked={isEmpty(
                             filter(tabsOpen, (t) => t.id === s.id)
@@ -773,7 +797,10 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4 lg:h-5 lg:w-5"
                           style={{ accentColor: color }}
                         />
-                        <label htmlFor={`${s.id}${s.selection_type}`} className="mx-3 block text-sm">
+                        <label
+                          htmlFor={`${s.id}${s.selection_type}`}
+                          className="mx-3 block text-sm"
+                        >
                           {t('no')}
                         </label>
                       </div>
@@ -818,10 +845,7 @@ const ProductShow: NextPage<Props> = ({
                             >
                               <div className={`space-y-1`}>
                                 <div>
-                                  <TextTrans
-                                    ar={c.name_ar}
-                                    en={c.name_en}
-                                  />
+                                  <TextTrans ar={c.name_ar} en={c.name_en} />
                                 </div>
                                 <div>
                                   +{c.price}{' '}
@@ -830,7 +854,11 @@ const ProductShow: NextPage<Props> = ({
                                   </span>
                                 </div>
                               </div>
-                              <div className={`flex items-center ${isRTL && 'flex-row-reverse'}`}>
+                              <div
+                                className={`flex items-center ${
+                                  isRTL && 'flex-row-reverse'
+                                }`}
+                              >
                                 <button
                                   disabled={
                                     currentQty === 0 ||
@@ -874,54 +902,57 @@ const ProductShow: NextPage<Props> = ({
                               </div>
                             </div>
                           ) : (
-                            <div key={i} className="pb-2 flex flex-1 justify-between">
+                            <div
+                              key={i}
+                              className="pb-2 flex flex-1 justify-between"
+                            >
                               <div className="flex">
-                              <input
-                                id={`${c.id}${s.selection_type}`}
-                                name={`${c.id}${s.selection_type}`}
-                                required={s.selection_type !== 'optional'}
-                                type={
-                                  s.must_select === 'multi'
-                                    ? `checkbox`
-                                    : 'radio'
-                                }
-                                checked={
-                                  s.must_select !== 'multi'
-                                    ? filter(
-                                        productCart?.RadioBtnsAddons,
-                                        (q) => q.uId === `${s.id}${c.id}`
-                                      )[0]?.uId === `${s.id}${c.id}`
-                                    : filter(
-                                        productCart?.CheckBoxes,
-                                        (q) => q.uId === `${s.id}${c.id}`
-                                      )[0]?.uId === `${s.id}${c.id}`
-                                }
-                                onChange={(e) =>
-                                  handleSelectAddOn(
-                                    s,
-                                    c,
+                                <input
+                                  id={`${c.id}${s.selection_type}`}
+                                  name={`${c.id}${s.selection_type}`}
+                                  required={s.selection_type !== 'optional'}
+                                  type={
                                     s.must_select === 'multi'
                                       ? `checkbox`
-                                      : 'radio',
-                                    e.target.checked
-                                  )
-                                }
-                                className="h-4 w-4 lg:h-5 lg:w-5 border-red-600 checked:ring-0 focus:ring-0"
-                                style={{ accentColor: color }}
-                              />
-                              <label
-                                htmlFor={`${c.id}${s.selection_type}`}
-                                className="ltr:ml-3 rtl:mr-3 block text-sm"
-                              >
-                                <TextTrans ar={c.name_ar} en={c.name_en} />
-                              </label>
+                                      : 'radio'
+                                  }
+                                  checked={
+                                    s.must_select !== 'multi'
+                                      ? filter(
+                                          productCart?.RadioBtnsAddons,
+                                          (q) => q.uId === `${s.id}${c.id}`
+                                        )[0]?.uId === `${s.id}${c.id}`
+                                      : filter(
+                                          productCart?.CheckBoxes,
+                                          (q) => q.uId === `${s.id}${c.id}`
+                                        )[0]?.uId === `${s.id}${c.id}`
+                                  }
+                                  onChange={(e) =>
+                                    handleSelectAddOn(
+                                      s,
+                                      c,
+                                      s.must_select === 'multi'
+                                        ? `checkbox`
+                                        : 'radio',
+                                      e.target.checked
+                                    )
+                                  }
+                                  className="h-4 w-4 lg:h-5 lg:w-5 border-red-600 checked:ring-0 focus:ring-0"
+                                  style={{ accentColor: color }}
+                                />
+                                <label
+                                  htmlFor={`${c.id}${s.selection_type}`}
+                                  className="ltr:ml-3 rtl:mr-3 block text-sm"
+                                >
+                                  <TextTrans ar={c.name_ar} en={c.name_en} />
+                                </label>
                               </div>
-                                <div>
-                                  {parseFloat(c.price).toFixed(3)}
-                                  <span className={`mx-1 uppercase`}>
-                                    {t(`kwd`)}
-                                  </span>
-                                </div>
+                              <div>
+                                {parseFloat(c.price).toFixed(3)}
+                                <span className={`mx-1 uppercase`}>
+                                  {t(`kwd`)}
+                                </span>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -933,7 +964,9 @@ const ProductShow: NextPage<Props> = ({
 
               {/* notes */}
               <div className="px-4 lg:px-8 py-4">
-                <p className="pb-3 text-sm lg:text-base">{t('special_instructions')}</p>
+                <p className="pb-3 text-sm lg:text-base">
+                  {t('special_instructions')}
+                </p>
                 <input
                   type="text"
                   placeholder={`${t('add_instructions')}`}
@@ -944,74 +977,86 @@ const ProductShow: NextPage<Props> = ({
                 />
               </div>
             </div>
-          <div className="lg:sticky bottom-0 bg-white">
-            <div className="flex justify-center items-center w-full px-4 lg:px-8">
-              <div
-                className={`flex flex-row justify-center items-center my-4 capitalize`}
-              >
-                <div className={`flex items-center ${!isRTL && 'flex-row-reverse'}`}>
-                  <button
-                    disabled={currentQty === element.Data?.amount}
-                    onClick={handleIncrease}
-                    type="button"
-                    className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
-                    style={{ backgroundColor: color }}
+            <div className="lg:sticky bottom-0 bg-white">
+              <div className="flex justify-center items-center w-full px-4 lg:px-8">
+                <div
+                  className={`flex flex-row justify-center items-center my-4 capitalize`}
+                >
+                  <div
+                    className={`flex items-center ${
+                      !isRTL && 'flex-row-reverse'
+                    }`}
                   >
-                    +
-                  </button>
-                  <span className="text-black text-xl inline-block text-center w-10 h-7">
-                    {currentQty}
-                  </span>
-                  <button
-                    disabled={currentQty === 0}
-                    onClick={handleDecrease}
-                    type="button"
-                    className={`w-6 h-6 lg:w-7 lg:h-7 text-base lg:text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
-                    style={{ borderColor: color, color }}
-                  >
-                    -
-                  </button>
+                    <button
+                      disabled={currentQty === element.Data?.amount}
+                      onClick={handleIncrease}
+                      type="button"
+                      className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                      style={{ backgroundColor: color }}
+                    >
+                      +
+                    </button>
+                    <span className="text-black text-xl inline-block text-center w-10 h-7">
+                      {currentQty}
+                    </span>
+                    <button
+                      disabled={currentQty === 0}
+                      onClick={handleDecrease}
+                      type="button"
+                      className={`w-6 h-6 lg:w-7 lg:h-7 text-base lg:text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                      style={{ borderColor: color, color }}
+                    >
+                      -
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              className={`px-4 border-b-[1px] pb-5`}
-            >
-              <button
-                disabled={productOutStock}
-                onClick={debounce(() => handleAddToCart(), 400)}
-                className={`font-light ${mainBtnClass} py-2 flex justify-between px-5`}
-                style={{
-                  backgroundColor: color,
-                  color: `white`,
-                }}>
-              <div className="px-5 text-center w-full">
-              {productOutStock
-                ? t('out_stock')
-                : isNull(destination)
-                ? t(`start_ordering`)
-                : (
-                  <div className="w-full flex justify-between">
-                    {t('add_to_cart')}
-                    <span className="flex">
-                    <p className={`text-white`}>
-                      {parseFloat(productCart.grossTotalPrice).toFixed(3) === '0.000' && productCart.price_on_selection
-                        ? t(`price_on_selection`)
-                        : parseFloat(productCart.grossTotalPrice).toFixed(3)}
-                    </p>
-                    {parseFloat(productCart.grossTotalPrice).toFixed(3) !== '0.000' && (
-                      <span className={`text-white uppercase px-2`}>{t('kwd')}</span>
+              <div className={`px-4 border-b-[1px] pb-5`}>
+                <button
+                  disabled={productOutStock}
+                  onClick={debounce(() => handleAddToCart(), 400)}
+                  className={`font-light ${mainBtnClass} py-2 flex justify-between px-5`}
+                  style={{
+                    backgroundColor: color,
+                    color: `white`,
+                  }}
+                >
+                  <div className="px-5 text-center w-full">
+                    {productOutStock ? (
+                      t('out_stock')
+                    ) : isNull(destination) ? (
+                      t(`start_ordering`)
+                    ) : (
+                      <div className="w-full flex justify-between">
+                        {t('add_to_cart')}
+                        <span className="flex">
+                          <p className={`text-white`}>
+                            {parseFloat(productCart.grossTotalPrice).toFixed(
+                              3
+                            ) === '0.000' && productCart.price_on_selection
+                              ? t(`price_on_selection`)
+                              : parseFloat(productCart.grossTotalPrice).toFixed(
+                                  3
+                                )}
+                          </p>
+                          {parseFloat(productCart.grossTotalPrice).toFixed(
+                            3
+                          ) !== '0.000' && (
+                            <span className={`text-white uppercase px-2`}>
+                              {t('kwd')}
+                            </span>
+                          )}
+                        </span>
+                      </div>
                     )}
-                  </span>
                   </div>
-                )
-                }
-              </div>              
-              
-              </button>
-              <ChangeMoodModal url={url} />
-                
-                
+                </button>
+                <ChangeMoodModal url={url} />
+
+                <ChangeMood3Modal
+                  isOpen={isNotAvailable}
+                  onRequestClose={() => setIsOpenNotAvailable(false)}
+                />
               </div>
             </div>
           </>
@@ -1047,7 +1092,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           lang: locale,
           // ...(destination?.id ? { branch_id: destination?.id } : {}),
           // ...(destination?.id ? { area_id: destination?.id } : {}),
-          url: req.headers.host
+          url: req.headers.host,
         })
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));

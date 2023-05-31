@@ -21,7 +21,6 @@ const SigninAddFavModal: FC<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const router = useRouter();
-  
 
   return (
     <>

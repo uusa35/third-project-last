@@ -59,7 +59,7 @@ export default function Wishlist({ url }: Props) {
       />
       {isLoading ? (
         <div>
-          <Skeleton width={'100%'} height={50} className="" />
+          <Skeleton height={50} />
           <ContentLoader type={'ProductHorizontal'} sections={5} />
         </div>
       ) : (

@@ -68,7 +68,7 @@ const VerProductWidget: FC<Props> = ({
               >
                 {element.new_price && element.new_price !== element.price ? (
                   <div
-                    className="flex justify-center items-center flex-wrap gap-x-2 rounded-full p-1 md:py-1 md:px-2 text-center"
+                    className="flex justify-center items-center gap-x-2 rounded-full p-1 md:py-1 md:px-2 text-center"
                     style={{ color, borderColor: color, border: '1px solid' }}
                   >
                     <p

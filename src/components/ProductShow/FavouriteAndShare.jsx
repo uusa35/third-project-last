@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
 import Share from '@/appIcons/share.svg';
-import Link from 'next/link';
-import { appLinks } from '@/constants/*';
-import Image from 'next/image';
 import SigninAddFavModal from '../modals/SigninAddFavModal';
 
 export default function FavouriteAndShare() {
-  const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
+  const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
   const isAuth = false;
 
   
@@ -16,14 +13,14 @@ export default function FavouriteAndShare() {
       // add to wishlist req
     } else {
       // openmodal
-      setIsOpenNotAvailable(true);
+      setOpenSigninFavModal(true);
     }
   };
   return (
     <>
       <SigninAddFavModal
-        isOpen={isNotAvailable}
-        onRequestClose={() => setIsOpenNotAvailable(false)}
+        isOpen={openSigninFavModal}
+        onRequestClose={() => setOpenSigninFavModal(false)}
       />
       <div className="flex justify-end items-center space-x-2">
         <button onClick={() => handleAddRemvWishlist()}>
