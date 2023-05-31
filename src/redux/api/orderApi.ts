@@ -129,10 +129,13 @@ export const orderApi = apiSlice.injectEndpoints({
 
       getUpcomingOrders: builder.query<
         AppQueryResult<UpcomingOrders[]>,
-        {lang: Locale['lang'], destination: any; url: string }
+        {lang: Locale['lang'], destination: any; url: string , phone:string}
       >({
-        query: ({ lang,destination, url }) => ({
+        query: ({ lang,destination, url ,phone}) => ({
           url: `order/live`,
+          params:{
+            phone
+          },
           headers: {lang, url, ...destination },
         }),
       }),
