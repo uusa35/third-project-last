@@ -82,7 +82,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
             <p
               suppressHydrationWarning={suppressText}
               className={`text-[#1A1615] ${
-                p2 ? alexandriaFontLight : alexandriaFont
+                p2 ? alexandriaFontLight : alexandriaFontSemiBold
               }`}
             >
               {p3}
@@ -136,7 +136,11 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
                 }[address_type as number]
               : ''
           }
-          p3={displayUserAddress(UserAddress)}
+          p3={
+            method === 'delivery'
+              ? displayUserAddress(UserAddress)
+              : destination.location
+          }
           editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       ) : (

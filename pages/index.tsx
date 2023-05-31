@@ -34,6 +34,7 @@ import {
 import AdsScrollBar from '@/components/home/AdsScrollBar';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
+import UpcomingOrders from '@/components/home/UpcomingOrders';
 
 type Props = {
   element: Vendor;
@@ -181,22 +182,25 @@ export default function Home({ url, element, currentLocale }: Props) {
             <>
               <div className={`py-4`}>
                 {!isEmpty(categories) &&
-                vendorElement?.Data?.template_type === 'basic_categorymbjmb' ? (
-                  <div className="px-4">
-                    <p
-                      className="relative text-md font-bold pb-4"
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('categories')}
-                    </p>
-                    <div
-                      className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
-                    >
-                      {map(categories.Data, (c, i) => (
-                        <CategoryWidget element={c} key={i} />
-                      ))}
+                vendorElement?.Data?.template_type === 'basic_category' ? (
+                  <>
+                    <UpcomingOrders />
+                    <div className="px-4">
+                      <p
+                        className="relative text-md font-bold pb-4"
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {t('categories')}
+                      </p>
+                      <div
+                        className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-y-1 gap-x-3`}
+                      >
+                        {map(categories.Data, (c, i) => (
+                          <CategoryWidget element={c} key={i} />
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </>
                 ) : (
                   CategoriesProducts &&
                   !isEmpty(CategoriesProducts.Data) && (
