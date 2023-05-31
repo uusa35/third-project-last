@@ -41,7 +41,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
       address: { type: address_type },
       prefrences,
     },
-    searchParams: { method },
+    searchParams: { method, destination },
   } = useAppSelector((state) => state);
 
   const DetailComponent = ({

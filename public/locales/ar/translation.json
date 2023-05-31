@@ -247,5 +247,7 @@
   "coupon_value" : "قيمة الخصم",
   "your_upcoming_order":"الطلبات الحاليه",
   "to":"إلى",
-  "info": "معلومات"
+  "info": "معلومات",
+  "search": "بحث...",
+  "search_products": "بحث عن المنتجات"
 }

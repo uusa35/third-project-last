@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
-import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import { destinationHeaderObject, setCategory } from '@/redux/slices/searchParamsSlice';
 
 type Props = { url: string };
 export default function AsideHeader({ url }: Props) {
@@ -109,14 +109,17 @@ export default function AsideHeader({ url }: Props) {
               )}
           </div>
         </Link>
-        <Link
+        <button
           scroll={true}
-          href={appLinks.productSearch.path}
+          onClick={() => {
+            dispatch(setCategory(null));
+            router.push(`${appLinks.productSearch.path}`);
+          }}
           className={`w-10 h-10 rounded-full flex justify-center items-center bg-white text-black capitalize`}
           suppressHydrationWarning={suppressText}
         >
           <MagnifyingGlassIcon className={`w-5 h-5 text-stone-700`} />
-        </Link>
+        </button>
         <button
           onClick={() => handleChangeLang(otherLang)}
           className={`w-10 h-10 rounded-full flex justify-center items-center bg-white  text-black capitalize text-lg`}

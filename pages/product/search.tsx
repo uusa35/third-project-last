@@ -1,20 +1,28 @@
 import AppHeader from '@/components/AppHeader'
 import MainHead from '@/components/MainHead';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { wrapper } from '@/redux/store';
 import { useRouter } from 'next/router';
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { West, East } from '@mui/icons-material';
-import { appLinks, arboriaFont, suppressText, imageSizes } from '@/constants/*';
+import { appLinks, suppressText, imageSizes, scrollClass } from '@/constants/*';
 import Link from 'next/link';
 import CustomImage from "@/components/CustomImage";
 import { themeColor } from "@/redux/slices/vendorSlice";
 import Image from "next/image";
 import NoProductFound from '@/appImages/no_product.png';
-import { isNull } from 'lodash';
+import { debounce, isEmpty, isNull, isUndefined, map, upperFirst } from 'lodash';
 import TextTrans from '@/components/TextTrans';
+import { setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  destinationHeaderObject,
+} from '@/redux/slices/searchParamsSlice';
+import { useGetTopSearchQuery, useLazyGetProductsQuery, useLazyGetSearchProductsQuery } from '@/redux/api/productApi';
+import { Product } from '@/types/index';
+import VerProductWidget from '@/components/widgets/product/VerProductWidget';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   url: string;
@@ -22,31 +30,121 @@ type Props = {
 
 export default function search({ url }: Props) {
   const { t } = useTranslation();
-  const router = useRouter();
-  const [searchKey, setSearchKey] = useState('');
-  const color = useAppSelector(themeColor);
   const {
     locale: { lang },
-    // branch: { id: branchId },
-    // area: { id: areaId },
-    vendor: { logo },
+    searchParams: { category_id }
   } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const [icon, setIcon] = useState(true);
+  const listRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState<number>(1); // storing current page number
+  const [previousPage, setPreviousPage] = useState<number>(0); // storing prev page number
+  const [latest, setLatest] = useState(false); // setting a flag to know the last list
+  const [searchKey, setSearchKey] = useState<string | undefined>(``);
+  const { query }: any = useRouter();
+  const [currentProducts, setCurrentProducts] = useState<any>([]);
+  const desObject = useAppSelector(destinationHeaderObject);
+  const [triggerGetProducts, { isLoading: getProductsLoading }] =
+    useLazyGetProductsQuery();
+  const [triggerSearchProducts] = useLazyGetSearchProductsQuery();
+  const { data: topSearch, isSuccess: topSearchSuccess } = useGetTopSearchQuery(
+    {
+      lang,
+      destination: desObject,
+      url,
+    }
+  );
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
-  const handleSearch = (value: string) => {
-    setSearchKey(value);
-    console.log({ searchKey });
-  }
+  const handleFire = async () => {
+    await triggerGetProducts({
+      category_id: category_id?.toString(),
+      destination: desObject,
+      page: currentPage.toString(),
+      limit: '30',
+      url,
+      lang,
+    }).then((r) => {
+      if (r.data && r.data?.Data && r.data?.Data?.products) {
+        if (r.data.Data?.products?.length === 0) {
+          setLatest(true);
+          return;
+        }
+        setPreviousPage(currentPage);
+        setCurrentProducts([...currentProducts, ...r.data.Data.products]);
+      } else {
+        // nothing
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!latest && previousPage !== currentPage) {
+      handleFire();
+    }
+  }, [latest, currentProducts, previousPage, currentPage]);
+
+  const onScroll = () => {
+    console.log('scroll')
+    if (listRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+      if (scrollTop + clientHeight === scrollHeight) {
+        setCurrentPage(currentPage + 1);
+      }
+    }
+  };
+
+  const resetPages = async () => {
+    setCurrentProducts([]);
+    setCurrentPage(1);
+    setPreviousPage(0);
+  };
+
+  const handleChange = async (key: string) => {
+    if (key.length >= 2 && url) {
+      setSearchKey(key);
+      await triggerSearchProducts({
+        key,
+        lang,
+        destination: desObject,
+        url,
+      }).then((r: any) => {
+        console.log({ resss: r })
+        if (r.data && r.data.Data && r.data.Data.length > 0) {
+          setCurrentProducts(r.data.Data);
+        } else {
+          setCurrentProducts([]);
+        }
+      });
+    } else {
+      await resetPages().then(() => setSearchKey(undefined));
+    }
+  };
+  
+  useEffect(() => {
+    isUndefined(searchKey) && handleFire();
+  }, [searchKey]);
+
   return (
-    <>
-    {searchKey === '' ? (
       <Suspense>
       <MainHead
         title={t('search_products')}
         description={`${t('search_products')}`}
-        mainImage={`${logo}`}
       />
       <MainContentLayout url={url}>
-      <div className="flex justify-start items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-2 border-gray-200">
+      <>
+      {getProductsLoading && isEmpty(currentProducts) ? (
+        <>
+         <ContentLoader type="ProductHorizontal" sections={8} />
+        </>
+      ): (
+        <>
+        <div className="flex justify-start items-center p-3 sticky top-0 z-50 w-full bg-white border-b-2 border-gray-200">
         <button
             onClick={() => router.back()}
             className={`flex justify-start items-center pt-1`}
@@ -62,100 +160,88 @@ export default function search({ url }: Props) {
           name="search"
           id="search"
           defaultValue={searchKey}
-          onChange={(e) => handleSearch(e.target.value)}
-          className={`flex-1 px-5 py-3 h-12 text-lg capitalize foucs:ring-0 outline-none ${arboriaFont}`}
+          onChange={debounce((e) => handleChange(e.target.value), 400)}
+          className={`flex-1 px-5 py-3 h-12 text-lg placeholder:text-stone-500 capitalize foucs:ring-0 outline-none`}
           suppressHydrationWarning={suppressText}
           placeholder={`${t('search')}`}
         />
       </div>
-      <div className="p-5">
-        <h3 className="text-base font-semibold pb-3" suppressHydrationWarning={suppressText}>
-          {t('popular_search')}
-        </h3>
-        <div className="flex items-center flex-wrap">
-            <div className="p-1 ps-0">
-              <button className="bg-gray-100 rounded-full w-fit h-10 px-3 flex justify-center items-center"
-                onClick={() => setSearchKey(`product name`)}
-              >
-                product name
-              </button>
-            </div>
+      {topSearchSuccess && 
+      topSearch.Data && 
+      isNull(category_id) && 
+      isEmpty(currentProducts) && 
+      ((!isUndefined(searchKey) && searchKey?.length < 2) || isUndefined(searchKey)) &&
+      (
+        <div className="p-5">
+          <h3 className="text-lg font-semibold pb-3" suppressHydrationWarning={suppressText}>
+            {t('popular_search')}
+          </h3>
+          <div className="flex items-center flex-wrap">
+          {map(topSearch.Data.topSearch, 
+            (keyword, i) =>
+            !isEmpty(keyword) &&
+            !isNull(keyword) &&
+            keyword !== 'null' && (
+              <div className="pe-3 pb-3 ps-0" key={i}>
+                <button className="bg-[#F3F2F2] text-stone-600 rounded-full w-fit h-12 px-5 flex justify-center items-center"
+                  onClick={debounce((e) => handleChange(keyword), 400)}
+                >
+                  {keyword}
+                </button>
+              </div>
+          ))}
+          </div>
         </div>
+      )}
+      {!isUndefined(searchKey) && searchKey?.length >= 2 && (
+        <>
+        {(isEmpty(currentProducts) && searchKey !== ``) && (
+        <div className="flex justify-center items-center h-[75vh]">
+          <div className="flex flex-col items-center space-y-2">
+            <Image 
+              src={NoProductFound} 
+              alt='no product found' 
+              width={150} 
+              height={150} 
+            />
+            <h4 className="font-semibold" suppressHydrationWarning={suppressText}>
+              {upperFirst(`${t('no_product_were_found')}`)}
+            </h4>
+            <p className="text-stone-700" suppressHydrationWarning={suppressText}>
+              {upperFirst(`${t('check_the_speling_or_try_searching_again')}`)}
+            </p>
+          </div>
+        </div>
+       )}
+        </>
+      )}
+      <div
+          ref={listRef}
+          onScroll={onScroll}
+          className={` ${scrollClass} ${
+            !isUndefined(searchKey) && currentProducts.length <= 5
+              ? `h-min`
+              : `h-[100vh]`
+          }  overflow-y-scroll
+          `}
+        >
+        {currentProducts.length ? (
+          <div className="p-5">
+            {map(currentProducts, (product: Product) => (
+              <VerProductWidget
+                element={product}
+                category_id={`${category_id}`}
+                key={product.id}
+              />
+            ))}
+          </div>
+        ) : null}
       </div>
+        </>
+      )}
+      </>
       </MainContentLayout>
-    </Suspense>
-    ) : (
-      <Suspense>
-     <MainHead
-       title={`product name`}
-       description={`product name`}
-     // mainImage={`${logo}`}
-   />
-   <MainContentLayout url={url}>
-   <div className="flex justify-start items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-2 border-gray-200">
-        <button
-            onClick={() => setSearchKey('')}
-            className={`flex justify-start items-center pt-1`}
-          >
-            {router.locale === 'en' ? (
-              <West />
-            ) : (
-              <East />
-            )}
-        </button>
-        <p className="px-4">product name</p>
-      </div>
-     <div className="p-5">
-     <div className="flex justify-between">
-         <div className="flex flex-col space-y-2">
-           <TextTrans 
-             en="product name"
-             ar="اسم المنتج"
-             className="text-base font-semibold"
-           />
-           <TextTrans
-             en="product description"
-             ar="وصف المنتج"
-             className="text-gray-500"
-           />
-           <div className="flex items-center space-x-2 pb-1">
-             <p className="px-3 h-9 pt-1 w-fit border-[1px] rounded-full" style={{borderColor: color}}>
-               price {t('kwd')}
-             </p>
-             <button className="text-white text-xl pb-1 w-9 h-9 rounded-full" style={{backgroundColor: color}}>
-               +
-             </button>
-           </div>
-           <p className="bg-gray-100 text-sm text-gray-600 rounded-full h-9 px-3 pt-2">
-             {t('limited_quantity_will_end_soon')}
-           </p>
-         </div>
-         <CustomImage
-           src={''}
-           alt={'product image'}
-           className=""
-           width={imageSizes.xs}
-           height={imageSizes.xs}
-         />
-       </div>
-    </div>
-
-     <div className="flex justify-center items-center h-[75vh]">
-       <div className="flex flex-col items-center space-y-2">
-         <Image 
-           src={NoProductFound} 
-           alt='no product found' 
-           width={150} 
-           height={150} 
-         />
-         <h4 className="font-semibold" suppressHydrationWarning={suppressText}>{t('no_product_were_found')}</h4>
-         <p className="text-gray-600" suppressHydrationWarning={suppressText}>{t('check_the_speling_or_try_searching_again')}</p>
-       </div>
-     </div>
-   </MainContentLayout>
-    </Suspense>
-    )}
-    </>
+      </Suspense>
   )
 }
 export const getServerSideProps = wrapper.getServerSideProps(

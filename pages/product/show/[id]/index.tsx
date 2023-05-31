@@ -13,7 +13,6 @@ import Carousel from 'react-material-ui-carousel';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
-  arboriaFont,
   imageSizes,
   imgUrl,
   mainBtnClass,
@@ -120,7 +119,6 @@ const ProductShow: NextPage<Props> = ({
   const desObject = useAppSelector(destinationHeaderObject);
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
-  console.log({ desObject })
   const {
     data: element,
     isSuccess,
@@ -164,7 +162,6 @@ const ProductShow: NextPage<Props> = ({
       }
     }
   }, [isSuccess, element?.Data?.id, isRTL]);
-
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
@@ -187,14 +184,17 @@ const ProductShow: NextPage<Props> = ({
       const metersSum = sumBy(allMeters, (a) => multiply(a.price, a.Value)); // qty
       const checkboxesSum = sumBy(allCheckboxes, (a) => a.Value * a.price); // qty
       const radioBtnsSum = sumBy(allRadioBtns, (a) => a.Value * a.price); // qty
+      const requiredMeters = filter(element?.Data?.sections, (c) => c.must_select === 'q_meter' && c.selection_type === 'mandatory');
+      const requiredRadioBtns = filter(element?.Data?.sections, (c) => c.must_select === 'single' && c.selection_type === 'mandatory');
+      const requiredCheckboxes = filter(element?.Data?.sections, (c) => c.must_select === 'multi' && c.selection_type === 'mandatory');
       if (
         element?.Data?.sections?.length !== 0 &&
         element?.Data?.sections?.filter(
           (itm) => itm.selection_type === 'mandatory'
         ).length !== 0 &&
-        isEmpty(allCheckboxes) &&
-        isEmpty(allRadioBtns) &&
-        isEmpty(allMeters)
+        (requiredRadioBtns.length > 0 && isEmpty(allRadioBtns)) ||
+        (requiredMeters.length > 0 && isEmpty(allMeters)) || 
+        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))  
       ) {
         dispatch(disableAddToCart());
       } else {
@@ -559,7 +559,7 @@ const ProductShow: NextPage<Props> = ({
             ? product.description_ar
             : product.description_en
         }`}
-        mainImage={`${product?.cover.toString()}`}
+        mainImage={`${product?.cover?.toString()}`}
         icon={`${logo}`}
         twitter={`${url}${resolvedUrl}`}
         facebook={`${url}${resolvedUrl}`}
@@ -736,8 +736,8 @@ const ProductShow: NextPage<Props> = ({
                     <div className={`flex flex-col gap-x-2 gap-y-1  mt-2`}>
                       <div className={`flex pb-1`}>
                         <input
-                          id={s.title}
-                          name={s.title}
+                          id={`${s.id}${s.selection_type}`} 
+                          name={`${s.id}${s.selection_type}`} 
                           type="radio"
                           checked={
                             !isEmpty(filter(tabsOpen, (t) => t.id === s.id))
@@ -748,14 +748,14 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4 lg:h-5 lg:w-5"
                           style={{ accentColor: color }}
                         />
-                        <label htmlFor={s.title} className="mx-3 block text-sm">
+                        <label htmlFor={`${s.id}${s.selection_type}`} className="mx-3 block text-sm">
                           {t('yes')}
                         </label>
                       </div>
                       <div className={`flex flex-row`}>
                         <input
-                          id={s.title}
-                          name={s.title}
+                          id={`${s.id}${s.selection_type}`} 
+                          name={`${s.id}${s.selection_type}`} 
                           type="radio"
                           checked={isEmpty(
                             filter(tabsOpen, (t) => t.id === s.id)
@@ -774,7 +774,7 @@ const ProductShow: NextPage<Props> = ({
                           className="h-4 w-4 lg:h-5 lg:w-5"
                           style={{ accentColor: color }}
                         />
-                        <label htmlFor={s.title} className="mx-3 block text-sm">
+                        <label htmlFor={`${s.id}${s.selection_type}`} className="mx-3 block text-sm">
                           {t('no')}
                         </label>
                       </div>
@@ -878,8 +878,8 @@ const ProductShow: NextPage<Props> = ({
                             <div key={i} className="pb-2 flex flex-1 justify-between">
                               <div className="flex">
                               <input
-                                id={c.name}
-                                name={c.name}
+                                id={`${c.id}${s.selection_type}`}
+                                name={`${c.id}${s.selection_type}`}
                                 required={s.selection_type !== 'optional'}
                                 type={
                                   s.must_select === 'multi'
@@ -911,7 +911,7 @@ const ProductShow: NextPage<Props> = ({
                                 style={{ accentColor: color }}
                               />
                               <label
-                                htmlFor={c.name}
+                                htmlFor={`${c.id}${s.selection_type}`}
                                 className="ltr:ml-3 rtl:mr-3 block text-sm"
                               >
                                 <TextTrans ar={c.name_ar} en={c.name_en} />
@@ -941,7 +941,7 @@ const ProductShow: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   value={productCart?.ExtraNotes}
                   onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
-                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 text-sm lg:text-base ${arboriaFont}`}
+                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 text-sm lg:text-base`}
                 />
               </div>
             </div>

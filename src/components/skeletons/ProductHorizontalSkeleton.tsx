@@ -11,10 +11,10 @@ export default function ProductHorizontalSkeleton() {
           <Skeleton width={300} height={100} />
           <div className="flex items-center">
             <div>
-              <Skeleton width={140} height={50} style={{ borderRadius: '35px'}} />
+              <Skeleton width={140} height={40} style={{ borderRadius: '35px'}} />
             </div>
             <div className="mx-2">
-              <Skeleton  width={50} height={50} circle />
+            <Skeleton  width={40} height={40} circle />
             </div>
           </div>
         </div>

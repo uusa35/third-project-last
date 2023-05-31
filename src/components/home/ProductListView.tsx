@@ -7,7 +7,11 @@ import ScrollSpy from 'react-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
 import MenuModal from '../modals/MenuModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
-import { alexandriaFont, alexandriaFontBold } from '@/constants/*';
+import { alexandriaFont, alexandriaFontBold, appLinks } from '@/constants/*';
+import Link from 'next/link';
+import { setCategory } from '@/redux/slices/searchParamsSlice';
+import { useRouter } from 'next/router';
+import { useAppDispatch } from '@/redux/hooks';
 
 type Props = {
   CategoriesProducts: Product[];
@@ -15,7 +19,13 @@ type Props = {
 
 export default function ProductListView({ CategoriesProducts }: Props) {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
+  const handleSearchRedirection = (id: string) => {
+    dispatch(setCategory(id));
+    router.push(`${appLinks.productSearch.path}`);
+  }
   console.log(CategoriesProducts.map((i) => i.cat_id));
 
   return (
@@ -65,11 +75,13 @@ export default function ProductListView({ CategoriesProducts }: Props) {
             <section id={`${category.cat_id}`}>
               <div className="mt-5 px-4">
                 {/* cat name */}
-                <TextTrans
-                  className={`text-lg mt-5 ${alexandriaFontBold}`}
-                  ar={category.name_ar}
-                  en={category.name_en}
-                />
+                <button onClick={() => handleSearchRedirection(category.cat_id)}>
+                  <TextTrans
+                    className={`text-lg mt-5 ${alexandriaFontBold}`}
+                    ar={category.name_ar}
+                    en={category.name_en}
+                  />
+                </button>
 
                 {/* products */}
                 <div>

@@ -5,7 +5,7 @@ import { AppQueryResult } from '@/types/queries';
 export const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<
-      AppQueryResult<Product[]>,
+      AppQueryResult<Product[] | any>,
       {
         page?: string;
         limit?: string;
@@ -29,6 +29,7 @@ export const productApi = apiSlice.injectEndpoints({
           url,
           lang,
           ...destination,
+          limit
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -39,17 +40,15 @@ export const productApi = apiSlice.injectEndpoints({
       {
         lang: Locale['lang'] | string | undefined;
         key?: string;
-        branch_id?: string;
-        areaId?: string;
+        destination?: any;
         url: string;
-        category_id?: string;
+        category_id?: string
       }
     >({
       query: ({
         lang,
         key = ``,
-        branch_id = '',
-        areaId = ``,
+        destination = {},
         url,
         category_id,
       }: any) => ({
@@ -60,8 +59,7 @@ export const productApi = apiSlice.injectEndpoints({
         },
         headers: {
           url,
-          ...(areaId && { 'x-area-id': areaId }),
-          ...(branch_id && { 'x-branch-id': branch_id }),
+          ...destination,
           lang,
         },
         validateStatus: (response, result) =>
@@ -93,17 +91,15 @@ export const productApi = apiSlice.injectEndpoints({
       AppQueryResult<{ topSearch: string[]; trendingItems: Product[] }>,
       {
         lang: Locale['lang'] | string | undefined;
-        branchId?: string;
-        areaId?: string;
+        destination?: any;
         url: string;
       }
     >({
-      query: ({ lang, branchId = ``, areaId = ``, url }) => ({
+      query: ({ lang, destination = {}, url }) => ({
         url: `topSearches`,
         headers: {
           url,
-          ...(areaId && { 'x-area-id': areaId }),
-          ...(branchId && { 'x-branch-id': branchId }),
+          ...destination,
           lang,
         },
         validateStatus: (response, result) =>
