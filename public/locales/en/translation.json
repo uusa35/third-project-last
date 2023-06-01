@@ -100,7 +100,7 @@
   "otp_verification": "otp verification",
   "confirmation_your_number": "confirmation your number",
   "please_enter_the_4-digit_code_that_was_sent_to_the_number": "please enter the 4-digit code that was sent to the number",
-  "you_ll_receive_code_in_0100": "you'll receive code in 01:00",
+  "you_ll_receive_code_in": "you'll receive code in",
   "verify": "verify",
   "complete_your_account_info": "complete your account info",
   "enter_your_name_and_email_to_end": "enter your name and email to end",

@@ -2,7 +2,7 @@ import CustomImage from '@/components/CustomImage';
 import MainHead from '@/components/MainHead'
 import MainContentLayout from '@/layouts/MainContentLayout'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { wrapper } from '@/redux/store';
 import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react'
@@ -12,6 +12,8 @@ import { appLinks, imageSizes, mainBtnClass, suppressText } from '@/constants/*'
 import { upperFirst } from 'lodash';
 import OtpInput from 'react18-input-otp';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { useCheckPhoneMutation, useLoginMutation, useVerifyCodeMutation } from '@/redux/api/authApi';
+import { setCustomer, signIn } from '@/redux/slices/customerSlice';
 
 type Props = {
   url: string;
@@ -21,21 +23,85 @@ export default function OtpVerifications({ url }: Props) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState<number | null>(null);
   const color = useAppSelector(themeColor);
+  const { customer: { phone, countryCode }} = useAppSelector((state) => state);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [codeVerification] = useVerifyCodeMutation();
+  const [triggerCheckPhone] = useCheckPhoneMutation();
+  const [triggerLogin] = useLoginMutation();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
 
-  
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
+  const verifyCode = async () => {
+    await codeVerification({body: {
+      phone,
+      phone_country_code: countryCode,
+      code: otp,
+      type: 'register'
+    }, url}).then((r: any) => {
+      if(r.data && r.data.status) {
+        router.push(`${appLinks.accountInfo.path}`);
+      }
+      else {
+        dispatch(showToastMessage({
+          content: 'invalid_otp',
+          type: 'error'
+      }))
+      }
+      console.log({verifyCodeRes: r})
+    });
+  }
+  const resendOtp = async () => {
+    setMinutes(0);
+    setSeconds(59);
+    await triggerCheckPhone({body: {
+      phone,
+      phone_country_code: countryCode,
+    }, url}).then(async (r: any) => {
+      if(r.error) {
+        router.push(appLinks.otpVerification.path)
+      }
+      else {
+        await triggerLogin({body: {
+          phone,
+          phone_country_code: countryCode,
+        }, url}).then((r: any) => {
+          dispatch(setCustomer(r.data.data.user));
+          dispatch(signIn(r.data.data.token));
+        });
+      }
+    });
+  }
   const handleChangeOtp = (enteredOtp: string) => {
     setOtp(enteredOtp);
     console.log({enteredOtp})
 };
 
 
-  const handleVerify = () => {
-    if(otp.length === 4) {
-      router.push(`${appLinks.accountInfo.path}`);
-    }
-  }
+  // const handleVerify = () => {
+  //   if(otp.length === 4) {
+  //     router.push(`${appLinks.accountInfo.path}`);
+  //   }
+  // }
 
 
   return (
@@ -65,12 +131,29 @@ export default function OtpVerifications({ url }: Props) {
                 className="text-zinc-500 w-[90%] mx-auto" 
                 suppressHydrationWarning={suppressText}>
                   {upperFirst(`${t('please_enter_the_4-digit_code_that_was_sent_to_the_number')}`)}
-                  <span className="text-black px-2">phone number here</span>
+                  <span className="text-black px-2">
+                    {countryCode} {phone}
+                  </span>
               </p>
             </div>
             <div className="w-[80%] mx-auto flex justify-between text-center">
-              <span className="text-zinc-500" suppressHydrationWarning={suppressText}>{t('you_ll_receive_code_in_0100')}</span>
-              <button className="underline capitalize" suppressHydrationWarning={suppressText}>
+              <span className="text-zinc-500" suppressHydrationWarning={suppressText}>
+                {t('you_ll_receive_code_in')}
+                {seconds > 0 || minutes > 0 ? (
+                  <span className="px-1">
+                    {minutes < 10 ? `0${minutes}` : `0${seconds}`}:
+                    {seconds < 10 ? `0${seconds}` : seconds}
+                  </span>
+                ) : (
+                  <span className="px-1">1:00</span>
+                )}
+              </span>
+              <button 
+                disabled={seconds > 0 || minutes > 0}
+                className="underline capitalize disabled:!bg-transparent disabled:!text-black" 
+                suppressHydrationWarning={suppressText}
+                onClick={resendOtp}
+              >
                 {t('resend')}
               </button>
             </div>
@@ -100,7 +183,7 @@ export default function OtpVerifications({ url }: Props) {
               className={`mt-5 mb-20 ${mainBtnClass}`}
               style={{ backgroundColor: color }} 
               suppressHydrationWarning={suppressText}
-              onClick={handleVerify}
+              onClick={verifyCode}
             >
               {t('verify')}
             </button>

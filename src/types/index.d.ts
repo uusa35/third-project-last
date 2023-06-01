@@ -359,6 +359,8 @@ export interface CustomerInfo {
   address?: Address;
   prefrences?: Prefrences;
   notes?: string;
+  countryCode: string | null;
+  token?: string | null
 }
 
 export interface Prefrences {

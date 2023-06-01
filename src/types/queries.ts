@@ -90,3 +90,22 @@ export interface UpcomingOrders {
   created_at: string;
   estimated_time: string;
 }
+
+export interface PhoneCheck {
+  phone: string;
+  phone_country_code: string;
+}
+
+export interface VerifyCode {
+  phone: string;
+  phone_country_code: string;
+  code: number | null;
+  type: 'register' | 'rest'
+}
+
+export interface Register {
+  phone: string;
+  phone_country_code: string;
+  name: string;
+  email: string
+}

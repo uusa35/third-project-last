@@ -22,6 +22,8 @@ const initialState: CustomerInfo = {
     time: '',
   },
   notes: ``,
+  countryCode: null,
+  token: null
 };
 
 export const customerSlice = createSlice({
@@ -104,6 +106,21 @@ export const customerSlice = createSlice({
         prefrences: initialState.prefrences,
       };
     },
+    setCountryCode: (state: typeof initialState, action: PayloadAction<string | null>) => {
+      return {
+        ...state,
+        countryCode: action.payload
+      }
+    },
+    signIn: (state: typeof initialState, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        token: action.payload
+      }
+    },
+  signOut: (state: typeof initialState, action: PayloadAction<void>) => {
+    return initialState;
+  },
   },
   extraReducers: (builder) => {
     builder.addCase(searchParamsSlice.actions.setDestination, (state, action) => {
@@ -121,4 +138,7 @@ export const {
   resetPreferences,
   setUserAgent,
   setNotes,
+  setCountryCode,
+  signIn,
+  signOut
 } = customerSlice.actions;
