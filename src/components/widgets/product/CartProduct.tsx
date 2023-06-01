@@ -40,9 +40,14 @@ export default function CartProduct({
   const color = useAppSelector(themeColor);
 
   return (
-    <div className={`flex border-b gap-x-2 ${checkoutProduct ? 'py-2' : 'py-4'}`}>
+    <div
+      className={`flex border-b gap-x-2 ${checkoutProduct ? 'py-2' : 'py-4'}`}
+    >
       {!checkoutProduct && (
-        <Link className="w-1/4" href={`${appLinks.productShow(product.ProductID)}`}>
+        <Link
+          className="w-1/4"
+          href={`${appLinks.productShow(product.ProductID)}`}
+        >
           <CustomImage
             src={imgUrl(product.ProductImage)}
             alt={'product img'}
@@ -56,13 +61,22 @@ export default function CartProduct({
       <div className="flex justify-between gap-x-1 w-full">
         {/* name and addons and qty meter*/}
         <div>
-          <Link href={`${appLinks.productShow(product.ProductID)}`}> 
+          <Link
+            className="flex gap-x-1"
+            href={`${appLinks.productShow(product.ProductID)}`}
+          >
             <TextTrans
               className={`capitalize ${alexandriaFontSemiBold}`}
               ar={product.ProductNameAr}
               en={product.ProductNameEn}
               length={15}
             />
+            <p
+              className={`capitalize ${alexandriaFontSemiBold}`}
+              suppressHydrationWarning={suppressText}
+            >
+              x{product.Quantity}
+            </p>
           </Link>
           {/* addons products */}
           {(!isEmpty(product.QuantityMeters) ||

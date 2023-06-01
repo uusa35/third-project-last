@@ -18,14 +18,19 @@ import { motion } from 'framer-motion';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoFoundImage from '@/appImages/not_found.png';
 import PlusIcon from '@/appIcons/add.svg';
+import DeleteIcon from '@/appIcons/fav_delete.svg';
 
 type Props = {
   element: Product;
   category_id: string | null;
+  show_delete_icon?: boolean;
+  delete_function?: (id: number | string) => void;
 };
 const VerProductWidget: FC<Props> = ({
   element,
   category_id = null,
+  show_delete_icon = false,
+  delete_function = (id) => {},
 }): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -51,10 +56,10 @@ const VerProductWidget: FC<Props> = ({
                   length={20}
                 />
                 <TextTrans
-                  className={`${alexandriaFontLight} text-[#877D78] text-xs md:text-sm whitespace-wrap break-all pt-3`}
+                  className={`${alexandriaFontLight} text-[#877D78] text-xs md:text-sm whitespace-wrap break-all pt-1`}
                   ar={element.description_ar}
                   en={element.description_en}
-                  length={500}
+                  length={100}
                 />
               </p>
 
@@ -63,7 +68,7 @@ const VerProductWidget: FC<Props> = ({
               >
                 {element.new_price && element.new_price !== element.price ? (
                   <div
-                    className="flex justify-center items-center flex-wrap gap-x-2 rounded-full p-1 md:py-1 md:px-2 text-center"
+                    className="flex justify-center items-center gap-x-2 rounded-full p-1 md:py-1 md:px-2 text-center"
                     style={{ color, borderColor: color, border: '1px solid' }}
                   >
                     <p
@@ -111,6 +116,18 @@ const VerProductWidget: FC<Props> = ({
                     <PlusIcon />
                   </button>
                 </div>
+
+                {show_delete_icon && (
+                  <div
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      delete_function(element.id);
+                    }}
+                  >
+                    <DeleteIcon />
+                  </div>
+                )}
               </div>
 
               {/* Limited quantity, will end soon */}

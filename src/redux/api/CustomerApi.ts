@@ -34,7 +34,50 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
+
+    GetWishListProducts: builder.query<
+      AppQueryResult<{ Id: string }>,
+      { url: string }
+    >({
+      query: ({ url }) => ({
+        url: `tempId`,
+        headers: {
+          url,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
+
+    DeleteFromWishList: builder.query<
+      AppQueryResult<{ Id: string }>,
+      { url: string }
+    >({
+      query: ({ url }) => ({
+        url: `tempId`,
+        headers: {
+          url,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
+
+    AddToWishList: builder.query<
+      AppQueryResult<{ Id: string }>,
+      { url: string }
+    >({
+      query: ({ url }) => ({
+        url: `tempId`,
+        headers: {
+          url,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
   }),
 });
 
-export const { useSaveCustomerInfoMutation ,useLazyCreateTempIdQuery} = customerApi;
+export const { useSaveCustomerInfoMutation, useLazyCreateTempIdQuery } =
+  customerApi;

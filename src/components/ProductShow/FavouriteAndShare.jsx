@@ -1,21 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
 import Share from '@/appIcons/share.svg';
-import Link from 'next/link';
-import { appLinks } from '@/constants/*';
-import Image from 'next/image';
-
-
+import SigninAddFavModal from '../modals/SigninAddFavModal';
 
 export default function FavouriteAndShare() {
+  const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
+  const isAuth = false;
+
+  
+  const handleAddRemvWishlist = () => {
+    if (isAuth) {
+      // add to wishlist req
+    } else {
+      // openmodal
+      setOpenSigninFavModal(true);
+    }
+  };
   return (
-    <div className="flex justify-end items-center space-x-2">
-        <Link href={appLinks.wishlist.path}>
+    <>
+      <SigninAddFavModal
+        isOpen={openSigninFavModal}
+        onRequestClose={() => setOpenSigninFavModal(false)}
+      />
+      <div className="flex justify-end items-center space-x-2">
+        <button onClick={() => handleAddRemvWishlist()}>
           <Favourite />
-        </Link>
+        </button>
         <button>
-         <Share />
+          <Share />
         </button>
       </div>
-  )
+    </>
+  );
 }

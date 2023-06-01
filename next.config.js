@@ -30,6 +30,18 @@ const nextConfig = withSvgr({
         source: '/about',
         destination: '/vendor/info',
       },
+      {
+        source: '/wishlist',
+        destination: '/user/wishlist',
+      },
+      {
+        source: '/orders',
+        destination: '/user/orders',
+      },
+      {
+        source: '/receipt/:orderId',
+        destination: '/order/:orderId/receipt',
+      },
     ];
   },
 
@@ -65,7 +77,7 @@ const nextConfig = withSvgr({
       'pages-dash.testbedbynd.com',
       'queue-spaces.nyc3.digitaloceanspaces.com',
       'place-hold.it',
-      'html.com'
+      'html.com',
     ],
     // minimumCacheTTL: 60 * 60 * 24,
     minimumCacheTTL: 0,
