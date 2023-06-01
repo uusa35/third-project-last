@@ -100,7 +100,7 @@
   "otp_verification": "التحقق من كلمة المرور لمرة واحدة",
   "confirmation_your_number": "تأكيد رقم هاتفك",
   "please_enter_the_4-digit_code_that_was_sent_to_the_number": "برجاء إدخال الكود المكون من 4 أرقام الذي تم إرساله إلى هاتفك",
-  "you_ll_receive_code_in_0100": "سوف تستقبل كود خلال دقيقة",
+  "you_ll_receive_code_in": "سوف تستقبل كود خلال",
   "verify": "تحقق",
   "complete_your_account_info": "أكمِل بيانات حسابك",
   "enter_your_name_and_email_to_end": "أدخِل الاسم والإيميل للإنهاء",

@@ -46,6 +46,7 @@ import CartIcon from '@/appIcons/more_cart.svg';
 import OrdersIcon from '@/appIcons/more_orders.svg';
 import WishlistIcon from '@/appIcons/more_love.svg';
 import AddressIcon from '@/appIcons/more_address.svg';
+import { signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
 
@@ -55,7 +56,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const router = useRouter();
   const {
     appSetting,
-    customer: { id: guest_id },
+    customer: { id: guest_id, token, name },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   // for test
@@ -95,9 +96,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <HorizentalLine className="h-1" />
 
               {/* user or guest section */}
-              {(guest_id || auth.user) && (
+              {/* {(guest_id || token) && ( */}
                 <div className="bg-slate-100 rounded-md mx-4 my-2 p-3">
-                  {guest_id && (
+                  {!token && (
                     <Link
                       className="flex justify-between items-center"
                       href={appLinks.login.path}
@@ -117,23 +118,26 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                       <ChevronRightOutlined />
                     </Link>
                   )}
-                  {auth.user && (
+                  {token && (
                     <div className="flex justify-between items-center">
                       <div className="flex gap-x-1">
                         {/* img */}
                         <div className="rounded-full h-5 w-5"></div>
                         <div>
                           <p className="text-sm">{t('Welcome_back')} !</p>
-                          <p className="font-bold">Mohaned Tark</p>
+                          <p className="font-bold">{name}</p>
                         </div>
                       </div>
-                      <button className="bg-white rounded-xl text-sm font-semibold px-2 py-px">
+                      <button 
+                        className="bg-white rounded-xl text-sm font-semibold px-2 py-px"
+                        onClick={()=> dispatch(signOut())}
+                      >
                         {t('sign_out')}
                       </button>
                     </div>
                   )}
                 </div>
-              )}
+              {/* )} */}
             </header>
 
             {/* links */}

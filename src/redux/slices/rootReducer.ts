@@ -8,6 +8,7 @@ import { categoryApi } from '@/redux/api/categoryApi';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
+import { authApi } from '@/redux/api/authApi';
 import { vendorSlice } from '@/redux/slices/vendorSlice';
 // import { branchSlice } from '@/redux/slices/branchSlice';
 // import { branchesSlice } from '@/redux/slices/branchesSlice';
@@ -36,6 +37,7 @@ export const rootReducer = combineReducers({
   [branchApi.reducerPath]: branchApi.reducer,
   [productApi.reducerPath]: productApi.reducer,
   [vendorApi.reducerPath]: vendorApi.reducer,
+  [authApi.reducerPath]: authApi.reducer,
   [productCartSlice.name]: productCartSlice.reducer,
   [CartSlice.name]: CartSlice.reducer,
   [ModelsSlice.name]: ModelsSlice.reducer
