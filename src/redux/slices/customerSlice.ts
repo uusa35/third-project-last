@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CustomerInfo } from '@/types/index';
 import { searchParamsSlice } from './searchParamsSlice';
+import { isNull } from 'lodash';
+import { RootState } from '../store';
 
 const initialState: CustomerInfo = {
   id: null,
@@ -23,7 +25,7 @@ const initialState: CustomerInfo = {
   },
   notes: ``,
   countryCode: null,
-  token: null
+  token: null,
 };
 
 export const customerSlice = createSlice({
@@ -106,26 +108,32 @@ export const customerSlice = createSlice({
         prefrences: initialState.prefrences,
       };
     },
-    setCountryCode: (state: typeof initialState, action: PayloadAction<string | null>) => {
+    setCountryCode: (
+      state: typeof initialState,
+      action: PayloadAction<string | null>
+    ) => {
       return {
         ...state,
-        countryCode: action.payload
-      }
+        countryCode: action.payload,
+      };
     },
     signIn: (state: typeof initialState, action: PayloadAction<string>) => {
       return {
         ...state,
-        token: action.payload
-      }
+        token: action.payload,
+      };
     },
-  signOut: (state: typeof initialState, action: PayloadAction<void>) => {
-    return initialState;
-  },
+    signOut: (state: typeof initialState, action: PayloadAction<void>) => {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(searchParamsSlice.actions.setDestination, (state, action) => {
-      state.prefrences = initialState.prefrences;
-    });
+    builder.addCase(
+      searchParamsSlice.actions.setDestination,
+      (state, action) => {
+        state.prefrences = initialState.prefrences;
+      }
+    );
   },
 });
 
@@ -140,5 +148,8 @@ export const {
   setNotes,
   setCountryCode,
   signIn,
-  signOut
+  signOut,
 } = customerSlice.actions;
+
+export const IsAuthenticated = (state: RootState) =>
+  isNull(state.customer.token) ? false : true;
