@@ -72,7 +72,20 @@ function DeliveryPickup({ url }: Props) {
                     className={`text-xs ${alexandriaFont}`}
                     suppressHydrationWarning={suppressText}
                   >
-                    {
+                    {prefType === 'pickup_now' ? (
+                      t('pickup_now')
+                    ) : prefType === 'pickup_later' ? (
+                      <>
+                        {t('pickup_later')}
+                        <span className="px-1.5">
+                          {date} {time}
+                        </span>
+                        {t('from')}
+                      </>
+                    ) : (
+                      t('pickup_from')
+                    )}
+                    {/* {
                       {
                         ['pickup_now']: t('pickup_now'),
                         ['pickup_later']: `${t(
@@ -80,16 +93,8 @@ function DeliveryPickup({ url }: Props) {
                         )} ${date} ${time} ${t('from')}`,
                         ['']: t('pickup_from'),
                       }[prefType as string]
-                    }
+                    } */}
                   </p>
-                  {/* {prefType === 'pickup_later' && (
-                    <p
-                      className={`text-xs ${alexandriaFont}`}
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {date} {time} {t('from')}
-                    </p>
-                  )} */}
                 </div>
                 <p
                   className={`${alexandriaFontMeduim}`}
@@ -115,23 +120,36 @@ function DeliveryPickup({ url }: Props) {
                     className={`text-xs ${alexandriaFont}`}
                     suppressHydrationWarning={suppressText}
                   >
-                    {
+                    {prefType === 'delivery_now' ? (
+                      t('delivery_now')
+                    ) : prefType === 'delivery_later' ? (
+                      <>
+                        {t('delivery_later')}
+                        <span className="px-1.5">
+                          {date} {time} {t('to')}
+                        </span>
+                        {t('from')}
+                      </>
+                    ) : (
+                      t('deliver_to')
+                    )}
+                    {/* {
                       {
                         ['delivery_now']: t('delivery_now'),
                         ['delivery_later']: t('delivery_later'),
                         ['']: t('deliver_to'),
                       }[prefType as string]
-                    }
+                    } */}
                   </p>
 
-                  {prefType === 'delivery_later' && (
+                  {/* {prefType === 'delivery_later' && (
                     <p
                       className={`text-xs ${alexandriaFont}`}
                       suppressHydrationWarning={suppressText}
                     >
                       {date} {time} {t('to')}
                     </p>
-                  )}
+                  )} */}
                 </div>
 
                 <p
