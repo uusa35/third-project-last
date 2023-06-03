@@ -67,7 +67,7 @@ export default function OtpVerifications({ url }: Props) {
           type: 'error'
       }))
       }
-      console.log({verifyCodeRes: r})
+      .log({verifyCodeRes: r})
     });
   }
   const resendOtp = async () => {
@@ -93,7 +93,7 @@ export default function OtpVerifications({ url }: Props) {
   }
   const handleChangeOtp = (enteredOtp: string) => {
     setOtp(enteredOtp);
-    console.log({enteredOtp})
+    .log({enteredOtp})
 };
 
 

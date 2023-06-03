@@ -52,7 +52,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
     dispatch(setAreaBranchModelStatus(false));
   };
   const desObject = useAppSelector(destinationHeaderObject);
-  console.log({ method });
+  // console.log({ method });
   useEffect(() => {
     triggerGetVendor(
       {
