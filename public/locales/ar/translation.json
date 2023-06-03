@@ -250,5 +250,16 @@
   "info": "معلومات",
   "search": "بحث...",
   "search_products": "بحث عن المنتجات",
-  "from":"من"
+  "from":"من",
+  "have_a_tracking_code?_enter_order_id_below_to_track_it": "هل لديك رقم للتتبع؟ ادخل رقم الطلب لتتبعه",
+  "have_a_order_id?_enter_it_to_track_it": "لديك رقم الطلب؟ ادخله لتتبعه",
+  "validation" : {
+    "required" : "الحقل مطلوب",
+    "email" : "البريد الإلكتروني غير صحيح",
+    "min" : "الحقل يجب أن يكون اكبر من {{min}}",
+    "max" : "الحقل يجب أن يكون أقل من   {{max}}",
+    "matches":"ادخل رقم هاتف صحيح"
+  },
+  "Phone_number_must_be_between_8_and_15_number":"رقم الهاتف يجب الا يقل عن 8 ارقام و الا يزيد عن 15 رقما"
+
 }

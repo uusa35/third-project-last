@@ -129,27 +129,28 @@ export const orderApi = apiSlice.injectEndpoints({
 
       getUpcomingOrders: builder.query<
         AppQueryResult<UpcomingOrders[]>,
-        {lang: Locale['lang'], destination: any; url: string , phone:string}
+        { lang: Locale['lang']; destination: any; url: string; phone: string }
       >({
-        query: ({ lang,destination, url ,phone}) => ({
+        query: ({ lang, destination, url, phone }) => ({
           url: `order/live`,
-          params:{
-            phone
+          params: {
+            phone,
           },
-          headers: {lang, url, ...destination },
+          headers: { lang, url, ...destination },
         }),
       }),
 
       getUserOrders: builder.query<
         AppQueryResult<any>,
-        {lang: Locale['lang'], destination: any; url: string , phone:string}
+        { lang: Locale['lang']; destination: any; url: string }
       >({
-        query: ({ lang,destination, url ,phone}) => ({
-          url: `order/live`,
-          params:{
-            phone
+        query: ({ lang, destination, url }) => ({
+          url: `orders`,
+          headers: {
+            lang,
+            url,
+            ...destination,
           },
-          headers: {lang, url, ...destination },
         }),
       }),
     };
@@ -165,5 +166,6 @@ export const {
   useLazyGetCustomerInfoQuery,
   useLazyGetInvoiceQuery,
   useGetInvoiceQuery,
-  useGetUpcomingOrdersQuery
+  useGetUpcomingOrdersQuery,
+  useGetUserOrdersQuery,
 } = orderApi;
