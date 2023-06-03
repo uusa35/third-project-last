@@ -11,7 +11,7 @@ import { debounce } from 'lodash';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 
-type Props = { handleChange: (id: number) => void };
+type Props = { handleChange: (id: number | string) => void };
 
 export default function EmptyUserOrders({ handleChange = (id) => {} }: Props) {
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export default function EmptyUserOrders({ handleChange = (id) => {} }: Props) {
       >
         {t('have_a_tracking_code?_enter_order_id_below_to_track_it')}
       </p>
-      <div className="w-full flex items-center border-b-2 border-gray-200">
+      <div className="w-full flex items-center border-b-2 border-gray-200 mt-1">
         <Search className="text-[#544A45]" />
         <input
           type="search"
@@ -44,10 +44,10 @@ export default function EmptyUserOrders({ handleChange = (id) => {} }: Props) {
           id="searchArea"
           placeholder={`${t('order_id')}`}
           suppressHydrationWarning={suppressText}
-          className={`flex-1 px-2 py-3 h-12 bg-transparent text-[#544A45] capitalize foucs:ring-0 outline-none`}
+          className={`flex-1 px-2 py-3 h-12 bg-transparent text-[#544A45] capitalize foucs:ring-0 outline-none ${alexandriaFontLight}`}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
-              console.log('ggg', e.target.value);
+              handleChange(e.target.value);
             }
           }}
         />
