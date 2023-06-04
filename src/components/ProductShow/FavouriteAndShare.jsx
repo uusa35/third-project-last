@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
 import Share from '@/appIcons/share.svg';
 import SigninAddFavModal from '../modals/SigninAddFavModal';
+import { useAppSelector } from '@/redux/hooks';
+import { IsAuthenticated } from '@/redux/slices/customerSlice';
 
 export default function FavouriteAndShare() {
+  const isAuth = useAppSelector(IsAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
-  const isAuth = false;
 
-  
+  // console.log({ isAuth });
+
   const handleAddRemvWishlist = () => {
     if (isAuth) {
       // add to wishlist req

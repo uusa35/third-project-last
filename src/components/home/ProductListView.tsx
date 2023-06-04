@@ -26,7 +26,7 @@ export default function ProductListView({ CategoriesProducts }: Props) {
     dispatch(setCategory(id));
     router.push(`${appLinks.productSearch.path}`);
   }
-  console.log(CategoriesProducts.map((i) => i.cat_id));
+  // console.log(CategoriesProducts.map((i) => i.cat_id));
 
   return (
     <div>

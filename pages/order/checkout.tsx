@@ -36,7 +36,11 @@ import { useRouter } from 'next/router';
 import { useLazyCreateOrderQuery } from '@/redux/api/orderApi';
 import EmptyCart from '@/components/cart/EmptyCart';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
-import { RadioButtonCheckedOutlined, CircleOutlined } from '@mui/icons-material';
+import {
+  RadioButtonCheckedOutlined,
+  CircleOutlined,
+} from '@mui/icons-material';
+import moment from 'moment';
 
 type Props = {
   url: string;
@@ -139,7 +143,10 @@ export default function checkout({ url }: Props) {
           PaymentMethod: selectedPaymentMethod,
           PromoCode: promocode,
           ...(prefrences.date && prefrences.time
-            ? { Date: prefrences.date, Time: prefrences.time }
+            ? {
+                Date: prefrences.date,
+                Time: moment(prefrences.time, ['h:mm A']).format('HH:mm:ss'),
+              }
             : {}),
         },
         area_branch: destObj,
