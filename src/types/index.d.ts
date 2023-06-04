@@ -360,7 +360,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-  token?: string | null
+  token?: string | null 
 }
 
 export interface Prefrences {

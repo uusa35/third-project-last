@@ -108,15 +108,6 @@ export const customerSlice = createSlice({
         prefrences: initialState.prefrences,
       };
     },
-    setCountryCode: (
-      state: typeof initialState,
-      action: PayloadAction<string | null>
-    ) => {
-      return {
-        ...state,
-        countryCode: action.payload,
-      };
-    },
     signIn: (state: typeof initialState, action: PayloadAction<string>) => {
       return {
         ...state,
@@ -146,7 +137,6 @@ export const {
   resetPreferences,
   setUserAgent,
   setNotes,
-  setCountryCode,
   signIn,
   signOut,
 } = customerSlice.actions;

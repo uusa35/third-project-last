@@ -1,69 +1,63 @@
-import MainLayout from '@/layouts/MainLayout';
 import { NextPage } from 'next';
 import { useTranslation } from 'react-i18next';
-import Image from 'next/image';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
-import { apiSlice } from '@/redux/api';
-import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
-import {
-  ArrowPathIcon,
-  BuildingOfficeIcon,
-  UserIcon,
-} from '@heroicons/react/24/outline';
-import NoAddresses from '@/appImages/no_address.svg';
-import MobileImg from '@/appImages/mobile.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from '@/constants/*';
+import MobileImg from '@/appImages/mobile.png';
 import CustomImage from '@/components/CustomImage';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
-import { useEffect, useState } from 'react';
-import { startCase } from 'lodash';
-import PhoneInput, { getCountryCallingCode, parsePhoneNumber, isValidPhoneNumber } from 'react-phone-number-input';
-import { themeColor } from '@/redux/slices/vendorSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import PhoneInput, { parsePhoneNumber, isValidPhoneNumber } from 'react-phone-number-input';
 import SaveAddressIcon from '@/appIcons/save_address.svg';
 import SaveContactInfo from '@/appIcons/save_contact_info.svg';
 import ReOrderIcon from '@/appIcons/re-order_icon.svg';
 import TrackOrderIcon from '@/appIcons/track_order_icon.svg';
-import { useCheckPhoneMutation, useLoginMutation, useVerifyCodeMutation } from '@/redux/api/authApi';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { setCountryCode, setCustomer, signIn } from '@/redux/slices/customerSlice';
+import { apiSlice } from '@/redux/api';
+import { vendorApi } from '@/redux/api/vendorApi';
+import { useCheckPhoneMutation, useLoginMutation } from '@/redux/api/authApi';
+import { themeColor } from '@/redux/slices/vendorSlice';
+import { setCustomer, signIn } from '@/redux/slices/customerSlice';
+import { checkPhone } from 'src/validations';
+import { map, upperCase, upperFirst } from 'lodash';
 
 type Props = {
   element: Vendor;
   url: string;
 };
-const schema = yup
-  .object({
-    phone: yup.number().min(10000000000).max(999999999999),
-  })
-  .required();
+
 const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const color = useAppSelector(themeColor);
-  const { customer: { countryCode, phone }} = useAppSelector((state) => state);
+  const { customer } = useAppSelector((state) => state);
+  const signInAdvantages = [
+    { id: 1, icon: <SaveAddressIcon />, text: 'save_your_addresses'},
+    { id: 2, icon: <SaveContactInfo />, text: 'save_your_contact_information'},
+    { id: 3, icon: <ReOrderIcon />, text: 'one-tap_re-ordering'},
+    { id: 4, icon: <TrackOrderIcon />, text: 'tracking_orders'}
+  ];
+  
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(checkPhone),
     defaultValues: {
-      phone: phone ?? ``
+      phone: customer.phone ?? ``
     },
   });
   const [triggerCheckPhone] = useCheckPhoneMutation();
   const [triggerLogin] = useLoginMutation();
-  
-  const onSubmit = async (data: any) => {
-    const parsedPhoneNumber = parsePhoneNumber(`+${data.phone}`);
+  const onSubmit = async (body: any) => {
+    const parsedPhoneNumber = parsePhoneNumber(`+${body.phone}`);
     const userPhone = parsedPhoneNumber ? parsedPhoneNumber?.nationalNumber : ``;
     const userCountryCode = `+${parsedPhoneNumber?.countryCallingCode}`;
     await triggerCheckPhone({body: {
@@ -71,7 +65,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       phone_country_code: userCountryCode,
     }, url}).then(async (r: any) => {
       if(r.error) {
-        router.push(appLinks.otpVerification.path)
+        router.push(appLinks.otpVerification.path);
       }
       else {
         await triggerLogin({body: {
@@ -83,47 +77,53 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
           router.back();
         });
       }
-      dispatch(setCountryCode(`+${parsedPhoneNumber?.countryCallingCode}`));
-      dispatch(setCustomer({phone: userPhone}));
+      dispatch(
+        setCustomer({
+          countryCode: `+${parsedPhoneNumber?.countryCallingCode}`,
+          phone: userPhone,
+        })
+      );
     });
   };
   return (
     <MainContentLayout
       url={url}
-      showBackBtnHeader={true}
-      currentModule="addresses"
+      showBackBtnHeader
+      currentModule="your_number"
     >
       {/*  no address case */}
       <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center">
-        <CustomImage
-          alt={t('mobile')}
-          src={MobileImg.src}
-          className="w-1/2 xl:w-1/3 h-auto object-contain"
-        />
-        <p className="text-lg font-extrabold">{t('verify_ur_mobile')}</p>
-        <p className="text-md text-gray-600">
-          {t('u_will_receive_a_one_time_password_shortly')}
-        </p>
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full px-4">
-            {/* phone */}
-            <div className="pt-6 pb-5">
+        <div className="pt-8">
+          <CustomImage
+            alt={t('mobile')}
+            src={MobileImg}
+            width={imageSizes.md}
+            height={imageSizes.md}
+          />
+        </div>
+        <div className="text-center">
+          <h3 
+            className="font-bold pb-2" 
+            suppressHydrationWarning={suppressText}>
+              {t('verify_your_mobile_number')}
+          </h3>
+          <span 
+            className="text-[#877D78] text-sm lowercase" 
+            suppressHydrationWarning={suppressText}>
+              {upperFirst(`${t('you_ll_receive_a_one_time_password_shortly.')}`)}
+          </span>
+        </div>
+          <form 
+              onSubmit={handleSubmit(onSubmit)} 
+              className="w-full px-4"
+          >
+            <div className="pt-3 pb-5">
               <label
                 htmlFor="phone"
-                className="text-gray-500"
+                className="text-zinc-500 text-sm"
                 suppressHydrationWarning={suppressText}
               >
-                <div>{t('phone_number')}</div>
-
-                <div>
-                  {/* {errors?.phone?.message && (
-                    <p
-                      className={`text-base text-red-800 font-semibold py-2 capitalize`}
-                      suppressHydrationWarning={suppressText}
-                    >
-                      {t('phone_is_required')}
-                    </p>
-                  )} */}
-                </div>
+                {t('phone_number')}
               </label>
               <Controller
                 name="phone"
@@ -137,50 +137,29 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
                     defaultCountry="KW"
                     id="phone"
                     className="focus:outline-none mt-2 border-b border-gray-100 pb-3"
-                  style={{ borderBottomColor: '#e5e7eb' }}
-                  onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
-                  onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
+                    style={{ borderBottomColor: '#e5e7eb' }}
+                    onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
+                    onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                   />
                 )}
               />
               {errors?.phone?.message && (
-                <div className={`text-sm text-red-800`}>
+                <div className={`text-sm text-red-600 pt-3`}>
                   {errors?.phone?.message && (
                     <p suppressHydrationWarning={suppressText}>
-                      {t('phone_number_must_be_between_8_and_15_number')}
+                      {t('phone_number_must_be_between_9_and_15_number')}
                     </p>
                   )}
                 </div>
               )}
             </div>
-            <div className="px-6 flex flex-col space-y-4">
-              <div className="flex flex-row items-center">
-                <div>
-                  <SaveAddressIcon className="text-gray-600 h-6" />
-                </div>
-                <div className="px-3">{t('save_ur_address')}</div>
+            <div className="px-4">
+              {map(signInAdvantages, (advantage) => (
+                <div className="flex pb-3" key={advantage.id}>
+                  {advantage.icon}
+                  <span className="px-3 text-sm text-zinc-800" suppressHydrationWarning={suppressText}>{t(advantage.text)}</span>
               </div>
-              {/*  user info  */}
-              <div className="flex flex-row items-center">
-                <div>
-                  <SaveContactInfo className="text-gray-600 h-6" />
-                </div>
-                <div className="px-3">{t('save_ur_contact_information')}</div>
-              </div>
-              {/*  re-order  */}
-              <div className="flex flex-row items-center">
-                <div>
-                  <ReOrderIcon className="text-gray-600 h-6" />
-                </div>
-                <div className="px-3">{t('one_tap_re_order')}</div>
-              </div>
-              {/*  track  */}
-              <div className="flex flex-row items-center">
-                <div>
-                  <TrackOrderIcon className="text-gray-600 h-6" />
-                </div>
-                <div className="px-3">{t('track_order')}</div>
-              </div>
+              ))}
             </div>
             <button
               className={`${mainBtnClass} flex flex-row justify-center items-center my-4`}
@@ -188,16 +167,16 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
               suppressHydrationWarning={suppressText}
               type="submit"
             >
-              {t('send_otp')}
+             {t('send')} {' '} {upperCase(`${t('otp')}`)}
             </button>
-            <button
-              className={`flex flex-row justify-center items-center w-full my-4 text-black text-center capitalize underline`}
+          </form>
+          <button 
+              className="w-full underline text-center pb-10" 
               suppressHydrationWarning={suppressText}
               onClick={() => setIsOpen(true)}
             >
-              {t('or_continue_as_guest')}
-            </button>
-          </form>
+              {upperFirst(`${t('or_continue_as_guest')}`)} 
+          </button>
         <GuestOrderModal
           url={url}
           isOpen={isOpen}

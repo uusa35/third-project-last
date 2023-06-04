@@ -99,7 +99,7 @@ export interface PhoneCheck {
 export interface VerifyCode {
   phone: string;
   phone_country_code: string;
-  code: number | null;
+  code: string;
   type: 'register' | 'rest'
 }
 
