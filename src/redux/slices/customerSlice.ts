@@ -141,5 +141,5 @@ export const {
   signOut,
 } = customerSlice.actions;
 
-export const IsAuthenticated = (state: RootState) =>
+export const isAuthenticated = (state: RootState) =>
   !isNull(state.customer.token);

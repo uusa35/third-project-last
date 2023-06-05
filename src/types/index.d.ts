@@ -394,3 +394,12 @@ export interface HomePromoCode {
   promo_code: string;
   promo_image: string;
 }
+
+export interface StaticPage {
+  id: number,
+  title_en: string,
+  title_ar: string,
+  key: string,
+  content_en: string,
+  content_ar: string
+}

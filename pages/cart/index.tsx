@@ -8,7 +8,7 @@ import {
 import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
-import { StringIterator, filter, isEmpty, kebabCase, lowerCase } from 'lodash';
+import { StringIterator, filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { alexandriaFontMeduim, appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -258,7 +258,11 @@ export default function Cart({ url }: Props) {
     */
     //  check if user id is null
 
-    router.push(appLinks.login.path);
+    if(isNull(customer_id)) {
+      router.push(appLinks.login.path);
+    } else {
+      router.push(appLinks.addressCreate.path);
+    }
   };
 
   /*

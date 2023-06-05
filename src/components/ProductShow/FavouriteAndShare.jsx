@@ -3,10 +3,10 @@ import Favourite from '@/appIcons/favourite.svg';
 import Share from '@/appIcons/share.svg';
 import SigninAddFavModal from '../modals/SigninAddFavModal';
 import { useAppSelector } from '@/redux/hooks';
-import { IsAuthenticated } from '@/redux/slices/customerSlice';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 export default function FavouriteAndShare() {
-  const isAuth = useAppSelector(IsAuthenticated);
+  const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
 
   // console.log({ isAuth });
