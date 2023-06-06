@@ -116,9 +116,13 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 ) : (
                   <Link
                     className="flex justify-between items-center"
-                    // href={appLinks.login.path}
+                    href={appLinks.login.path}
                     href={''}
-                    onClick={() => dispatch(signIn('yftgfvhgfhgvhj'))} //test
+                    // onClick={() =>
+                    //   dispatch(
+                    //     signIn('113|NwpzCgmMhu6EfyYVDlHguGwFBqCpYlAu04CsSKTh')
+                    //   )
+                    // } //test
                   >
                     <div className="flex gap-x-2">
                       <FastSignInIcon />

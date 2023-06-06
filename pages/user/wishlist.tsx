@@ -25,6 +25,7 @@ import EmptyWishList from '@/appIcons/empty_wishlist.svg';
 import ContentLoader from '@/components/skeletons';
 import Skeleton from 'react-loading-skeleton';
 import MainHead from '@/components/MainHead';
+import { useGetWishListProductsQuery } from '@/redux/api/CustomerApi';
 
 type Props = { url: string };
 
@@ -32,50 +33,38 @@ export default function Wishlist({ url }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
   const {
-    data: categoriesProducts,
+    data: wishlistProducts,
     isLoading,
-    isSuccess: categoriesProductsSuccess,
-  } = useGetProductsQuery<{
+    isSuccess: wishlistSuccess,
+  } = useGetWishListProductsQuery<{
     data: any;
     isSuccess: boolean;
     isLoading: boolean;
   }>({
     url,
-    lang: router.locale,
-    category_id: ``,
-    page: ``,
-    limit: ``,
   });
 
   const handelDeleteFromWishList = (id: number | string) => {
     console.log('in wishlist', id);
   };
 
+  console.log({ wishlistProducts });
+
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule={'whishlist'}>
-      <MainHead
-        title={t('wishlist')}
-        description={`${t('whishlist')}`}
-      />
+      <MainHead title={t('wishlist')} description={`${t('whishlist')}`} />
       {isLoading ? (
         <div>
           <Skeleton height={50} />
           <ContentLoader type={'ProductHorizontal'} sections={5} />
         </div>
       ) : (
-        categoriesProductsSuccess &&
-        categoriesProducts.Data && (
+        wishlistSuccess &&
+        wishlistProducts.Data && (
           <>
-            {isEmpty(categoriesProducts.Data) ? (
+            {isEmpty(wishlistProducts.Data) ? (
               <div className="bg-white h-full px-5 flex flex-col items-center justify-center my-5">
                 <div className="flex justify-center items-center py-5">
-                  {/* <Image
-                  src={'/assets/images/empty_wishlist.png'}
-                  alt="empty"
-                  width={imageSizes.sm}
-                  height={imageSizes.sm}
-                  className={`xl:!w-${imageSizes.md} xl:!h-${imageSizes.md} `}
-                /> */}
                   <EmptyWishList />
                 </div>
 
@@ -98,25 +87,15 @@ export default function Wishlist({ url }: Props) {
               </div>
             ) : (
               <div>
-                {categoriesProducts.Data.map((category: any) => {
+                {wishlistProducts.Data.map((product: any) => {
                   return (
-                    <section id={`${category.cat_id}`}>
-                      <div className="mt-5 px-4">
-                        {/* products */}
-                        <div>
-                          {category.items?.map((product: any) => {
-                            return (
-                              <VerProductWidget
-                                delete_function={handelDeleteFromWishList}
-                                show_delete_icon={true}
-                                element={product}
-                                category_id={category?.cat_id}
-                              />
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </section>
+                    <div>
+                      <VerProductWidget
+                        delete_function={handelDeleteFromWishList}
+                        show_delete_icon={true}
+                        element={product}
+                      />
+                    </div>
                   );
                 })}
               </div>

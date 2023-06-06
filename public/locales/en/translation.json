@@ -288,5 +288,6 @@
     "max": "must be at less than  {{max}}",
     "matches": "enter a valid format"
   },
-  "Phone_number_must_be_between_8_and_15_number":"Phone number must be between 8 and 15 digits"
+  "Phone_number_must_be_between_8_and_15_number":"Phone number must be between 8 and 15 digits",
+  "saved_in_wish_list":"saved successfully in your wishlist"
 }
