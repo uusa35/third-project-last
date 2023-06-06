@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { customerInfoSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
+import { useSaveCustomerInfoMutation } from '@/redux/api/customerApi';
 import { startCase } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomer } from '@/redux/slices/customerSlice';

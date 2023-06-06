@@ -37,14 +37,14 @@ import CartIcon from '@/appIcons/more_cart.svg';
 import OrdersIcon from '@/appIcons/more_orders.svg';
 import WishlistIcon from '@/appIcons/more_love.svg';
 import AddressIcon from '@/appIcons/more_address.svg';
-import { IsAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
+import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
 
 const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(IsAuthenticated);
+  const isAuth = useAppSelector(isAuthenticated);
   const router = useRouter();
   const {
     appSetting,

@@ -9,6 +9,7 @@ import { vendorApi } from '@/redux/api/vendorApi';
 import { locationApi } from '@/redux/api/locationApi';
 import { branchApi } from '@/redux/api/branchApi';
 import { authApi } from '@/redux/api/authApi';
+import { staticPagesApi } from '@/redux/api/staticPagesApi';
 import { vendorSlice } from '@/redux/slices/vendorSlice';
 // import { branchSlice } from '@/redux/slices/branchSlice';
 // import { branchesSlice } from '@/redux/slices/branchesSlice';
@@ -38,6 +39,7 @@ export const rootReducer = combineReducers({
   [productApi.reducerPath]: productApi.reducer,
   [vendorApi.reducerPath]: vendorApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
+  [staticPagesApi.reducerPath]: staticPagesApi.reducer,
   [productCartSlice.name]: productCartSlice.reducer,
   [CartSlice.name]: CartSlice.reducer,
   [ModelsSlice.name]: ModelsSlice.reducer

@@ -362,7 +362,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-  token?: string | null;
+  token?: string | null 
 }
 
 export interface Prefrences {
@@ -406,4 +406,12 @@ export interface OrderProduct {
   extra_notes: string;
   item_en: string;
   item_ar: string;
+}
+export interface StaticPage {
+  id: number,
+  title_en: string,
+  title_ar: string,
+  key: string,
+  content_en: string,
+  content_ar: string
 }

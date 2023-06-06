@@ -2,14 +2,14 @@ import CustomImage from '@/components/CustomImage';
 import MainHead from '@/components/MainHead'
 import MainContentLayout from '@/layouts/MainContentLayout'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrentModule, showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { wrapper } from '@/redux/store';
 import { useRouter } from 'next/router';
 import React, { Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import OtpVerify from '@/appImages/otp_verify.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from '@/constants/*';
-import { upperFirst } from 'lodash';
+import { upperCase, upperFirst } from 'lodash';
 import OtpInput from 'react18-input-otp';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useCheckPhoneMutation, useLoginMutation, useVerifyCodeMutation } from '@/redux/api/authApi';
@@ -23,7 +23,7 @@ export default function OtpVerifications({ url }: Props) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();
-  const [otp, setOtp] = useState<number | null>(null);
+  const [otp, setOtp] = useState<string>(``);
   const color = useAppSelector(themeColor);
   const { customer: { phone, countryCode }} = useAppSelector((state) => state);
   const [minutes, setMinutes] = useState(0);
@@ -31,12 +31,18 @@ export default function OtpVerifications({ url }: Props) {
   const [codeVerification] = useVerifyCodeMutation();
   const [triggerCheckPhone] = useCheckPhoneMutation();
   const [triggerLogin] = useLoginMutation();
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
       }
-
       if (seconds === 0) {
         if (minutes === 0) {
           clearInterval(interval);
@@ -51,6 +57,7 @@ export default function OtpVerifications({ url }: Props) {
       clearInterval(interval);
     };
   });
+
   const verifyCode = async () => {
     await codeVerification({body: {
       phone,
@@ -67,9 +74,9 @@ export default function OtpVerifications({ url }: Props) {
           type: 'error'
       }))
       }
-      .log({verifyCodeRes: r})
     });
   }
+
   const resendOtp = async () => {
     setMinutes(0);
     setSeconds(59);
@@ -91,18 +98,10 @@ export default function OtpVerifications({ url }: Props) {
       }
     });
   }
+
   const handleChangeOtp = (enteredOtp: string) => {
     setOtp(enteredOtp);
-    .log({enteredOtp})
-};
-
-
-  // const handleVerify = () => {
-  //   if(otp.length === 4) {
-  //     router.push(`${appLinks.accountInfo.path}`);
-  //   }
-  // }
-
+  };
 
   return (
     <Fragment>
@@ -112,7 +111,7 @@ export default function OtpVerifications({ url }: Props) {
       />
        <MainContentLayout url={url} showBackBtnHeader currentModule="otp_verification">
         <div className="flex justify-center p-5">
-          <div>
+          <div className="w-full">
             <div className="flex justify-center">
               <CustomImage 
                 src={OtpVerify} 
@@ -123,21 +122,26 @@ export default function OtpVerifications({ url }: Props) {
             </div>
             <div className="text-center">
               <h3 
-                className="font-bold" 
+                className="font-bold text-lg pb-2" 
                 suppressHydrationWarning={suppressText}>
                   {t('confirmation_your_number')}
               </h3>
+              <div className="text-[#877D78] lowercase ">
               <p 
-                className="text-zinc-500 w-[90%] mx-auto" 
+                className="text-center pb-1" 
                 suppressHydrationWarning={suppressText}>
-                  {upperFirst(`${t('please_enter_the_4-digit_code_that_was_sent_to_the_number')}`)}
-                  <span className="text-black px-2">
-                    {countryCode} {phone}
-                  </span>
+                  {upperFirst(`${t('please_enter_the_4-digit_code_that_was_sent')}`)}
               </p>
+              <p>
+                <span>{t('to_the_number')}</span>
+                <span className="text-black px-2">
+                  {countryCode} {phone}
+                </span>
+              </p>
+              </div>
             </div>
-            <div className="w-[80%] mx-auto flex justify-between text-center">
-              <span className="text-zinc-500" suppressHydrationWarning={suppressText}>
+            <div className="w-[90%] mx-auto flex justify-between text-center pt-3 pb-5 lowercase">
+              <span className="text-[#877D78]" suppressHydrationWarning={suppressText}>
                 {t('you_ll_receive_code_in')}
                 {seconds > 0 || minutes > 0 ? (
                   <span className="px-1">
@@ -179,6 +183,7 @@ export default function OtpVerifications({ url }: Props) {
                     }}
               />
             </div>
+            <div className="flex flex-1">
             <button 
               className={`mt-5 mb-20 ${mainBtnClass}`}
               style={{ backgroundColor: color }} 
@@ -187,6 +192,7 @@ export default function OtpVerifications({ url }: Props) {
             >
               {t('verify')}
             </button>
+            </div>
           </div>
         </div>
        </MainContentLayout>

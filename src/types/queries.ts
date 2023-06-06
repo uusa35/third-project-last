@@ -102,8 +102,8 @@ export interface PhoneCheck {
 export interface VerifyCode {
   phone: string;
   phone_country_code: string;
-  code: number | null;
-  type: 'register' | 'rest';
+  code: string;
+  type: 'register' | 'rest'
 }
 
 export interface Register {
