@@ -117,7 +117,6 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   <Link
                     className="flex justify-between items-center"
                     href={appLinks.login.path}
-                    href={''}
                     // onClick={() =>
                     //   dispatch(
                     //     signIn('113|NwpzCgmMhu6EfyYVDlHguGwFBqCpYlAu04CsSKTh')
