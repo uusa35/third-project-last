@@ -160,11 +160,15 @@ function DeliveryPickup({ url }: Props) {
                     ar={destination.name_ar}
                     en={destination.name_en}
                   />
-                  ,{' '}
-                  {truncate(displayUserAddress(customerAddress), {
-                    length: 30,
-                    omission: '...',
-                  })}
+                  {customerAddress.id !== 0 && (
+                    <>
+                      ,{' '}
+                      {truncate(displayUserAddress(customerAddress), {
+                        length: 30,
+                        omission: '...',
+                      })}
+                    </>
+                  )}{' '}
                 </p>
               </div>
             )}

@@ -19,7 +19,7 @@ export interface Product {
   cover: string;
   img: img[];
   sections?: ProductSection[];
-  cover: string
+  cover: string;
 }
 
 export interface ProductSection {
@@ -131,7 +131,7 @@ export interface ServerCart {
   total_cart_after_tax?: number;
   promo_code_discount?: number;
   minimum_order_price?: string;
-  free_delivery_data?: string
+  free_delivery_data?: string;
   tax?: number;
   free_delivery?: boolean;
   delivery_fee?: string;
@@ -287,6 +287,8 @@ export interface OrderInvoice {
       {
         quantity: number;
         item: string;
+        item_ar: string;
+        item_en: string;
         addon: InvoiceAddon[];
         price: string;
         total: number;
@@ -360,7 +362,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-  token?: string | null
+  token?: string | null 
 }
 
 export interface Prefrences {
@@ -393,4 +395,23 @@ export interface HomePromoCode {
   promo_code_id: number;
   promo_code: string;
   promo_image: string;
+}
+
+export interface OrderProduct {
+  quantity: number;
+  item: string;
+  addon: InvoiceAddon[];
+  price: string;
+  total: number;
+  extra_notes: string;
+  item_en: string;
+  item_ar: string;
+}
+export interface StaticPage {
+  id: number,
+  title_en: string,
+  title_ar: string,
+  key: string,
+  content_en: string,
+  content_ar: string
 }

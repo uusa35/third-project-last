@@ -99,7 +99,8 @@
   "guest": "guest",
   "otp_verification": "otp verification",
   "confirmation_your_number": "confirmation your number",
-  "please_enter_the_4-digit_code_that_was_sent_to_the_number": "please enter the 4-digit code that was sent to the number",
+  "please_enter_the_4-digit_code_that_was_sent": "please enter the 4-digit code that was sent",
+  "to_the_number": "to the number",
   "you_ll_receive_code_in": "you'll receive code in",
   "verify": "verify",
   "complete_your_account_info": "complete your account info",
@@ -280,5 +281,19 @@
   "your_upcoming_order":"your upcoming order",
   "to":"to",
   "info": "info",
-  "from":"from"
+  "from":"from",
+  "phone_number_must_be_between_9_and_15_number": "phone number must be between 9 and 15 number",
+  "send": "send",
+  "otp": "otp",
+  "verification": "verification",
+  "name_is_required": "name is required",
+  "validation": {
+    "required": "this field is required",
+    "email": "ُemail is not in a correct form.",
+    "min": "must be at least {{min}}",
+    "max": "must be at less than  {{max}}",
+    "matches": "enter a valid format"
+  },
+  "Phone_number_must_be_between_8_and_15_number":"Phone number must be between 8 and 15 digits",
+  "saved_in_wish_list":"saved successfully in your wishlist"
 }

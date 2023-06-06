@@ -122,7 +122,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     const handleRouteChangeStart: Handler = (url, { shallow }) => {
-      console.log({ url });
+      // console.log({ url });
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
@@ -132,18 +132,18 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     };
 
     const handleRouteChangeError = (err, url) => {
-      console.log(err, url);
+      // console.log(err, url);
       if (err.cancelled) {
         console.log(`Route to ${url} was cancelled!`);
       }
     };
 
     const handleHashChangeStart: Handler = (url) => {
-      console.log({ url });
+      // console.log({ url });
     };
 
     const handleHashChangeComplete: Handler = (url, { shallow }) => {
-      console.log({ url });
+      // console.log({ url });
     };
 
     router.events.on('routeChangeStart', handleRouteChangeStart);

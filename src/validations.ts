@@ -6,6 +6,7 @@ export const customerInfoSchema = yup
     name: yup.string().required().min(2).max(50),
     email: yup.string().email().nullable(),
     // phone: yup.number().min(100000).max(999999999999).required(),
+    // phone: yup.string().required().min(8).max(15),
     phone: yup.string().required(),
   })
   .required();
@@ -92,3 +93,9 @@ export const feedbackSchema = yup.object().shape({
   note: yup.string().required().min(2).max(500),
   phone: yup.string().min(0).max(999999999999),
 });
+
+export const checkPhone = yup
+  .object({
+    phone: yup.number().min(10000000000).max(999999999999),
+  })
+  .required();

@@ -1,15 +1,15 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PhoneInput from 'react-phone-number-input';
+import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
 import { appLinks, mainBtnClass, suppressText, toEn } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { customerInfoSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
+import { useSaveCustomerInfoMutation } from '@/redux/api/customerApi';
 import { startCase } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomer } from '@/redux/slices/customerSlice';
@@ -39,6 +39,7 @@ const GuestOrderModal: FC<Props> = ({
     register,
     handleSubmit,
     setValue,
+    setError,
     control,
     formState: { errors },
   } = useForm<any>({
@@ -52,12 +53,29 @@ const GuestOrderModal: FC<Props> = ({
   });
 
   const onSubmit = async (body: any) => {
+    const parsedPhone = parsePhoneNumber(body.phone)?.nationalNumber;
+    const parsedCountryCode = `+${
+      parsePhoneNumber(body.phone)?.countryCallingCode
+    }`;
+
+    // console.log({
+    //   ...body,
+    //   phone: parsedPhone,
+    //   phone_country_code: parsedCountryCode,
+    // });
     await triggerSaveCustomerInfo({
-      body,
+      body: {
+        ...body,
+        phone: parsedPhone,
+        phone_country_code: parsedCountryCode,
+      },
       url,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
-        dispatch(setCustomer(r.data.Data));
+        // set country code manually because it doesn't come back from BE
+        dispatch(
+          setCustomer({ ...r.data.Data, countryCode: parsedCountryCode })
+        );
         dispatch(
           showToastMessage({
             content: `info_saved`,
@@ -69,7 +87,20 @@ const GuestOrderModal: FC<Props> = ({
         } else {
           router.push(appLinks.addressCreate.path);
         }
-        // .then(() => dispatch(setCustomer(r.data.Data)));
+      } else if (
+        r.error &&
+        r.error.data &&
+        r.error.data.msg &&
+        r.error.data.msg.phone[0]
+      ) {
+        setError(
+          'phone',
+          {
+            type: 'focus',
+            message: 'phone_number_must_be_between_8_and_15_number',
+          },
+          { shouldFocus: true }
+        );
       } else {
         dispatch(
           showToastMessage({
@@ -80,6 +111,10 @@ const GuestOrderModal: FC<Props> = ({
       }
     });
   };
+
+  // useEffect(() => {
+  //   console.log({ errors });
+  // }, [errors]);
 
   return (
     <>
@@ -148,7 +183,8 @@ const GuestOrderModal: FC<Props> = ({
                         className={`text-base text-red-800 font-semibold py-2 capitalize`}
                         suppressHydrationWarning={suppressText}
                       >
-                        {t('phone_is_required')}
+                        {t(`${errors?.phone?.message}`)}
+                        {/* {t('phone_number_must_be_between_8_and_15_number')} */}
                       </p>
                     )}
                   </div>

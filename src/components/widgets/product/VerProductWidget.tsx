@@ -22,7 +22,7 @@ import DeleteIcon from '@/appIcons/fav_delete.svg';
 
 type Props = {
   element: Product;
-  category_id: string | null;
+  category_id?: string | null;
   show_delete_icon?: boolean;
   delete_function?: (id: number | string) => void;
 };

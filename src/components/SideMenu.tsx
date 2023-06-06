@@ -18,16 +18,7 @@ import {
 } from '@/constants/*';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import {
-  Close,
-  ShoppingBagOutlined,
-  ListAltOutlined,
-  Restaurant,
-  FavoriteBorderOutlined,
-  LocationOnOutlined,
-  BoltOutlined,
-  ChevronRightOutlined,
-} from '@mui/icons-material';
+import { Close, ChevronRightOutlined } from '@mui/icons-material';
 import { setLocale } from '@/redux/slices/localeSlice';
 import CustomImage from '@/components/CustomImage';
 import { isEmpty } from 'lodash';
@@ -46,24 +37,23 @@ import CartIcon from '@/appIcons/more_cart.svg';
 import OrdersIcon from '@/appIcons/more_orders.svg';
 import WishlistIcon from '@/appIcons/more_love.svg';
 import AddressIcon from '@/appIcons/more_address.svg';
-import { signOut } from '@/redux/slices/customerSlice';
+import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
 
 const SideMenu: FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(isAuthenticated);
   const router = useRouter();
   const {
     appSetting,
     customer: { id: guest_id, token, name },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  // for test
-  const auth = { guest: true, user: false };
 
   const handleProtectedRouteNavigation = (path: string) => {
-    if (auth.user) {
+    if (isAuth) {
       return path;
     } else {
       return appLinks.login.path;
@@ -105,46 +95,50 @@ const SideMenu: FC<Props> = (): JSX.Element => {
 
               {/* user or guest section */}
               {/* {(guest_id || token) && ( */}
-                <div className="bg-slate-100 rounded-md mx-4 my-2 p-3">
-                  {!token && (
-                    <Link
-                      className="flex justify-between items-center"
-                      href={appLinks.login.path}
-                    >
-                      <div className="flex gap-x-2">
-                        <FastSignInIcon />
-                        <p
-                          className={`${alexandriaFontMeduim}`}
-                          suppressHydrationWarning={suppressText}
-                        >
-                          <span className={`${alexandriaFontBold}`}>
-                            {t('sign_in')}
-                          </span>{' '}
-                          {t('to_orderfast_now')}
-                        </p>
+              <div className="bg-slate-100 rounded-md mx-4 my-2 p-3">
+                {isAuth ? (
+                  <div className="flex justify-between items-center">
+                    <div className="flex gap-x-1">
+                      {/* img */}
+                      <div className="rounded-full h-5 w-5"></div>
+                      <div>
+                        <p className="text-sm">{t('Welcome_back')} !</p>
+                        <p className="font-bold">{name}</p>
                       </div>
-                      <ChevronRightOutlined />
-                    </Link>
-                  )}
-                  {token && (
-                    <div className="flex justify-between items-center">
-                      <div className="flex gap-x-1">
-                        {/* img */}
-                        <div className="rounded-full h-5 w-5"></div>
-                        <div>
-                          <p className="text-sm">{t('Welcome_back')} !</p>
-                          <p className="font-bold">{name}</p>
-                        </div>
-                      </div>
-                      <button 
-                        className="bg-white rounded-xl text-sm font-semibold px-2 py-px"
-                        onClick={()=> dispatch(signOut())}
-                      >
-                        {t('sign_out')}
-                      </button>
                     </div>
-                  )}
-                </div>
+                    <button
+                      className="bg-white rounded-xl text-sm font-semibold px-2 py-px"
+                      onClick={() => dispatch(signOut())}
+                    >
+                      {t('sign_out')}
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    className="flex justify-between items-center"
+                    href={appLinks.login.path}
+                    // onClick={() =>
+                    //   dispatch(
+                    //     signIn('113|NwpzCgmMhu6EfyYVDlHguGwFBqCpYlAu04CsSKTh')
+                    //   )
+                    // } //test
+                  >
+                    <div className="flex gap-x-2">
+                      <FastSignInIcon />
+                      <p
+                        className={`${alexandriaFontMeduim}`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        <span className={`${alexandriaFontBold}`}>
+                          {t('sign_in')}
+                        </span>{' '}
+                        {t('to_orderfast_now')}
+                      </p>
+                    </div>
+                    <ChevronRightOutlined />
+                  </Link>
+                )}
+              </div>
               {/* )} */}
             </header>
 

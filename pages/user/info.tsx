@@ -8,7 +8,7 @@ import AccountInfoImg from '@/appImages/account_info.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from "@/constants/*";
 import { upperFirst } from "lodash";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setCurrentModule } from "@/redux/slices/appSettingSlice";
+import { setCurrentModule, setUrl } from "@/redux/slices/appSettingSlice";
 import { useRouter } from "next/router";
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRegisterMutation } from "@/redux/api/authApi";
@@ -32,8 +32,6 @@ export default function AccountInfo({ url }: Props) {
   const {
     register,
     handleSubmit,
-    setValue,
-    control,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(customerInfoSchema),
@@ -44,6 +42,13 @@ export default function AccountInfo({ url }: Props) {
       phone,
     },
   });
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
   const onSubmit = async (body: any) => {
     await triggerRegister({
       body: {
@@ -56,14 +61,14 @@ export default function AccountInfo({ url }: Props) {
     }).then((r: any) => {
       dispatch(setCustomer(r.data.data.user));
       dispatch(signIn(r.data.data.token));
+<<<<<<< HEAD
       
       console.log({ RegisterRes: r})
+=======
+      router.push(`${appLinks.addressMap.path}`);
+>>>>>>> structure
     });
   }
-  // const handleSubmit = () => {
-  //   router.push(`${appLinks.AddressMap.path}`);
-  // }
-  console.log({ errors })
 
   return (
     <Fragment>
@@ -90,53 +95,53 @@ export default function AccountInfo({ url }: Props) {
                   {upperFirst(`${t('complete_your_account_info')}`)}
               </h3>
               <p 
-                className="text-zinc-500 w-[90%] mx-auto" 
+                className="text-[#877D78] lowercase w-[90%] mx-auto" 
                 suppressHydrationWarning={suppressText}>
                   {upperFirst(`${t('enter_your_name_and_email_to_end')}`)}
               </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="relative">
+              <div className="relative pb-4">
                   <input 
                       type="text" 
                       id="name"  
                       {...register('name')}
-                      className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] appearance-none focus:outline-none focus:ring-0  peer" 
-                      style={{ borderBottomColor: '#e5e7eb' }}
+                      className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[2px] appearance-none focus:outline-none focus:ring-0  peer" 
+                      style={{ borderBottomColor: '#e5e7eb', caretColor: color }}
                       onFocus={(e) => e.target.style.borderBottomColor = color }
                       onBlur={(e) => e.target.style.borderBottomColor = '#e5e7eb' }
                       placeholder=" " 
                     />
                   <label 
                       htmlFor="name"  
-                      className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
+                      className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
                       suppressHydrationWarning={suppressText}
                   >
-                      {t('full_name')}
+                      {t('fill_name')}
                   </label>
-                  {errors?.phone?.message && (
-                    <div className={`text-sm text-red-800`}>
-                      {errors?.phone?.message && (
-                        <p suppressHydrationWarning={suppressText}>
-                          {t('name_is_required')}
-                        </p>
-                      )}
-                    </div>
-                  )}
               </div>
-              <div className="relative">
+              {errors?.name?.message && (
+                <div className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}>
+                  {errors?.name?.message && (
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('name_is_required')}
+                    </p>
+                  )}
+                </div>
+              )}
+              <div className="relative mt-5">
                 <input 
                     type="email" 
                     id="email"
                     {...register('email')} 
-                    className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer" placeholder=" " 
-                    style={{ borderBottomColor: '#e5e7eb' }}
+                    className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[2px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer" placeholder=" " 
+                    style={{ borderBottomColor: '#e5e7eb', caretColor: color }}
                     onFocus={(e) => e.target.style.borderBottomColor = color }
                     onBlur={(e) => e.target.style.borderBottomColor = '#e5e7eb'}
                 />
                 <label 
                     htmlFor="email" 
-                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start"
+                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
                     suppressHydrationWarning={suppressText}
                 >
                 {t('your_email_optional')}

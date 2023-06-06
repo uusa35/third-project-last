@@ -10,7 +10,7 @@ import PopularSearchSkeleton from './PopularSearchSkeleton';
 import ProductHorizontalSkeleton from './ProductHorizontalSkeleton';
 import ProductShowSkeleton from './ProductShowSkeletong';
 import ProductVerticalSkeleton from './ProductVerticalSkeleton';
-import ReturnPolicySkeleton from './ReturnPolicySkeleton';
+import PolicySkeleton from './PolicySkeleton';
 import ProductCartSkelton from './ProductCartSkelton';
 import PromoCodeSkelton from './PromoCodeSkelton';
 import PaymentSummarySkelton from './PaymentSummarySkelton';
@@ -55,8 +55,8 @@ export default function ContentLoader({ type, sections }: Props) {
     case 'ContactDetails':
         SkeletonComponent = ContactDetailsSkeleton;
         break;
-    case 'ReturnPolicy':
-        SkeletonComponent = ReturnPolicySkeleton;
+    case 'Policy':
+        SkeletonComponent = PolicySkeleton;
         break;
     case 'Home':
         SkeletonComponent = HomePageSMSkeleton;

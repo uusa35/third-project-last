@@ -603,7 +603,7 @@ const ProductShow: NextPage<Props> = ({
                   />
                 )}
               </div>
-              <FavouriteAndShare />
+              <FavouriteAndShare product_id={product.id.toString()} url />
             </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">

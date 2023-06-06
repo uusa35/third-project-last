@@ -114,7 +114,6 @@ export default function search({ url }: Props) {
         destination: desObject,
         url,
       }).then((r: any) => {
-        console.log({ resss: r })
         if (r.data && r.data.Data && r.data.Data.length > 0) {
           setCurrentProducts(r.data.Data);
         } else {
