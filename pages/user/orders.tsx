@@ -22,6 +22,7 @@ import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { AppQueryResult, UpcomingOrders } from '@/types/queries';
 import EmptyUserOrders from '@/components/order/EmptyUserOrders';
 import UpcomingCompletedOrder from '@/components/order/UpcomingCompletedOrder';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   url: string;
@@ -132,7 +133,7 @@ export default function UserOrders({ url }: Props) {
             )}
           </>
         ) : (
-          <p>loading skelton</p>
+          <ContentLoader type='MyOrders' sections={1} /> 
         )}
       </MainContentLayout>
     </Suspense>
