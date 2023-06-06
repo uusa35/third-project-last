@@ -35,12 +35,9 @@ export const customerApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    GetWishListProducts: builder.query<
-      AppQueryResult<{ Id: string }>,
-      { url: string }
-    >({
+    GetWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
       query: ({ url }) => ({
-        url: `tempId`,
+        url: `getWishList`,
         headers: {
           url,
         },
@@ -63,21 +60,28 @@ export const customerApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    AddToWishList: builder.query<
-      AppQueryResult<{ Id: string }>,
-      { url: string }
+    AddToWishList: builder.mutation<
+      AppQueryResult<any>,
+      {
+        body: any;
+        url: string;
+      }
     >({
-      query: ({ url }) => ({
-        url: `tempId`,
-        headers: {
-          url,
-        },
+      query: ({ body, url }) => ({
+        url: `addToWishList`,
+        method: `POST`,
+        headers: { url },
+        body,
         validateStatus: (response, result) =>
-          response.status == 200 && result.status,
+          response.status === 200 && result.status,
       }),
     }),
   }),
 });
 
-export const { useSaveCustomerInfoMutation, useLazyCreateTempIdQuery } =
-  customerApi;
+export const {
+  useAddToWishListMutation,
+  useSaveCustomerInfoMutation,
+  useLazyCreateTempIdQuery,
+  useGetWishListProductsQuery
+} = customerApi;

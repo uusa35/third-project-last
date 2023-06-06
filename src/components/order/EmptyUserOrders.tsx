@@ -11,9 +11,13 @@ import { debounce } from 'lodash';
 import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 
-type Props = { handleChange: (id: number | string) => void };
+type Props = {
+  handleChange: (event: React.KeyboardEvent<HTMLElement>) => void;
+};
 
-export default function EmptyUserOrders({ handleChange = (id) => {} }: Props) {
+export default function EmptyUserOrders({
+  handleChange = (event) => {},
+}: Props) {
   const { t } = useTranslation();
 
   return (
@@ -45,11 +49,7 @@ export default function EmptyUserOrders({ handleChange = (id) => {} }: Props) {
           placeholder={`${t('order_id')}`}
           suppressHydrationWarning={suppressText}
           className={`flex-1 px-2 py-3 h-12 bg-transparent text-[#544A45] capitalize foucs:ring-0 outline-none ${alexandriaFontLight}`}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              handleChange(e.target.value);
-            }
-          }}
+          onKeyDown={(e) => handleChange(e)}
         />
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { OrderProduct, Product, ProductCart } from '.';
+
 export type AppQueryResult<T> = {
   success: boolean;
   status: string | number;
@@ -89,6 +91,7 @@ export interface UpcomingOrders {
   total: string;
   created_at: string;
   estimated_time: string;
+  items?: OrderProduct[];
 }
 
 export interface PhoneCheck {
@@ -100,12 +103,17 @@ export interface VerifyCode {
   phone: string;
   phone_country_code: string;
   code: number | null;
-  type: 'register' | 'rest'
+  type: 'register' | 'rest';
 }
 
 export interface Register {
   phone: string;
   phone_country_code: string;
   name: string;
-  email: string
+  email: string;
+}
+
+export interface UserOrders {
+  completed: UpcomingOrders[];
+  upcoming: UpcomingOrders[];
 }
