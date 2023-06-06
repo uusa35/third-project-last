@@ -111,7 +111,7 @@ export default function UserOrders({ url }: Props) {
                   </>
                 )}
 
-                {isEmpty(data.data.completed) && (
+                {!isEmpty(data.data.completed) && (
                   <>
                     {/* completed */}
 
@@ -119,7 +119,7 @@ export default function UserOrders({ url }: Props) {
                       {t('completed')}
                     </h2>
                     <div className="px-5">
-                      {data.data.upcoming.map((order: UpcomingOrders) => (
+                      {data.data.completed.map((order: UpcomingOrders) => (
                         <UpcomingCompletedOrder
                           completed={true}
                           order={order}
