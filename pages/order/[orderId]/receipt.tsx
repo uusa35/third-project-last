@@ -21,6 +21,7 @@ import CartProduct from '@/components/widgets/product/CartProduct';
 import TextTrans from '@/components/TextTrans';
 import { map } from 'lodash';
 import PaymentSummary from '@/components/PaymentSummary';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   url: string;
@@ -165,7 +166,7 @@ export default function orderReceipt({ url, orderId }: Props) {
             </div>
           </div>
         ) : (
-          <p>loading</p>
+          <ContentLoader type="Receipt" sections={1} />
         )}
       </MainContentLayout>
     </Suspense>
