@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { customerInfoSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { useSaveCustomerInfoMutation } from '@/redux/api/customerApi';
+import { useSaveCustomerInfoMutation } from '@/redux/api/CustomerApi';
 import { startCase } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomer } from '@/redux/slices/customerSlice';
@@ -67,15 +67,13 @@ const GuestOrderModal: FC<Props> = ({
       body: {
         ...body,
         phone: parsedPhone,
-        phone_country_code: parsedCountryCode,
+        // phone_country_code: parsedCountryCode,
       },
       url,
     }).then((r: any) => {
       if (r.data && r.data.Data && r.data.status) {
         // set country code manually because it doesn't come back from BE
-        dispatch(
-          setCustomer({ ...r.data.Data, countryCode: parsedCountryCode })
-        );
+        dispatch(setCustomer({ ...r.data.Data }));
         dispatch(
           showToastMessage({
             content: `info_saved`,

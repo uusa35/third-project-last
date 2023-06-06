@@ -48,10 +48,11 @@ export const customerApi = apiSlice.injectEndpoints({
 
     DeleteFromWishList: builder.query<
       AppQueryResult<{ Id: string }>,
-      { url: string }
+      { url: string; product_id: string }
     >({
-      query: ({ url }) => ({
-        url: `tempId`,
+      query: ({ url, product_id }) => ({
+        url: `removeProductWishList`,
+        params: { product_id },
         headers: {
           url,
         },
@@ -83,5 +84,6 @@ export const {
   useAddToWishListMutation,
   useSaveCustomerInfoMutation,
   useLazyCreateTempIdQuery,
-  useGetWishListProductsQuery
+  useGetWishListProductsQuery,
+  useLazyDeleteFromWishListQuery
 } = customerApi;

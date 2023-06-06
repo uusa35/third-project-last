@@ -142,4 +142,4 @@ export const {
 } = customerSlice.actions;
 
 export const isAuthenticated = (state: RootState) =>
-  !isNull(state.customer.token);
+  !isNull(state.customer.token) && !isNull(state.customer.id);

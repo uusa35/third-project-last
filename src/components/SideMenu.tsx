@@ -48,7 +48,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const router = useRouter();
   const {
     appSetting,
-    customer: { id: guest_id, token, name },
+    customer: { id, token, name },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
 
@@ -94,7 +94,6 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <HorizentalLine className="h-1" />
 
               {/* user or guest section */}
-              {/* {(guest_id || token) && ( */}
               <div className="bg-slate-100 rounded-md mx-4 my-2 p-3">
                 {isAuth ? (
                   <div className="flex justify-between items-center">

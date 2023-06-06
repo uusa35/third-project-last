@@ -128,7 +128,6 @@ function DeliveryPickup({ url }: Props) {
                         <span className="px-1.5">
                           {date} {time} {t('to')}
                         </span>
-                        {t('from')}
                       </>
                     ) : (
                       t('deliver_to')
