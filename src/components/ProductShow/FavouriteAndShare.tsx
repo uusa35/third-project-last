@@ -3,7 +3,7 @@ import Favourite from '@/appIcons/favourite.svg';
 import Share from '@/appIcons/share.svg';
 import SigninAddFavModal from '../modals/SigninAddFavModal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { IsAuthenticated } from '@/redux/slices/customerSlice';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 import { useAddToWishListMutation } from '@/redux/api/CustomerApi';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
@@ -14,7 +14,7 @@ type Props = {
 };
 export default function FavouriteAndShare({ product_id, url ,existInWishlist=false}: Props) {
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(IsAuthenticated);
+  const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
   const [triggerAddToWishList] = useAddToWishListMutation();
 
