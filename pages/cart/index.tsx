@@ -29,6 +29,7 @@ import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
 import EmptyCart from '@/components/cart/EmptyCart';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 type Props = { url: string };
 
@@ -45,6 +46,7 @@ export default function Cart({ url }: Props) {
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
+  const isAuth = useAppSelector(isAuthenticated);
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
@@ -258,10 +260,10 @@ export default function Cart({ url }: Props) {
     */
     //  check if user id is null
 
-    if(isNull(customer_id)) {
-      router.push(appLinks.login.path);
-    } else {
+    if(isAuth && method === 'delivery') {
       router.push(appLinks.addressCreate.path);
+    } else {
+      router.push(appLinks.login.path);
     }
   };
 

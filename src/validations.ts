@@ -63,7 +63,7 @@ export const addressSchema = (method: string, t: any) =>
           }
           return schema.nullable(true);
         }),
-      appartment_no: yup
+      apartment_no: yup
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {

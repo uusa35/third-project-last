@@ -240,7 +240,7 @@
   "min": "دقيقة",
   "delivery_fees": "مصاريف التوصيل",
   "language_changed_successfully": "تم تغيير اللغة",
-  "appartment_no": "رقم الشقة",
+  "apartment_no": "رقم الشقة",
   "contacts_info": "بيانات الاتصال",
   "special_remarks": "علامات خاصة",
   "credit_card": "بطاقة ائتمان",
@@ -267,5 +267,8 @@
     "matches":"ادخل رقم هاتف صحيح"
   },
   "Phone_number_must_be_between_8_and_15_number":"رقم الهاتف يجب الا يقل عن 8 ارقام و الا يزيد عن 15 رقما",
-  "saved_in_wish_list":"تم الحفظ بنجاح في قائمتك المفضلة"
+  "saved_in_wish_list":"تم الحفظ بنجاح في قائمتك المفضلة",
+  "no_address": "لم يتم حفظ عنوان حتى الآن",
+  "no_address_des": "تساعدك العناوين المحفوظة على الطلب بسرعة إلى عنوانك",
+  "add_address": "أضف عنوان"
 }
