@@ -23,7 +23,7 @@ export const appLinks = {
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
-  userAddresses: { path: '/user/addresses' },
+  userAddresses: { path: '/address' },
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/orders' },
   wishlist: { path: '/wishlist' },

@@ -295,5 +295,8 @@
     "matches": "enter a valid format"
   },
   "Phone_number_must_be_between_8_and_15_number":"Phone number must be between 8 and 15 digits",
-  "saved_in_wish_list":"saved successfully in your wishlist"
+  "saved_in_wish_list":"saved successfully in your wishlist",
+  "no_address": "no address saved yet",
+  "no_address_des": "the saved addresses help you to quickly order to your address",
+  "add_address": "add address"
 }
