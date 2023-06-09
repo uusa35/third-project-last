@@ -44,9 +44,10 @@ export const customerApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      providesTags: ['Wishlist'],
     }),
 
-    DeleteFromWishList: builder.query<
+    DeleteFromWishList: builder.mutation<
       AppQueryResult<{ Id: string }>,
       { url: string; product_id: string }
     >({
@@ -59,6 +60,7 @@ export const customerApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      invalidatesTags: ['Product', 'Wishlist'],
     }),
 
     AddToWishList: builder.mutation<
@@ -76,6 +78,7 @@ export const customerApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status === 200 && result.status,
       }),
+      invalidatesTags: ['Product', 'Wishlist'],
     }),
   }),
 });
@@ -85,5 +88,5 @@ export const {
   useSaveCustomerInfoMutation,
   useLazyCreateTempIdQuery,
   useGetWishListProductsQuery,
-  useLazyDeleteFromWishListQuery
+  useDeleteFromWishListMutation,
 } = customerApi;

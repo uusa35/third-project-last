@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
+import ActiveFavourite from '@/appIcons/red_love.svg';
 import Share from '@/appIcons/share.svg';
 import SigninAddFavModal from '../modals/SigninAddFavModal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import {
   useAddToWishListMutation,
-  useLazyDeleteFromWishListQuery,
+  useDeleteFromWishListMutation,
 } from '@/redux/api/CustomerApi';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
@@ -24,7 +25,7 @@ export default function FavouriteAndShare({
   const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
   const [triggerAddToWishList] = useAddToWishListMutation();
-  const [triggerDeleteFromWishList] = useLazyDeleteFromWishListQuery();
+  const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
 
   // console.log({ isAuth });
 
@@ -73,7 +74,7 @@ export default function FavouriteAndShare({
       />
       <div className="flex justify-end items-center space-x-2">
         <button onClick={() => handleAddRemvWishlist()}>
-          <Favourite />
+          {existInWishlist ? <ActiveFavourite /> : <Favourite />}
         </button>
         <button>
           <Share />

@@ -31,7 +31,7 @@ import Skeleton from 'react-loading-skeleton';
 import MainHead from '@/components/MainHead';
 import {
   useGetWishListProductsQuery,
-  useLazyDeleteFromWishListQuery,
+  useDeleteFromWishListMutation,
 } from '@/redux/api/CustomerApi';
 
 type Props = { url: string };
@@ -40,7 +40,7 @@ export default function Wishlist({ url }: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [triggerDeleteFromWishList] = useLazyDeleteFromWishListQuery();
+  const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
   const {
     data: wishlistProducts,
     isLoading,
@@ -78,7 +78,7 @@ export default function Wishlist({ url }: Props) {
       <MainHead title={t('wishlist')} description={`${t('whishlist')}`} />
       {isLoading ? (
         <div>
-          <Skeleton height={50} />
+          {/* <Skeleton height={50} /> */}
           <ContentLoader type={'ProductHorizontal'} sections={5} />
         </div>
       ) : (

@@ -3,6 +3,7 @@ import { Address } from '@/types/queries';
 export interface Product {
   id: number;
   amount: number;
+  productWishList: boolean;
   limited_qty: boolean;
   never_out_of_stock: number;
   name: string;
@@ -362,7 +363,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-  token?: string | null 
+  token?: string | null;
 }
 
 export interface Prefrences {
@@ -408,10 +409,10 @@ export interface OrderProduct {
   item_ar: string;
 }
 export interface StaticPage {
-  id: number,
-  title_en: string,
-  title_ar: string,
-  key: string,
-  content_en: string,
-  content_ar: string
+  id: number;
+  title_en: string;
+  title_ar: string;
+  key: string;
+  content_en: string;
+  content_ar: string;
 }

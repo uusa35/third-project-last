@@ -8,7 +8,14 @@ import {
 import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
-import { StringIterator, filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import {
+  StringIterator,
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+} from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { alexandriaFontMeduim, appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -254,16 +261,23 @@ export default function Cart({ url }: Props) {
 
   const handelContinue = () => {
     /*
-    = check if area or branch is selected
+    = check if area or branch is selected  done 
     = check  if guest or user 
     = navigate
     */
     //  check if user id is null
 
-    if(isAuth && method === 'delivery') {
-      router.push(appLinks.addressCreate.path);
-    } else {
+    // check with eng ahmed wheter the guest redirect is diffrent from the user redirect\
+
+    if (isNull(customer_id)) {
       router.push(appLinks.login.path);
+    } else {
+      if (method === 'delivery') {
+        router.push(appLinks.addressCreate.path);
+      } else {
+        //  go to checkout
+        router.push(appLinks.checkout.path);
+      }
     }
   };
 
