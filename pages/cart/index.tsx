@@ -8,7 +8,14 @@ import {
 import { wrapper } from '@/redux/store';
 import { ProductCart, ServerCart } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
-import { StringIterator, filter, isEmpty, isNull, kebabCase, lowerCase } from 'lodash';
+import {
+  StringIterator,
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+} from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { alexandriaFontMeduim, appLinks, suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +36,7 @@ import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
 import EmptyCart from '@/components/cart/EmptyCart';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 type Props = { url: string };
 
@@ -45,6 +53,7 @@ export default function Cart({ url }: Props) {
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
+  const isAuth = useAppSelector(isAuthenticated);
 
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
@@ -252,16 +261,23 @@ export default function Cart({ url }: Props) {
 
   const handelContinue = () => {
     /*
-    = check if area or branch is selected
+    = check if area or branch is selected  done 
     = check  if guest or user 
     = navigate
     */
     //  check if user id is null
 
-    if(isNull(customer_id)) {
+    // check with eng ahmed wheter the guest redirect is diffrent from the user redirect\
+
+    if (isNull(customer_id)) {
       router.push(appLinks.login.path);
     } else {
-      router.push(appLinks.addressCreate.path);
+      if (method === 'delivery') {
+        router.push(appLinks.addressCreate.path);
+      } else {
+        //  go to checkout
+        router.push(appLinks.checkout.path);
+      }
     }
   };
 

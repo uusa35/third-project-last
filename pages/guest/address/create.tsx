@@ -40,14 +40,16 @@ const AddressCreate: NextPage<Props> = ({
   const color = useAppSelector(themeColor);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [currentAddressType, setCurrentAddressType] = useState<
-    'home' | 'office' | 'appartment'
-  >('home');
   const {
     locale: { isRTL },
     customer,
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
+  const [currentAddressType, setCurrentAddressType] = useState<
+    'home' | 'office' | 'apartment'
+  >(
+    customer?.address?.type ? customer?.address?.type.toLowerCase() : 'home'
+  );
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -85,7 +87,7 @@ const AddressCreate: NextPage<Props> = ({
   useMemo(() => {
     setValue(
       'address_type',
-      currentAddressType === 'appartment'
+      currentAddressType === 'apartment'
         ? 2
         : currentAddressType === 'office'
         ? 3
@@ -146,6 +148,7 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   console.log(errors);
+  console.log({ address: customer.address})
   return (
     <MainContentLayout
       url={url}
@@ -166,13 +169,13 @@ const AddressCreate: NextPage<Props> = ({
             <p>{t('house')}</p>
           </button>
           <button
-            onClick={() => setCurrentAddressType('appartment')}
+            onClick={() => setCurrentAddressType('apartment')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'appartment' && `border-red-600`
+              currentAddressType === 'apartment' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize mx-3`}
           >
             <BusinessOutlined fontSize="large" className={`${
-              currentAddressType === 'appartment' && `text-red-600`
+              currentAddressType === 'apartment' && `text-red-600`
             }`} />
             <p>{t('apartment')}</p>
           </button>
@@ -350,9 +353,9 @@ const AddressCreate: NextPage<Props> = ({
             </div>
           )}
 
-          {/*  appartment  */}
+          {/*  apartment  */}
           {/*  building_no  */}
-          {currentAddressType === 'appartment' && (
+          {currentAddressType === 'apartment' && (
             <>
               <div className="w-full ">
                 <label
@@ -407,24 +410,24 @@ const AddressCreate: NextPage<Props> = ({
                 )}
               </div>
 
-              {/*  appartment_no  */}
+              {/*  apartment_no  */}
               <div className="w-full ">
                 <label
                   suppressHydrationWarning={suppressText}
-                  htmlFor="appartment_no"
+                  htmlFor="apartment_no"
                   className="block text-sm font-medium text-gray-900"
                 >
                   {t('apartment_no')}*
                 </label>
                 <div className="relative rounded-md shadow-sm">
                   <input
-                    {...register('appartment_no')}
+                    {...register('apartment_no')}
                     suppressHydrationWarning={suppressText}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('apartment_no')}`}
                   />
                 </div>
-                {errors?.appartment_no?.message && (
+                {errors?.apartment_no?.message && (
                   <span
                     className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                     suppressHydrationWarning={suppressText}

@@ -43,6 +43,7 @@ import {
   startCase,
   sum,
   sumBy,
+  groupBy,
 } from 'lodash';
 import {
   addMeter,
@@ -102,7 +103,7 @@ const ProductShow: NextPage<Props> = ({
     productCart,
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent, prefrences },
+    customer: { userAgent, prefrences, id: user_id },
     vendor: { logo },
     Cart: { promocode },
   } = useAppSelector((state) => state);
@@ -118,7 +119,7 @@ const ProductShow: NextPage<Props> = ({
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [productOutStock, setProductOutStock] = useState<boolean>();
+  const [outOfStock, setOutOfStock] = useState<boolean>(false);
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const [triggerAddToCart] = useAddToCartMutation();
@@ -132,6 +133,7 @@ const ProductShow: NextPage<Props> = ({
     lang,
     destination: desObject,
     url,
+    user_id,
   });
   const [requiredSection, setRequiredSection] = useState(false);
   // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
@@ -146,10 +148,10 @@ const ProductShow: NextPage<Props> = ({
 
   useEffect(() => {
     if (isSuccess && element.Data) {
-      setProductOutStock(
-        element.Data.never_out_of_stock === 0 &&
-          element.Data.amount < currentQty
-      );
+      // setOutOfStock(
+      //   element.Data.never_out_of_stock === 0 &&
+      //     element.Data.amount < currentQty
+      // );
       if (productCart.ProductID !== element?.Data?.id) {
         handleResetInitialProductCart();
       }
@@ -164,13 +166,131 @@ const ProductShow: NextPage<Props> = ({
       ) {
         dispatch(enableAddToCart());
       }
+      if (
+        element?.Data?.amount === 0 &&
+        element?.Data?.never_out_of_stock === 0
+      ) {
+        setOutOfStock(true);
+      } else if (element?.Data?.never_out_of_stock === 1) {
+        setOutOfStock(false);
+      }
     }
   }, [isSuccess, element?.Data?.id, isRTL]);
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
+
+  const handleValidateMendatory = () => {
+    const requiredSections = filter(
+      element?.Data?.sections,
+      (c) => c.selection_type === 'mandatory'
+    );
+
+    // console.log('pro cart', productCart);
+    // console.log('required sec', requiredSections);
+
+    for (const i in requiredSections) {
+      // radio btns
+      if (requiredSections[i].must_select === 'single') {
+        // rb is short for checkbox
+        let rbExist =
+          productCart.RadioBtnsAddons.filter(
+            (rb) => rb.addonID === requiredSections[i].id && rb.addons.Value
+          ).length > 0;
+
+        // console.log('rbExist', rbExist);
+        if (!rbExist) {
+          return false;
+        }
+      }
+
+      // checkboxes
+      if (requiredSections[i].must_select === 'multi') {
+        // cb is short for checkbox
+        let cbExist =
+          productCart.CheckBoxes.filter(
+            (cb) => cb.addonID === requiredSections[i].id && cb.addons[0].Value
+          ).length > 0;
+
+        // console.log('cbExist', cbExist);
+        if (!cbExist) {
+          return false;
+        }
+      }
+
+      // qmeter
+      if (requiredSections[i].must_select === 'q_meter') {
+        let sumValue = 0;
+        let qmExist =
+          productCart.QuantityMeters.filter((qm) => {
+            if (qm.addonID === requiredSections[i].id && qm.addons[0].Value) {
+              sumValue += qm.addons[0].Value;
+              return qm;
+            }
+          }).length > 0;
+
+        // console.log('qmExist', qmExist, sumValue, requiredSections[i].min_q);
+        if (!qmExist || sumValue < requiredSections[i].min_q) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  // min for checkbox and meter ===> optional and required
+  const handleValidateMinQty = () => {
+    const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
+    const groupByMeters = groupBy(productCart.QuantityMeters, 'addonID');
+
+    // checkboxes review min quantities
+    for (const item in groupByCheckboxes) {
+      const sumOfSelectedChoices = sumBy(
+        groupByCheckboxes[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const minQty = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0].min_q;
+
+      if (sumOfSelectedChoices < minQty) {
+        return false;
+      }
+
+      // console.log(
+      //   { item },
+      //   groupByCheckboxes[item],
+      //   { sumOfSelectedChoices },
+      //   { minQty }
+      // );
+    }
+
+    // meter review min quantities
+    for (const item in groupByMeters) {
+      const sumOfSelectedChoices = sumBy(
+        groupByMeters[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const minQty = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0].min_q;
+
+      if (sumOfSelectedChoices < minQty) {
+        return false;
+      }
+    }
+
+    // console.log({ groupByCheckboxes });
+    return true;
+  };
 
   useEffect(() => {
     if (
@@ -178,9 +298,8 @@ const ProductShow: NextPage<Props> = ({
       !isNull(element) &&
       !isNull(element.Data) &&
       !isEmpty(productCart) &&
-      currentQty >= 1 &&
-      element?.Data?.amount &&
-      element?.Data?.amount >= currentQty
+      (currentQty > 0 ||
+        (element?.Data?.amount >= 0 && element?.Data?.never_out_of_stock === 1))
     ) {
       const allCheckboxes = map(productCart.CheckBoxes, (q) => q.addons[0]);
       const allRadioBtns = map(productCart.RadioBtnsAddons, (q) => q.addons);
@@ -200,20 +319,33 @@ const ProductShow: NextPage<Props> = ({
         element?.Data?.sections,
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
+
+      handleValidateMinQty();
+
       if (
-        (element?.Data?.sections?.length !== 0 &&
-          element?.Data?.sections?.filter(
-            (itm) => itm.selection_type === 'mandatory'
-          ).length !== 0 &&
-          requiredRadioBtns.length > 0 &&
-          isEmpty(allRadioBtns)) ||
-        (requiredMeters.length > 0 && isEmpty(allMeters)) ||
-        (requiredCheckboxes.length > 0 && isEmpty(allCheckboxes))
+        (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
+        (requiredRadioBtns.length > 0 &&
+          allRadioBtns.length < requiredRadioBtns.length) ||
+        (requiredMeters.length > 0 && allMeters.length === 0) ||
+        (requiredMeters.length > 0 &&
+          allMeters.length < requiredMeters.length) ||
+        (requiredCheckboxes.length > 0 && allCheckboxes.length === 0) ||
+        (requiredCheckboxes.length > 0 &&
+          allCheckboxes.length < requiredCheckboxes.length)
       ) {
         dispatch(disableAddToCart());
       } else {
-        dispatch(enableAddToCart());
+        // to execute the for looop only when all those if conditions is failed
+        const MendatoryValidation = handleValidateMendatory();
+        const minValueValidation = handleValidateMinQty();
+        console.log({ MendatoryValidation }, { minValueValidation });
+        if (!MendatoryValidation || !minValueValidation) {
+          dispatch(disableAddToCart());
+        } else {
+          dispatch(enableAddToCart());
+        }
       }
+
       dispatch(
         updatePrice({
           totalPrice: sum([
@@ -260,12 +392,7 @@ const ProductShow: NextPage<Props> = ({
   };
 
   const handleIncrease = () => {
-    if (
-      element &&
-      element?.Data?.amount &&
-      element?.Data?.amount &&
-      element?.Data?.amount >= currentQty + 1
-    ) {
+    if (element && !outOfStock) {
       setCurrentyQty(currentQty + 1);
       dispatch(setCartProductQty(currentQty + 1));
     }
@@ -273,11 +400,7 @@ const ProductShow: NextPage<Props> = ({
 
   const handleDecrease = () => {
     if (isSuccess && !isNull(element)) {
-      if (
-        currentQty - 1 > 0 &&
-        element?.Data?.amount &&
-        currentQty <= element?.Data?.amount
-      ) {
+      if (currentQty - 1 > 0) {
         setCurrentyQty(currentQty - 1);
         dispatch(setCartProductQty(currentQty - 1));
       } else {
@@ -315,7 +438,13 @@ const ProductShow: NextPage<Props> = ({
               ? element?.Data?.new_price
               : element?.Data?.price
           ),
-          enabled: false,
+          enabled:
+            filter(
+              element?.Data.sections,
+              (s) => s.selection_type === 'mandatory'
+            ).length === 0 &&
+            element?.Data?.amount >= 0 &&
+            element?.Data?.never_out_of_stock === 1,
           image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
         })
@@ -331,30 +460,45 @@ const ProductShow: NextPage<Props> = ({
   ) => {
     if (type === 'checkbox') {
       if (checked) {
-        dispatch(
-          addToCheckBox({
-            addonID: selection.id,
-            uId: `${selection.id}${choice.id}`,
-            addons: [
-              {
-                attributeID: choice.id,
-                name: choice.name,
-                name_ar: choice.name_ar,
-                name_en: choice.name_en,
-                Value: 1,
-                price: parseFloat(choice.price),
-              },
-            ],
-          })
-        );
+        const checkboxMaxQty = filter(
+          element?.Data?.sections,
+          (c) => c.id === selection.id
+        )[0].max_q;
+
+        const checkboxSelectedQty = filter(
+          productCart.CheckBoxes,
+          (c) => c.addonID === selection.id
+        ).length;
+
+        // if max val disable checkbox
+        if (checkboxSelectedQty + 1 <= checkboxMaxQty) {
+          dispatch(
+            addToCheckBox({
+              addonID: selection.id,
+              uId: `${selection.id}${choice.id}${choice.name_en}`,
+              addons: [
+                {
+                  attributeID: choice.id,
+                  name: choice.name,
+                  name_ar: choice.name_ar,
+                  name_en: choice.name_en,
+                  Value: 1,
+                  price: parseFloat(choice.price),
+                },
+              ],
+            })
+          );
+        }
       } else {
-        dispatch(removeFromCheckBox(`${selection.id}${choice.id}`));
+        dispatch(
+          removeFromCheckBox(`${selection.id}${choice.id}${choice.name_en}`)
+        );
       }
     } else if (type === 'radio') {
       dispatch(
         addRadioBtn({
           addonID: selection.id,
-          uId: `${selection.id}${choice.id}`,
+          uId: `${selection.id}${choice.id}${choice.name_en}`,
           addons: {
             attributeID: choice.id,
             name: choice.name,
@@ -371,13 +515,38 @@ const ProductShow: NextPage<Props> = ({
         (q: QuantityMeters) =>
           q.uId === `${selection.id}${choice.id}` && q.addons[0]
       );
+
       if (checked) {
-        // increase
-        const Value = isEmpty(currentMeter)
-          ? 1
-          : parseFloat(currentMeter[0]?.addons[0].Value) + 1 <= selection.max_q
-          ? parseFloat(currentMeter[0]?.addons[0].Value) + 1
-          : parseFloat(currentMeter[0]?.addons[0].Value);
+        // to disable on max qty
+        const currentSelectionAddonsValues = filter(
+          productCart.QuantityMeters,
+          (q: QuantityMeters) => {
+            if (q.addonID === selection.id && q.addons[0])
+              return q.addons[0].Value;
+          }
+        );
+        const sumSelectedMeterValues = sumBy(
+          currentSelectionAddonsValues,
+          (qm) => qm.addons[0].Value
+        );
+
+        // console.log(
+        //   currentSelectionAddonsValues,
+        //   { currentMeter },
+        //   { sumSelectedMeterValues },
+        //   selection.max_q
+        // );
+
+        // update value and check max qty
+        const Value =
+          sumSelectedMeterValues + 1 <= selection.max_q
+            ? isEmpty(currentMeter)
+              ? 1
+              : parseFloat(currentMeter[0]?.addons[0].Value) + 1
+            : isEmpty(currentMeter)
+            ? 0
+            : parseFloat(currentMeter[0]?.addons[0].Value);
+
         dispatch(
           addMeter({
             addonID: selection.id,
@@ -603,7 +772,11 @@ const ProductShow: NextPage<Props> = ({
                   />
                 )}
               </div>
-              <FavouriteAndShare product_id={product.id.toString()} url />
+              <FavouriteAndShare
+                product_id={product.id.toString()}
+                url={url}
+                existInWishlist={element.Data.productWishList}
+              />
             </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
@@ -741,7 +914,7 @@ const ProductShow: NextPage<Props> = ({
                     <div
                       className={`text-xs lg:text-sm text-center rounded-full w-20 h-8 pt-2 lg:pt-1 ${
                         requiredSection && s.selection_type === 'mandatory'
-                          ? 'bg-white border-red-600 border-[1px]'
+                          ? 'bg-white border-red-600 border-[1px] text-red-600'
                           : 'bg-gray-100'
                       }`}
                     >
@@ -822,7 +995,8 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                      {/* {s.must_select === 'q_meter' &&
+                      {(s.must_select === 'q_meter' ||
+                        s.must_select === 'multi') &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-600 pb-3`}>
                           {t(`must_select_min_and_max`, {
@@ -836,7 +1010,7 @@ const ProductShow: NextPage<Props> = ({
                             {t(`field_must_select_at_least_one`)}
                           </p>
                         )
-                      )} */}
+                      )}
                       {map(s.choices, (c, i) => (
                         <div className="flex items-center w-full pb-2" key={i}>
                           {s.must_select === 'q_meter' ? (
@@ -908,8 +1082,8 @@ const ProductShow: NextPage<Props> = ({
                             >
                               <div className="flex">
                                 <input
-                                  id={`${c.id}${s.selection_type}`}
-                                  name={`${c.id}${s.selection_type}`}
+                                  id={`${c.id}${s.selection_type}${s.title_en}`}
+                                  name={`${c.id}${s.selection_type}${s.title_en}`}
                                   required={s.selection_type !== 'optional'}
                                   type={
                                     s.must_select === 'multi'
@@ -919,13 +1093,19 @@ const ProductShow: NextPage<Props> = ({
                                   checked={
                                     s.must_select !== 'multi'
                                       ? filter(
-                                          productCart?.RadioBtnsAddons,
-                                          (q) => q.uId === `${s.id}${c.id}`
-                                        )[0]?.uId === `${s.id}${c.id}`
+                                          productCart.RadioBtnsAddons,
+                                          (q) =>
+                                            q.uId ===
+                                            `${s.id}${c.id}${c.name_en}`
+                                        )[0]?.uId ===
+                                        `${s.id}${c.id}${c.name_en}`
                                       : filter(
-                                          productCart?.CheckBoxes,
-                                          (q) => q.uId === `${s.id}${c.id}`
-                                        )[0]?.uId === `${s.id}${c.id}`
+                                          productCart.CheckBoxes,
+                                          (q) =>
+                                            q.uId ===
+                                            `${s.id}${c.id}${c.name_en}`
+                                        )[0]?.uId ===
+                                        `${s.id}${c.id}${c.name_en}`
                                   }
                                   onChange={(e) =>
                                     handleSelectAddOn(
@@ -1013,7 +1193,7 @@ const ProductShow: NextPage<Props> = ({
               </div>
               <div className={`px-4 border-b-[1px] pb-5`}>
                 <button
-                  disabled={productOutStock}
+                  disabled={outOfStock}
                   onClick={debounce(() => handleAddToCart(), 400)}
                   className={`font-light ${mainBtnClass} py-2 flex justify-between px-5`}
                   style={{
@@ -1022,7 +1202,7 @@ const ProductShow: NextPage<Props> = ({
                   }}
                 >
                   <div className="px-5 text-center w-full">
-                    {productOutStock ? (
+                    {outOfStock ? (
                       t('out_stock')
                     ) : isNull(destination) ? (
                       t(`start_ordering`)

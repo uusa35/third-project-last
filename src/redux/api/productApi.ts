@@ -29,7 +29,7 @@ export const productApi = apiSlice.injectEndpoints({
           url,
           lang,
           ...destination,
-          limit
+          limit,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
@@ -42,16 +42,10 @@ export const productApi = apiSlice.injectEndpoints({
         key?: string;
         destination?: any;
         url: string;
-        category_id?: string
+        category_id?: string;
       }
     >({
-      query: ({
-        lang,
-        key = ``,
-        destination = {},
-        url,
-        category_id,
-      }: any) => ({
+      query: ({ lang, key = ``, destination = {}, url, category_id }: any) => ({
         url: `search`,
         params: {
           key,
@@ -73,19 +67,21 @@ export const productApi = apiSlice.injectEndpoints({
         lang: Locale['lang'] | string | undefined;
         destination?: any;
         url: string;
+        user_id: string;
       }
     >({
-      query: ({ id, lang, url, destination = {} }: any) => ({
+      query: ({ id, lang, url, destination = {}, user_id }: any) => ({
         url: `itemDetails`,
-        params: { product_id: id },
+        params: { product_id: id, user_id },
         headers: {
           url,
           lang,
-          ...destination
+          ...destination,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      providesTags: ['Product'],
     }),
     getTopSearch: builder.query<
       AppQueryResult<{ topSearch: string[]; trendingItems: Product[] }>,

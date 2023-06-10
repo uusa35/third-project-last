@@ -1,6 +1,6 @@
 import { apiSlice } from './index';
 import { Address, AppQueryResult } from '@/types/queries';
-import { Prefrences } from '@/types/index';
+import { Prefrences, UserAddressFields } from '@/types/index';
 
 export const addressApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -47,8 +47,27 @@ export const addressApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
+    getAddresses: builder.query<
+      AppQueryResult<UserAddressFields[]>,
+      {
+        url: string;
+        user_id: string
+      }
+    >({
+      query: ({ url, user_id }) => ({
+        url: `getUserAddress`,
+        headers: { url },
+        params: { user_id },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
   }),
 });
 
-export const { useCreateAddressMutation, useCheckTimeAvilabilityMutation } =
+export const { 
+  useCreateAddressMutation, 
+  useCheckTimeAvilabilityMutation,
+  useLazyGetAddressesQuery
+} =
   addressApi;
