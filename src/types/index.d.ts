@@ -308,6 +308,7 @@ export interface InvoiceAddon {
 }
 
 export interface OrderTrack {
+
   order_status: string;
   order_code: string;
   branch_phone: string;
@@ -317,10 +318,19 @@ export interface OrderTrack {
     latitude: string;
     longitude: string;
     address: {
-      block: string;
-      street: string;
-      type: string;
-    };
+      "paci": string | null,
+      "type": string | null,
+      "block": string | null,
+      "avenue": string | null,
+      "street": string | null,
+      "floor_no": string | null,
+      "house_no": string | null,
+      "office_no": string | null,
+      "additional": string | null,
+      "building_no": string | null
+    },
+    "latitude": "23.123213",
+    "longitude": "31.311111"
   };
 }
 
@@ -362,7 +372,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-  token?: string | null 
+  token?: string | null
 }
 
 export interface Prefrences {

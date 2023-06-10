@@ -4,13 +4,13 @@ import { CustomerInfo } from '@/types/index';
 
 export const customerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    SaveCustomerInfo: builder.mutation<
+    saveCustomerInfo: builder.mutation<
       AppQueryResult<any>,
       {
         body: CustomerInfo;
         url: string;
       }
-    >({
+    >({ 
       query: ({ body, url }) => ({
         url: `customer-info`,
         method: `POST`,
@@ -20,7 +20,6 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
-
     createTempId: builder.query<
       AppQueryResult<{ Id: string }>,
       { url: string }
@@ -34,8 +33,7 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
-    GetWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
+    getWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
       query: ({ url }) => ({
         url: `getWishList`,
         headers: {
@@ -45,8 +43,7 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
-    DeleteFromWishList: builder.query<
+    deleteFromWishList: builder.query<
       AppQueryResult<{ Id: string }>,
       { url: string }
     >({
@@ -59,8 +56,7 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
-    AddToWishList: builder.mutation<
+    addToWishList: builder.mutation<
       AppQueryResult<any>,
       {
         body: any;

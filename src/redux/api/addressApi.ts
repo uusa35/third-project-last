@@ -26,7 +26,6 @@ export const addressApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
-
     checkTimeAvilability: builder.mutation<
       AppQueryResult<any>,
       {
