@@ -18,7 +18,7 @@ import Slider from 'react-slick';
 import ContentLoader from '../skeletons';
 import { isEmpty } from 'lodash';
 
-const UpcomingOrders:FC = () => {
+const UpComingOrders:FC = () => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -166,4 +166,4 @@ const UpcomingOrders:FC = () => {
     </>
   );
 }
-export default UpcomingOrders;
+export default UpComingOrders;
