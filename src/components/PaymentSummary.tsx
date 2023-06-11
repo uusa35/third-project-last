@@ -87,7 +87,6 @@ export default function PaymentSummary({data}: Props) {
               <p
                 suppressHydrationWarning={suppressText}
                 className={`px-2`}
-                data-cy="deliveryFees"
               >
                 {enable_promocode
                   ? data.free_delivery === false

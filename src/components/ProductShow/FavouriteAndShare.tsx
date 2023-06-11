@@ -1,42 +1,65 @@
 import React, { useEffect, useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
+import ActiveFavourite from '@/appIcons/red_love.svg';
 import Share from '@/appIcons/share.svg';
 import SigninAddFavModal from '../modals/SigninAddFavModal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
-import { useAddToWishListMutation } from '@/redux/api/CustomerApi';
+import {
+  useAddToWishListMutation,
+  useDeleteFromWishListMutation,
+} from '@/redux/api/CustomerApi';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   url: string;
   product_id: string;
-  existInWishlist:boolean
+  existInWishlist: boolean;
 };
-export default function FavouriteAndShare({ product_id, url ,existInWishlist=false}: Props) {
+export default function FavouriteAndShare({
+  product_id,
+  url,
+  existInWishlist = false,
+}: Props) {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
   const [triggerAddToWishList] = useAddToWishListMutation();
+  const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
 
   // console.log({ isAuth });
 
   const handleAddRemvWishlist = async () => {
     if (isAuth) {
-      if(existInWishlist){
+      if (existInWishlist) {
         // remove from wishlist
-      }
-      else{
-        // add to wishlist
-        await triggerAddToWishList({ url, body: { product_id } }).then((r) => {
+        await triggerDeleteFromWishList({
+          url,
+          product_id,
+        }).then((r: any) => {
           if (r.data && r.data?.status) {
             dispatch(
               showToastMessage({
-                content: `saved_in_wish_list`,
+                content: `deleted_from_wishlist`,
                 type: 'success',
               })
             );
           }
-        })
+        });
+      } else {
+        // add to wishlist
+        await triggerAddToWishList({ url, body: { product_id } }).then(
+          (r: any) => {
+            if (r.data && r.data?.status) {
+              dispatch(
+                showToastMessage({
+                  content: `saved_in_wish_list`,
+                  type: 'success',
+                })
+              );
+            }
+          }
+        );
       }
     } else {
       // openmodal
@@ -51,7 +74,7 @@ export default function FavouriteAndShare({ product_id, url ,existInWishlist=fal
       />
       <div className="flex justify-end items-center space-x-2">
         <button onClick={() => handleAddRemvWishlist()}>
-          <Favourite />
+          {existInWishlist ? <ActiveFavourite /> : <Favourite />}
         </button>
         <button>
           <Share />

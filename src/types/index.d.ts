@@ -3,6 +3,7 @@ import { Address } from '@/types/queries';
 export interface Product {
   id: number;
   amount: number;
+  productWishList: boolean;
   limited_qty: boolean;
   never_out_of_stock: number;
   name: string;
@@ -308,20 +309,48 @@ export interface InvoiceAddon {
 }
 
 export interface OrderTrack {
+
   order_status: string;
   order_code: string;
   branch_phone: string;
   estimated_time: string | null;
   order_time: string | null;
+  latitude: string;
+  longitude: string;
   address: {
-    latitude: string;
-    longitude: string;
     address: {
-      block: string;
-      street: string;
-      type: string;
-    };
+      "paci": string | null,
+      "type": string | null,
+      "block": string | null,
+      "avenue": string | null,
+      "street": string | null,
+      "floor_no": string | null,
+      "house_no": string | null,
+      "office_no": string | null,
+      "additional": string | null,
+      "building_no": string | null
+    },
+    "latitude": "23.123213",
+    "longitude": "31.311111"
   };
+  products: [{
+    quantity: number;
+    item: string;
+    item_en: string;
+    item_ar: string;
+    price: string;
+    addon?: [any];
+    total: string;
+    subtotal: string;
+    discount: null | string | number;
+    delivery_fees: string;
+    extra_notes: null | string;
+  }];
+  total: string;
+  subtotal: string;
+  discount: string | null;
+  delivery_fees: string;
+  extra_notes: string | null;
 }
 
 export interface OrderUser {
@@ -362,7 +391,11 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-  token?: string | null 
+<<<<<<< HEAD
+  token?: string | null
+=======
+  token?: string | null;
+>>>>>>> structure
 }
 
 export interface Prefrences {
@@ -389,6 +422,7 @@ export interface Cart {
 export interface Models {
   areaBranchIsOpen: boolean;
   closedStoreIsOpen: boolean;
+  showHelpModal: boolean;
 }
 
 export interface HomePromoCode {
@@ -408,10 +442,10 @@ export interface OrderProduct {
   item_ar: string;
 }
 export interface StaticPage {
-  id: number,
-  title_en: string,
-  title_ar: string,
-  key: string,
-  content_en: string,
-  content_ar: string
+  id: number;
+  title_en: string;
+  title_ar: string;
+  key: string;
+  content_en: string;
+  content_ar: string;
 }

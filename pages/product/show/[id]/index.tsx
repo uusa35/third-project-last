@@ -103,7 +103,7 @@ const ProductShow: NextPage<Props> = ({
     productCart,
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent, prefrences },
+    customer: { userAgent, prefrences, id: user_id },
     vendor: { logo },
     Cart: { promocode },
   } = useAppSelector((state) => state);
@@ -133,6 +133,7 @@ const ProductShow: NextPage<Props> = ({
     lang,
     destination: desObject,
     url,
+    user_id,
   });
   const [requiredSection, setRequiredSection] = useState(false);
   // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
@@ -200,7 +201,7 @@ const ProductShow: NextPage<Props> = ({
             (rb) => rb.addonID === requiredSections[i].id && rb.addons.Value
           ).length > 0;
 
-        console.log('rbExist', rbExist);
+        // console.log('rbExist', rbExist);
         if (!rbExist) {
           return false;
         }
@@ -214,7 +215,7 @@ const ProductShow: NextPage<Props> = ({
             (cb) => cb.addonID === requiredSections[i].id && cb.addons[0].Value
           ).length > 0;
 
-        console.log('cbExist', cbExist);
+        // console.log('cbExist', cbExist);
         if (!cbExist) {
           return false;
         }
@@ -231,7 +232,7 @@ const ProductShow: NextPage<Props> = ({
             }
           }).length > 0;
 
-        console.log('qmExist', qmExist, sumValue, requiredSections[i].min_q);
+        // console.log('qmExist', qmExist, sumValue, requiredSections[i].min_q);
         if (!qmExist || sumValue < requiredSections[i].min_q) {
           return false;
         }
@@ -378,7 +379,6 @@ const ProductShow: NextPage<Props> = ({
     currentQty,
     productCart.ExtraNotes,
   ]);
-
 
   useEffect(() => {
     if (productCart.enabled) {
@@ -597,7 +597,6 @@ const ProductShow: NextPage<Props> = ({
     }
   };
 
-
   const { data: cartItems } = useGetCartProductsQuery({
     userAgent,
     area_branch: desObject,
@@ -773,7 +772,11 @@ const ProductShow: NextPage<Props> = ({
                   />
                 )}
               </div>
-              <FavouriteAndShare product_id={product.id.toString()} url />
+              <FavouriteAndShare
+                product_id={product.id.toString()}
+                url={url}
+                existInWishlist={element.Data.productWishList}
+              />
             </div>
             <div className="relative w-full capitalize">
               <div className="relative w-full h-auto overflow-hidden">
@@ -1092,13 +1095,17 @@ const ProductShow: NextPage<Props> = ({
                                       ? filter(
                                           productCart.RadioBtnsAddons,
                                           (q) =>
-                                            q.uId === `${s.id}${c.id}${c.name_en}`
-                                        )[0]?.uId === `${s.id}${c.id}${c.name_en}`
+                                            q.uId ===
+                                            `${s.id}${c.id}${c.name_en}`
+                                        )[0]?.uId ===
+                                        `${s.id}${c.id}${c.name_en}`
                                       : filter(
                                           productCart.CheckBoxes,
                                           (q) =>
-                                            q.uId === `${s.id}${c.id}${c.name_en}`
-                                        )[0]?.uId === `${s.id}${c.id}${c.name_en}`
+                                            q.uId ===
+                                            `${s.id}${c.id}${c.name_en}`
+                                        )[0]?.uId ===
+                                        `${s.id}${c.id}${c.name_en}`
                                   }
                                   onChange={(e) =>
                                     handleSelectAddOn(

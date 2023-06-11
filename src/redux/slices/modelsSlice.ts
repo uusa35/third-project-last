@@ -4,7 +4,8 @@ import { searchParamsSlice } from './searchParamsSlice';
 
 const initialState: Models = {
   areaBranchIsOpen: false,
-  closedStoreIsOpen: false
+  closedStoreIsOpen: false,
+  showHelpModal: false
 };
 
 
@@ -26,6 +27,13 @@ export const ModelsSlice = createSlice({
       ...state,
       closedStoreIsOpen: action.payload,
     }),
+    toggleShowHelpModal: (
+      state: typeof initialState,
+      action: PayloadAction<boolean>
+    ) => ({
+      ...state,
+      showHelpModal: action.payload,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase(searchParamsSlice.actions.setDestination, (state, action) => {
@@ -34,4 +42,4 @@ export const ModelsSlice = createSlice({
   },
 });
 
-export const { setAreaBranchModelStatus, setClosedStoreModelStatus } = ModelsSlice.actions;
+export const { setAreaBranchModelStatus, setClosedStoreModelStatus, toggleShowHelpModal } = ModelsSlice.actions;

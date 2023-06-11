@@ -32,7 +32,7 @@ export const apiSlice = createApi({
     },
     credentials: 'include',
   }),
-  tagTypes: ['Cart', 'Branch', 'Area'],
+  tagTypes: ['Cart', 'Branch', 'Area','Product','Wishlist'],
   keepUnusedDataFor: 0,
   refetchOnReconnect: true,
   extractRehydrationInfo(action, { reducerPath }) {

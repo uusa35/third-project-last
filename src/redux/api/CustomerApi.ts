@@ -4,7 +4,7 @@ import { CustomerInfo } from '@/types/index';
 
 export const customerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    SaveCustomerInfo: builder.mutation<
+    saveCustomerInfo: builder.mutation<
       AppQueryResult<any>,
       {
         body: CustomerInfo;
@@ -20,7 +20,6 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
-
     createTempId: builder.query<
       AppQueryResult<{ Id: string }>,
       { url: string }
@@ -34,8 +33,7 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
-    GetWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
+    getWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
       query: ({ url }) => ({
         url: `getWishList`,
         headers: {
@@ -44,23 +42,25 @@ export const customerApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      providesTags: ['Wishlist'],
     }),
 
-    DeleteFromWishList: builder.query<
+    deleteFromWishList: builder.query<
       AppQueryResult<{ Id: string }>,
-      { url: string }
+      { url: string; product_id: string }
     >({
-      query: ({ url }) => ({
-        url: `tempId`,
+      query: ({ url, product_id }) => ({
+        url: `removeProductWishList`,
+        params: { product_id },
         headers: {
           url,
         },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      invalidatesTags: ['Product', 'Wishlist'],
     }),
-
-    AddToWishList: builder.mutation<
+    addToWishList: builder.mutation<
       AppQueryResult<any>,
       {
         body: any;
@@ -75,6 +75,7 @@ export const customerApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status === 200 && result.status,
       }),
+      invalidatesTags: ['Product', 'Wishlist'],
     }),
   }),
 });
@@ -83,5 +84,6 @@ export const {
   useAddToWishListMutation,
   useSaveCustomerInfoMutation,
   useLazyCreateTempIdQuery,
-  useGetWishListProductsQuery
+  useGetWishListProductsQuery,
+  useDeleteFromWishListMutation,
 } = customerApi;

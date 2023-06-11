@@ -63,6 +63,8 @@ export const orderApi = apiSlice.injectEndpoints({
           url: `track-order`,
           headers: { url },
           params: { order_code },
+          validateStatus: (response, result) =>
+            result?.status,
         }),
       }),
       checkOrderStatus: builder.query<

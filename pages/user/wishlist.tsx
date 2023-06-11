@@ -12,8 +12,12 @@ import {
   useGetProductsQuery,
   useLazyGetProductsQuery,
 } from '@/redux/api/productApi';
-import { useAppSelector } from '@/redux/hooks';
-import { setCurrentModule, showHeader } from '@/redux/slices/appSettingSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import {
+  setCurrentModule,
+  showHeader,
+  showToastMessage,
+} from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { wrapper } from '@/redux/store';
 import { isEmpty } from 'lodash';
@@ -25,13 +29,18 @@ import EmptyWishList from '@/appIcons/empty_wishlist.svg';
 import ContentLoader from '@/components/skeletons';
 import Skeleton from 'react-loading-skeleton';
 import MainHead from '@/components/MainHead';
-import { useGetWishListProductsQuery } from '@/redux/api/CustomerApi';
+import {
+  useGetWishListProductsQuery,
+  useDeleteFromWishListMutation,
+} from '@/redux/api/CustomerApi';
 
 type Props = { url: string };
 
 export default function Wishlist({ url }: Props) {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const router = useRouter();
+  const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
   const {
     data: wishlistProducts,
     isLoading,
@@ -40,22 +49,36 @@ export default function Wishlist({ url }: Props) {
     data: any;
     isSuccess: boolean;
     isLoading: boolean;
-  }>({
-    url,
-  });
+  }>(
+    {
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
-  const handelDeleteFromWishList = (id: number | string) => {
-    console.log('in wishlist', id);
+  const handelDeleteFromWishList = async (id: number | string) => {
+    await triggerDeleteFromWishList({ url, product_id: id.toString() }).then(
+      (r: any) => {
+        if (r.data && r.data?.status) {
+          dispatch(
+            showToastMessage({
+              content: `deleted_from_wishlist`,
+              type: 'success',
+            })
+          );
+        }
+      }
+    );
   };
 
-  console.log({ wishlistProducts });
+  // console.log({ wishlistProducts });
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule={'whishlist'}>
       <MainHead title={t('wishlist')} description={`${t('whishlist')}`} />
       {isLoading ? (
         <div>
-          <Skeleton height={50} />
+          {/* <Skeleton height={50} /> */}
           <ContentLoader type={'ProductHorizontal'} sections={5} />
         </div>
       ) : (
@@ -89,7 +112,7 @@ export default function Wishlist({ url }: Props) {
               <div>
                 {wishlistProducts.Data.map((product: any) => {
                   return (
-                    <div>
+                    <div className="px-4">
                       <VerProductWidget
                         delete_function={handelDeleteFromWishList}
                         show_delete_icon={true}
