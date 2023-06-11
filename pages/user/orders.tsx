@@ -64,7 +64,7 @@ export default function UserOrders({ url }: Props) {
                 {isEmpty(data.data.upcoming) ? (
                   <>
                     {/* enter id to track */}
-                    <div className="flex flex-col items-center space-y-2 px-4 py-8 border-b-8 border-gray-100">
+                    <div className="flex flex-col items-center space-y-2 px-4 py-8">
                       <CustomImage
                         src={MyOrders}
                         alt="my orders"
@@ -100,7 +100,7 @@ export default function UserOrders({ url }: Props) {
                       <h2 className={`p-3 text-lg ${alexandriaFontBold}`}>
                         {t('upcoming')}
                       </h2>
-                      <div className="px-5 border-b-4 border-[#F3F2F2]">
+                      <div className="px-5">
                         {data.data.upcoming.map((order: UpcomingOrders) => (
                           <UpcomingCompletedOrder
                             upcoming={true}
@@ -113,13 +113,13 @@ export default function UserOrders({ url }: Props) {
                 )}
 
                 {!isEmpty(data.data.completed) && (
-                  <>
+                  <div className="border-t-4 border-[#F3F2F2]">
                     {/* completed */}
 
                     <h2 className={`p-3 text-lg ${alexandriaFontBold}`}>
                       {t('completed')}
                     </h2>
-                    <div className="px-5">
+                    <div className="px-5 ">
                       {data.data.completed.map((order: UpcomingOrders) => (
                         <UpcomingCompletedOrder
                           completed={true}
@@ -127,13 +127,13 @@ export default function UserOrders({ url }: Props) {
                         />
                       ))}
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             )}
           </>
         ) : (
-          <ContentLoader type='MyOrders' sections={1} /> 
+          <ContentLoader type="MyOrders" sections={1} />
         )}
       </MainContentLayout>
     </Suspense>
