@@ -105,7 +105,7 @@ const ProductShow: NextPage<Props> = ({
     searchParams: { method, destination },
     customer: { userAgent, prefrences, id: user_id },
     vendor: { logo },
-    Cart: { promocode },
+    cart: { promocode },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   console.log({ destination, method });

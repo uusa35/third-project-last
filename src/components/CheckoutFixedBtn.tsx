@@ -34,7 +34,7 @@ export default function CheckoutFixedBtn({
   const {
     customer: { userAgent },
     searchParams: { method },
-    Cart: { enable_promocode, promocode },
+    cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);

@@ -45,7 +45,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
   console.log({ DestinationId, desObject  })
   const {
     customer: { userAgent },
-    Cart: { promocode }
+    cart: { promocode }
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const [triggerGetOrderStatus, { data: order, isLoading }] = useLazyCheckOrderStatusQuery<{

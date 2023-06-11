@@ -47,7 +47,7 @@ export default function Cart({ url }: Props) {
   const {
     customer: { userAgent },
     searchParams: { method },
-    Cart: { enable_promocode, promocode },
+    cart: { enable_promocode, promocode },
     customer: { id: customer_id },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);

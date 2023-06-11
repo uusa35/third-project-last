@@ -17,7 +17,7 @@ export default function PaymentSummary({ data }: Props) {
   const { t } = useTranslation();
   const {
     searchParams: { method },
-    Cart: { enable_promocode, promocode },
+    cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
 
   return (

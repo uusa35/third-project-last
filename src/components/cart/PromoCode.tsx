@@ -21,7 +21,7 @@ export default function PromoCode({
 }: Props) {
   const { t } = useTranslation();
   const {
-    Cart: { promocode, enable_promocode },
+    cart: { promocode, enable_promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const [promoCodeVal, setPromoCodeVal] = useState<string | undefined>(

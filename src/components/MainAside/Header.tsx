@@ -30,7 +30,7 @@ export default function AsideHeader({ url }: Props) {
     locale: { otherLang },
     customer: { userAgent },
     searchParams: { method },
-    Cart: { promocode },
+    cart: { promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
 
