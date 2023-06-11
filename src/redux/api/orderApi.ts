@@ -128,7 +128,6 @@ export const orderApi = apiSlice.injectEndpoints({
           method: 'POST',
         }),
       }),
-
       getUpcomingOrders: builder.query<
         AppQueryResult<UpcomingOrders[]>,
         { lang: Locale['lang']; destination: any; url: string; phone: string }

@@ -115,7 +115,7 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
               <TextTrans
                 ar={vendor?.desc}
                 en={vendor?.desc}
-                className="text-sm text-center"
+                className="text-sm text-center leading-6"
                 length={600}
               />
             </Link>

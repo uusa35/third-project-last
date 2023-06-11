@@ -101,7 +101,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                       {/* img */}
                       <div className="rounded-full h-5 w-5"></div>
                       <div>
-                        <p className="text-sm">{t('Welcome_back')} !</p>
+                        <p className="text-sm mb-1">{t('Welcome_back')} !</p>
                         <p className="font-bold">{name}</p>
                       </div>
                     </div>

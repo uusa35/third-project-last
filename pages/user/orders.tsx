@@ -11,41 +11,63 @@ import {
   alexandriaFontBold,
   alexandriaFontLight,
   appLinks,
+  toEn,
 } from '@/constants/*';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { debounce, isEmpty } from 'lodash';
 import { suppressText } from '@/constants/*';
-import { useGetUserOrdersQuery } from '@/redux/api/orderApi';
-import { useAppSelector } from '@/redux/hooks';
+import {
+  useGetUserOrdersQuery,
+  useLazyTrackOrderQuery,
+} from '@/redux/api/orderApi';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { AppQueryResult, UpcomingOrders } from '@/types/queries';
 import EmptyUserOrders from '@/components/order/EmptyUserOrders';
 import UpcomingCompletedOrder from '@/components/order/UpcomingCompletedOrder';
 import ContentLoader from '@/components/skeletons';
+import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   url: string;
 };
 
-export default function UserOrders({ url }: Props) {
+export default function OrderIndex({ url }: Props) {
   const { t } = useTranslation();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     customer: { token },
     locale: { lang },
   } = useAppSelector((state) => state);
   const destination = useAppSelector(destinationHeaderObject);
-
   const { data, isLoading, isSuccess } = useGetUserOrdersQuery<{
     isSuccess: boolean;
     isLoading: boolean;
     data: AppQueryResult<any>;
   }>({ url, lang, destination }, { refetchOnMountOrArgChange: true });
+  const [triggerTrackOrder, { data: order, isSuccess: orderSuccess }] =
+    useLazyTrackOrderQuery();
 
-  const handleChange = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (e.keyCode === 13) {
-      router.push(`${appLinks.orderTrack(e.target.value)}`);
+  const handleChange = async (search: string) => {
+    console.log('search', search);
+    if (search && search?.length >= 3) {
+      console.log('search', search, search);
+      await triggerTrackOrder({ order_code: toEn(search), url }).then((r) => {
+        console.log('r', r);
+        if (r.error) {
+          dispatch(
+            showToastMessage({ type: 'error', content: r.error.data?.msg })
+          );
+        } else if (r.data && r.data.data) {
+          router.push(`${appLinks.orderTrack(search)}`);
+        } else {
+          dispatch(
+            showToastMessage({ type: 'error', content: 'no_orders_found' })
+          );
+        }
+      });
     }
   };
 
@@ -86,9 +108,13 @@ export default function UserOrders({ url }: Props) {
                           placeholder={`${t('order_id')}`}
                           suppressHydrationWarning={suppressText}
                           className={`flex-1 px-2 py-3 h-12 bg-transparent text-base text-zinc-600 capitalize foucs:ring-0 outline-none`}
-                          onKeyDown={(e) => {
-                            handleChange(e);
-                          }}
+                          onChange={debounce(
+                            (e) => handleChange(e.target.value),
+                            400
+                          )}
+                          // onKeyDown={debounce((e) => {
+                          //   handleChange(e);
+                          // }, 300)}
                         />
                       </div>
                     </div>
@@ -133,7 +159,7 @@ export default function UserOrders({ url }: Props) {
             )}
           </>
         ) : (
-          <ContentLoader type='MyOrders' sections={1} /> 
+          <ContentLoader type="MyOrders" sections={1} />
         )}
       </MainContentLayout>
     </Suspense>

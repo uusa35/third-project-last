@@ -280,8 +280,11 @@ const OrderTrack: NextPage<Props> = ({
             {/*  item */}
             {currentOrder &&
               currentOrder.products &&
-              map(currentOrder.products, (p) => (
-                <div className="flex w-full flex-row justify-between items-start">
+              map(currentOrder.products, (p, i) => (
+                <div
+                  className="flex w-full flex-row justify-between items-start"
+                  key={i}
+                >
                   <div className="flex flex-col  space-y-2">
                     <div className="text-lg font-bold">
                       <TextTrans
@@ -290,8 +293,9 @@ const OrderTrack: NextPage<Props> = ({
                       />
                     </div>
                     {!isEmpty(p.addon) &&
-                      map(p.addon, (a) => (
+                      map(p.addon, (a,i) => (
                         <TextTrans
+                          key={i}
                           className={`text-gray-400`}
                           ar={`${a.name_ar} x${a.quantity}`}
                           en={`${a.name_en} x${a.quantity}`}
