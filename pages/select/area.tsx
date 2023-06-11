@@ -38,7 +38,7 @@ import {
 import { useRouter } from 'next/router';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
-import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 
 type Props = {
   element: Vendor;
@@ -99,7 +99,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         type: `success`,
       })
     );
-    dispatch(setAreaBranchModelStatus(true));
+    dispatch(setAreaBranchModalStatus(true));
     return router.back();
   };
   useEffect(() => {

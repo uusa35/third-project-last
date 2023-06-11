@@ -309,7 +309,6 @@ export interface InvoiceAddon {
 }
 
 export interface OrderTrack {
-
   order_status: string;
   order_code: string;
   branch_phone: string;
@@ -319,33 +318,35 @@ export interface OrderTrack {
   longitude: string;
   address: {
     address: {
-      "paci": string | null,
-      "type": string | null,
-      "block": string | null,
-      "avenue": string | null,
-      "street": string | null,
-      "floor_no": string | null,
-      "house_no": string | null,
-      "office_no": string | null,
-      "additional": string | null,
-      "building_no": string | null
-    },
-    "latitude": "23.123213",
-    "longitude": "31.311111"
+      paci: string | null;
+      type: string | null;
+      block: string | null;
+      avenue: string | null;
+      street: string | null;
+      floor_no: string | null;
+      house_no: string | null;
+      office_no: string | null;
+      additional: string | null;
+      building_no: string | null;
+    };
+    latitude: '23.123213';
+    longitude: '31.311111';
   };
-  products: [{
-    quantity: number;
-    item: string;
-    item_en: string;
-    item_ar: string;
-    price: string;
-    addon?: [any];
-    total: string;
-    subtotal: string;
-    discount: null | string | number;
-    delivery_fees: string;
-    extra_notes: null | string;
-  }];
+  products: [
+    {
+      quantity: number;
+      item: string;
+      item_en: string;
+      item_ar: string;
+      price: string;
+      addon?: [any];
+      total: string;
+      subtotal: string;
+      discount: null | string | number;
+      delivery_fees: string;
+      extra_notes: null | string;
+    }
+  ];
   total: string;
   subtotal: string;
   discount: string | null;
@@ -391,11 +392,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-<<<<<<< HEAD
-  token?: string | null
-=======
   token?: string | null;
->>>>>>> structure
 }
 
 export interface Prefrences {
@@ -419,7 +416,7 @@ export interface Cart {
   promocode: string;
 }
 
-export interface Models {
+export interface Modals {
   areaBranchIsOpen: boolean;
   closedStoreIsOpen: boolean;
   showHelpModal: boolean;

@@ -1,25 +1,26 @@
-import { Models } from '@/types/index';
+import { Modals } from '@/types/index';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { searchParamsSlice } from './searchParamsSlice';
 
-const initialState: Models = {
+const initialState: Modals = {
   areaBranchIsOpen: false,
   closedStoreIsOpen: false,
   showHelpModal: false
 };
 
-export const ModelsSlice = createSlice({
-  name: 'models',
+
+export const ModalsSlice = createSlice({
+  name: 'modals',
   initialState,
   reducers: {
-    setAreaBranchModelStatus: (
+    setAreaBranchModalStatus: (
       state: typeof initialState,
       action: PayloadAction<boolean>
     ) => ({
       ...state,
       areaBranchIsOpen: action.payload,
     }),
-    setClosedStoreModelStatus: (
+    setClosedStoreModalStatus: (
       state: typeof initialState,
       action: PayloadAction<boolean>
     ) => ({
@@ -41,4 +42,4 @@ export const ModelsSlice = createSlice({
   },
 });
 
-export const { setAreaBranchModelStatus, setClosedStoreModelStatus, toggleShowHelpModal } = ModelsSlice.actions;
+export const { setAreaBranchModalStatus, setClosedStoreModalStatus, toggleShowHelpModal } = ModalsSlice.actions;
