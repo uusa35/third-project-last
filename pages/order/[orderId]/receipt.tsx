@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Suspense } from 'react';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
@@ -10,18 +10,26 @@ import {
   mainBtnClass,
   appLinks,
   alexandriaFontSemiBold,
+  alexandriaFont,
+  alexandriaFontLight,
 } from '@/constants/*';
 import { useRouter } from 'next/router';
 import { useGetInvoiceQuery } from '@/redux/api/orderApi';
 import { useAppSelector } from '@/redux/hooks';
 import { AppQueryResult } from '@/types/queries';
-import { OrderInvoice } from '@/types/index';
+import {
+  CheckBoxes,
+  OrderInvoice,
+  QuantityMeters,
+  RadioBtns,
+} from '@/types/index';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import TextTrans from '@/components/TextTrans';
-import { map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import PaymentSummary from '@/components/PaymentSummary';
 import ContentLoader from '@/components/skeletons';
+import Link from 'next/link';
 
 type Props = {
   url: string;
@@ -76,43 +84,65 @@ export default function orderReceipt({ url, orderId }: Props) {
               {t('order_items')}
             </h3>
             <div className="border-b-8 border-gray-100 px-4">
-              {orderReceiptData.data?.order_summary?.items?.map(
-                (item, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center border-t-2 border-gray-200 py-5"
-                  >
-                    <div>
-                      <div className="flex pb-2 items-end">
-                        <h5 className="pe-6">
-                          <TextTrans en={item.item_en} ar={item.item_ar} />
-                        </h5>
-                        <span className="text-sm">x{item.quantity}</span>
-                      </div>
-                      <div className="flex flex-wrap items-center">
-                        {map(item.addon, (a) => (
-                          <div key={a.addon_id} className="pe-3 pb-4">
-                            <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
-                              <span className="pe-2 text-sm">
-                                x{a.addon_quantity}
-                              </span>
-                              <TextTrans
-                                en={a.addon_name_en}
-                                ar={a.addon_name_ar}
-                                className="text-sm"
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <p>{item.extra_notes}</p>
+              {orderReceiptData.data?.order_items?.map((product, index) => (
+                <div className="flex justify-between gap-x-1 w-full">
+                  {/* name and addons and qty meter*/}
+                  <div>
+                    <Link
+                      className="flex gap-x-1"
+                      href={`${appLinks.productShow(product.ProductID)}`}
+                    >
+                      <TextTrans
+                        className={`capitalize ${alexandriaFontSemiBold}`}
+                        ar={product.item_ar}
+                        en={product.item_en}
+                        length={15}
+                      />
+                      <p
+                        className={`capitalize ${alexandriaFontSemiBold}`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        x{product.quantity}
+                      </p>
+                    </Link>
+
+                    {/* addons products */}
+                    <div
+                      className={`flex gap-1 w-auto flex-wrap w-fit mb-2 py-1`}
+                    >
+                      {product.addon.map((addon, idx) => (
+                        <TextTrans
+                          key={addon.addon_id}
+                          className={`bg-[#F3F2F2] text-[#544A45] px-1 text-xxs capitalize rounded-lg`}
+                          ar={`${addon.addon_name_ar}`}
+                          en={`${addon.addon_name_en}`}
+                        />
+                      ))}
                     </div>
-                    <p className="uppercase">
-                      {item.total} {t('kwd')}
+
+                    {/* notes */}
+
+                    <p
+                      suppressHydrationWarning={suppressText}
+                      className="text-xs"
+                    >
+                      {product.extra_notes}
                     </p>
                   </div>
-                )
-              )}
+
+                  {/* price */}
+                  <div className="font-bold text-sm">
+                    <p
+                      className=" uppercase"
+                      //   style={{ color }}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {parseFloat(product.price?.toString()).toFixed(3)}{' '}
+                      {t('kwd')}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="py-3 border-b-8 border-gray-100 px-4">
               <h2
@@ -121,14 +151,23 @@ export default function orderReceipt({ url, orderId }: Props) {
               >
                 {t('contact_details')}
               </h2>
-              <div className="font-semibold text-sm space-y-1">
+              <div className="text-sm space-y-1">
                 <p className="font-light">address</p>
-                <p>notes</p>
-                <p>name</p>
-                <p>phone</p>
+                <p suppressHydrationWarning={suppressText}>
+                  {orderReceiptData.data?.contact_details.delivery_instruction}
+                </p>
+
+                {/* customer details */}
+                <div className={`${alexandriaFont} mt-1`}>
+                  <p suppressHydrationWarning={suppressText}>
+                    {orderReceiptData.data?.contact_details.customer.name}
+                  </p>
+                  <p suppressHydrationWarning={suppressText}>
+                    {orderReceiptData.data?.contact_details.customer.phone}
+                  </p>
+                </div>
               </div>
             </div>
-
 
             {/* payment summary */}
             <div className="py-3 px-4">
@@ -144,10 +183,8 @@ export default function orderReceipt({ url, orderId }: Props) {
                 <p className="ps-3">payment method</p>
               </div>
               <div className="pb-36 space-y-1">
-                <PaymentSummary data={orderReceiptData.data.order_summary} />
+                <PaymentSummary data={orderReceiptData.data.payment_summary} />
               </div>
-
-
 
               {/* reorder */}
               <div className="border-t-[1px] border-gray-200 py-5">

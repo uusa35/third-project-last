@@ -30,7 +30,7 @@ import ContentLoader from '@/components/skeletons';
 import Skeleton from 'react-loading-skeleton';
 import MainHead from '@/components/MainHead';
 import {
-  useGetWishListProductsQuery,
+  useGetWishListProductsQuery, 
   useDeleteFromWishListMutation,
 } from '@/redux/api/CustomerApi';
 

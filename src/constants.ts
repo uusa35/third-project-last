@@ -31,7 +31,7 @@ export const appLinks = {
   mobileVerification: { path: '/verification/mobile' },
   otpVerification: { path: '/verification/otp' },
   orderReceipt: (orderId: string) => `/receipt/${orderId}`,
-  orderTrack: (orderId: string) => `/order/${orderId}/track`,
+  orderTrack: (orderId: string) => `/order/track/${orderId}`,
   orderFailure: (orderId: string) => `/order/${orderId}/status/failure`,
   orderSuccess: (orderId: string) => `/order/${orderId}/status/success`,
 };

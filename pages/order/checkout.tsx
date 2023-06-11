@@ -57,7 +57,7 @@ export default function checkout({ url }: Props) {
       address: { id: addressID, longitude, latitude },
     },
     searchParams: { method, destination },
-    Cart: { enable_promocode, promocode },
+    cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
   const router = useRouter();
   const dispatch = useAppDispatch();

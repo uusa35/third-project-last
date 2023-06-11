@@ -7,7 +7,7 @@ const initialState: Cart = {
 };
 
 export const CartSlice = createSlice({
-  name: 'Cart',
+  name: 'cart',
   initialState,
   reducers: {
     setPromocode: (
