@@ -24,6 +24,9 @@ const HelpModal: FC<Props> = ({
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
+  const {
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
 
   return (
     <>
@@ -45,7 +48,7 @@ const HelpModal: FC<Props> = ({
               {t('need_help?')}
             </h5>
           </div>
-          <div className="p-4">
+          <div className={`p-4 ${isRTL ? `text-right` : `text-left`}`}>
             <h4
               className="font-semibold text-lg capitalize pb-2"
               suppressHydrationWarning={suppressText}

@@ -79,6 +79,10 @@ const OrderTrack: NextPage<Props> = ({
     return currentAddress.toString();
   };
 
+  useEffect(() => {
+    () => dispatch(toggleShowHelpModal(false));
+  }, []);
+
   console.log('current', currentOrder);
 
   return (
