@@ -54,7 +54,6 @@ const OrderTrack: NextPage<Props> = ({
 
   useEffect(() => {
     triggerTrackOrder({ order_code, url }).then((r) => {
-      console.log('the r', r);
       if (r.error) {
         dispatch(
           showToastMessage({ type: 'error', content: r.error.data?.msg })
@@ -76,9 +75,6 @@ const OrderTrack: NextPage<Props> = ({
     return currentAddress.toString();
   };
 
-  if (!isSuccess || isNull(currentOrder)) {
-    <div>loading</div>;
-  }
   console.log('current', currentOrder);
 
   return (
@@ -88,183 +84,6 @@ const OrderTrack: NextPage<Props> = ({
       currentModule="track_order"
       showHelpBtn={true}
     >
-      <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
-        <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 px-3">
-          <h1 className="text-2xl font-bold">
-            {t('order_received_we_have_got_ur_order')}...
-          </h1>
-          <div className="flex flex-1 flex-row mt-2">
-            <p className="text-md text-gray-400 mr-2">
-              {t('estimated_time')} :
-            </p>{' '}
-            <span className="font-bold">{currentOrder?.estimated_time}</span>
-          </div>
-          {/* order id  */}
-          <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 space-x-2">
-            {currentOrder && currentOrder.order_status === 'pending' && (
-              <>
-                <div className="w-1/3 bg-red-600 h-1"></div>
-                <div className="w-1/3 bg-gray-200 h-1 "></div>
-                <div className="w-1/3 bg-gray-200 h-1 "></div>
-              </>
-            )}
-            {currentOrder && currentOrder.order_status === 'on_progress' && (
-              <>
-                <div className="w-1/3 bg-red-600 h-1"></div>
-                <div className="w-1/3 bg-red-600 h-1 "></div>
-                <div className="w-1/3 bg-gray-200 h-1 "></div>
-              </>
-            )}
-            {currentOrder && currentOrder.order_status === 'complete' && (
-              <>
-                <div className="w-1/3 bg-red-600 h-1"></div>
-                <div className="w-1/3 bg-red-600 h-1 "></div>
-                <div className="w-1/3 bg-red-600 h-1 "></div>
-              </>
-            )}
-          </div>
-          <div className="flex flex-1 flex-row text-gray-400">
-            <p>{t('order_id')} :</p>
-            <p>#{currentOrder?.order_code}</p>
-          </div>
-        </div>
-        {/*  Pick up (Branch)  */}
-        <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
-          <div className="capitlize text-xl mb-4 font-bold">
-            {t('pickup_from')}
-          </div>
-          <div className="flex w-full flex-row justify-between items-center ">
-            <div className={`p-2 bg-gray-100 rounded-full`}>
-              <MapPinIcon className="h-6 w-6 text-black" />
-            </div>
-            <div className="flex flex-1 w-full flex-col mx-3">
-              <p className="flex flex-1 text-gray-400">{t('branch_address')}</p>
-              {/* <p>{handleDisplayAddress(currentOrder.address)}</p> */}
-            </div>
-            {currentOrder &&
-              currentOrder.latitude &&
-              currentOrder.longitude && (
-                <div className="flex ">
-                  <a
-                    target="blank"
-                    href={googleMapUrl(
-                      currentOrder.latitude,
-                      currentOrder.longitude
-                    )}
-                    className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
-                  >
-                    <SendOutlined className="h-3 w-3 text-black mx-1" />
-                    {t('get_direction')}
-                  </a>
-                </div>
-              )}
-          </div>
-        </div>
-        {/*  Delivery (Address)  */}
-        {currentOrder && currentOrder?.address && (
-          <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
-            <div className="capitlize text-xl mb-4 font-bold">
-              {t('delivery_location')}
-            </div>
-            <div className="flex w-full flex-row justify-between items-center ">
-              <div className={`p-2 bg-gray-100 rounded-full`}>
-                <BuildingOfficeIcon className="h-6 w-6 text-black" />
-              </div>
-              <div className="flex flex-1 w-full flex-col mx-3">
-                <p className="flex flex-1 text-black">
-                  {t(currentOrder?.address.type)}
-                </p>
-                <p>{handleDisplayAddress(currentOrder.address)}</p>
-              </div>
-              {currentOrder.latitude && currentOrder.longitude && (
-                <div className="flex ">
-                  <a
-                    target="blank"
-                    href={googleMapUrl(
-                      currentOrder.latitude,
-                      currentOrder.longitude
-                    )}
-                    className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
-                  >
-                    <SendOutlined className="h-3 w-3 text-black mx-1" />
-                    {t('get_direction')}
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* your order */}
-        <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
-          <div className="capitlize text-xl my-4 font-bold">
-            {t('ur_order')}
-          </div>
-          {/*  item */}
-          {currentOrder &&
-            currentOrder.products &&
-            map(currentOrder.products, (p) => (
-              <div className="flex w-full flex-row justify-between items-start">
-                <div className="flex flex-col  space-y-2">
-                  <div className="text-lg font-bold">
-                    <TextTrans
-                      ar={`${p.item_ar} x${p.quantity}`}
-                      en={`${p.item_en} x${p.quantity}`}
-                    />
-                  </div>
-                  {!isEmpty(p.addon) &&
-                    map(p.addon, (a) => (
-                      <TextTrans
-                        className={`text-gray-400`}
-                        ar={`${a.name_ar} x${a.quantity}`}
-                        en={`${a.name_en} x${a.quantity}`}
-                      />
-                    ))}
-                </div>
-                <div>
-                  {p.price} {t('kd')}
-                </div>
-              </div>
-            ))}
-        </div>
-        {/* Payment details */}
-        <div className="flex flex-1 flex-col w-full px-3 pb-6">
-          <div className="capitlize text-xl my-4 font-bold">
-            {t('payment_details')}
-          </div>
-          {/*  item */}
-          <div className="flex w-full flex-row justify-between items-start">
-            <div className="flex flex-col  w-full space-y-2">
-              <div className="flex flex-row justify-start items-center space-x-4">
-                <BanknotesIcon className="h-6 w-6" />
-                <div className="text-lg font-bold">{t('cash_on_delivery')}</div>
-              </div>
-              {/* subtotal */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="">{t('sub_total')}</div>
-                <div className="">
-                  {currentOrder?.subtotal} {t('kd')}
-                </div>
-              </div>
-
-              {/* delivery_fees */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="">{t('delivery_fees')}</div>
-                <div className="">
-                  {currentOrder?.delivery_fees} {t('kd')}
-                </div>
-              </div>
-              {/* total */}
-              <div className="flex flex-row justify-between items-center">
-                <div className="text-lg font-bold">{t('total')}</div>
-                <div className="text-lg font-bold">
-                  {currentOrder?.total} {t('kd')}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       {isNull(currentOrder) || !isSuccess ? (
         <div className="flex flex-col space-y-4 absolute bottom-0 w-full border-t border-gray-200 p-4">
           <button
@@ -321,7 +140,203 @@ const OrderTrack: NextPage<Props> = ({
             </Link>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
+          <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 px-3">
+            <h1 className="text-2xl font-bold">
+              {t('order_received_we_have_got_ur_order')}...
+            </h1>
+            <div className="flex flex-1 flex-row mt-2">
+              <p className="text-md text-gray-400 mr-2">
+                {t('estimated_time')} :
+              </p>{' '}
+              <span className="font-bold ms-2">
+                {currentOrder?.estimated_time}
+              </span>
+            </div>
+            {/* order id  */}
+            <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 gap-2">
+              {currentOrder && currentOrder.order_status === 'pending' && (
+                <>
+                  <div className="w-1/3 bg-red-600 h-1"></div>
+                  <div className="w-1/3 bg-gray-200 h-1 "></div>
+                  <div className="w-1/3 bg-gray-200 h-1 "></div>
+                </>
+              )}
+              {currentOrder && currentOrder.order_status === 'on_progress' && (
+                <>
+                  <div className="w-1/3 bg-red-600 h-1"></div>
+                  <div className="w-1/3 bg-red-600 h-1 "></div>
+                  <div className="w-1/3 bg-gray-200 h-1 "></div>
+                </>
+              )}
+              {currentOrder && currentOrder.order_status === 'complete' && (
+                <>
+                  <div className="w-1/3 bg-red-600 h-1"></div>
+                  <div className="w-1/3 bg-red-600 h-1 "></div>
+                  <div className="w-1/3 bg-red-600 h-1 "></div>
+                </>
+              )}
+            </div>
+            <div className="flex flex-1 flex-row text-gray-400">
+              <p>{t('order_id')} :</p>
+              <p>#{currentOrder?.order_code}</p>
+            </div>
+          </div>
+          {/*  Pick up (Branch)  */}
+          <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
+            <div className="capitlize text-xl mb-4 font-bold">
+              {t('pickup_from')}
+            </div>
+            <div className="flex w-full flex-row justify-between items-center ">
+              <div className={`p-2 bg-gray-100 rounded-full`}>
+                <MapPinIcon className="h-6 w-6 text-black" />
+              </div>
+              <div className="flex flex-1 w-full flex-col mx-3">
+                <p className="flex flex-1 text-gray-400">
+                  {t('branch_address')}
+                </p>
+                {/* <p>{handleDisplayAddress(currentOrder.address)}</p> */}
+              </div>
+              {currentOrder &&
+                currentOrder.latitude &&
+                currentOrder.longitude && (
+                  <div className="flex ">
+                    <a
+                      target="blank"
+                      href={googleMapUrl(
+                        currentOrder.latitude,
+                        currentOrder.longitude
+                      )}
+                      className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                    >
+                      <div>{t('get_direction')}</div>
+                      <div>
+                        <SendOutlined
+                          className={`h-3 w-3 text-black ms-2 ${
+                            isRTL ? `rotate-180` : null
+                          }`}
+                        />
+                      </div>
+                    </a>
+                  </div>
+                )}
+            </div>
+          </div>
+          {/*  Delivery (Address)  */}
+          {currentOrder && currentOrder?.address && (
+            <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
+              <div className="capitlize text-xl mb-4 font-bold">
+                {t('delivery_location')}
+              </div>
+              <div className="flex w-full flex-row justify-between items-center ">
+                <div className={`p-2 bg-gray-100 rounded-full`}>
+                  <BuildingOfficeIcon className="h-6 w-6 text-black" />
+                </div>
+                <div className="flex flex-1 w-full flex-col mx-3">
+                  <p className="flex flex-1 text-black">
+                    {t(currentOrder?.address.type)}
+                  </p>
+                  <p>{handleDisplayAddress(currentOrder.address)}</p>
+                </div>
+                {currentOrder.latitude && currentOrder.longitude && (
+                  <div className="flex ">
+                    <a
+                      target="blank"
+                      href={googleMapUrl(
+                        currentOrder.latitude,
+                        currentOrder.longitude
+                      )}
+                      className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                    >
+                      <div>{t('get_direction')}</div>
+                      <div>
+                        <SendOutlined
+                          className={`h-3 w-3 text-black ms-2 ${
+                            isRTL ? `rotate-180` : null
+                          }`}
+                        />
+                      </div>
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* your order */}
+          <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
+            <div className="capitlize text-xl my-4 font-bold">
+              {t('ur_order')}
+            </div>
+            {/*  item */}
+            {currentOrder &&
+              currentOrder.products &&
+              map(currentOrder.products, (p) => (
+                <div className="flex w-full flex-row justify-between items-start">
+                  <div className="flex flex-col  space-y-2">
+                    <div className="text-lg font-bold">
+                      <TextTrans
+                        ar={`${p.item_ar} x${p.quantity}`}
+                        en={`${p.item_en} x${p.quantity}`}
+                      />
+                    </div>
+                    {!isEmpty(p.addon) &&
+                      map(p.addon, (a) => (
+                        <TextTrans
+                          className={`text-gray-400`}
+                          ar={`${a.name_ar} x${a.quantity}`}
+                          en={`${a.name_en} x${a.quantity}`}
+                        />
+                      ))}
+                  </div>
+                  <div>
+                    {p.price} {t('kd')}
+                  </div>
+                </div>
+              ))}
+          </div>
+          {/* Payment details */}
+          <div className="flex flex-1 flex-col w-full px-3 pb-6">
+            <div className="capitlize text-xl my-4 font-bold">
+              {t('payment_details')}
+            </div>
+            {/*  item */}
+            <div className="flex w-full flex-row justify-between items-start">
+              <div className="flex flex-col  w-full space-y-2">
+                <div className="flex flex-row justify-start items-center space-x-4">
+                  <BanknotesIcon className="h-6 w-6 me-2" />
+                  <div className="text-lg font-bold">
+                    {t('cash_on_delivery')}
+                  </div>
+                </div>
+                {/* subtotal */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="">{t('sub_total')}</div>
+                  <div className="">
+                    {currentOrder?.subtotal} {t('kd')}
+                  </div>
+                </div>
+
+                {/* delivery_fees */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="">{t('delivery_fees')}</div>
+                  <div className="">
+                    {currentOrder?.delivery_fees} {t('kd')}
+                  </div>
+                </div>
+                {/* total */}
+                <div className="flex flex-row justify-between items-center">
+                  <div className="text-lg font-bold">{t('total')}</div>
+                  <div className="text-lg font-bold">
+                    {currentOrder?.total} {t('kd')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </MainContentLayout>
   );
 };

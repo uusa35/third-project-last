@@ -301,5 +301,10 @@
   "no_address_des": "the saved addresses help you to quickly order to your address",
   "add_address": "add address",
   "ur_order": "your order",
-  "order_received_we_have_got_ur_order": "order recieved we have got your order"
+  "order_received_we_have_got_ur_order": "order recieved we have got your order",
+  "delivery_location": "delivery location",
+  "sub_total": "sub total",
+  "get_direction": "get direction",
+  "payment_details": "payment details",
+  "help_btn": "help?"
 }

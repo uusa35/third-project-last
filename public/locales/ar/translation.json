@@ -273,5 +273,10 @@
   "no_address_des": "تساعدك العناوين المحفوظة على الطلب بسرعة إلى عنوانك",
   "add_address": "أضف عنوان",
   "ur_order": "طلبك",
-  "order_received_we_have_got_ur_order": "تم استلام الطلب وجاري العمل على تنفيذه"
+  "order_received_we_have_got_ur_order": "تم استلام الطلب وجاري العمل على تنفيذه",
+  "delivery_location": "موقع  الاستلام",
+  "sub_total": "الإجمالي",
+  "get_direction": "الموقع",
+  "payment_details": "تفاصيل عملية الدفع",
+  "help_btn": "مساعدة؟"
 }

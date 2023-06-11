@@ -119,7 +119,7 @@ const AppHeader: FC<Props> = ({
               <div className="flex">
                 <LifebuoyIcon className="w-6 h-6 me-1" />
               </div>
-              <div className="flex capitalize">{t('help')}?</div>
+              <div className="flex capitalize">{t('help_btn')}</div>
             </button>
           )}
         </div>
