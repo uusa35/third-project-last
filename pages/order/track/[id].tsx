@@ -30,6 +30,8 @@ import NoAddresses from '@/appImages/no_address.svg';
 import Link from 'next/link';
 import { filter, isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
+import { toggleShowHelpModal } from '@/redux/slices/modelsSlice';
+import HelpModal from '@/components/modals/HelpModal';
 
 type Props = {
   element: Vendor;
@@ -44,6 +46,8 @@ const OrderTrack: NextPage<Props> = ({
 }): React.ReactElement => {
   const {
     locale: { isRTL },
+    models: { showHelpModal },
+    vendor: { phone },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -335,6 +339,11 @@ const OrderTrack: NextPage<Props> = ({
               </div>
             </div>
           </div>
+          <HelpModal
+            isOpen={showHelpModal}
+            onRequestClose={() => dispatch(toggleShowHelpModal(false))}
+            phone={currentOrder.branch_phone ?? phone}
+          />
         </div>
       )}
     </MainContentLayout>

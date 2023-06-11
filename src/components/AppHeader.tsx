@@ -10,10 +10,11 @@ import {
 import Backbtn from '@/appIcons/backbtn.svg';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { West, East } from '@mui/icons-material';
 import { LifebuoyIcon } from '@heroicons/react/24/outline';
 import HelpModal from './modals/HelpModal';
+import { toggleShowHelpModal } from '@/redux/slices/modelsSlice';
 
 type Props = {
   backHome?: boolean;
@@ -35,6 +36,7 @@ const AppHeader: FC<Props> = ({
 }) => {
   // const [offset, setOffset] = useState(0);
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const {
@@ -45,8 +47,6 @@ const AppHeader: FC<Props> = ({
     otp_verification: 'w-2/3',
     account_info: 'w-full',
   };
-  const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
-
   const widthClass: string = moduleWidths[currentModule as CurrentModule] || '';
   const handleGoHome = () => {
     router.push(`/`, ``, {
@@ -114,7 +114,7 @@ const AppHeader: FC<Props> = ({
           {showHelpBtn && (
             <button
               className="bg-gray-200 rounded-2xl flex justify-beteween items-center px-4 py-3"
-              onClick={() => setIsHelpOpen(true)}
+              onClick={() => dispatch(toggleShowHelpModal(true))}
             >
               <div className="flex">
                 <LifebuoyIcon className="w-6 h-6 me-1" />
@@ -128,10 +128,6 @@ const AppHeader: FC<Props> = ({
         className={`h-[2px] absolute -bottom-[2px] ${widthClass}`}
         style={{ backgroundColor: color }}
       ></div>
-      <HelpModal
-        isOpen={isHelpOpen}
-        onRequestClose={() => setIsHelpOpen(false)}
-      />
     </header>
   );
 };

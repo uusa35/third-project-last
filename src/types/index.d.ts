@@ -422,6 +422,7 @@ export interface Cart {
 export interface Models {
   areaBranchIsOpen: boolean;
   closedStoreIsOpen: boolean;
+  showHelpModal: boolean;
 }
 
 export interface HomePromoCode {

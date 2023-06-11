@@ -15,11 +15,15 @@ import { useAppSelector } from '@/redux/hooks';
 type Props = {
   isOpen: boolean;
   onRequestClose: () => void;
+  phone: string;
 };
-const HelpModal: FC<Props> = ({ isOpen, onRequestClose }): JSX.Element => {
+const HelpModal: FC<Props> = ({
+  isOpen,
+  onRequestClose,
+  phone,
+}): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
-  const { vendor } = useAppSelector((state) => state);
 
   return (
     <>
@@ -65,7 +69,7 @@ const HelpModal: FC<Props> = ({ isOpen, onRequestClose }): JSX.Element => {
           >
             <a
               target="blank"
-              href={`tel:${vendor.phone}`}
+              href={`tel:${phone}`}
               className={`${mainBtnClass} w-full text-center py-3`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
@@ -77,7 +81,7 @@ const HelpModal: FC<Props> = ({ isOpen, onRequestClose }): JSX.Element => {
               target="blank"
               className={`${mainBtnClass} !bg-white border-2 mt-3 w-full text-center py-3`}
               style={{ color, borderColor: color }}
-              href={`${whatsappUrl}${vendor.phone}`}
+              href={`${whatsappUrl}${phone}`}
             >
               <ChatOutlined className="mx-1" />
               {`${upperFirst(`${t('message_us')}`)}`}
