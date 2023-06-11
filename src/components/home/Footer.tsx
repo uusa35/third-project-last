@@ -1,6 +1,6 @@
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import Link from 'next/link';
-import React from 'react';
+import React, { FC } from 'react';
 import CustomImage from '../CustomImage';
 import TextTrans from '../TextTrans';
 import { SocialIcon } from 'react-social-icons';
@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 type Props = { element: Vendor };
 
-export default function Footer({ element }: Props) {
+const Footer:FC<Props> = ({ element }) => {
   const { t } = useTranslation();
   return (
     <div>
@@ -89,3 +89,4 @@ export default function Footer({ element }: Props) {
     </div>
   );
 }
+export default Footer;

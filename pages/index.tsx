@@ -35,13 +35,14 @@ import AdsScrollBar from '@/components/home/AdsScrollBar';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
+import { NextPage } from 'next';
 
 type Props = {
   element: Vendor;
   currentLocale: string;
   url: string;
 };
-export default function Home({ url, element, currentLocale }: Props) {
+const Home: NextPage<Props> = ({ url, element, currentLocale }) => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -230,6 +231,7 @@ export default function Home({ url, element, currentLocale }: Props) {
     </Suspense>
   );
 }
+export default Home;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function OrderSkeleton() {
+const OrderSkeleton:FC = () => {
   const orderDetails = Array.from({ length: 4 }, (_, index) => (
     <div key={index} className="py-1">
       <Skeleton containerClassName='w-full' width={'60%'} height={20} />
@@ -30,3 +30,4 @@ export default function OrderSkeleton() {
     </div>
   );
 }
+export default OrderSkeleton;

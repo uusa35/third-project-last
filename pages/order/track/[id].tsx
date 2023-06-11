@@ -30,7 +30,7 @@ import NoAddresses from '@/appImages/no_address.svg';
 import Link from 'next/link';
 import { filter, isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
-import { toggleShowHelpModal } from '@/redux/slices/modelsSlice';
+import { toggleShowHelpModal } from '@/redux/slices/modalsSlice';
 import HelpModal from '@/components/modals/HelpModal';
 
 type Props = {

@@ -37,10 +37,11 @@ import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
 import EmptyCart from '@/components/cart/EmptyCart';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
+import { NextPage } from 'next';
 
 type Props = { url: string };
 
-export default function Cart({ url }: Props) {
+const Cart: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -365,6 +366,7 @@ export default function Cart({ url }: Props) {
     </MainContentLayout>
   );
 }
+export default Cart;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

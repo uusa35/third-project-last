@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function ProductVerticalSkeleton() {
+const ProductVerticalSkeleton:FC = () => {
   const skeletonContent = (
     <div className="py-2">
       <Skeleton height={140} />
@@ -24,3 +24,4 @@ export default function ProductVerticalSkeleton() {
     </div>
   );
 }
+export default ProductVerticalSkeleton;

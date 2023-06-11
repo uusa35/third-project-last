@@ -28,12 +28,13 @@ import EmptyUserOrders from '@/components/order/EmptyUserOrders';
 import UpcomingCompletedOrder from '@/components/order/UpcomingCompletedOrder';
 import ContentLoader from '@/components/skeletons';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { NextPage } from 'next';
 
 type Props = {
   url: string;
 };
 
-export default function OrderIndex({ url }: Props) {
+const OrderIndex: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -165,6 +166,7 @@ export default function OrderIndex({ url }: Props) {
     </Suspense>
   );
 }
+export default OrderIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

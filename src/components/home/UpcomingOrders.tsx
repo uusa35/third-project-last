@@ -10,7 +10,7 @@ import { useGetUpcomingOrdersQuery } from '@/redux/api/orderApi';
 import { useAppSelector } from '@/redux/hooks';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { AppQueryResult, UpcomingOrders } from '@/types/queries';
-import React from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import DeliveryIcon from '@/appIcons/order_status_delivery.svg';
 import PreparingIcon from '@/appIcons/order_status_preparing.svg';
@@ -18,9 +18,7 @@ import Slider from 'react-slick';
 import ContentLoader from '../skeletons';
 import { isEmpty } from 'lodash';
 
-type Props = {};
-
-export default function UpcomingOrders({}: Props) {
+const UpcomingOrders:FC = () => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -168,3 +166,4 @@ export default function UpcomingOrders({}: Props) {
     </>
   );
 }
+export default UpcomingOrders;

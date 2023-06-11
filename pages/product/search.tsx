@@ -23,12 +23,13 @@ import { useGetTopSearchQuery, useLazyGetProductsQuery, useLazyGetSearchProducts
 import { Product } from '@/types/index';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import ContentLoader from '@/components/skeletons';
+import { NextPage } from 'next';
 
 type Props = {
   url: string;
 };
 
-export default function search({ url }: Props) {
+const Search: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -260,6 +261,7 @@ export default function search({ url }: Props) {
       </Suspense>
   )
 }
+export default Search;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

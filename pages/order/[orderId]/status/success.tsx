@@ -30,13 +30,14 @@ import TextTrans from '@/components/TextTrans';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import OrderSuccessSkeleton from '@/components/skeletons/OrderSuccessSkeleton';
 import ContentLoader from '@/components/skeletons';
+import { NextPage } from 'next';
 
 type Props = {
     url: string;
     orderId: string
 };
 
-export default function OrderSuccess({ url,orderId }: Props) {
+const OrderSuccess: NextPage<Props> = ({ url,orderId }) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const DestinationId = useAppSelector(destinationId);
@@ -232,6 +233,7 @@ export default function OrderSuccess({ url,orderId }: Props) {
    </>
   );
 }
+export default OrderSuccess;
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) =>

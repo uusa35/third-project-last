@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
 import ActiveFavourite from '@/appIcons/red_love.svg';
 import Share from '@/appIcons/share.svg';
@@ -17,12 +17,12 @@ type Props = {
   existInWishlist: boolean;
   slug: string
 };
-export default function FavouriteAndShare({
+const FavouriteAndShare:FC<Props> = ({
   product_id,
   url,
   existInWishlist = false,
   slug
-}: Props) {
+}) => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
@@ -101,3 +101,4 @@ export default function FavouriteAndShare({
     </>
   );
 }
+export default FavouriteAndShare;

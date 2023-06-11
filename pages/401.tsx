@@ -1,8 +1,9 @@
 import OffLineWidget from '@/widgets/OffLineWidget';
 import { useTranslation } from 'react-i18next';
 import MainContentLayout from '@/layouts/MainContentLayout';
+import { NextPage } from 'next';
 
-export default function Custom401() {
+const Custom401: NextPage = () => {
   const { t } = useTranslation();
   return (
     <MainContentLayout backHome={true}>
@@ -12,3 +13,4 @@ export default function Custom401() {
     </MainContentLayout>
   );
 }
+export default Custom401;

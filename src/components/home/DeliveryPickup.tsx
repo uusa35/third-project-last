@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import DeliveryIcon from '@/appIcons/delivery animation.json';
 import PickupIcon from '@/appIcons/pick up animation.json';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
@@ -20,7 +20,7 @@ import { truncate } from 'lodash';
 
 type Props = { url: string };
 
-function DeliveryPickup({ url }: Props) {
+const DeliveryPickup:FC<Props> = ({ url }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const {

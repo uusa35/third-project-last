@@ -14,12 +14,13 @@ import OtpInput from 'react18-input-otp';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useCheckPhoneMutation, useLoginMutation, useVerifyCodeMutation } from '@/redux/api/authApi';
 import { setCustomer, signIn } from '@/redux/slices/customerSlice';
+import { NextPage } from 'next';
 
 type Props = {
   url: string;
 }
 
-export default function OtpVerifications({ url }: Props) {
+const OtpVerifications: NextPage<Props> = ({ url }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();
@@ -199,6 +200,7 @@ export default function OtpVerifications({ url }: Props) {
     </Fragment>
   )
 }
+export default OtpVerifications;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

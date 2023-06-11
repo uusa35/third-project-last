@@ -33,7 +33,7 @@ type Props = {
   method: 'pickup | delivery';
 };
 
-export default function index({ url, method }: Props) {
+const Time: NextPage<Props> = ({ url, method }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -317,6 +317,7 @@ export default function index({ url, method }: Props) {
     </Suspense>
   );
 }
+export default Time;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -336,7 +337,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           },
         };
       } else {
-        return { notFound: true };
+        return { notFound: true }; 
       }
     }
 );

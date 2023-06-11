@@ -41,12 +41,13 @@ import {
   CircleOutlined,
 } from '@mui/icons-material';
 import moment from 'moment';
+import { NextPage } from 'next';
 
 type Props = {
   url: string;
 };
 
-export default function checkout({ url }: Props) {
+const checkout: NextPage<Props> = ({ url }) => {
   const { t } = useTranslation();
   const {
     customer: {
@@ -322,7 +323,7 @@ export default function checkout({ url }: Props) {
     </MainContentLayout>
   );
 }
-
+export default checkout;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
