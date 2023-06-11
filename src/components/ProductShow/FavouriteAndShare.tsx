@@ -15,11 +15,13 @@ type Props = {
   url: string;
   product_id: string;
   existInWishlist: boolean;
+  slug: string
 };
 export default function FavouriteAndShare({
   product_id,
   url,
   existInWishlist = false,
+  slug
 }: Props) {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthenticated);
@@ -27,7 +29,7 @@ export default function FavouriteAndShare({
   const [triggerAddToWishList] = useAddToWishListMutation();
   const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
 
-  // console.log({ isAuth });
+  console.log({ isAuth });
 
   const handleAddRemvWishlist = async () => {
     if (isAuth) {
@@ -66,6 +68,22 @@ export default function FavouriteAndShare({
       setOpenSigninFavModal(true);
     }
   };
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${window.location.href}&slug=${slug}`,
+          text: `${window.location.href}&slug=${slug}`,
+          url: `${window.location.href}&slug=${slug}`
+        });
+      } else {
+        console.log('Web Share API not supported');
+      }
+    } catch (error) {
+      console.error('Sharing Error', error);
+    }
+  };
+  
   return (
     <>
       <SigninAddFavModal
@@ -76,7 +94,7 @@ export default function FavouriteAndShare({
         <button onClick={() => handleAddRemvWishlist()}>
           {existInWishlist ? <ActiveFavourite /> : <Favourite />}
         </button>
-        <button>
+        <button onClick={handleShare}>
           <Share />
         </button>
       </div>

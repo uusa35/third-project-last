@@ -129,6 +129,23 @@ export default function search({ url }: Props) {
     isUndefined(searchKey) && handleFire();
   }, [searchKey]);
 
+  // set products once page loaded , commented for now till confirmation 
+  // useEffect(() => {
+  //  if(!(category_id)) {
+  //   triggerSearchProducts({
+  //     lang,
+  //     destination: desObject,
+  //     url,
+  //   }).then((r: any) => {
+  //     if (r.data && r.data.Data && r.data.Data.length > 0) {
+  //       setCurrentProducts(r.data.Data);
+  //     } else {
+  //       setCurrentProducts([]);
+  //     }
+  //   });
+  //  }
+  // }, []);
+
   return (
       <Suspense>
       <MainHead
