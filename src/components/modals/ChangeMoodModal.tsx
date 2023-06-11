@@ -23,7 +23,7 @@ import {
 } from '@mui/icons-material';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import TextTrans from '../TextTrans';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
@@ -39,7 +39,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   const color = useAppSelector(themeColor);
   const {
     searchParams: { destination, destination_type, method },
-    models: { areaBranchIsOpen },
+    modals: { areaBranchIsOpen },
     customer: { prefrences },
     locale: { lang, isRTL, dir },
   } = useAppSelector((state) => state);
@@ -49,7 +49,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
   const onRequestClose = () => {
-    dispatch(setAreaBranchModelStatus(false));
+    dispatch(setAreaBranchModalStatus(false));
   };
   const desObject = useAppSelector(destinationHeaderObject);
   // console.log({ method });

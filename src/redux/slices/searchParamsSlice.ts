@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Area, Branch, Category, SearchParams } from '@/types/queries';
 import { RootState } from '../store';
-import { ModelsSlice } from './modelsSlice';
+import { ModalsSlice } from './modalsSlice';
 
 const initialState: SearchParams = {
   method: null,

@@ -39,7 +39,7 @@ import { useRouter } from 'next/router';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
-import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 
 type Props = {
   element: Vendor;
@@ -102,7 +102,7 @@ const SelectBranch: NextPage<Props> = ({
       setOpenClosedStore(true);
     }
     else {
-      dispatch(setAreaBranchModelStatus(true));
+      dispatch(setAreaBranchModalStatus(true));
     }
     router.back();
   };

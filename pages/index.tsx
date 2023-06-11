@@ -51,7 +51,7 @@ export default function Home({ url, element, currentLocale }: Props) {
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const router = useRouter();
-  const [openPromoModel, setOpenPromoModel] = useState(true);
+  const [openPromoModal, setOpenPromoModal] = useState(true);
 
   // console.log('desObject', desObject);
 
@@ -217,9 +217,9 @@ export default function Home({ url, element, currentLocale }: Props) {
               {HomePromocodeSuccess && (
                 <HomeModal
                   data={HomePromocodeData?.data}
-                  isOpen={openPromoModel}
+                  isOpen={openPromoModal}
                   onRequestClose={() => {
-                    setOpenPromoModel(false);
+                    setOpenPromoModal(false);
                   }}
                 />
               )}

@@ -83,7 +83,7 @@ import {
   destinationId,
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
-import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 
 type Props = {
   product: Product;
@@ -642,7 +642,7 @@ const ProductShow: NextPage<Props> = ({
 
   const handleAddToCart = async () => {
     if (isNull(destination) || prefrences.type === '') {
-      dispatch(setAreaBranchModelStatus(true));
+      dispatch(setAreaBranchModalStatus(true));
       return;
     }
     if (!productCart.enabled) {

@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { West, East } from '@mui/icons-material';
 import { LifebuoyIcon } from '@heroicons/react/24/outline';
 import HelpModal from './modals/HelpModal';
-import { toggleShowHelpModal } from '@/redux/slices/modelsSlice';
+import { toggleShowHelpModal } from '@/redux/slices/modalsSlice';
 
 type Props = {
   backHome?: boolean;

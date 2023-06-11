@@ -30,8 +30,8 @@ import ContentLoader from '@/components/skeletons';
 import Skeleton from 'react-loading-skeleton';
 import MainHead from '@/components/MainHead';
 import {
-  useGetWishListProductsQuery, 
-  useLazyDeleteFromWishListQuery,
+  useGetWishListProductsQuery,
+  useDeleteFromWishListMutation,
 } from '@/redux/api/CustomerApi';
 
 type Props = { url: string };
@@ -40,7 +40,7 @@ export default function Wishlist({ url }: Props) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [triggerDeleteFromWishList] = useLazyDeleteFromWishListQuery();
+  const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
   const {
     data: wishlistProducts,
     isLoading,

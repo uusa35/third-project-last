@@ -391,11 +391,7 @@ export interface CustomerInfo {
   prefrences?: Prefrences;
   notes?: string;
   countryCode: string | null;
-<<<<<<< HEAD
   token?: string | null
-=======
-  token?: string | null;
->>>>>>> structure
 }
 
 export interface Prefrences {
@@ -419,7 +415,7 @@ export interface Cart {
   promocode: string;
 }
 
-export interface Models {
+export interface Modals {
   areaBranchIsOpen: boolean;
   closedStoreIsOpen: boolean;
   showHelpModal: boolean;

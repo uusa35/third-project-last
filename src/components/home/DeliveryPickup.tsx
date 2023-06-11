@@ -14,7 +14,7 @@ import {
   suppressText,
 } from '@/constants/*';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { setAreaBranchModelStatus } from '@/redux/slices/modelsSlice';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeMoodModal from '../modals/ChangeMoodModal';
 import { truncate } from 'lodash';
 
@@ -174,7 +174,7 @@ function DeliveryPickup({ url }: Props) {
 
             <div
               className="flex items-center"
-              onClick={() => dispatch(setAreaBranchModelStatus(true))}
+              onClick={() => dispatch(setAreaBranchModalStatus(true))}
             >
               <p
                 suppressHydrationWarning={suppressText}
