@@ -21,7 +21,7 @@ const HelpModal: FC<Props> = ({
   isOpen,
   onRequestClose,
   phone,
-}): JSX.Element => {
+}): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
 
