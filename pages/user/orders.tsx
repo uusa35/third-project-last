@@ -55,7 +55,6 @@ export default function OrderIndex({ url }: Props) {
     if (search && search?.length >= 3) {
       console.log('search', search, search);
       await triggerTrackOrder({ order_code: toEn(search), url }).then((r) => {
-        console.log('r', r);
         if (r.error) {
           dispatch(
             showToastMessage({ type: 'error', content: r.error.data?.msg })
