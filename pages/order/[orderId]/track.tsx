@@ -8,12 +8,13 @@ import EmptyOrders from '@/appImages/empty_orders.png';
 import NoOrder from '@/appImages/no_order.png';
 import { Search } from '@mui/icons-material';
 import { suppressText } from '@/constants/*';
+import { NextPage } from 'next';
 
 type Props = {
   url: string
 }
 
-export default function UserOrders({ url }: Props) {
+const UserOrders:NextPage<Props>=({ url }):React.ReactElement=> {
   const { t } = useTranslation();
 
   return (
@@ -41,6 +42,8 @@ export default function UserOrders({ url }: Props) {
     </Suspense>
   )
 }
+
+export default UserOrders
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

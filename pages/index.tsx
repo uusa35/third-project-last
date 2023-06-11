@@ -11,7 +11,7 @@ import {
   vendorApi,
 } from '@/redux/api/vendorApi';
 import MainHead from '@/components/MainHead';
-import { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
@@ -35,13 +35,18 @@ import AdsScrollBar from '@/components/home/AdsScrollBar';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
+import { NextPage } from 'next';
 
 type Props = {
   element: Vendor;
   currentLocale: string;
   url: string;
 };
-export default function Home({ url, element, currentLocale }: Props) {
+const Home: NextPage<Props> = ({
+  url,
+  element,
+  currentLocale,
+}): React.ReactElement => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -229,7 +234,9 @@ export default function Home({ url, element, currentLocale }: Props) {
       </MainContentLayout>
     </Suspense>
   );
-}
+};
+
+export default Home;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

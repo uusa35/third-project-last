@@ -10,10 +10,11 @@ import { wrapper } from '@/redux/store';
 import PaymentSummary from '@/components/PaymentSummary';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import CallusIcon from '@/appIcons/call_us_green.svg';
+import { NextPage } from 'next';
 
 type Props = { url: string };
 
-export default function OrderFailure({ url }: Props) {
+ const OrderFailure: NextPage<Props>=({ url }): React.ReactElement =>{
   const { t } = useTranslation();
 
   const DetailComponent = ({
@@ -121,6 +122,8 @@ export default function OrderFailure({ url }: Props) {
     </MainContentLayout>
   );
 }
+
+export default OrderFailure
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
