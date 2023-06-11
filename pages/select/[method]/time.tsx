@@ -34,7 +34,11 @@ type Props = {
   method: 'pickup | delivery';
 };
 
+<<<<<<< HEAD
 const index: NextPage<Props> = ({ url, method }): React.ReactElement => {
+=======
+const Time: NextPage<Props> = ({ url, method }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -317,8 +321,13 @@ const index: NextPage<Props> = ({ url, method }): React.ReactElement => {
       </MainContentLayout>
     </Suspense>
   );
+<<<<<<< HEAD
 };
 export default index;
+=======
+}
+export default Time;
+>>>>>>> esraa
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -338,7 +347,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           },
         };
       } else {
-        return { notFound: true };
+        return { notFound: true }; 
       }
     }
 );

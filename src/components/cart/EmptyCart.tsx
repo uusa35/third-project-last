@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import CustomImage from '../CustomImage';
 import Link from 'next/link';
 import { appLinks, imageSizes, suppressText } from '@/constants/*';
@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import EmptyCartImage from '@/appIcons/cart_empty.svg';
 
-export default function EmptyCart() {
+const EmptyCart:FC = () => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   return (
@@ -46,3 +46,4 @@ export default function EmptyCart() {
     </div>
   );
 }
+export default EmptyCart;

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import OrderItemSkeleton from './OrderItemSkeleton';
 
-export default function OrderSuccessSkeleton() {
+const OrderSuccessSkeleton:FC = () => {
     const CustomerInfo = Array.from({ length: 3 }, (_, index) => (
         <div key={index} className="py-5">
             <div className="flex">
@@ -42,3 +42,4 @@ export default function OrderSuccessSkeleton() {
     </div>
   );
 }
+export default OrderSuccessSkeleton;

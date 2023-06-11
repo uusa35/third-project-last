@@ -1,8 +1,8 @@
 
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function ReceiptSkeleton() {
+const ReceiptSkeleton:FC = () => {
   return (
     <div className="p-4">
         <div className="border-b-2 border-zinc-200 pt-2 pb-5">
@@ -75,3 +75,4 @@ export default function ReceiptSkeleton() {
     </div>
   )
 }
+export default ReceiptSkeleton;

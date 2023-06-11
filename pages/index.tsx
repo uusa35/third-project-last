@@ -42,11 +42,15 @@ type Props = {
   currentLocale: string;
   url: string;
 };
+<<<<<<< HEAD
 const Home: NextPage<Props> = ({
   url,
   element,
   currentLocale,
 }): React.ReactElement => {
+=======
+const Home: NextPage<Props> = ({ url, element, currentLocale }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -234,8 +238,12 @@ const Home: NextPage<Props> = ({
       </MainContentLayout>
     </Suspense>
   );
+<<<<<<< HEAD
 };
 
+=======
+}
+>>>>>>> esraa
 export default Home;
 
 export const getServerSideProps = wrapper.getServerSideProps(

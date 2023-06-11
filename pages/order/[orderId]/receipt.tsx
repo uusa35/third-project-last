@@ -30,13 +30,14 @@ import { isEmpty, map } from 'lodash';
 import PaymentSummary from '@/components/PaymentSummary';
 import ContentLoader from '@/components/skeletons';
 import Link from 'next/link';
+import { NextPage } from 'next';
 
 type Props = {
   url: string;
   orderId: string;
 };
 
-export default function orderReceipt({ url, orderId }: Props) {
+const orderReceipt: NextPage<Props> = ({ url, orderId }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -209,6 +210,7 @@ export default function orderReceipt({ url, orderId }: Props) {
     </Suspense>
   );
 }
+export default orderReceipt;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, query }) => {

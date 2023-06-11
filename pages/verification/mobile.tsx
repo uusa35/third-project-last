@@ -18,12 +18,13 @@ import { map, upperFirst } from 'lodash';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { NextPage } from 'next';
 
 type Props = {
   url: string;
 }
 
-export default function MobileVerifications({ url }: Props) {
+const MobileVerifications: NextPage<Props> = ({ url }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -122,6 +123,8 @@ export default function MobileVerifications({ url }: Props) {
     </Fragment>
   )
 }
+export default MobileVerifications;
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

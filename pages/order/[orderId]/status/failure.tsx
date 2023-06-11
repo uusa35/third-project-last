@@ -14,7 +14,11 @@ import { NextPage } from 'next';
 
 type Props = { url: string };
 
+<<<<<<< HEAD
  const OrderFailure: NextPage<Props>=({ url }): React.ReactElement =>{
+=======
+const OrderFailure: NextPage<Props> = ({ url }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
 
   const DetailComponent = ({
@@ -123,7 +127,11 @@ type Props = { url: string };
   );
 }
 
+<<<<<<< HEAD
 export default OrderFailure
+=======
+export default OrderFailure;
+>>>>>>> esraa
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

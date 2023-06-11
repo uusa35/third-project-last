@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PromotionIcon from '@/appIcons/promotion.svg';
 import PromocodeIcon from '@/appIcons/promocode.svg';
@@ -15,10 +15,10 @@ type Props = {
   handelApplyPromoCode: (value: string | undefined) => void;
 };
 
-export default function PromoCode({
+const PromoCode:FC<Props> = ({
   url,
   handelApplyPromoCode = () => {},
-}: Props) {
+}) => {
   const { t } = useTranslation();
   const {
     cart: { promocode, enable_promocode },
@@ -45,7 +45,6 @@ export default function PromoCode({
   );
 
   // remove this part later line 81
-
   return (
     <div>
       <p className={`mt-5 ${alexandriaFontMeduim}`}>
@@ -101,3 +100,4 @@ export default function PromoCode({
     </div>
   );
 }
+export default PromoCode;

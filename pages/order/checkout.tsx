@@ -47,7 +47,11 @@ type Props = {
   url: string;
 };
 
+<<<<<<< HEAD
 const checkout:NextPage<Props>=({ url }):React.ReactElement =>{
+=======
+const checkout: NextPage<Props> = ({ url }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
   const {
     customer: {
@@ -323,9 +327,13 @@ const checkout:NextPage<Props>=({ url }):React.ReactElement =>{
     </MainContentLayout>
   );
 }
+<<<<<<< HEAD
 
 export default checkout
 
+=======
+export default checkout;
+>>>>>>> esraa
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

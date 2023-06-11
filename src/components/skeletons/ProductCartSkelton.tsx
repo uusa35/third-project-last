@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-type Props = {};
-
-export default function ProductCartSkelton({}: Props) {
+const ProductCartSkelton:FC = () => {
   return (
     <div className="py-3 px-5">
       <div className="flex justify-between">
@@ -25,3 +23,5 @@ export default function ProductCartSkelton({}: Props) {
     </div>
   );
 }
+export default ProductCartSkelton;
+

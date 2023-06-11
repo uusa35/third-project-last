@@ -14,7 +14,11 @@ type Props = {
   url: string
 }
 
+<<<<<<< HEAD
 const UserOrders:NextPage<Props>=({ url }):React.ReactElement=> {
+=======
+const UserOrders: NextPage<Props> = ({ url }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
 
   return (

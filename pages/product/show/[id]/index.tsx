@@ -776,6 +776,7 @@ const ProductShow: NextPage<Props> = ({
                 product_id={product.id.toString()}
                 url={url}
                 existInWishlist={element.Data.productWishList}
+                slug={lowerCase(kebabCase(product.name))}
               />
             </div>
             <div className="relative w-full capitalize">

@@ -1,7 +1,7 @@
 import { Product } from '@/types/index';
 import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
@@ -17,7 +17,7 @@ type Props = {
   CategoriesProducts: Product[];
 };
 
-export default function ProductListView({ CategoriesProducts }: Props) {
+const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -108,4 +108,5 @@ export default function ProductListView({ CategoriesProducts }: Props) {
     </div>
   );
 }
+export default ProductListView;
 

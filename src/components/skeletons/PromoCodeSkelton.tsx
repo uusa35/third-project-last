@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-type Props = {};
-
-export default function PromoCodeSkelton({}: Props) {
+const PromoCodeSkelton:FC = () => {
   return (
     <div className="py-3 px-5">
       <Skeleton width={140} height={20} className="mb-3" />
@@ -17,3 +15,4 @@ export default function PromoCodeSkelton({}: Props) {
     </div>
   );
 }
+export default PromoCodeSkelton;

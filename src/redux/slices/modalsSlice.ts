@@ -8,7 +8,6 @@ const initialState: Modals = {
   showHelpModal: false
 };
 
-
 export const ModalsSlice = createSlice({
   name: 'modals',
   initialState,

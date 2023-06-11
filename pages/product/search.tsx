@@ -38,7 +38,11 @@ type Props = {
   url: string;
 };
 
+<<<<<<< HEAD
 const search: NextPage<Props> = ({ url }): React.ReactElement => {
+=======
+const Search: NextPage<Props> = ({ url }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -138,6 +142,23 @@ const search: NextPage<Props> = ({ url }): React.ReactElement => {
   useEffect(() => {
     isUndefined(searchKey) && handleFire();
   }, [searchKey]);
+
+  // set products once page loaded , commented for now till confirmation 
+  // useEffect(() => {
+  //  if(!(category_id)) {
+  //   triggerSearchProducts({
+  //     lang,
+  //     destination: desObject,
+  //     url,
+  //   }).then((r: any) => {
+  //     if (r.data && r.data.Data && r.data.Data.length > 0) {
+  //       setCurrentProducts(r.data.Data);
+  //     } else {
+  //       setCurrentProducts([]);
+  //     }
+  //   });
+  //  }
+  // }, []);
 
   return (
     <Suspense>
@@ -263,11 +284,18 @@ const search: NextPage<Props> = ({ url }): React.ReactElement => {
           )}
         </>
       </MainContentLayout>
+<<<<<<< HEAD
     </Suspense>
   );
 };
 export default search;
 
+=======
+      </Suspense>
+  )
+}
+export default Search;
+>>>>>>> esraa
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

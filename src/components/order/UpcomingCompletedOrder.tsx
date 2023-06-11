@@ -8,7 +8,7 @@ import {
 } from '@/constants/*';
 import { UpcomingOrders } from '@/types/queries';
 import Link from 'next/link';
-import React from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import TextTrans from '../TextTrans';
 
@@ -18,11 +18,11 @@ type Props = {
   order: UpcomingOrders;
 };
 
-export default function UpcomingCompletedOrder({
+const UpcomingCompletedOrder:FC<Props> = ({
   completed = false,
   upcoming = false,
   order,
-}: Props) {
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -109,3 +109,4 @@ export default function UpcomingCompletedOrder({
     </div>
   );
 }
+export default UpcomingCompletedOrder;

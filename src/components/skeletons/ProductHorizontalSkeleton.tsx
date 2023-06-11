@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function ProductHorizontalSkeleton() {
+const ProductHorizontalSkeleton:FC = () => {
   return (
     <div className="py-3 px-5">
       <div className="flex justify-between">
@@ -33,3 +33,4 @@ export default function ProductHorizontalSkeleton() {
     </div>
   );
 }
+export default ProductHorizontalSkeleton;

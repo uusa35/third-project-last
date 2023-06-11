@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function OrderItemSkeleton() {
+const OrderItemSkeleton:FC = () => {
 
   return (
       <div className="flex justify-between">
@@ -16,3 +16,4 @@ export default function OrderItemSkeleton() {
       </div>
   );
 }
+export default OrderItemSkeleton;

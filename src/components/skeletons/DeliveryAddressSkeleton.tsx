@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function DeliveryAddressSkeleton() {
+const DeliveryAddressSkeleton:FC = () => {
 
 
   return (
@@ -10,3 +10,4 @@ export default function DeliveryAddressSkeleton() {
     </div>
   );
 }
+export default DeliveryAddressSkeleton;

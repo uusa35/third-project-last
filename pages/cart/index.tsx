@@ -41,9 +41,13 @@ import { NextPage } from 'next';
 
 type Props = { url: string };
 
+<<<<<<< HEAD
 const Cart: NextPage<Props> = ({
   url,
 }): React.ReactElement => {
+=======
+const Cart: NextPage<Props> = ({ url }) => {
+>>>>>>> esraa
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -368,6 +372,7 @@ const Cart: NextPage<Props> = ({
     </MainContentLayout>
   );
 }
+export default Cart;
 
 export default Cart
 
