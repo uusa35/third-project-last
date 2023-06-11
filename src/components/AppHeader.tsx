@@ -12,11 +12,14 @@ import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { West, East } from '@mui/icons-material';
+import { LifebuoyIcon } from '@heroicons/react/24/outline';
+import HelpModal from './modals/HelpModal';
 
 type Props = {
   backHome?: boolean;
   backRoute?: string | null;
   currentModule?: string;
+  showHelpBtn?: boolean;
 };
 type CurrentModule = 'your_number' | 'otp_verification' | 'account_info';
 
@@ -28,6 +31,7 @@ const AppHeader: FC<Props> = ({
   backHome = false,
   backRoute = null,
   currentModule = 'home',
+  showHelpBtn = false,
 }) => {
   // const [offset, setOffset] = useState(0);
   const router = useRouter();
@@ -41,6 +45,7 @@ const AppHeader: FC<Props> = ({
     otp_verification: 'w-2/3',
     account_info: 'w-full',
   };
+  const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
 
   const widthClass: string = moduleWidths[currentModule as CurrentModule] || '';
   const handleGoHome = () => {
@@ -67,7 +72,6 @@ const AppHeader: FC<Props> = ({
     }
   };
 
-
   // const {
   //   appSetting: { currentModule },
   // } = useAppSelector((state) => state);
@@ -86,30 +90,48 @@ const AppHeader: FC<Props> = ({
 
   return (
     <header
-      className={`relative sticky top-0 z-30 w-full capitalize bg-white border-b-2`}
+      className={`relative sticky top-0 z-30 w-full capitalize bg-white border-b-2 py-3`}
       suppressHydrationWarning={suppressText}
     >
-      <div className={`flex items-center py-3 px-2`}>
+      <div className={`flex items-center py-3 px-4 `}>
         <button
           onClick={() => handleBack()}
-          className={`flex justify-start items-center pt-1`}
+          className={`flex justify-start items-center `}
         >
           {router.locale === 'en' ? <West /> : <East />}
         </button>
-        <div className={`flex flex-1 justify-center items-center pt-1`}>
+        <div className={`flex flex-1 justify-center items-center  `}>
           <span
-            className={`text-md capitalize truncate ${alexandriaFontSemiBold}`}
+            className={`text-xl capitalize truncate ${alexandriaFontSemiBold}`}
             suppressHydrationWarning={suppressText}
             style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
           >
             {t(currentModule)}
           </span>
         </div>
+        {}
+        <div className={`flex justify-center items-center  `}>
+          {showHelpBtn && (
+            <button
+              className="bg-gray-200 rounded-2xl flex justify-beteween items-center px-4 py-3"
+              onClick={() => setIsHelpOpen(true)}
+            >
+              <div className="flex">
+                <LifebuoyIcon className="w-6 h-6 me-1" />
+              </div>
+              <div className="flex capitalize">{t('help')}?</div>
+            </button>
+          )}
+        </div>
       </div>
       <div
         className={`h-[2px] absolute -bottom-[2px] ${widthClass}`}
         style={{ backgroundColor: color }}
       ></div>
+      <HelpModal
+        isOpen={isHelpOpen}
+        onRequestClose={() => setIsHelpOpen(false)}
+      />
     </header>
   );
 };

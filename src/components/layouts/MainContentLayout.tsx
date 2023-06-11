@@ -27,6 +27,7 @@ type Props = {
   backRoute?: string | null;
   currentModule?: string;
   showBackBtnHeader?: boolean;
+  showHelpBtn?: boolean;
   showAppFooter?: boolean;
   hideBack?: boolean;
   showMotion?: boolean;
@@ -45,6 +46,7 @@ const MainContentLayout: FC<Props> = ({
   backRoute = null,
   showBackBtnHeader = false,
   showAppFooter = false,
+  showHelpBtn = false,
 
   hideBack = false,
   showMotion = true,
@@ -96,6 +98,7 @@ const MainContentLayout: FC<Props> = ({
           backHome={backHome}
           backRoute={backRoute}
           currentModule={currentModule}
+          showHelpBtn={showHelpBtn}
         />
       )}
 

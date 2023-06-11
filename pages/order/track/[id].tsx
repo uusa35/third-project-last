@@ -7,6 +7,7 @@ import { OrderTrack, Vendor } from '@/types/index';
 import { NextPage } from 'next';
 import {
   BanknotesIcon,
+  BuildingOfficeIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   MapIcon,
@@ -14,15 +15,21 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
-import { SendOutlined } from '@mui/icons-material';
+import { CottageOutlined, SendOutlined } from '@mui/icons-material';
 import { orderApi, useLazyTrackOrderQuery } from '@/redux/api/orderApi';
 import { useEffect, useState } from 'react';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
-import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  googleMapUrl,
+  mainBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoAddresses from '@/appImages/no_address.svg';
 import Link from 'next/link';
-import { isNull } from 'lodash';
+import { filter, isEmpty, isNull, map } from 'lodash';
+import TextTrans from '@/components/TextTrans';
 
 type Props = {
   element: Vendor;
@@ -58,18 +65,33 @@ const OrderTrack: NextPage<Props> = ({
     });
   }, []);
 
+  const handleDisplayAddress = (address: {}) => {
+    const currentAddress = filter(
+      map(
+        address,
+        (value, key) => key !== `type` && value !== null && `${key} : ${value}`
+      ),
+      (a) => a
+    );
+    return currentAddress.toString();
+  };
+
+  if (!isSuccess || isNull(currentOrder)) {
+    <div>loading</div>;
+  }
   console.log('current', currentOrder);
 
   return (
     <MainContentLayout
       url={url}
       showBackBtnHeader={true}
-      currentModule="orders"
+      currentModule="track_order"
+      showHelpBtn={true}
     >
       <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
-        <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 mb-6 px-3">
-          <h1 className="text-xl font-bold">
-            {t('order_received_we_have_got_ur_order')}
+        <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 px-3">
+          <h1 className="text-2xl font-bold">
+            {t('order_received_we_have_got_ur_order')}...
           </h1>
           <div className="flex flex-1 flex-row mt-2">
             <p className="text-md text-gray-400 mr-2">
@@ -79,18 +101,35 @@ const OrderTrack: NextPage<Props> = ({
           </div>
           {/* order id  */}
           <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 space-x-2">
-            <div className="w-1/3 bg-red-600 h-1"></div>
-            <div className="w-1/3 bg-gray-200 h-1 "></div>
-            <div className="w-1/3 bg-gray-200 h-1 "></div>
-            <div className="w-1/3 bg-gray-200 h-1 "></div>
+            {currentOrder && currentOrder.order_status === 'pending' && (
+              <>
+                <div className="w-1/3 bg-red-600 h-1"></div>
+                <div className="w-1/3 bg-gray-200 h-1 "></div>
+                <div className="w-1/3 bg-gray-200 h-1 "></div>
+              </>
+            )}
+            {currentOrder && currentOrder.order_status === 'on_progress' && (
+              <>
+                <div className="w-1/3 bg-red-600 h-1"></div>
+                <div className="w-1/3 bg-red-600 h-1 "></div>
+                <div className="w-1/3 bg-gray-200 h-1 "></div>
+              </>
+            )}
+            {currentOrder && currentOrder.order_status === 'complete' && (
+              <>
+                <div className="w-1/3 bg-red-600 h-1"></div>
+                <div className="w-1/3 bg-red-600 h-1 "></div>
+                <div className="w-1/3 bg-red-600 h-1 "></div>
+              </>
+            )}
           </div>
           <div className="flex flex-1 flex-row text-gray-400">
             <p>{t('order_id')} :</p>
             <p>#{currentOrder?.order_code}</p>
           </div>
         </div>
-        {/*  Branch Name  */}
-        <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
+        {/*  Pick up (Branch)  */}
+        <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
           <div className="capitlize text-xl mb-4 font-bold">
             {t('pickup_from')}
           </div>
@@ -100,30 +139,93 @@ const OrderTrack: NextPage<Props> = ({
             </div>
             <div className="flex flex-1 w-full flex-col mx-3">
               <p className="flex flex-1 text-gray-400">{t('branch_address')}</p>
-              <p>ManSource, El Geesh St</p>
+              {/* <p>{handleDisplayAddress(currentOrder.address)}</p> */}
             </div>
-            <div className="flex ">
-              <button className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs">
-                <SendOutlined className="h-3 w-3 text-black mx-1" />
-                {t('get_direction')}
-              </button>
-            </div>
+            {currentOrder &&
+              currentOrder.latitude &&
+              currentOrder.longitude && (
+                <div className="flex ">
+                  <a
+                    target="blank"
+                    href={googleMapUrl(
+                      currentOrder.latitude,
+                      currentOrder.longitude
+                    )}
+                    className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                  >
+                    <SendOutlined className="h-3 w-3 text-black mx-1" />
+                    {t('get_direction')}
+                  </a>
+                </div>
+              )}
           </div>
         </div>
+        {/*  Delivery (Address)  */}
+        {currentOrder && currentOrder?.address && (
+          <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
+            <div className="capitlize text-xl mb-4 font-bold">
+              {t('delivery_location')}
+            </div>
+            <div className="flex w-full flex-row justify-between items-center ">
+              <div className={`p-2 bg-gray-100 rounded-full`}>
+                <BuildingOfficeIcon className="h-6 w-6 text-black" />
+              </div>
+              <div className="flex flex-1 w-full flex-col mx-3">
+                <p className="flex flex-1 text-black">
+                  {t(currentOrder?.address.type)}
+                </p>
+                <p>{handleDisplayAddress(currentOrder.address)}</p>
+              </div>
+              {currentOrder.latitude && currentOrder.longitude && (
+                <div className="flex ">
+                  <a
+                    target="blank"
+                    href={googleMapUrl(
+                      currentOrder.latitude,
+                      currentOrder.longitude
+                    )}
+                    className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                  >
+                    <SendOutlined className="h-3 w-3 text-black mx-1" />
+                    {t('get_direction')}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* your order */}
         <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
           <div className="capitlize text-xl my-4 font-bold">
             {t('ur_order')}
           </div>
           {/*  item */}
-          <div className="flex w-full flex-row justify-between items-start">
-            <div className="flex flex-col  space-y-2">
-              <div className="text-lg font-bold">Double Big Tasty x1</div>
-              <div className="text-gray-400">x1 cole slaw sald</div>
-              <div className="text-gray-400">any notes here</div>
-            </div>
-            <div>15 KD</div>
-          </div>
+          {currentOrder &&
+            currentOrder.products &&
+            map(currentOrder.products, (p) => (
+              <div className="flex w-full flex-row justify-between items-start">
+                <div className="flex flex-col  space-y-2">
+                  <div className="text-lg font-bold">
+                    <TextTrans
+                      ar={`${p.item_ar} x${p.quantity}`}
+                      en={`${p.item_en} x${p.quantity}`}
+                    />
+                  </div>
+                  {!isEmpty(p.addon) &&
+                    map(p.addon, (a) => (
+                      <TextTrans
+                        className={`text-gray-400`}
+                        ar={`${a.name_ar} x${a.quantity}`}
+                        en={`${a.name_en} x${a.quantity}`}
+                      />
+                    ))}
+                </div>
+                <div>
+                  {p.price} {t('kd')}
+                </div>
+              </div>
+            ))}
         </div>
         {/* Payment details */}
         <div className="flex flex-1 flex-col w-full px-3 pb-6">
@@ -140,24 +242,30 @@ const OrderTrack: NextPage<Props> = ({
               {/* subtotal */}
               <div className="flex flex-row justify-between items-center">
                 <div className="">{t('sub_total')}</div>
-                <div className="">2 {t('kd')}</div>
+                <div className="">
+                  {currentOrder?.subtotal} {t('kd')}
+                </div>
               </div>
 
               {/* delivery_fees */}
               <div className="flex flex-row justify-between items-center">
                 <div className="">{t('delivery_fees')}</div>
-                <div className="">2 {t('kd')}</div>
+                <div className="">
+                  {currentOrder?.delivery_fees} {t('kd')}
+                </div>
               </div>
               {/* total */}
               <div className="flex flex-row justify-between items-center">
                 <div className="text-lg font-bold">{t('total')}</div>
-                <div className="text-lg font-bold">100 {t('kd')}</div>
+                <div className="text-lg font-bold">
+                  {currentOrder?.total} {t('kd')}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {!isNull(currentOrder) ? (
+      {isNull(currentOrder) || !isSuccess ? (
         <div className="flex flex-col space-y-4 absolute bottom-0 w-full border-t border-gray-200 p-4">
           <button
             className={`flex flex-row w-full justify-center items-center space-x-3 rounded-3xl bg-red-600 p-3 py-4 text-white capitlaize`}

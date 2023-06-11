@@ -10,7 +10,7 @@ export const customerApi = apiSlice.injectEndpoints({
         body: CustomerInfo;
         url: string;
       }
-    >({ 
+    >({
       query: ({ body, url }) => ({
         url: `customer-info`,
         method: `POST`,
@@ -44,12 +44,8 @@ export const customerApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Wishlist'],
     }),
-<<<<<<< HEAD
-    deleteFromWishList: builder.query<
-=======
 
-    DeleteFromWishList: builder.mutation<
->>>>>>> structure
+    deleteFromWishList: builder.query<
       AppQueryResult<{ Id: string }>,
       { url: string; product_id: string }
     >({

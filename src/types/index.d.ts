@@ -315,9 +315,9 @@ export interface OrderTrack {
   branch_phone: string;
   estimated_time: string | null;
   order_time: string | null;
+  latitude: string;
+  longitude: string;
   address: {
-    latitude: string;
-    longitude: string;
     address: {
       "paci": string | null,
       "type": string | null,
@@ -333,6 +333,24 @@ export interface OrderTrack {
     "latitude": "23.123213",
     "longitude": "31.311111"
   };
+  products: [{
+    quantity: number;
+    item: string;
+    item_en: string;
+    item_ar: string;
+    price: string;
+    addon?: [any];
+    total: string;
+    subtotal: string;
+    discount: null | string | number;
+    delivery_fees: string;
+    extra_notes: null | string;
+  }];
+  total: string;
+  subtotal: string;
+  discount: string | null;
+  delivery_fees: string;
+  extra_notes: string | null;
 }
 
 export interface OrderUser {
