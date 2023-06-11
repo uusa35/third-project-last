@@ -51,8 +51,10 @@ const AddressIndex: NextPage<Props> = ({
       if(url) {
         dispatch(setUrl(url));
       }
-      triggerGetAddresses({ url, user_id: id }, false);
+      triggerGetAddresses({ url }, false)
+        .then((res) => console.log({addressRes: res }))
     }, []);
+    
 
     const handelDisplayAddress = (address) => {
       if (address && !isUndefined(address) && isObject(address)) {
@@ -67,9 +69,9 @@ const AddressIndex: NextPage<Props> = ({
 
     const showHideEditBtn = (address) => {
       if (selectedAddress === address) {
-        setSelectedAddress(null); // Hide the edit button if already shown
+        setSelectedAddress(null); 
       } else {
-        setSelectedAddress(address); // Show the edit button for the clicked address
+        setSelectedAddress(address); 
       }
     };
 
@@ -77,17 +79,18 @@ const AddressIndex: NextPage<Props> = ({
       dispatch(setCustomerAddress(address));
       router.push(`${appLinks.addressCreate.path}`);
     }
-    console.log({addresses: addresses?.Data?.address})
+    console.log({addresses})
   return (
     <MainContentLayout
       url={url}
       showBackBtnHeader
       currentModule="my_addresses"
     >
+      
       <div className="relative h-[100vh]">
-      {isSuccess && !isEmpty(addresses?.Data?.address) ? (
+      {isSuccess && !isEmpty(addresses?.data?.address) ? (
         <div>
-          {map(addresses?.Data?.address, (address) => (
+          {map(addresses?.data?.address, (address) => (
             <div className="flex flex-col w-auto justify-start items-start mx-4 space-y-4" key={address.id}>
             <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 overflow-hidden w-full text-sm">
               <div className={`flex flex-1 flex-row justify-between items-start`}>

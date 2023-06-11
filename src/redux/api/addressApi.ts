@@ -52,15 +52,32 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<UserAddressFields[]>,
       {
         url: string;
-        user_id: string
       }
     >({
-      query: ({ url, user_id }) => ({
-        url: `getUserAddress`,
+      query: ({ url }) => ({
+        url: `user/getUserAddress`,
         headers: { url },
-        params: { user_id },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
+      }),
+    }),
+    updateAddress: builder.mutation<
+      AppQueryResult<Address>,
+      {
+        body: {
+          address_id: number;
+          address_type: string
+        };
+        url: string;
+      }
+    >({
+      query: ({ body, url }) => ({
+        url: `updateUserAddress`,
+        method: `POST`,
+        headers: { url },
+        body,
+        validateStatus: (response, result) =>
+          response.status === 200 && result.status,
       }),
     }),
   }),
@@ -69,6 +86,7 @@ export const addressApi = apiSlice.injectEndpoints({
 export const { 
   useCreateAddressMutation, 
   useCheckTimeAvilabilityMutation,
-  useLazyGetAddressesQuery
+  useLazyGetAddressesQuery,
+  useUpdateAddressMutation
 } =
   addressApi;

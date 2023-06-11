@@ -16,7 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useCreateAddressMutation } from '@/redux/api/addressApi';
+import { useCreateAddressMutation, useUpdateAddressMutation } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -146,6 +146,8 @@ const AddressCreate: NextPage<Props> = ({
       await handelSaveAddress(body);
     }
   };
+  const [triggerUpdateAddress, { isLoading: updateAddressLoading }] = 
+  useUpdateAddressMutation();
 
   console.log(errors);
   console.log({ address: customer.address})
