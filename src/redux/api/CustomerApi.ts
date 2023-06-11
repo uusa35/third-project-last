@@ -4,7 +4,7 @@ import { CustomerInfo } from '@/types/index';
 
 export const customerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    SaveCustomerInfo: builder.mutation<
+    saveCustomerInfo: builder.mutation<
       AppQueryResult<any>,
       {
         body: CustomerInfo;
@@ -20,7 +20,6 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
-
     createTempId: builder.query<
       AppQueryResult<{ Id: string }>,
       { url: string }
@@ -34,8 +33,7 @@ export const customerApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
-    GetWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
+    getWishListProducts: builder.query<AppQueryResult<any>, { url: string }>({
       query: ({ url }) => ({
         url: `getWishList`,
         headers: {
@@ -46,8 +44,7 @@ export const customerApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Wishlist'],
     }),
-
-    DeleteFromWishList: builder.mutation<
+    deleteFromWishList: builder.query<
       AppQueryResult<{ Id: string }>,
       { url: string; product_id: string }
     >({
@@ -62,8 +59,7 @@ export const customerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Product', 'Wishlist'],
     }),
-
-    AddToWishList: builder.mutation<
+    addToWishList: builder.mutation<
       AppQueryResult<any>,
       {
         body: any;
@@ -88,5 +84,5 @@ export const {
   useSaveCustomerInfoMutation,
   useLazyCreateTempIdQuery,
   useGetWishListProductsQuery,
-  useDeleteFromWishListMutation,
+  useLazyDeleteFromWishListQuery,
 } = customerApi;

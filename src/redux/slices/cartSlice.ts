@@ -18,7 +18,6 @@ export const CartSlice = createSlice({
       promocode: action.payload,
       enable_promocode: true,
     }),
-
     resetPromo: (state: typeof initialState, action: PayloadAction<void>) => ({
       ...state,
       promocode: '',

@@ -63,6 +63,8 @@ export const orderApi = apiSlice.injectEndpoints({
           url: `track-order`,
           headers: { url },
           params: { order_code },
+          validateStatus: (response, result) =>
+            result?.status,
         }),
       }),
       checkOrderStatus: builder.query<
@@ -126,7 +128,6 @@ export const orderApi = apiSlice.injectEndpoints({
           method: 'POST',
         }),
       }),
-
       getUpcomingOrders: builder.query<
         AppQueryResult<UpcomingOrders[]>,
         { lang: Locale['lang']; destination: any; url: string; phone: string }

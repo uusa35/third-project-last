@@ -49,7 +49,8 @@ export default function EmptyUserOrders({
           placeholder={`${t('order_id')}`}
           suppressHydrationWarning={suppressText}
           className={`flex-1 px-2 py-3 h-12 bg-transparent text-[#544A45] capitalize foucs:ring-0 outline-none ${alexandriaFontLight}`}
-          onKeyDown={(e) => handleChange(e)}
+          // onChange={(e) => handleChange(e)}
+          onChange={debounce((e) => handleChange(e.target.value), 400)}
         />
       </div>
     </div>

@@ -61,7 +61,12 @@ export default function AccountInfo({ url }: Props) {
     }).then((r: any) => {
       dispatch(setCustomer(r.data.data.user));
       dispatch(signIn(r.data.data.token));
+<<<<<<< HEAD
+      
+      console.log({ RegisterRes: r})
+=======
       router.push(`${appLinks.addressMap.path}`);
+>>>>>>> structure
     });
   }
 

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import {
   useAddToWishListMutation,
-  useDeleteFromWishListMutation,
+  useLazyDeleteFromWishListQuery,
 } from '@/redux/api/CustomerApi';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 
@@ -25,7 +25,7 @@ export default function FavouriteAndShare({
   const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
   const [triggerAddToWishList] = useAddToWishListMutation();
-  const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
+  const [triggerDeleteFromWishList] = useLazyDeleteFromWishListQuery();
 
   // console.log({ isAuth });
 
