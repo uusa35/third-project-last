@@ -309,30 +309,26 @@ export interface InvoiceAddon {
 }
 
 export interface OrderTrack {
-
   order_status: string;
   order_code: string;
   branch_phone: string;
   estimated_time: string | null;
   order_time: string | null;
+  address: {
+    "paci": string | null;
+    "type": string | null;
+    "block": string | null;
+    "avenue": string | null;
+    "street": string | null;
+    "floor_no": string | null;
+    "house_no": string | null;
+    "office_no": string | null;
+    "additional": string | null;
+    "building_no": string | null;
+
+  };
   latitude: string;
   longitude: string;
-  address: {
-    address: {
-      "paci": string | null,
-      "type": string | null,
-      "block": string | null,
-      "avenue": string | null,
-      "street": string | null,
-      "floor_no": string | null,
-      "house_no": string | null,
-      "office_no": string | null,
-      "additional": string | null,
-      "building_no": string | null
-    },
-    "latitude": "23.123213",
-    "longitude": "31.311111"
-  };
   products: [{
     quantity: number;
     item: string;
