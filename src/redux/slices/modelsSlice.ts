@@ -8,7 +8,6 @@ const initialState: Models = {
   showHelpModal: false
 };
 
-
 export const ModelsSlice = createSlice({
   name: 'models',
   initialState,
