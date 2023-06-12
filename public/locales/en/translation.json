@@ -307,5 +307,12 @@
   "get_direction": "get direction",
   "payment_details": "payment details",
   "help_btn": "help?",
+<<<<<<< HEAD
   "the_link_has_been_copied_successfully": "the link has been copied successfully"
+=======
+  "sorry_we_do_not_delivery_here": "sorry we do  not deliver here.",
+  "delivery_address": "delivery address",
+  "area": "area",
+  "address": "address"
+>>>>>>> usama
 }
