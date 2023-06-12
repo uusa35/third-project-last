@@ -311,24 +311,35 @@ export interface InvoiceAddon {
 export interface OrderTrack {
   order_status: string;
   order_code: string;
-  branch_phone: string;
   estimated_time: string | null;
   order_time: string | null;
-  address: {
-    "paci": string | null;
-    "type": string | null;
-    "block": string | null;
-    "avenue": string | null;
-    "street": string | null;
-    "floor_no": string | null;
-    "house_no": string | null;
-    "office_no": string | null;
-    "additional": string | null;
-    "building_no": string | null;
-
-  };
-  latitude: string;
-  longitude: string;
+  type: 'delivery' | 'pickup';
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+    address: {
+      "paci": string | null;
+      "type": string | null;
+      "block": string | null;
+      "avenue": string | null;
+      "street": string | null;
+      "floor_no": string | null;
+      "house_no": string | null;
+      "office_no": string | null;
+      "additional": string | null;
+      "building_no": string | null;
+    };
+  }
+  destination: {
+    type: 'branch' | 'area';
+    name_ar: string;
+    name_en: string;
+    address: string;
+    longitutde?: string;
+    latitude?: string;
+    phone?: string;
+  }
   products: [{
     quantity: number;
     item: string;

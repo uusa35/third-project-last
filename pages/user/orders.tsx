@@ -15,7 +15,14 @@ import {
 } from '@/constants/*';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { debounce, isEmpty } from 'lodash';
+import {
+  debounce,
+  isEmpty,
+  kebabCase,
+  lowerCase,
+  snakeCase,
+  toLower,
+} from 'lodash';
 import { suppressText } from '@/constants/*';
 import {
   useGetUserOrdersQuery,
@@ -52,14 +59,14 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
     useLazyTrackOrderQuery();
 
   const handleChange = async (search: string) => {
-    console.log('search', search);
     if (search && search?.length >= 3) {
-      console.log('search', search, search);
       await triggerTrackOrder({ order_code: toEn(search), url }).then((r) => {
-        console.log('r', r);
         if (r.error) {
           dispatch(
-            showToastMessage({ type: 'error', content: r.error.data?.msg })
+            showToastMessage({
+              type: 'error',
+              content: toLower(snakeCase(r.error.data?.msg)),
+            })
           );
         } else if (r.data && r.data.data) {
           router.push(`${appLinks.orderTrack(search)}`);

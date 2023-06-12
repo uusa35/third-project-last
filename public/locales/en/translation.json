@@ -311,5 +311,7 @@
   "sorry_we_do_not_delivery_here": "sorry we do  not deliver here.",
   "delivery_address": "delivery address",
   "area": "area",
-  "address": "address"
+  "address": "address",
+  "order_not_found": "order not found.",
+  "no_orders_found": "no orders found."
 }
