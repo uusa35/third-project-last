@@ -38,7 +38,10 @@ type Props = {
   orderId: string;
 };
 
-const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => {
+const orderReceipt: NextPage<Props> = ({
+  url,
+  orderId,
+}): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -94,7 +97,10 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
                   <div>
                     <Link
                       className="flex gap-x-1"
-                      href={`${appLinks.productShow(product.ProductID, product.ProductName)}`}
+                      href={`${appLinks.productShow(
+                        product.ProductID,
+                        product.item
+                      )}`}
                     >
                       <TextTrans
                         className={`capitalize ${alexandriaFontSemiBold}`}
@@ -268,7 +274,7 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
       </MainContentLayout>
     </Suspense>
   );
-}
+};
 export default orderReceipt;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
