@@ -55,7 +55,7 @@ const OrderTrack: NextPage<Props> = ({
 }): React.ReactElement => {
   const {
     locale: { isRTL },
-    models: { showHelpModal },
+    modals: { showHelpModal },
     vendor: { phone },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
