@@ -28,7 +28,16 @@ import {
 import { themeColor } from '@/redux/slices/vendorSlice';
 import NoAddresses from '@/appImages/no_address.svg';
 import Link from 'next/link';
-import { filter, isEmpty, isNull, map } from 'lodash';
+import {
+  filter,
+  isEmpty,
+  isNull,
+  kebabCase,
+  lowerCase,
+  map,
+  snakeCase,
+  toLower,
+} from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import { toggleShowHelpModal } from '@/redux/slices/modalsSlice';
 import HelpModal from '@/components/modals/HelpModal';
@@ -46,7 +55,7 @@ const OrderTrack: NextPage<Props> = ({
 }): React.ReactElement => {
   const {
     locale: { isRTL },
-    models: { showHelpModal },
+    modals: { showHelpModal },
     vendor: { phone },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
@@ -60,7 +69,10 @@ const OrderTrack: NextPage<Props> = ({
     triggerTrackOrder({ order_code, url }).then((r) => {
       if (r.error) {
         dispatch(
-          showToastMessage({ type: 'error', content: r.error.data?.msg })
+          showToastMessage({
+            type: 'error',
+            content: toLower(snakeCase(r.error.data?.msg)),
+          })
         );
       } else {
         setCurrentOrder(r.data?.data);
@@ -293,7 +305,7 @@ const OrderTrack: NextPage<Props> = ({
                       />
                     </div>
                     {!isEmpty(p.addon) &&
-                      map(p.addon, (a,i) => (
+                      map(p.addon, (a, i) => (
                         <TextTrans
                           key={i}
                           className={`text-gray-400`}
