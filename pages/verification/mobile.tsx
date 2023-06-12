@@ -24,7 +24,7 @@ type Props = {
   url: string;
 }
 
-const MobileVerifications: NextPage<Props> = ({ url }) => {
+const MobileVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);

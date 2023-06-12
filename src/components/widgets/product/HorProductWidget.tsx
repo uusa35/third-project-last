@@ -32,6 +32,7 @@ const HorProductWidget: FC<Props> = ({
       <Link
         href={`${appLinks.productShow(
           element.id,
+          element.name
         )}`}
         className={`h-auto shadow-7xl h-full  block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
         data-cy="product"

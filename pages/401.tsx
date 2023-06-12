@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { NextPage } from 'next';
 
-const Custom401: NextPage = () => {
+const Custom401: NextPage = (): React.ReactElement => {
   const { t } = useTranslation();
   return (
     <MainContentLayout backHome={true}>

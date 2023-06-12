@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import { Vendor } from '@/types/index';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
-import { vendorApi } from '@/redux/api/vendorApi';
+import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import MainHead from '@/components/MainHead';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Knet from '@/appIcons/knet.svg';
@@ -57,7 +57,7 @@ type DetailsItem = {
   text: string;
   content: any;
 };
-const VendorShow: NextPage<Props> = ({ url, element }) => {
+const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const {
     locale: { isRTL, lang },
     vendor,
@@ -67,11 +67,21 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
   const color = useAppSelector(themeColor);
   const [showModal, SetShowModal] = useState(false);
   const desObject = useAppSelector(destinationHeaderObject);
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+  useLazyGetVendorQuery();
 
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
+    triggerGetVendor(
+      {
+        lang,
+        url,
+        destination: desObject,
+      },
+      false
+    );
   }, []);
 
   const handleClosePopup = () => {
@@ -80,6 +90,7 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
   const handleOpenPopup = () => {
     SetShowModal(true);
   };
+
   return (
     <Suspense>
       <MainHead
@@ -93,7 +104,7 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
         instagram={element.instagram}
       />
       <MainContentLayout url={url} showBackBtnHeader currentModule="info">
-        {vendor ? (
+        {vendorElement ? (
           <>
             <Link
               scroll={true}
@@ -101,20 +112,20 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
               className={`flex flex-col flex-1 justify-center items-center px-6 py-3 my-3`}
             >
               <CustomImage
-                src={`${vendor?.logo}`}
-                alt={vendor?.name}
+                src={`${vendorElement?.Data?.logo}`}
+                alt={vendorElement?.Data?.name}
                 className={`w-16 h-16 object-cover shadow-md rounded-full border border-stone-200 bg-white`}
                 width={imageSizes.sm}
                 height={imageSizes.sm}
               />
               <TextTrans
-                ar={vendor?.name_ar}
-                en={vendor?.name_en}
+                ar={vendorElement?.Data?.name_ar}
+                en={vendorElement?.Data?.name_en}
                 className="capitalize text-black text-md text-center my-3"
               />
               <TextTrans
-                ar={vendor?.desc}
-                en={vendor?.desc}
+                ar={vendorElement?.Data?.desc}
+                en={vendorElement?.Data?.desc}
                 className="text-sm text-center leading-6"
                 length={600}
               />
@@ -145,7 +156,7 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
                   </span>
                 </div>
                 <div className={`text-lg`}>
-                  {vendor?.delivery?.minimum_order_price} {t(`kwd`)}
+                  {vendorElement?.Data?.delivery?.minimum_order_price} {t(`kwd`)}
                 </div>
               </div>
               {/* working hours */}
@@ -156,7 +167,7 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
                   <AccessTimeIcon />
                   <span className="text-lg px-2">{t('opening_hours')}</span>
                 </div>
-                <div className={`text-lg`}>{vendor?.WorkHours}</div>
+                <div className={`text-lg`}>{vendorElement?.Data?.WorkHours}</div>
               </div>
               {/* payment */}
               <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
@@ -167,17 +178,17 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
                   <span className="text-lg px-2">{t('payment_options')}</span>
                 </div>
                 <div className="flex justify-center">
-                  {vendor?.Payment_Methods.visa === '1' && (
+                  {vendorElement?.Data?.Payment_Methods.visa === '1' && (
                     <div className="">
                       <Visa className={`h-auto w-8`} />
                     </div>
                   )}
-                  {vendor?.Payment_Methods.cash_on_delivery === '1' && (
+                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery === '1' && (
                     <div className="px-3">
                       <CashOnDelivery className={`h-auto w-8`} />
                     </div>
                   )}
-                  {vendor?.Payment_Methods.knet === 1 && (
+                  {vendorElement?.Data?.Payment_Methods.knet === 1 && (
                     <div className=" ">
                       <Knet className={`h-auto w-8`} />
                     </div>
@@ -193,27 +204,27 @@ const VendorShow: NextPage<Props> = ({ url, element }) => {
                   <span className="text-lg px-2">{t('contact_us')}</span>
                 </div>
                 <div className="flex justify-center items-end">
-                  {vendor?.facebook && (
+                  {vendorElement?.Data?.facebook && (
                     <a
-                      href={vendor?.facebook}
+                      href={vendorElement?.Data?.facebook}
                       target={'_blank'}
                       className="px-2"
                     >
                       <Facebook />
                     </a>
                   )}
-                  {vendor?.instagram && (
+                  {vendorElement?.Data?.instagram && (
                     <a
-                      href={vendor?.instagram}
+                      href={vendorElement?.Data?.instagram}
                       target={'_blank'}
                       className="px-2"
                     >
                       <Instagram />
                     </a>
                   )}
-                  {vendor?.twitter && (
+                  {vendorElement?.Data?.twitter && (
                     <a
-                      href={vendor?.twitter}
+                      href={vendorElement?.Data?.twitter}
                       target={'_blank'}
                       className="px-2"
                     >

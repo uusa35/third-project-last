@@ -102,7 +102,7 @@ const AddressCreate: NextPage<Props> = ({
       body: {
         address_type: body.address_type,
         longitude: body.longitude,
-        latitude: Lbody.latitude,
+        latitude: body.latitude,
         customer_id: body.customer_id,
         address: {
           block: body.block,

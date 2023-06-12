@@ -69,19 +69,29 @@ const FavouriteAndShare:FC<Props> = ({
     }
   };
   const handleShare = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: `${window.location.href}&slug=${slug}`,
-          text: `${window.location.href}&slug=${slug}`,
-          url: `${window.location.href}&slug=${slug}`
-        });
-      } else {
-        console.log('Web Share API not supported');
-      }
-    } catch (error) {
-      console.error('Sharing Error', error);
-    }
+    // try {
+    //   if (navigator.share) {
+    //     await navigator.share({
+    //       title: `${window.location.href}`,
+    //       text: `${window.location.href}`,
+    //       url: `${window.location.href}`
+    //     });
+    //   } else {
+    //     console.log('Web Share API not supported');
+    //   }
+    // } catch (error) {
+    //   console.error('Sharing Error', error);
+    // }
+    navigator.clipboard.writeText(`${window.location.href}`)
+      .then(() => {
+        dispatch(showToastMessage({
+          content: 'the_link_has_been_copied_successfully',
+          type: 'success'
+        }))
+      })
+      .catch((error) => {
+        console.error('Failed to copy URL to clipboard:', error);
+      });
   };
   
   return (

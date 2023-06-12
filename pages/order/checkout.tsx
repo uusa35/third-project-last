@@ -47,7 +47,7 @@ type Props = {
   url: string;
 };
 
-const checkout: NextPage<Props> = ({ url }) => {
+const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const {
     customer: {
@@ -119,7 +119,7 @@ const checkout: NextPage<Props> = ({ url }) => {
     if (!customer_id) {
       router.push(appLinks.login.path);
     } else if (!addressID && method === `delivery`) {
-      router.push(appLinks.addressCreate.path);
+      router.push(appLinks.addressCreate(''));
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({

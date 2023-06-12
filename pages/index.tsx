@@ -11,7 +11,7 @@ import {
   vendorApi,
 } from '@/redux/api/vendorApi';
 import MainHead from '@/components/MainHead';
-import { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
@@ -42,7 +42,7 @@ type Props = {
   currentLocale: string;
   url: string;
 };
-const Home: NextPage<Props> = ({ url, element, currentLocale }) => {
+const Home: NextPage<Props> = ({ url, element, currentLocale }): React.ReactElement => {
   const { t } = useTranslation();
   const {
     locale: { lang },

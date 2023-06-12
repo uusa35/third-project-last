@@ -41,7 +41,7 @@ import { NextPage } from 'next';
 
 type Props = { url: string };
 
-const Cart: NextPage<Props> = ({ url }) => {
+const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -274,7 +274,7 @@ const Cart: NextPage<Props> = ({ url }) => {
       router.push(appLinks.login.path);
     } else {
       if (method === 'delivery') {
-        router.push(appLinks.addressCreate.path);
+        router.push(appLinks.addressCreate(''));
       } else {
         //  go to checkout
         router.push(appLinks.checkout.path);

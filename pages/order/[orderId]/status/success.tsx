@@ -37,7 +37,7 @@ type Props = {
     orderId: string
 };
 
-const OrderSuccess: NextPage<Props> = ({ url,orderId }) => {
+const OrderSuccess: NextPage<Props> = ({ url,orderId }): React.ReactElement => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const DestinationId = useAppSelector(destinationId);

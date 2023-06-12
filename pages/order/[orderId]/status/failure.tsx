@@ -14,7 +14,7 @@ import { NextPage } from 'next';
 
 type Props = { url: string };
 
-const OrderFailure: NextPage<Props> = ({ url }) => {
+const OrderFailure: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
 
   const DetailComponent = ({

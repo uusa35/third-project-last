@@ -20,7 +20,7 @@ type Props = {
   url: string;
 }
 
-const OtpVerifications: NextPage<Props> = ({ url }) => {
+const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();

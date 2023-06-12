@@ -18,7 +18,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import Link from 'next/link';
-import { useLazyGetAddressesQuery } from '@/redux/api/addressApi';
+import { useDeleteAddressMutation, useGetAddressesQuery, useLazyGetAddressesQuery } from '@/redux/api/addressApi';
 import { useEffect, useState } from 'react';
 import { AppQueryResult } from '@/types/queries';
 import { setUrl } from '@/redux/slices/appSettingSlice';
@@ -41,11 +41,22 @@ const AddressIndex: NextPage<Props> = ({
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const { customer: { id, countryCode, name, phone }} = useAppSelector((state) => state);
-  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+  const [triggerGetAddresses, 
+    { data: addresses, isLoading }, 
+    isSuccess
+  ] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
     }>();
+    const {
+      refetch: refetchAddresses,
+    } = useGetAddressesQuery<{
+      refetch: () => void;
+    }>(
+      { url }
+    );
+  const [triggerDeleteAddress] = useDeleteAddressMutation();
 
     useEffect(() => {
       if(url) {
@@ -77,7 +88,23 @@ const AddressIndex: NextPage<Props> = ({
 
     const handleEdit = (address) => {
       dispatch(setCustomerAddress(address));
-      router.push(`${appLinks.addressCreate.path}`);
+      console.log({ address: `${address.id}` })
+      router.push(appLinks.addressCreate(`${address.id}`));
+    }
+
+    const handleDelete = async (address) => {
+      await triggerDeleteAddress({
+        params: {
+          address_id: address.id,
+          address_type: address.type
+        },
+        url
+      })
+      .then((r) => {
+        console.log({deleteAddress: r});
+        refetchAddresses();
+      }
+        );
     }
     console.log({addresses})
   return (
@@ -115,6 +142,7 @@ const AddressIndex: NextPage<Props> = ({
                     {selectedAddress === address && (
                       <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md">
                       <button onClick={() => handleEdit(address)}>{t('edit')}</button>
+                      <button onClick={() => handleDelete(address)}>{t('delete')}</button>
                     </div>
                     )}
                   </div>
@@ -133,7 +161,7 @@ const AddressIndex: NextPage<Props> = ({
       )}
       <div className="absolute bottom-14 p-2 w-full">
         <Link
-          href={`${appLinks.addressCreate.path}`}
+          href={`${appLinks.addressCreate('')}`}
           className={`${mainBtnClass} flex flex-row justify-center items-center`}
           style={{ backgroundColor: color }}
           suppressHydrationWarning={suppressText}

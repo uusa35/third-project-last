@@ -278,5 +278,6 @@
   "sub_total": "الإجمالي",
   "get_direction": "الموقع",
   "payment_details": "تفاصيل عملية الدفع",
-  "help_btn": "مساعدة؟"
+  "help_btn": "مساعدة؟",
+  "the_link_has_been_copied_successfully": "تم نسخ الرابط بنجاح"
 }

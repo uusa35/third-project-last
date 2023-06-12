@@ -14,7 +14,7 @@ type Props = {
   url: string
 }
 
-const UserOrders: NextPage<Props> = ({ url }) => {
+const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
 
   return (

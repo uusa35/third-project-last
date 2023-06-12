@@ -42,7 +42,7 @@ const VerProductWidget: FC<Props> = ({
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
-        href={`${appLinks.productShow(element.id)}`}
+        href={`${appLinks.productShow(element.id, element.name)}`}
         className={`h-auto shadow-7xl mb-2 block capitalize border-b-2 border-gray-100 py-3`}
       >
         <div className="relative">

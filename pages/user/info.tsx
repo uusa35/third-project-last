@@ -2,7 +2,7 @@ import CustomImage from "@/components/CustomImage";
 import MainHead from "@/components/MainHead";
 import MainContentLayout from "@/layouts/MainContentLayout";
 import { wrapper } from "@/redux/store";
-import { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AccountInfoImg from '@/appImages/account_info.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from "@/constants/*";
@@ -22,7 +22,7 @@ import { NextPage } from "next";
 type Props = {
   url: string;
 }
-const AccountInfo: NextPage<Props> = ({ url }) => {
+const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();

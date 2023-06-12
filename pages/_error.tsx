@@ -1,8 +1,9 @@
 import { NextPage } from 'next';
 import OffLineWidget from '@/widgets/OffLineWidget';
 import MainContentLayout from '@/layouts/MainContentLayout';
+import React from 'react';
 
-const Error: NextPage = ({ statusCode, message = `` }: any) => {
+const Error: NextPage = ({ statusCode, message = `` }: any): React.ReactElement => {
   return (
     <MainContentLayout>
       <OffLineWidget

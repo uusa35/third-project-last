@@ -110,7 +110,7 @@ const OrderDetails:FC<Props> = ({ OrderStatus = false }) => {
         <DetailComponent
           onclick={() =>
             method === 'delivery'
-              ? router.push(appLinks.addressCreate.path)
+              ? router.push(appLinks.addressCreate(''))
               : router.push(appLinks.selectBranch.path)
           }
           icon={
@@ -176,7 +176,7 @@ const OrderDetails:FC<Props> = ({ OrderStatus = false }) => {
 
       {method === 'delivery' && (
         <DetailComponent
-          onclick={() => router.push(appLinks.addressCreate.path)}
+          onclick={() => router.push(appLinks.addressCreate(''))}
           icon={<RemarksIcon />}
           p1="special_remarks"
           p2={`${notes ? notes : 'no_notes_added'}`}

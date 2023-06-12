@@ -123,7 +123,7 @@ const OrderTrack: NextPage<Props> = ({
             <p className="text-md text-extrabold">{t('no_address')}</p>
             <p className="text-md text-extrabold">{t('no_address_des')}</p>
             <Link
-              href={`${appLinks.addressCreate.path}`}
+              href={`${appLinks.addressCreate('')}`}
               className={`${mainBtnClass} flex flex-row justify-center items-center`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}

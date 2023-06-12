@@ -6,7 +6,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
-import { Vendor } from '@/types/index';
+import { UserAddressFields, Vendor } from '@/types/index';
 import HomeIcon from '@mui/icons-material/Home';
 import {
   ChevronLeftIcon,
@@ -16,25 +16,28 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useCreateAddressMutation, useUpdateAddressMutation } from '@/redux/api/addressApi';
+import { useCreateAddressMutation, useLazyGetAddressesByIdQuery, useLazyGetAddressesQuery, useUpdateAddressMutation } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomerAddress } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase } from 'lodash';
+import { kebabCase, lowerCase, parseInt } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { CottageOutlined, BusinessOutlined, WorkOutlineTwoTone } from '@mui/icons-material';
+import { AppQueryResult } from '@/types/queries';
 
 type Props = {
   element: Vendor;
   url: string;
+  addressId: string
 };
 
 const AddressCreate: NextPage<Props> = ({
   element,
   url,
+  addressId
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -53,6 +56,16 @@ const AddressCreate: NextPage<Props> = ({
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
+  const [triggerUpdateAddress, { isLoading: updateAddressLoading }] = 
+  useUpdateAddressMutation();
+  const [triggerGetAddressesById, 
+    { data: addresses, isLoading }, 
+    isSuccess
+  ] =
+  useLazyGetAddressesByIdQuery<{
+      data: AppQueryResult<UserAddressFields[]>;
+      isLoading: boolean;
+    }>();
   const {
     register,
     handleSubmit,
@@ -84,6 +97,23 @@ const AddressCreate: NextPage<Props> = ({
     },
   });
 
+  useEffect(() => {
+    if(url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
+  useEffect(() => {
+    if(addressId) {
+      triggerGetAddressesById({
+        params: {
+          address_id: parseInt(addressId),
+        },
+        url
+      })
+      .then((r) => console.log({ getAddress: r }))
+    }
+  }, []);
   useMemo(() => {
     setValue(
       'address_type',
@@ -146,11 +176,9 @@ const AddressCreate: NextPage<Props> = ({
       await handelSaveAddress(body);
     }
   };
-  const [triggerUpdateAddress, { isLoading: updateAddressLoading }] = 
-  useUpdateAddressMutation();
-
+  
   console.log(errors);
-  console.log({ address: customer.address})
+  console.log({ addressId })
   return (
     <MainContentLayout
       url={url}
@@ -540,7 +568,7 @@ export default AddressCreate;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req, locale }) => {
+    async ({ req, locale, query }) => {
       const url = req.headers.host;
       const { data: element, isError } = await store.dispatch(
         vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
@@ -551,10 +579,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
           notFound: true,
         };
       }
+      const { addressId } = query;
       return {
         props: {
           element: element.Data,
           url,
+          addressId
         },
       };
     }

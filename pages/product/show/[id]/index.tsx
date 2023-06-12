@@ -8,7 +8,7 @@ import { NextPage } from 'next';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { useEffect, useState, Fragment, Suspense } from 'react';
+import React, { useEffect, useState, Fragment, Suspense } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
@@ -96,7 +96,7 @@ const ProductShow: NextPage<Props> = ({
   url,
   currentLocale,
   resolvedUrl,
-}) => {
+}): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const {

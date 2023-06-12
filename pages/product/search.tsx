@@ -29,7 +29,7 @@ type Props = {
   url: string;
 };
 
-const Search: NextPage<Props> = ({ url }) => {
+const Search: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const {
     locale: { lang },

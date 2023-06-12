@@ -37,7 +37,7 @@ import { NextPage } from 'next';
 
 type Props = { url: string };
 
-const Wishlist: NextPage<Props> = ({ url }) => {
+const Wishlist: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
