@@ -18,7 +18,7 @@ type Props = {
   order: UpcomingOrders;
 };
 
-const UpcomingCompletedOrder:FC<Props> = ({
+const UpcomingCompletedOrder: FC<Props> = ({
   completed = false,
   upcoming = false,
   order,
@@ -80,7 +80,7 @@ const UpcomingCompletedOrder:FC<Props> = ({
       {upcoming && (
         <div className="py-2">
           <Link
-            href={appLinks.orderTrack(order.id.toString())}
+            href={appLinks.orderTrack(order.order_code)}
             className={`w-full block text-center py-2 bg-[#F3F2F2] rounded-full text-sm ${alexandriaFontMeduim}`}
             suppressHydrationWarning={suppressText}
           >
@@ -98,7 +98,7 @@ const UpcomingCompletedOrder:FC<Props> = ({
             {t('re_order')}
           </Link>
           <Link
-            href={appLinks.orderReceipt(order.id.toString())}
+            href={appLinks.orderReceipt(order.order_code)}
             className={`w-full md:w-1/3 py-2 bg-[#F3F2F2] rounded-full  text-sm text-center ${alexandriaFontMeduim}`}
             suppressHydrationWarning={suppressText}
           >
@@ -108,5 +108,5 @@ const UpcomingCompletedOrder:FC<Props> = ({
       )}
     </div>
   );
-}
+};
 export default UpcomingCompletedOrder;
