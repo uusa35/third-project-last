@@ -42,7 +42,12 @@ type Props = {
   currentLocale: string;
   url: string;
 };
-const Home: NextPage<Props> = ({ url, element, currentLocale }): React.ReactElement => {
+
+const Home: NextPage<Props> = ({
+  url,
+  element,
+  currentLocale,
+}): React.ReactElement => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -131,7 +136,6 @@ const Home: NextPage<Props> = ({ url, element, currentLocale }): React.ReactElem
 
   // order status
   // close modal when to show it
-
   // line 149 in index home mdify category
 
   return (
@@ -230,7 +234,8 @@ const Home: NextPage<Props> = ({ url, element, currentLocale }): React.ReactElem
       </MainContentLayout>
     </Suspense>
   );
-}
+};
+
 export default Home;
 
 export const getServerSideProps = wrapper.getServerSideProps(

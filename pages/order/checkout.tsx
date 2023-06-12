@@ -308,7 +308,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
               <PaymentSummary data={cartItems.data} />
               <button
                 onClick={() => handleCreateOrder()}
-                className={`w-full rounded-full py-2 my-4 text-white ${alexandriaFontMeduim}`}
+                className={`w-full rounded-full py-2 my-4 text-white capitalize ${alexandriaFontMeduim}`}
                 style={{ backgroundColor: color }}
               >
                 {t('place_order')}
@@ -322,8 +322,10 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       />
     </MainContentLayout>
   );
-}
+};
+
 export default checkout;
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

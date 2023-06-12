@@ -165,7 +165,7 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
       </MainContentLayout>
     </Suspense>
   );
-}
+};
 export default OrderIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

@@ -90,7 +90,6 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const handleOpenPopup = () => {
     SetShowModal(true);
   };
-
   return (
     <Suspense>
       <MainHead

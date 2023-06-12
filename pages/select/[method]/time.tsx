@@ -19,6 +19,7 @@ import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setPreferences } from '@/redux/slices/customerSlice';
 import { Router, useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons';
+import { NextPage } from 'next';
 
 // check availability in case no date will return else will just navigate to checkout.
 type Day = {
@@ -33,7 +34,7 @@ type Props = {
   method: 'pickup | delivery';
 };
 
-const Time: NextPage<Props> = ({ url, method }): React.ReactElement => {
+const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -316,8 +317,8 @@ const Time: NextPage<Props> = ({ url, method }): React.ReactElement => {
       </MainContentLayout>
     </Suspense>
   );
-}
-export default Time;
+};
+export default SelectTime;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -337,7 +338,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           },
         };
       } else {
-        return { notFound: true }; 
+        return { notFound: true };
       }
     }
 );

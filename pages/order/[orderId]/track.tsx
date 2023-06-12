@@ -42,6 +42,8 @@ const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
     </Suspense>
   )
 }
+
+export default UserOrders;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

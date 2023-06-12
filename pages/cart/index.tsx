@@ -365,7 +365,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       </div>
     </MainContentLayout>
   );
-}
+};
 export default Cart;
 
 export const getServerSideProps = wrapper.getServerSideProps(
