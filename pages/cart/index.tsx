@@ -46,7 +46,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const {
-    customer: { userAgent },
+    customer: { userAgent, id },
     searchParams: { method },
     cart: { enable_promocode, promocode },
     customer: { id: customer_id },
@@ -263,7 +263,8 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const handelContinue = () => {
     /*
     = check if area or branch is selected  done 
-    = check  if guest or user 
+    = check  if 
+     or user 
     = navigate
     */
     //  check if user id is null
@@ -274,7 +275,11 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       router.push(appLinks.login.path);
     } else {
       if (method === 'delivery') {
-        router.push(appLinks.addressCreate(''));
+        if (isAuth) {
+          router.push(appLinks.createAuthAddress(id));
+        } else {
+          router.push(appLinks.addressCreate('1'));
+        }
       } else {
         //  go to checkout
         router.push(appLinks.checkout.path);

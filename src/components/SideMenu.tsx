@@ -211,7 +211,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
                 href={handleProtectedRouteNavigation(
-                  appLinks.userAddresses.path
+                  appLinks.userAddresses(id)
                 )}
               >
                 <AddressIcon stroke={color} />
