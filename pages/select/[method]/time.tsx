@@ -317,9 +317,8 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
       </MainContentLayout>
     </Suspense>
   );
-
+};
 export default SelectTime;
-
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
@@ -339,7 +338,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           },
         };
       } else {
-        return { notFound: true }; 
+        return { notFound: true };
       }
     }
 );
