@@ -25,7 +25,7 @@ type Props = {
   OrderStatus?: boolean;
 };
 
-const OrderDetails:FC<Props> = ({ OrderStatus = false }) => {
+const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -161,18 +161,20 @@ const OrderDetails:FC<Props> = ({ OrderStatus = false }) => {
         <></>
       )}
 
-      <DetailComponent
-        onclick={() => router.push(appLinks.selectTime(method))}
-        icon={<ClockIcon />}
-        p1={
-          {
-            ['delivery']: 'delivery_time',
-            ['pickup']: 'pickup_time',
-          }[method as string]
-        }
-        p2={`${prefrences.date}  ,  ${prefrences.time}`}
-        editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
-      />
+      {prefrences.time && (
+        <DetailComponent
+          onclick={() => router.push(appLinks.selectTime(method))}
+          icon={<ClockIcon />}
+          p1={
+            {
+              ['delivery']: 'delivery_time',
+              ['pickup']: 'pickup_time',
+            }[method as string]
+          }
+          p2={`${prefrences.date}  ,  ${prefrences.time}`}
+          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
+        />
+      )}
 
       {method === 'delivery' && (
         <DetailComponent
@@ -184,5 +186,5 @@ const OrderDetails:FC<Props> = ({ OrderStatus = false }) => {
       )}
     </div>
   );
-}
+};
 export default OrderDetails;
