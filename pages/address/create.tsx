@@ -6,7 +6,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
-import { Vendor } from '@/types/index';
+import { UserAddressFields, Vendor } from '@/types/index';
 import HomeIcon from '@mui/icons-material/Home';
 import {
   ChevronLeftIcon,
@@ -16,20 +16,17 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useCreateAddressMutation } from '@/redux/api/addressApi';
+import { useCreateAddressMutation, useLazyGetAddressesByIdQuery, useLazyGetAddressesQuery, useUpdateAddressMutation } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomerAddress } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase } from 'lodash';
+import { kebabCase, lowerCase, parseInt } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import {
-  CottageOutlined,
-  BusinessOutlined,
-  WorkOutlineTwoTone,
-} from '@mui/icons-material';
+import { CottageOutlined, BusinessOutlined, WorkOutlineTwoTone } from '@mui/icons-material';
+import { AppQueryResult } from '@/types/queries';
 
 type Props = {
   element: Vendor;
@@ -39,22 +36,35 @@ type Props = {
 const AddressCreate: NextPage<Props> = ({
   element,
   url,
+  addressId
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [currentAddressType, setCurrentAddressType] = useState<
-    'home' | 'office' | 'appartment'
-  >('home');
   const {
     locale: { isRTL },
     customer,
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
+  const [currentAddressType, setCurrentAddressType] = useState<
+    'home' | 'office' | 'apartment'
+  >(
+    customer?.address?.type ? customer?.address?.type.toLowerCase() : 'home'
+  );
   const refForm = useRef<any>();
   const [triggerAddAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
+  const [triggerUpdateAddress, { isLoading: updateAddressLoading }] = 
+  useUpdateAddressMutation();
+    const [triggerGetAddresses, 
+      { data: addresses, isLoading }, 
+      isSuccess
+    ] =
+    useLazyGetAddressesQuery<{
+        data: AppQueryResult<UserAddressFields[]>;
+        isLoading: boolean;
+      }>();
   const {
     register,
     handleSubmit,
@@ -85,11 +95,18 @@ const AddressCreate: NextPage<Props> = ({
       additional: customer.address.additional,
     },
   });
+console.log({ addresses })
+  useEffect(() => {
+    if(url) {
+      dispatch(setUrl(url));
+      triggerGetAddresses({ url });
+    }
+  }, []);
 
   useMemo(() => {
     setValue(
       'address_type',
-      currentAddressType === 'appartment'
+      currentAddressType === 'apartment'
         ? 2
         : currentAddressType === 'office'
         ? 3
@@ -97,7 +114,7 @@ const AddressCreate: NextPage<Props> = ({
     );
   }, [currentAddressType]);
 
-  const handelSaveAddress = async (body: any) => {
+  const handleSaveAddress = async (body: any) => {
     await triggerAddAddress({
       body: {
         address_type: body.address_type,
@@ -145,11 +162,12 @@ const AddressCreate: NextPage<Props> = ({
     if (destination.method === 'pickup') {
       // await checkTimeAvailability();
     } else {
-      await handelSaveAddress(body);
+      await handleSaveAddress(body);
     }
   };
-
+  
   console.log(errors);
+  console.log({ addressId, address })
   return (
     <MainContentLayout
       url={url}
@@ -164,24 +182,20 @@ const AddressCreate: NextPage<Props> = ({
               currentAddressType === 'home' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize `}
           >
-            <CottageOutlined
-              fontSize="large"
-              className={`${currentAddressType === 'home' && `text-red-600`}`}
-            />
+            <CottageOutlined fontSize="large"className={`${
+              currentAddressType === 'home' && `text-red-600`
+            }`} />
             <p>{t('house')}</p>
           </button>
           <button
-            onClick={() => setCurrentAddressType('appartment')}
+            onClick={() => setCurrentAddressType('apartment')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'appartment' && `border-red-600`
+              currentAddressType === 'apartment' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize mx-3`}
           >
-            <BusinessOutlined
-              fontSize="large"
-              className={`${
-                currentAddressType === 'appartment' && `text-red-600`
-              }`}
-            />
+            <BusinessOutlined fontSize="large" className={`${
+              currentAddressType === 'apartment' && `text-red-600`
+            }`} />
             <p>{t('apartment')}</p>
           </button>
           <button
@@ -190,10 +204,9 @@ const AddressCreate: NextPage<Props> = ({
               currentAddressType === 'office' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize`}
           >
-            <WorkOutlineTwoTone
-              fontSize="large"
-              className={`${currentAddressType === 'office' && `text-red-600`}`}
-            />
+            <WorkOutlineTwoTone fontSize="large" className={`${
+              currentAddressType === 'office' && `text-red-600`
+            }`} />
             <p>{t('office')}</p>
           </button>
         </div>
@@ -359,9 +372,9 @@ const AddressCreate: NextPage<Props> = ({
             </div>
           )}
 
-          {/*  appartment  */}
+          {/*  apartment  */}
           {/*  building_no  */}
-          {currentAddressType === 'appartment' && (
+          {currentAddressType === 'apartment' && (
             <>
               <div className="w-full ">
                 <label
@@ -416,24 +429,24 @@ const AddressCreate: NextPage<Props> = ({
                 )}
               </div>
 
-              {/*  appartment_no  */}
+              {/*  apartment_no  */}
               <div className="w-full ">
                 <label
                   suppressHydrationWarning={suppressText}
-                  htmlFor="appartment_no"
+                  htmlFor="apartment_no"
                   className="block text-sm font-medium text-gray-900"
                 >
                   {t('apartment_no')}*
                 </label>
                 <div className="relative rounded-md shadow-sm">
                   <input
-                    {...register('appartment_no')}
+                    {...register('apartment_no')}
                     suppressHydrationWarning={suppressText}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('apartment_no')}`}
                   />
                 </div>
-                {errors?.appartment_no?.message && (
+                {errors?.apartment_no?.message && (
                   <span
                     className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                     suppressHydrationWarning={suppressText}
@@ -558,7 +571,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
-          url,
+          url
         },
       };
     }
