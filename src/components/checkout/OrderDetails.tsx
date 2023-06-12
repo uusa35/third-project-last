@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import OfficeIcon from '@/appIcons/office_checkout.svg';
 import HouseIcon from '@/appIcons/house_checkout.svg';
@@ -25,7 +25,7 @@ type Props = {
   OrderStatus?: boolean;
 };
 
-export default function OrderDetails({ OrderStatus = false }: Props) {
+const OrderDetails:FC<Props> = ({ OrderStatus = false }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -110,7 +110,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
         <DetailComponent
           onclick={() =>
             method === 'delivery'
-              ? router.push(appLinks.addressCreate.path)
+              ? router.push(appLinks.addressCreate(''))
               : router.push(appLinks.selectBranch.path)
           }
           icon={
@@ -176,7 +176,7 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
 
       {method === 'delivery' && (
         <DetailComponent
-          onclick={() => router.push(appLinks.addressCreate.path)}
+          onclick={() => router.push(appLinks.addressCreate(''))}
           icon={<RemarksIcon />}
           p1="special_remarks"
           p2={`${notes ? notes : 'no_notes_added'}`}
@@ -185,3 +185,4 @@ export default function OrderDetails({ OrderStatus = false }: Props) {
     </div>
   );
 }
+export default OrderDetails;

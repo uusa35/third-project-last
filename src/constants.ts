@@ -10,7 +10,7 @@ export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
   login: { path: '/login' },
-  addressCreate: { path: '/guest/address/create' },
+  addressCreate: (addressId: string) => `/guest/address/create/${addressId}`,
   addressMap: { path: '/address/map' },
   cart: { path: '/cart' },
   checkout: { path: '/order/checkout' },
@@ -19,7 +19,7 @@ export const appLinks = {
   shippingPolicy: { path: '/policies/shipping' },
   productSearch: { path: '/product/search' },
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
-  productShow: (id: number) => `/product/show/${id}`,
+  productShow: (id: number, slug?: string) => `/product/show/${id}&slug=${slug}`,
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
@@ -46,6 +46,7 @@ export const alexandriaFontSemiBold = `font-Alexandria-SemiBold`;
 export const alexandriaFontLight = `font-Alexandria-Light`;
 export const alexandriaFontBold = `font-Alexandria-Bold`;
 export const montserratFontRegular = 'Montserrat-Arabic-Regular';
+export const tajwalFont = 'font-tajwal-medium';
 
 // classes
 export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;

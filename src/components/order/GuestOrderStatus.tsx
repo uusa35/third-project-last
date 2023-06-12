@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import OfficeIcon from '@/appIcons/office_checkout.svg';
 import RemarksIcon from '@/appIcons/remarks_checkout.svg';
@@ -17,7 +17,7 @@ type Props = {
   order: Order
 };
 
-export default function GuestOrderStatus({ order }: Props) {
+const GuestOrderStatus:FC<Props> = ({ order }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -98,3 +98,4 @@ export default function GuestOrderStatus({ order }: Props) {
     </div>
   );
 }
+export default GuestOrderStatus;

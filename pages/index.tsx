@@ -42,6 +42,7 @@ type Props = {
   currentLocale: string;
   url: string;
 };
+
 const Home: NextPage<Props> = ({
   url,
   element,
@@ -135,7 +136,6 @@ const Home: NextPage<Props> = ({
 
   // order status
   // close modal when to show it
-
   // line 149 in index home mdify category
 
   return (

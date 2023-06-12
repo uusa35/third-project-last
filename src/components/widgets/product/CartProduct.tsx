@@ -46,7 +46,7 @@ export default function CartProduct({
       {!checkoutProduct && (
         <Link
           className="w-1/4"
-          href={`${appLinks.productShow(product.ProductID)}`}
+          href={`${appLinks.productShow(product.ProductID, product.ProductName)}`}
         >
           <CustomImage
             src={imgUrl(product.ProductImage)}
@@ -63,7 +63,7 @@ export default function CartProduct({
         <div>
           <Link
             className="flex gap-x-1"
-            href={`${appLinks.productShow(product.ProductID)}`}
+            href={`${appLinks.productShow(product.ProductID, product.ProductName)}`}
           >
             <TextTrans
               className={`capitalize ${alexandriaFontSemiBold}`}

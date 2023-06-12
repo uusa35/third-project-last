@@ -12,6 +12,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
+import TextTrans from '@/components/TextTrans';
+import Link from 'next/link';
+import { appLinks } from '@/constants/*';
 
 type Props = {
   element: Vendor;
@@ -21,21 +24,25 @@ type Props = {
 const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const {
     locale: { isRTL },
+    searchParams: { destination, destination_type, method },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
   return (
     <MainContentLayout
       url={url}
       showBackBtnHeader={true}
-      currentModule="addresses"
+      currentModule="address"
     >
       <div className="flex flex-1 flex-col min-h-screen">
         <div className="flex flex-row h-auto py-6 px-4 justify-start items-center">
           <MapPinIcon className={`w-6 h-6 text-red-600 `} />
-          <div className="flex flex-1 flex-col px-4 space-y-2">
-            <p>area</p>
-            <p>Mansoura</p>
-          </div>
+          <Link
+            href={appLinks.selectArea.path}
+            className="flex flex-1 flex-col px-4 space-y-2"
+          >
+            <p>{t(`${destination_type}`)}</p>
+            <TextTrans ar={destination.name_ar} en={destination.name_en} />
+          </Link>
           {isRTL ? (
             <ChevronLeftIcon
               className="h-5 w-5 text-gray-400"
@@ -51,14 +58,22 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
         <ElementMap lat="30.1302444" lng="31.279598" />
         <div className="flex h-auto w-full flex-col flex-1 justify-start items-start  px-4 py-4 space-y-2">
           <h1>{t(`delivery_address`)}</h1>
-          <p className={`text-gray-600`}>Saudi Arabia , Ryad</p>
+          <TextTrans
+            ar={destination.name_ar}
+            en={destination.name_en}
+            className={`text-gray-600`}
+          />
           <div className="flex flex-1 w-full">
-            <button
-              disabled
+            <Link
+              href={
+                method === 'delivery'
+                  ? appLinks.addressCreate.path
+                  : appLinks.cart.path
+              }
               className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white`}
             >
-              {t(`sorry_we_do_not_delivery_here`)}
-            </button>
+              {t(`continue`)}
+            </Link>
           </div>
         </div>
       </div>

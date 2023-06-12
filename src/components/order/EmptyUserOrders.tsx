@@ -1,5 +1,5 @@
 import CustomImage from '@/components/CustomImage';
-import React from 'react';
+import React, { FC } from 'react';
 import EmptyOrders from '@/appImages/empty_orders.png';
 import Search from '@/appIcons/gray_search.svg';
 import {
@@ -15,9 +15,9 @@ type Props = {
   handleChange: (event: React.KeyboardEvent<HTMLElement>) => void;
 };
 
-export default function EmptyUserOrders({
+const EmptyUserOrders:FC = ({
   handleChange = (event) => {},
-}: Props) {
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -56,3 +56,4 @@ export default function EmptyUserOrders({
     </div>
   );
 }
+export default EmptyUserOrders;

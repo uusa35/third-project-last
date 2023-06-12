@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import Salenotification from '@/appIcons/sale_notification.svg';
 import { useTranslation } from 'react-i18next';
 import { Close } from '@mui/icons-material';
@@ -17,11 +17,11 @@ type Props = {
   total: number;
 };
 
-export default function SaleNotification({
+const SaleNotification: FC<Props> = ({
   min_for_free_delivery = 0,
   delivery_fees = 0,
   total,
-}: Props) {
+}) => {
   const { t } = useTranslation();
   const {
     searchParams: { method },
@@ -90,4 +90,6 @@ export default function SaleNotification({
       )}
     </>
   );
-}
+};
+
+export default SaleNotification;

@@ -30,7 +30,7 @@ import NoAddresses from '@/appImages/no_address.svg';
 import Link from 'next/link';
 import { filter, isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
-import { toggleShowHelpModal } from '@/redux/slices/modelsSlice';
+import { toggleShowHelpModal } from '@/redux/slices/modalsSlice';
 import HelpModal from '@/components/modals/HelpModal';
 
 type Props = {
@@ -123,7 +123,7 @@ const OrderTrack: NextPage<Props> = ({
             <p className="text-md text-extrabold">{t('no_address')}</p>
             <p className="text-md text-extrabold">{t('no_address_des')}</p>
             <Link
-              href={`${appLinks.addressCreate.path}`}
+              href={`${appLinks.addressCreate('')}`}
               className={`${mainBtnClass} flex flex-row justify-center items-center`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}

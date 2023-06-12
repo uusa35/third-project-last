@@ -65,7 +65,8 @@ export const addressApi = apiSlice.injectEndpoints({
       {
         body: {
           address_id: number;
-          address_type: string
+          address_type: string,
+          address: any
         };
         url: string;
       }
@@ -79,13 +80,52 @@ export const addressApi = apiSlice.injectEndpoints({
           response.status === 200 && result.status,
       }),
     }),
+    deleteAddress: builder.mutation<
+      AppQueryResult<Address>,
+      {
+        params: {
+          address_id: number;
+          address_type: string,
+        };
+        url: string;
+      }
+    >({
+      query: ({ params, url }) => ({
+        url: `user/address/delete`,
+        method: `POST`,
+        headers: { url },
+        params: { ...params },
+        validateStatus: (response, result) =>
+          response.status === 200 && result.status,
+      }),
+    }),
+    getAddressesById: builder.query<
+    AppQueryResult<UserAddressFields[]>,
+    {
+      params: {
+        address_id: number
+      };
+      url: string;
+    }
+  >({
+    query: ({ params, url }) => ({
+      url: `user/showUserAddress`,
+      headers: { url },
+      params: { ...params },
+      validateStatus: (response, result) =>
+        response.status == 200 && result.status,
+    }),
+  }),  
   }),
 });
 
 export const { 
   useCreateAddressMutation, 
   useCheckTimeAvilabilityMutation,
+  useGetAddressesQuery,
   useLazyGetAddressesQuery,
-  useUpdateAddressMutation
+  useUpdateAddressMutation,
+  useDeleteAddressMutation,
+  useLazyGetAddressesByIdQuery
 } =
   addressApi;

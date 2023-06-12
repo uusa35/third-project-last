@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Favourite from '@/appIcons/favourite.svg';
 import ActiveFavourite from '@/appIcons/red_love.svg';
 import Share from '@/appIcons/share.svg';
@@ -15,19 +15,21 @@ type Props = {
   url: string;
   product_id: string;
   existInWishlist: boolean;
+  slug: string
 };
-export default function FavouriteAndShare({
+const FavouriteAndShare:FC<Props> = ({
   product_id,
   url,
   existInWishlist = false,
-}: Props) {
+  slug
+}) => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthenticated);
   const [openSigninFavModal, setOpenSigninFavModal] = useState(false);
   const [triggerAddToWishList] = useAddToWishListMutation();
   const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
 
-  // console.log({ isAuth });
+  console.log({ isAuth });
 
   const handleAddRemvWishlist = async () => {
     if (isAuth) {
@@ -66,6 +68,32 @@ export default function FavouriteAndShare({
       setOpenSigninFavModal(true);
     }
   };
+  const handleShare = async () => {
+    // try {
+    //   if (navigator.share) {
+    //     await navigator.share({
+    //       title: `${window.location.href}`,
+    //       text: `${window.location.href}`,
+    //       url: `${window.location.href}`
+    //     });
+    //   } else {
+    //     console.log('Web Share API not supported');
+    //   }
+    // } catch (error) {
+    //   console.error('Sharing Error', error);
+    // }
+    navigator.clipboard.writeText(`${window.location.href}`)
+      .then(() => {
+        dispatch(showToastMessage({
+          content: 'the_link_has_been_copied_successfully',
+          type: 'success'
+        }))
+      })
+      .catch((error) => {
+        console.error('Failed to copy URL to clipboard:', error);
+      });
+  };
+  
   return (
     <>
       <SigninAddFavModal
@@ -76,10 +104,11 @@ export default function FavouriteAndShare({
         <button onClick={() => handleAddRemvWishlist()}>
           {existInWishlist ? <ActiveFavourite /> : <Favourite />}
         </button>
-        <button>
+        <button onClick={handleShare}>
           <Share />
         </button>
       </div>
     </>
   );
 }
+export default FavouriteAndShare;

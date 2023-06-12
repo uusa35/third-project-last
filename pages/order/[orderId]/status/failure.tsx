@@ -13,8 +13,8 @@ import CallusIcon from '@/appIcons/call_us_green.svg';
 import { NextPage } from 'next';
 
 type Props = { url: string };
+const OrderFailure: NextPage<Props> = ({ url }): React.ReactElement => {
 
- const OrderFailure: NextPage<Props>=({ url }): React.ReactElement =>{
   const { t } = useTranslation();
 
   const DetailComponent = ({
@@ -123,7 +123,7 @@ type Props = { url: string };
   );
 }
 
-export default OrderFailure
+export default OrderFailure;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

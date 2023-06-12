@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import CustomImage from '../CustomImage';
 import { imageSizes } from '@/constants/*';
 import AsideHeader from '../MainAside/Header';
@@ -7,7 +7,7 @@ type Props = {
   CoverImg: string;
 };
 
-export default function Header({ CoverImg }: Props) {
+const Header:FC<Props> = ({ CoverImg }) => {
   return (
     <div className="block lg:hidden lg:h-auto h-60">
       <div className="relative h-full">
@@ -29,3 +29,4 @@ export default function Header({ CoverImg }: Props) {
     </div>
   );
 }
+export default Header;

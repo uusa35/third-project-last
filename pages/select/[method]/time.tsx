@@ -34,7 +34,7 @@ type Props = {
   method: 'pickup | delivery';
 };
 
-const index: NextPage<Props> = ({ url, method }): React.ReactElement => {
+const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -318,7 +318,7 @@ const index: NextPage<Props> = ({ url, method }): React.ReactElement => {
     </Suspense>
   );
 };
-export default index;
+export default SelectTime;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

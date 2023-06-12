@@ -83,7 +83,7 @@ const GuestOrderModal: FC<Props> = ({
         if (method === 'pickup') {
           router.push(appLinks.checkout.path);
         } else {
-          router.push(appLinks.addressCreate.path);
+          router.push(appLinks.addressCreate(''));
         }
       } else if (
         r.error &&

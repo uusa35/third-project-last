@@ -2,7 +2,7 @@ import CustomImage from "@/components/CustomImage";
 import MainHead from "@/components/MainHead";
 import MainContentLayout from "@/layouts/MainContentLayout";
 import { wrapper } from "@/redux/store";
-import { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AccountInfoImg from '@/appImages/account_info.png';
 import { appLinks, imageSizes, mainBtnClass, suppressText } from "@/constants/*";
@@ -17,11 +17,12 @@ import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { customerInfoSchema } from "src/validations";
 import { setCustomer, signIn } from "@/redux/slices/customerSlice";
+import { NextPage } from "next";
 
 type Props = {
   url: string;
 }
-export default function AccountInfo({ url }: Props) {
+const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -61,12 +62,8 @@ export default function AccountInfo({ url }: Props) {
     }).then((r: any) => {
       dispatch(setCustomer(r.data.data.user));
       dispatch(signIn(r.data.data.token));
-<<<<<<< HEAD
-      
       console.log({ RegisterRes: r})
-=======
       router.push(`${appLinks.addressMap.path}`);
->>>>>>> structure
     });
   }
 
@@ -165,6 +162,8 @@ export default function AccountInfo({ url }: Props) {
     </Fragment>
   )
 }
+
+export default AccountInfo;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

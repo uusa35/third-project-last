@@ -14,7 +14,7 @@ type Props = {
   url: string
 }
 
-const UserOrders:NextPage<Props>=({ url }):React.ReactElement=> {
+const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
 
   return (
@@ -43,7 +43,7 @@ const UserOrders:NextPage<Props>=({ url }):React.ReactElement=> {
   )
 }
 
-export default UserOrders
+export default UserOrders;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {

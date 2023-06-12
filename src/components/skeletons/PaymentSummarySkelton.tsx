@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-type Props = {};
-
-export default function PaymentSummarySkelton({}: Props) {
+const PaymentSummarySkelton:FC = () => {
   return (
     <div className="p-5">
       <Skeleton width={140} height={20} className="mb-3" />
@@ -11,3 +9,4 @@ export default function PaymentSummarySkelton({}: Props) {
     </div>
   );
 }
+export default PaymentSummarySkelton;

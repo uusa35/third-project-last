@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import CustomImage from '../CustomImage';
 import { isEmpty } from 'lodash';
 import Slider from 'react-slick';
@@ -7,7 +7,7 @@ type Props = {
   slider: string[];
 };
 
-export default function AdsScrollBar({ slider = [] }: Props) {
+const AdsScrollBar:FC<Props> = ({ slider = [] }) => {
   var settings = {
     // dots: true,
     // className: 'slider variable-width flex',
@@ -77,3 +77,4 @@ export default function AdsScrollBar({ slider = [] }: Props) {
     </div>
   );
 }
+export default AdsScrollBar;

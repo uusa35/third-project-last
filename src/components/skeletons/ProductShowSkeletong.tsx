@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-export default function ProductShowSkeleton() {
+const ProductShowSkeleton:FC = () => {
   return (
     <div>
       <Skeleton width={'100%'} height={70} />
@@ -18,3 +18,4 @@ export default function ProductShowSkeleton() {
     </div>
   );
 }
+export default ProductShowSkeleton;
