@@ -285,5 +285,6 @@
   "help_btn": "مساعدة؟",
   "the_link_has_been_copied_successfully": "تم نسخ الرابط بنجاح",
   "sorry_we_do_not_delivery_here": "نأسف لا يوجد توصيل في الموقع المختار.",
-  "delivery_address": "عنوان التوصيل"
+  "delivery_address": "عنوان التوصيل",
+  "order_not_found": "الطلب غير موجود"
 }
