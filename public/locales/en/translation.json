@@ -312,5 +312,6 @@
   "delivery_address": "delivery address",
   "area": "area",
   "address": "address",
-  "order_not_found": "order not found"
+  "order_not_found": "order not found.",
+  "no_orders_found": "no orders found."
 }
