@@ -306,5 +306,9 @@
   "sub_total": "sub total",
   "get_direction": "get direction",
   "payment_details": "payment details",
-  "help_btn": "help?"
+  "help_btn": "help?",
+  "sorry_we_do_not_delivery_here": "sorry we do  not deliver here.",
+  "delivery_address": "delivery address",
+  "area": "area",
+  "address": "address"
 }

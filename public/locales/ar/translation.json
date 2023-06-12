@@ -221,6 +221,10 @@
   "minutes": "دقيقة",
   "scheduled_order": "طلب مسبق",
   "area_selected": "تم اختيار المنطقة",
+  "area": "المنطقة",
+  "address": "عنوان",
+  "checkout": "طريقة الدفع وتأكيد البيانات",
+  "place_order": "تنفيذ الطلب",
   "branch_selected": "تم اختيار الفرع",
   "pickup_from": "استلام من",
   "verify_ur_mobile": "تحقق من الهاتف",
@@ -278,5 +282,7 @@
   "sub_total": "الإجمالي",
   "get_direction": "الموقع",
   "payment_details": "تفاصيل عملية الدفع",
-  "help_btn": "مساعدة؟"
+  "help_btn": "مساعدة؟",
+  "sorry_we_do_not_delivery_here": "نأسف لا يوجد توصيل في الموقع المختار.",
+  "delivery_address": "عنوان التوصيل"
 }
