@@ -34,11 +34,7 @@ type Props = {
   method: 'pickup | delivery';
 };
 
-<<<<<<< HEAD
-const index: NextPage<Props> = ({ url, method }): React.ReactElement => {
-=======
-const Time: NextPage<Props> = ({ url, method }) => {
->>>>>>> esraa
+const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -321,13 +317,9 @@ const Time: NextPage<Props> = ({ url, method }) => {
       </MainContentLayout>
     </Suspense>
   );
-<<<<<<< HEAD
-};
-export default index;
-=======
-}
-export default Time;
->>>>>>> esraa
+
+export default SelectTime;
+
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
