@@ -30,14 +30,14 @@ import ContentLoader from '@/components/skeletons';
 import Skeleton from 'react-loading-skeleton';
 import MainHead from '@/components/MainHead';
 import {
-  useGetWishListProductsQuery, 
+  useGetWishListProductsQuery,
   useDeleteFromWishListMutation,
 } from '@/redux/api/CustomerApi';
 import { NextPage } from 'next';
 
 type Props = { url: string };
 
-const Wishlist: NextPage<Props> = ({ url }) => {
+const Wishlist: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -129,7 +129,7 @@ const Wishlist: NextPage<Props> = ({ url }) => {
       )}
     </MainContentLayout>
   );
-}
+};
 export default Wishlist;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

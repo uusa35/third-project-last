@@ -57,7 +57,7 @@ type DetailsItem = {
   text: string;
   content: any;
 };
-const VendorShow: NextPage<Props> = ({ url, element }) => {
+const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const {
     locale: { isRTL, lang },
     vendor,

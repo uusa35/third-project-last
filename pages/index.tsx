@@ -42,15 +42,12 @@ type Props = {
   currentLocale: string;
   url: string;
 };
-<<<<<<< HEAD
+
 const Home: NextPage<Props> = ({
   url,
   element,
   currentLocale,
 }): React.ReactElement => {
-=======
-const Home: NextPage<Props> = ({ url, element, currentLocale }) => {
->>>>>>> esraa
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -139,7 +136,6 @@ const Home: NextPage<Props> = ({ url, element, currentLocale }) => {
 
   // order status
   // close modal when to show it
-
   // line 149 in index home mdify category
 
   return (
@@ -238,12 +234,8 @@ const Home: NextPage<Props> = ({ url, element, currentLocale }) => {
       </MainContentLayout>
     </Suspense>
   );
-<<<<<<< HEAD
 };
 
-=======
-}
->>>>>>> esraa
 export default Home;
 
 export const getServerSideProps = wrapper.getServerSideProps(

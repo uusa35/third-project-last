@@ -17,7 +17,7 @@ type Props = {
   total: number;
 };
 
-const SaleNotification:FC<Props> = ({
+const SaleNotification: FC<Props> = ({
   min_for_free_delivery = 0,
   delivery_fees = 0,
   total,
@@ -90,4 +90,6 @@ const SaleNotification:FC<Props> = ({
       )}
     </>
   );
-}
+};
+
+export default SaleNotification;

@@ -34,7 +34,7 @@ type Props = {
   url: string;
 };
 
-const OrderIndex: NextPage<Props> = ({ url }) => {
+const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -165,7 +165,7 @@ const OrderIndex: NextPage<Props> = ({ url }) => {
       </MainContentLayout>
     </Suspense>
   );
-}
+};
 export default OrderIndex;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

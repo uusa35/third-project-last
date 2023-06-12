@@ -47,11 +47,7 @@ type Props = {
   url: string;
 };
 
-<<<<<<< HEAD
-const checkout:NextPage<Props>=({ url }):React.ReactElement =>{
-=======
-const checkout: NextPage<Props> = ({ url }) => {
->>>>>>> esraa
+const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
   const {
     customer: {
@@ -312,7 +308,7 @@ const checkout: NextPage<Props> = ({ url }) => {
               <PaymentSummary data={cartItems.data} />
               <button
                 onClick={() => handleCreateOrder()}
-                className={`w-full rounded-full py-2 my-4 text-white ${alexandriaFontMeduim}`}
+                className={`w-full rounded-full py-2 my-4 text-white capitalize ${alexandriaFontMeduim}`}
                 style={{ backgroundColor: color }}
               >
                 {t('place_order')}
@@ -326,14 +322,10 @@ const checkout: NextPage<Props> = ({ url }) => {
       />
     </MainContentLayout>
   );
-}
-<<<<<<< HEAD
+};
 
-export default checkout
-
-=======
 export default checkout;
->>>>>>> esraa
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
