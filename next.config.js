@@ -36,7 +36,7 @@ const nextConfig = withSvgr({
       },
       {
         source: '/orders',
-        destination: '/user/orders',
+        destination: '/user/order',
       },
       {
         source: '/receipt/:orderId',

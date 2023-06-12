@@ -12,6 +12,7 @@ import {
   alexandriaFontSemiBold,
   alexandriaFont,
   alexandriaFontLight,
+  displayUserAddress,
 } from '@/constants/*';
 import { useRouter } from 'next/router';
 import { useGetInvoiceQuery } from '@/redux/api/orderApi';
@@ -37,7 +38,10 @@ type Props = {
   orderId: string;
 };
 
-const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => {
+const orderReceipt: NextPage<Props> = ({
+  url,
+  orderId,
+}): React.ReactElement => {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -65,6 +69,8 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
     { refetchOnMountOrArgChange: true }
   );
 
+  console.log({ orderReceiptData });
+
   return (
     <Suspense>
       <MainHead
@@ -91,7 +97,10 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
                   <div>
                     <Link
                       className="flex gap-x-1"
-                      href={`${appLinks.productShow(product.ProductID, product.ProductName)}`}
+                      href={`${appLinks.productShow(
+                        product.ProductID,
+                        product.item
+                      )}`}
                     >
                       <TextTrans
                         className={`capitalize ${alexandriaFontSemiBold}`}
@@ -115,8 +124,8 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
                         <TextTrans
                           key={addon.addon_id}
                           className={`bg-[#F3F2F2] text-[#544A45] px-1 text-xxs capitalize rounded-lg`}
-                          ar={`${addon.addon_name_ar}`}
-                          en={`${addon.addon_name_en}`}
+                          ar={`${addon.name_ar}`}
+                          en={`${addon.name_en}`}
                         />
                       ))}
                     </div>
@@ -145,6 +154,8 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
                 </div>
               ))}
             </div>
+
+            {/* contact details */}
             <div className="py-3 border-b-8 border-gray-100 px-4">
               <h2
                 className={`py-3 ${alexandriaFontSemiBold}`}
@@ -153,10 +164,62 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
                 {t('contact_details')}
               </h2>
               <div className="text-sm space-y-1">
-                <p className="font-light">address</p>
-                <p suppressHydrationWarning={suppressText}>
-                  {orderReceiptData.data?.contact_details.delivery_instruction}
-                </p>
+                {orderReceiptData.data?.contact_details.order_details
+                  .order_type === 'delivery' ? (
+                  <div className="text-sm mb-3">
+                    <p
+                      className={`${alexandriaFontSemiBold} `}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('delivery')} {t('to')}{' '}
+                      {t(
+                        orderReceiptData.data?.contact_details.order_details.delivery_address.address.type.toLowerCase()
+                      )}
+                    </p>
+                    <p
+                      className={`${alexandriaFontLight} text-[#544A45]`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {displayUserAddress(
+                        orderReceiptData.data?.contact_details.order_details
+                          .delivery_address.address
+                      )}
+                    </p>
+                    {orderReceiptData.data?.contact_details.order_details
+                      .delivery_address?.address?.additional && (
+                      <p
+                        className={`${alexandriaFontSemiBold} mt-1`}
+                        suppressHydrationWarning={suppressText}
+                      >
+                        {
+                          orderReceiptData.data?.contact_details.order_details
+                            .delivery_address?.address?.additional
+                        }
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-sm mb-3">
+                    <p
+                      className={`${alexandriaFontSemiBold} `}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('delivery')} {t('to')}{' '}
+                      {t(
+                        orderReceiptData.data?.contact_details.order_details.delivery_address.address.type.toLowerCase()
+                      )}
+                    </p>
+                    <p
+                      className={`${alexandriaFontLight} text-[#544A45]`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {displayUserAddress(
+                        orderReceiptData.data?.contact_details.order_details
+                          .delivery_address.address
+                      )}
+                    </p>
+                  </div>
+                )}
 
                 {/* customer details */}
                 <div className={`${alexandriaFont} mt-1`}>
@@ -181,7 +244,9 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
 
               <div className="flex items-center py-1">
                 <Cash />
-                <p className="ps-3">payment method</p>
+                <p className="ps-3">
+                  {orderReceiptData.data.contact_details.payment_type}
+                </p>
               </div>
               <div className="pb-36 space-y-1">
                 <PaymentSummary data={orderReceiptData.data.payment_summary} />
@@ -209,7 +274,7 @@ const orderReceipt: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
       </MainContentLayout>
     </Suspense>
   );
-}
+};
 export default orderReceipt;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

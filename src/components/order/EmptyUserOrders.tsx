@@ -12,12 +12,10 @@ import { suppressText } from '@/constants/*';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  handleChange: (event: React.KeyboardEvent<HTMLElement>) => void;
+  handleChange: (s: string) => void;
 };
 
-const EmptyUserOrders:FC = ({
-  handleChange = (event) => {},
-}) => {
+const EmptyUserOrders: FC<Props> = ({ handleChange = (s) => {} }) => {
   const { t } = useTranslation();
 
   return (
@@ -55,5 +53,5 @@ const EmptyUserOrders:FC = ({
       </div>
     </div>
   );
-}
+};
 export default EmptyUserOrders;

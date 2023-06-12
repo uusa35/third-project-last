@@ -50,7 +50,7 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
           items={CategoriesProducts.map((i) => i.cat_id)}
           style={{ display: 'flex' }}
           className="flex gap-x-2 overflow-x-scroll scrollbar-hide"
-          offset={-100}
+          offset={-200}
         >
           {CategoriesProducts.map((category) => {
             return (
@@ -73,7 +73,7 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
         {CategoriesProducts.map((category) => {
           return (
             <section id={`${category.cat_id}`}>
-              <div className="mt-5 px-4">
+              <div className="mt-2 px-4">
                 {/* cat name */}
                 <button onClick={() => handleSearchRedirection(category.cat_id)}>
                   <TextTrans

@@ -38,6 +38,8 @@ import { useRouter } from 'next/router';
 import EmptyCart from '@/components/cart/EmptyCart';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import { NextPage } from 'next';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
+import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 
 type Props = { url: string };
 
@@ -49,7 +51,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     customer: { userAgent, id },
     searchParams: { method },
     cart: { enable_promocode, promocode },
-    customer: { id: customer_id },
+    customer: { id: customer_id, prefrences },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
@@ -273,6 +275,17 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
 
     if (isNull(customer_id)) {
       router.push(appLinks.login.path);
+    } else if (isNull(destID) || prefrences.type === '') {
+      // open select modal
+      dispatch(setAreaBranchModalStatus(true));
+    } else if (method === 'delivery') {
+      // if isauth ask eng usama if user should navigate to alladdressses or to create user address
+      // if guest navigate to create guest address
+
+      // if(isAuth){
+
+      // }
+      router.push(appLinks.addressCreate(''));
     } else {
       if (method === 'delivery') {
         if (isAuth) {
@@ -284,7 +297,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         //  go to checkout
         router.push(appLinks.checkout.path);
       }
-    }
   };
 
   /*
@@ -359,6 +371,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
               cart={true}
               handelContinueInCart={() => handelContinue()}
             />
+
+            {/* select modal */}
+            <ChangeMoodModal url={url} />
           </div>
         ) : (
           <div>

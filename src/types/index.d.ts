@@ -244,58 +244,61 @@ export interface Order {
 
 export interface OrderInvoice {
   order_code: string;
-  vendor_name: string;
-  vendor_logo: string;
-  order_type: string;
-  area: string;
-  customer: {
-    id: number;
-    name: string;
-    phone: string;
-    email: string;
-  };
-  payment_type: string;
-  delivery_address: {
-    address: {
-      type: string;
-      block: string;
-      street: string;
-      additional?: string;
+  contact_details: {
+    customer: {
+      id: number;
+      name: string;
+      phone: string;
+      email: string;
     };
-    latitude: string;
-    longitude: string;
+    order_details: {
+      order_type: string;
+      branch: string;
+      branch_address: string;
+      order_date: string;
+      order_time: string;
+      delivery_address: {
+        address: {
+          type: string;
+          block: string;
+          street: string;
+          additional?: string;
+        };
+        latitude: string;
+        longitude: string;
+      };
+    };
+    payment_type: string;
   };
-  pickup_details: {
-    branch: string;
-    longitude: string;
-    latitude: string;
-  };
-  delivery_instruction: string;
-  order_details: {
-    branch: string;
-    branch_address: string;
-    order_date: string;
-    order_time: string;
-  };
-  order_summary: {
+  order_items: [
+    {
+      ProductID: number;
+      quantity: number;
+      item: string;
+      item_ar: string;
+      item_en: string;
+      addon: [
+        {
+          addon_id: string | number;
+          name: string;
+          name_en: string;
+          name_ar: string;
+          quantity: string | number;
+          unit_price: string | number;
+        }
+      ];
+      price: string;
+      total: number;
+      extra_notes: string;
+    }
+  ];
+  payment_summary: {
     sub_total: string;
     total: string;
     delivery_fee: string;
     tax: string;
     promo_code?: string;
     promo_code_value?: string | number;
-    items: [
-      {
-        quantity: number;
-        item: string;
-        item_ar: string;
-        item_en: string;
-        addon: InvoiceAddon[];
-        price: string;
-        total: number;
-        extra_notes: string;
-      }
-    ];
   };
 }
 

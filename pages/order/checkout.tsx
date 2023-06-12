@@ -42,6 +42,8 @@ import {
 } from '@mui/icons-material';
 import moment from 'moment';
 import { NextPage } from 'next';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
+import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 
 type Props = {
   url: string;
@@ -118,6 +120,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   const handleCreateOrder = async () => {
     if (!customer_id) {
       router.push(appLinks.login.path);
+    } else if (isNull(destID) || prefrences.type === '') {
+      // open select modal
+      dispatch(setAreaBranchModalStatus(true));
     } else if (!addressID && method === `delivery`) {
       router.push(appLinks.addressCreate(''));
     } else if (isNull(selectedPaymentMethod)) {
@@ -320,6 +325,8 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
         isOpen={openStoreClosedModal}
         onRequestClose={() => setOpenClosedStore(false)}
       />
+      {/* select modal */}
+      <ChangeMoodModal url={url} />
     </MainContentLayout>
   );
 };
