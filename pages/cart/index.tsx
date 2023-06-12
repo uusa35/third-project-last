@@ -48,7 +48,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const {
-    customer: { userAgent },
+    customer: { userAgent, id },
     searchParams: { method },
     cart: { enable_promocode, promocode },
     customer: { id: customer_id, prefrences },
@@ -265,7 +265,8 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const handelContinue = () => {
     /*
     = check if area or branch is selected  done 
-    = check  if guest or user 
+    = check  if 
+     or user 
     = navigate
     */
     //  check if user id is null
@@ -278,13 +279,11 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === 'delivery') {
-      // if isauth ask eng usama if user should navigate to alladdressses or to create user address
-      // if guest navigate to create guest address
-
-      // if(isAuth){
-
-      // }
-      router.push(appLinks.addressCreate(''));
+      if (isAuth) {
+        router.push(appLinks.createAuthAddress(customer_id));
+      } else {
+        router.push(appLinks.addressCreate('1'));
+      }
     } else {
       //  go to checkout
       router.push(appLinks.checkout.path);

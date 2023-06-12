@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
 import Link from 'next/link';
 import { appLinks } from '@/constants/*';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 type Props = {
   element: Vendor;
@@ -24,8 +25,10 @@ type Props = {
 const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const {
     locale: { isRTL },
+    customer: { id },
     searchParams: { destination, destination_type, method },
   } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(isAuthenticated);
   const { t } = useTranslation();
   return (
     <MainContentLayout
@@ -67,7 +70,9 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             <Link
               href={
                 method === 'delivery'
-                  ? appLinks.addressCreate.path
+                  ? isAuth && id
+                    ? appLinks.createAuthAddress(id)
+                    : 'else'
                   : appLinks.cart.path
               }
               className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white`}

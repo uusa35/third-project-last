@@ -10,6 +10,8 @@ export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
   login: { path: '/login' },
+  createAuthAddress: (userId: number) => `/user/${userId}/address/create/`,
+  userAddresses: (userId: number) => `/user/${userId}/address/`,
   addressCreate: (addressId: string) => `/guest/address/create/${addressId}`,
   addressMap: { path: '/address/map' },
   cart: { path: '/cart' },
@@ -23,7 +25,7 @@ export const appLinks = {
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
-  userAddresses: { path: '/address' },
+  
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/orders' },
   wishlist: { path: '/wishlist' },
