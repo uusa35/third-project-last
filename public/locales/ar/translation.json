@@ -283,10 +283,7 @@
   "get_direction": "الموقع",
   "payment_details": "تفاصيل عملية الدفع",
   "help_btn": "مساعدة؟",
-<<<<<<< HEAD
-  "the_link_has_been_copied_successfully": "تم نسخ الرابط بنجاح"
-=======
+  "the_link_has_been_copied_successfully": "تم نسخ الرابط بنجاح",
   "sorry_we_do_not_delivery_here": "نأسف لا يوجد توصيل في الموقع المختار.",
   "delivery_address": "عنوان التوصيل"
->>>>>>> usama
 }
