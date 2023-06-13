@@ -61,7 +61,7 @@ const OrderTrack: NextPage<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  const [triggerTrackOrder, { data: order, isSuccess }] =
+  const [triggerTrackOrder, { data: order, isSuccess, isLoading }] =
     useLazyTrackOrderQuery();
   const [currentOrder, setCurrentOrder] = useState<null | OrderTrack>(null);
   const [currentOrderStatus, setCurrentOrderStatus] = useState<
@@ -101,7 +101,7 @@ const OrderTrack: NextPage<Props> = ({
 
   console.log('current', currentOrder);
   console.log('current des', currentOrder?.destination);
-  if (!isSuccess) {
+  if (isLoading) {
     return <></>;
   }
 
@@ -112,39 +112,14 @@ const OrderTrack: NextPage<Props> = ({
       currentModule="track_order"
       showHelpBtn={true}
     >
-      {isNull(currentOrder) || !isSuccess ? (
+      {isNull(currentOrder) ? (
         <div className="flex flex-col space-y-4 absolute bottom-0 w-full border-t border-gray-200 p-4">
-          <button
-            className={`flex flex-row w-full justify-center items-center space-x-3 rounded-3xl bg-red-600 p-3 py-4 text-white capitlaize`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-              />
-            </svg>
-            <p className="text-md text-center">{t('add_order')}</p>
-          </button>
-          <button
-            className={`flex flex-row w-full justify-center items-center space-x-3 rounded-3xl bg-white p-3 py-4 text-red-600 border border-red-600 capitalize`}
-          >
-            <p className="text-md text-center">{t('cancel order')}</p>
-          </button>
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
-            <p className="text-md text-extrabold">{t('no_address')}</p>
-            <p className="text-md text-extrabold">{t('no_address_des')}</p>
+            <p className="text-md text-extrabold">{t('order_not_found')}</p>
             <Link
               href={`${appLinks.addressCreate('')}`}
-              className={`${mainBtnClass} flex flex-row justify-center items-center`}
+              className={`${mainBtnClass} flex flex-row justify-center items-center hidden`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
             >
@@ -278,11 +253,9 @@ const OrderTrack: NextPage<Props> = ({
                 </div>
                 <div className="flex flex-1 w-full flex-col mx-3">
                   <p className="flex flex-1 text-black">
-                    {t(currentOrder?.destination.address?.type)}
+                    {t(toLower(currentOrder?.customer?.address?.type))}
                   </p>
-                  <p>
-                    {handleDisplayAddress(currentOrder?.destination.address)}
-                  </p>
+                  <p>{handleDisplayAddress(currentOrder?.customer.address)}</p>
                 </div>
                 {currentOrder.destination?.latitude &&
                   currentOrder.destination?.longitude && (
