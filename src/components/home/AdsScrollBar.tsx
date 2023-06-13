@@ -7,13 +7,13 @@ type Props = {
   slider: string[];
 };
 
-const AdsScrollBar:FC<Props> = ({ slider = [] }) => {
+const AdsScrollBar: FC<Props> = ({ slider = [] }) => {
   var settings = {
     // dots: true,
     // className: 'slider variable-width flex',
     autoplay: true,
     autoplaySpeed: 4000,
-    cssEase: "linear",
+    cssEase: 'linear',
     pauseOnHover: true,
     arrows: false,
     infinite: true,
@@ -55,26 +55,12 @@ const AdsScrollBar:FC<Props> = ({ slider = [] }) => {
     <div className="px-4 mb-4">
       {!isEmpty(slider) && (
         <Slider {...settings}>
-          {
-            Array.from({ length: 7 }, (img) => {
-              return (
-                <CustomImage
-                  src={img}
-                  alt="ads"
-                  className="w-40 h-20 object-fill"
-                />
-              );
-            })
-            //   return (
-
-            //       <CustomImage src={img} alt="ads" className="h-full w-40" />
-
-            //   );
-            // })
-          }
+          {slider.map((img) => (
+            <CustomImage src={img} alt="ads" className="h-full w-40" />
+          ))}
         </Slider>
       )}
     </div>
   );
-}
+};
 export default AdsScrollBar;

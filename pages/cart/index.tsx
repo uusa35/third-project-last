@@ -263,16 +263,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   };
 
   const handelContinue = () => {
-    /*
-    = check if area or branch is selected  done 
-    = check  if 
-     or user 
-    = navigate
-    */
-    //  check if user id is null
-
-    // check with eng ahmed wheter the guest redirect is diffrent from the user redirect\
-
     if (isNull(customer_id)) {
       router.push(appLinks.login.path);
     } else if (isNull(destID) || prefrences.type === '') {
@@ -289,11 +279,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       router.push(appLinks.checkout.path);
     }
   };
-
-  /*
-  btn msg when min charge and  sale notification
-  min cart disable btn
-  */
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
