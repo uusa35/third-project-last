@@ -279,15 +279,35 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === 'delivery') {
+<<<<<<< HEAD
       if (isAuth) {
         router.push(appLinks.createAuthAddress(customer_id));
+=======
+      // if isauth ask eng usama if user should navigate to alladdressses or to create user address
+      // if guest navigate to create guest address
+
+      // if(isAuth){
+
+      // }
+      router.push(appLinks.addressCreate(''));
+    } else {
+      if (method === 'delivery') {
+        if (isAuth) {
+          router.push(appLinks.createAuthAddress(id));
+        } else {
+          router.push(appLinks.addressCreate('1'));
+        }
+>>>>>>> esraa
       } else {
         router.push(appLinks.addressCreate('1'));
       }
+<<<<<<< HEAD
     } else {
       //  go to checkout
       router.push(appLinks.checkout.path);
     }
+=======
+>>>>>>> esraa
   };
 
   /*
