@@ -160,6 +160,9 @@ const OrderTrack: NextPage<Props> = ({
                 currentOrderStatus === 'completed' &&
                 currentOrder.order_type === 'delivery' &&
                 t('order_is_ready_for_delivery')}
+              {currentOrder &&
+                currentOrderStatus === 'shipped' &&
+                t('order_is_shipped')}
               ...
             </h1>
             <div className="flex flex-1 flex-row mt-2">
@@ -186,13 +189,15 @@ const OrderTrack: NextPage<Props> = ({
                   <div className="w-1/3 bg-gray-200 h-1 "></div>
                 </>
               )}
-              {currentOrder && currentOrderStatus === 'completed' && (
-                <>
-                  <div className="w-1/3 bg-red-600 h-1"></div>
-                  <div className="w-1/3 bg-red-600 h-1 "></div>
-                  <div className="w-1/3 bg-red-600 h-1 "></div>
-                </>
-              )}
+              {currentOrder &&
+                (currentOrderStatus === 'completed' ||
+                  currentOrderStatus === 'shipped') && (
+                  <>
+                    <div className="w-1/3 bg-red-600 h-1"></div>
+                    <div className="w-1/3 bg-red-600 h-1 "></div>
+                    <div className="w-1/3 bg-red-600 h-1 "></div>
+                  </>
+                )}
             </div>
             <div className="flex flex-1 flex-row text-gray-400">
               <p>{t('order_id')} :</p>

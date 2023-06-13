@@ -316,5 +316,6 @@
   "no_orders_found": "no orders found.",
   "preparing_order_we_r_making_ur_food": "preparing order we are making your food",
   "order_is_ready_for_pickup_we_r_waiting": "order is ready for pickup. we are waiting",
-  "order_is_ready_for_delivery": "order is ready for delivery"
+  "order_is_ready_for_delivery": "order is ready for delivery",
+  "order_is_shipped" : "order is shipped"
 }
