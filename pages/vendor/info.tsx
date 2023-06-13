@@ -266,6 +266,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
               isOpen={showModal}
               ariaHideApp={false}
               onRequestClose={handleClosePopup}
+              url={url}
             />
           </>
         ) : (

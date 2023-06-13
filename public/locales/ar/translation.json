@@ -287,5 +287,8 @@
   "sorry_we_do_not_delivery_here": "نأسف لا يوجد توصيل في الموقع المختار.",
   "delivery_address": "عنوان التوصيل",
   "order_not_found": "الطلب غير موجود",
-  "no_orders_found" : "لم يتم العثور على أية طلبات"
+  "no_orders_found" : "لم يتم العثور على أية طلبات",
+  "rate_is_required": "التقييم مطلوب",
+  "note_is_required": "الملاحظات مطلوبة",
+  "thanks_for_your_feedback": "شكرًا لتقييمك"
 }

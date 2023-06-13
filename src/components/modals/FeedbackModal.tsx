@@ -3,7 +3,7 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import { 
     SentimentDissatisfied, 
     SentimentVeryDissatisfied,
@@ -14,15 +14,21 @@ import {
 } from '@mui/icons-material';
 import { map } from "lodash";
 import { useRouter } from "next/router";
-import { modalBtnContainer, mainBtnClass, suppressText } from "@/constants/*";
-import { useAppSelector } from "@/redux/hooks";
+import { modalBtnContainer, mainBtnClass, suppressText, toEn } from "@/constants/*";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { feedbackSchema } from "src/validations";
+import { Controller, useForm } from "react-hook-form";
+import { showToastMessage } from "@/redux/slices/appSettingSlice";
+import { useCreateFeedbackMutation } from "@/redux/api/feedbackApi";
 
 type Props = {
     isOpen: boolean;
     onRequestClose: () => void;
+    url: String
 };
-const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
+const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
     const {
@@ -30,8 +36,9 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
       } = useAppSelector((state) => state);
       const color = useAppSelector(themeColor);
     const [rateVal, setRateVal] = useState<number>();
-    const [value, setValue] = useState();
     const [phone, setPhone] = useState();
+    const [triggerCreateFeedback] = useCreateFeedbackMutation();
+    const dispatch = useAppDispatch();
     const ratings = [
         { id: 1, icon: <SentimentDissatisfied fontSize="large" /> },
         { id: 2, icon: <SentimentVeryDissatisfied fontSize="large" /> },
@@ -39,30 +46,84 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
         { id: 4, icon: <SentimentSatisfiedOutlined fontSize="large" /> },
         { id: 5, icon: <MoodOutlined fontSize="large" /> },
     ]
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        reset,
+        control,
+        clearErrors,
+        formState: { errors },
+      } = useForm<any>({
+        resolver: yupResolver(feedbackSchema),
+        defaultValues: {
+          user_name: ``,
+          rate: ``,
+          note: ``,
+          phone: ``,
+        },
+      });
+      console.log({ errors })
+    
+      const onSubmit = async (body: any) => {
+        await triggerCreateFeedback({ body, url }).then((r: any) => {
+          if (r.data && r.data.status) {
+            dispatch(
+              showToastMessage({
+                content: 'thanks_for_your_feedback',
+                type: `success`,
+              })
+            );
+            setRateVal(0);
+            reset(
+              {
+                user_name: ``,
+                rate: ``,
+                note: ``,
+                phone: ``,
+              },
+              { keepValues: false }
+            );
+            onRequestClose();
+          }
+        });
+      };
 
-    const LimitedTextarea = ({ value }: { value: string }) => {
-        const [content, setContent] = useState(value.slice(0, 460));
-        const setFormattedContent = useCallback((text: string) => setContent(text.slice(0, 460)),
-          [setContent]
-        );
-      
+    const handleChange = ({ target }: any) => {
+        setValue(target.name, toEn(target.value));
+        clearErrors(target.name);
+    }
+
+    const LimitedTextarea = () => {
         return (
-          <div className="bg-gray-100 px-4 py-2 rounded-lg">
-            <textarea
-              rows={10}
-              cols={10}
-              onChange={event => setFormattedContent(event.target.value)}
-              value={content}
-              className="bg-gray-100 w-full resize-none h-32 capitalize placeholder:text-gray-500 focus:outline-none"
-              placeholder={`${t('your_feedback')}`}
+          <div className="bg-gray-100 px-4 pb-1 rounded-lg">
+            <Controller
+              name="note"
+              control={control}
+              render={({ field }) => (
+                <>
+                  <textarea
+                    {...field}
+                    rows={5}
+                    cols={10}
+                    className="bg-gray-100 w-full resize-none h-16 capitalize placeholder:text-gray-500 focus:outline-none"
+                    placeholder={t('your_feedback')}
+                    onChange={(e) => field.onChange(e.target.value)} // Use field.onChange instead of the inline arrow function
+                  />
+                  <p className="text-end text-gray-500">
+                    {field.value.length}/{460}
+                  </p>
+                </>
+              )}
             />
-            <p className="text-end text-gray-500">
-              {content.length}/{460}
-            </p>
+            {errors.note && (
+              <p className={`text-base text-red-600 font-semibold py-2 capitalize ${isRTL ? 'text-end' : 'text-start'}`}>
+                {t('note_is_required')}
+              </p>
+            )}
           </div>
         );
-    };
-      
+    };      
         
     return (
         <>
@@ -71,7 +132,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                 closeModal={onRequestClose}
             >
                 <div>
-                    <div className="flex w-full pb-5 pt-2 px-4 border-b-[1px] border-gray-200">
+                    <div className="flex w-full py-2 px-4 border-b-[1px] border-gray-200">
                         <div className="w-[5%]">
                             <button
                                 className="w-6 h-6 rounded-full bg-slate-100 flex items-center"
@@ -86,7 +147,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                     </div>
                     <div>
                     <div
-                        className={`flex justify-between w-[80%] m-auto py-4`}
+                        className={`flex justify-between w-[80%] m-auto py-1`}
                         dir={dir}
                     >
                     {map(ratings, (rate) => (
@@ -98,43 +159,82 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => {
                         }}
                         suppressHydrationWarning={suppressText}
                         onClick={() => {
+                            setValue('rate', rate.id);
                             setRateVal(rate.id);
                         }}
                         >
                         {rate.icon}  
                         </button>
                     ))}
-            </div>
+                    </div>
+                    <div className="ps-4">
+                    {errors?.rate?.message && (
+                        <p
+                        className={`text-base text-red-600 font-semibold py-2 capitalize  ${
+                            isRTL ? 'text-end' : 'text-start'
+                        }`}
+                        suppressHydrationWarning={suppressText}
+                        >
+                        {t('rate_is_required')}
+                        </p>
+                    )}
+                    </div>
             </div>
             <div className="px-4" dir={dir}>
-                <form className="capitalize">
+                <form className="capitalize" onSubmit={handleSubmit(onSubmit)}>
                     <div className="relative">
                         <input 
-                            type="text" 
-                            name="name" 
-                            id="name"  
+                            {...register('user_name')}
+                            name="user_name"
+                            onChange={(e: any) => {
+                                handleChange(e);
+                            }}
+                            aria-invalid={errors.user_name ? 'true' : 'false'}
                             className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[1px] border-gray-200 appearance-none focus:outline-none focus:ring-0  peer placeholder:text-stone-500" placeholder=" "
                         />
                         <label 
-                            htmlFor="full_name" 
+                            htmlFor="user_name" 
                             className={`absolute text-stone-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start ${isRTL && 'ps-4'}`}
                             suppressHydrationWarning={suppressText}
                         >
                             {t('your_name_optional')}
                         </label>
                     </div>
-                    <div className="py-5 ms-1">
+                    <div>
+                    {errors?.user_name?.message && (
+                        <p
+                        className={`text-base text-red-600 font-semibold py-2 capitalize ${
+                            isRTL ? 'text-end' : 'text-start'
+                        }`}
+                        suppressHydrationWarning={suppressText}
+                        >
+                        {t('name_is_required')}
+                        </p>
+                    )}
+                    </div>
+                    <div className="py-1 ms-1">
                         <label htmlFor="phone number" className="text-stone-500" suppressHydrationWarning={suppressText}>
                             {t('phone_number_optional')}
                         </label>
-                        <PhoneInput
-                            defaultCountry="KW"
-                            value={value}
-                            onChange={val => console.log({ val })}
-                            className="focus:outline-none"
+                        <Controller
+                            name="phone"
+                            control={control}
+                            rules={{
+                                validate: (value) => isValidPhoneNumber(value)
+                            }}
+                            render={({ field }) => (
+                                <PhoneInput
+                                defaultCountry="KW"
+                                className="focus:outline-none mt-2 border-b border-gray-100"
+                                style={{ borderBottomColor: '#e5e7eb' }}
+                                onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
+                                onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
+                                {...field}
+                                />
+                            )}
                         />
                     </div>
-                    <LimitedTextarea value="" />
+                    <LimitedTextarea control={control} errors={errors} />
                     <div className={`${modalBtnContainer} mt-5`}>
                         <button 
                             className={`${mainBtnClass}`}

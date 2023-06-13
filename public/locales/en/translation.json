@@ -313,5 +313,8 @@
   "area": "area",
   "address": "address",
   "order_not_found": "order not found.",
-  "no_orders_found": "no orders found."
+  "no_orders_found": "no orders found.",
+  "rate_is_required": "rate is required",
+  "note_is_required": "note is required",
+  "thanks_for_your_feedback": "thanks for your feedback"
 }
