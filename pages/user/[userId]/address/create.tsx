@@ -61,8 +61,8 @@ const AddressCreate: NextPage<Props> = ({
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
   const [currentAddressType, setCurrentAddressType] = useState<
-    'home' | 'appartement' | 'office'
-  >(customer?.address?.type ?? 'home');
+    'HOUSE' | 'APARTMENT' | 'OFFICE'
+  >(customer?.address?.type ?? 'HOUSE');
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const refForm = useRef<any>();
@@ -86,35 +86,37 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method,
-      address_type: 1,
+      address_type: 'OFFICE',
       longitude: ``,
       latitude: ``,
-      customer_id: currentAddress?.id?.toString(),
+      customer_id: userId.toString(),
       phone: customer.phone,
       name: customer.name,
-      block: customer.address.block ?? ``,
-      street: customer.address.street ?? ``,
-      house_no: customer.address.house_no ?? ``,
-      floor_no: customer.address.floor_no ?? ``,
-      building_no: customer.address.building_no ?? ``,
-      office_no: customer.address.office_no ?? ``,
-      city: customer.address.city ?? destination?.name,
-      area: customer.address.area ?? destination?.name,
-      avenue: customer.address.avenue,
-      paci: customer.address.paci,
-      additional: customer.address.additional,
+      block: currentAddress?.address.block ?? ``,
+      street: currentAddress?.address.street ?? ``,
+      house_no: currentAddress?.address.house_no ?? ``,
+      floor_no: currentAddress?.address.floor_no ?? ``,
+      building_no: currentAddress?.address.building_no ?? ``,
+      office_no: currentAddress?.address.office_no ?? ``,
+      city: currentAddress?.address.city ?? destination?.name,
+      area: currentAddress?.address.area ?? destination?.name,
+      avenue: currentAddress?.address.avenue,
+      paci: currentAddress?.address.paci,
+      additional: currentAddress?.address.additional,
     },
   });
-
+console.log({ errors, currentAddress, currentAddresses })
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
       triggerGetAddresses({ url }).then((r: any) => {
+        console.log({ currentAddresses: r })
         if (r.data) {
-          setCurrentAddresses(r.data.data);
+          setCurrentAddresses(r.data.data.address);
           const address = first(
-            filter(r.data.data, (a) => a.type === toUpper(currentAddressType))
+            filter(currentAddress, (a) => a.type === currentAddressType)
           );
+          console.log({ address })
           if (address) {
             setCurrentAddress(address);
           }
@@ -137,14 +139,13 @@ const AddressCreate: NextPage<Props> = ({
       }
     }
   }, [currentAddressType]);
-
   const handleSaveAddress = async (body: any) => {
     await triggerAddAddress({
       body: {
-        address_type: body.address_type,
+        address_type: body.currentAddressType,
         longitude: body.longitude,
         latitude: body.latitude,
-        customer_id: body.customer_id,
+        customer_id: userId.toString(),
         address: {
           block: body.block,
           street: body.street,
@@ -202,38 +203,38 @@ const AddressCreate: NextPage<Props> = ({
       <div className="flex flex-1 flex-col h-full mt-8">
         <div className="flex mx-3 flex-row justify-center items-start mb-4">
           <button
-            onClick={() => setCurrentAddressType(1)}
+            onClick={() => setCurrentAddressType('HOUSE')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 1 && `border-red-600`
+              currentAddressType === 'HOUSE' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize `}
           >
             <CottageOutlined
               fontSize="large"
-              className={`${currentAddressType === 1 && `text-red-600`}`}
+              className={`${currentAddressType === 'HOUSE' && `text-red-600`}`}
             />
             <p>{t('house')}</p>
           </button>
           <button
-            onClick={() => setCurrentAddressType(2)}
+            onClick={() => setCurrentAddressType('APARTMENT')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 2 && `border-red-600`
+              currentAddressType === 'APARTMENT' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize mx-3`}
           >
             <BusinessOutlined
               fontSize="large"
-              className={`${currentAddressType === 2 && `text-red-600`}`}
+              className={`${currentAddressType === 'APARTMENT' && `text-red-600`}`}
             />
             <p>{t('apartment')}</p>
           </button>
           <button
-            onClick={() => setCurrentAddressType(3)}
+            onClick={() => setCurrentAddressType('OFFICE')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 3 && `border-red-600`
+              currentAddressType === 'OFFICE' && `border-red-600`
             } justify-center items-center p-3 rounded-md capitalize`}
           >
             <WorkOutlineTwoTone
               fontSize="large"
-              className={`${currentAddressType === 3 && `text-red-600`}`}
+              className={`${currentAddressType === 'OFFICE' && `text-red-600`}`}
             />
             <p>{t('office')}</p>
           </button>
@@ -244,7 +245,7 @@ const AddressCreate: NextPage<Props> = ({
           onSubmit={handleSubmit(onSubmit)}
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
-          <input type="hidden" {...register('customer_id')} />
+          {/* <input type="hidden" {...register('customer_id')} /> */}
 
           {/*  phone  */}
           <div className="w-full ">
@@ -371,7 +372,7 @@ const AddressCreate: NextPage<Props> = ({
           </div>
 
           {/*  house_no  */}
-          {currentAddressType === 'home' && (
+          {currentAddressType === 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -401,7 +402,7 @@ const AddressCreate: NextPage<Props> = ({
 
           {/*  apartment  */}
           {/*  building_no  */}
-          {currentAddressType === 'apartment' && (
+          {currentAddressType === 'APARTMENT' && (
             <>
               <div className="w-full ">
                 <label
@@ -485,7 +486,7 @@ const AddressCreate: NextPage<Props> = ({
             </>
           )}
 
-          {currentAddressType === 'office' && (
+          {currentAddressType === 'OFFICE' && (
             <>
               {/*  office_no  */}
               <div className="w-full ">
