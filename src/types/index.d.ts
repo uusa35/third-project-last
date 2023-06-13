@@ -312,11 +312,11 @@ export interface InvoiceAddon {
 }
 
 export interface OrderTrack {
-  order_status: string;
+  order_status: 'pending' | 'in-progress' | 'shipped' | 'completed';
   order_code: string;
   estimated_time: string | null;
   order_time: string | null;
-  type: 'delivery' | 'pickup';
+  order_type: 'delivery' | 'pickup';
   customer: {
     name: string;
     email: string;
@@ -339,7 +339,7 @@ export interface OrderTrack {
     name_ar: string;
     name_en: string;
     address: string;
-    longitutde?: string;
+    longitude?: string;
     latitude?: string;
     phone?: string;
   }
