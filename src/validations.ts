@@ -16,7 +16,7 @@ export const addressSchema = (method: string, t: any) =>
     .object()
     .shape({
       method: yup.string().required(),
-      address_type: yup.number().required(),
+      address_type: yup.string().required(),
       // block: yup
       //   .string()
       //   .max(100)
