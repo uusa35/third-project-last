@@ -166,12 +166,12 @@ const AddressIndex: NextPage<Props> = ({
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
             <p className="text-md text-extrabold">{t('no_address')}</p>
-            <p className="text-md text-extrabold">{t('no_address_des')}</p>
+            <p className="text-md text-extrabold text-center w-full lg:w-[80%]">{t('no_address_des')}</p>
           </div>
         )}
         <div className="relative -bottom-10 p-2 w-full">
           <Link
-            href={`${appLinks.addressCreate('')}`}
+            href={`${appLinks.guestAddress.path}`}
             className={`${mainBtnClass} flex flex-row justify-center items-center`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}

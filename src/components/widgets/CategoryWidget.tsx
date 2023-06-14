@@ -1,7 +1,12 @@
 import { FC } from 'react';
 import { Category } from '@/types/queries';
 import CustomImage from '@/components/CustomImage';
-import { appLinks, imageSizes, imgUrl } from '@/constants/*';
+import {
+  alexandriaFontSemiBold,
+  appLinks,
+  imageSizes,
+  imgUrl,
+} from '@/constants/*';
 import Link from 'next/link';
 import { useAppSelector } from '@/redux/hooks';
 import { isNull, kebabCase, lowerCase } from 'lodash';
@@ -43,6 +48,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
+                className={`${alexandriaFontSemiBold}`}
                 style={{
                   maxWidth: '30ch',
                   textOverflow: 'ellipsis',
