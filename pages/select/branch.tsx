@@ -3,7 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
-import { Vendor } from '@/types/index';
+import { ServerCart, Vendor } from '@/types/index';
 import { NextPage } from 'next';
 import {
   ChevronLeftIcon,
@@ -20,7 +20,7 @@ import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
 import { useEffect, useState } from 'react';
-import { map } from 'lodash';
+import { isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import {
   Accordion,
@@ -32,6 +32,7 @@ import { Icon } from '@mui/material';
 import { suppressText } from '@/constants/*';
 import { CheckCircle, CircleOutlined } from '@mui/icons-material';
 import {
+  destinationHeaderObject,
   destinationId,
   setDestination,
 } from '@/redux/slices/searchParamsSlice';
@@ -41,6 +42,7 @@ import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   element: Vendor;
@@ -54,7 +56,10 @@ const SelectBranch: NextPage<Props> = ({
   const {
     locale: { lang, isRTL },
     searchParams: { method, destination },
+    customer: { userAgent },
+    cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const router = useRouter();
   const { t } = useTranslation();
@@ -67,17 +72,38 @@ const SelectBranch: NextPage<Props> = ({
   const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>(
     undefined
   );
+
   // const handleOpen = (value: any) => {
   //   setOpen(open === value ? 0 : value);
   // };
 
-  const [
-    triggerGetLocations,
-    { data: locations, isLoading: locationsLoading },
-  ] = useLazyGetLocationsQuery<{
-    data: AppQueryResult<Location[]>;
+  // const [
+  //   triggerGetLocations,
+  //   { data: locations, isLoading: locationsLoading },
+  // ] = useLazyGetLocationsQuery<{
+  //   data: AppQueryResult<Location[]>;
+  //   isLoading: boolean;
+  // }>();
+
+  const {
+    data: cartItems,
+    isLoading: cartLoading,
+    refetch: refetchCart,
+  } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
     isLoading: boolean;
-  }>();
+    refetch: () => void;
+  }>(
+    {
+      userAgent,
+      area_branch: destObj,
+      PromoCode: promocode,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
   const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
     useLazyGetBranchesQuery<{
       data: AppQueryResult<Branch[]>;
@@ -86,28 +112,38 @@ const SelectBranch: NextPage<Props> = ({
 
   useEffect(() => {
     triggerGetBranches({ lang, url, type: method }, false);
-    triggerGetLocations({ lang, url, type: method }, false);
+    // triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
   const handleSelectMethod = (
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
-    // if when branch ormethod is changed
-    if (type !== method || (type === method && destID !== destination.id)) {
-      setSelectedBranch(destination);
-      setShowChangeLocModal(true);
-    } else {
+    if (isNull(destID)) {
       handleChangeBranch(destination, type);
+    } else if (
+      type !== method ||
+      (type === method && destID !== destination.id)
+    ) {
+      // change
+      if (isEmpty(cartItems?.data?.Cart)) {
+        handleChangeBranch(destination, type);
+      } else {
+        setSelectedBranch(destination);
+        setShowChangeLocModal(true);
+      }
+    } else {
+      // not changed
+      router.back();
     }
   };
 
   const handleChangeBranch = (
-    destination: Branch,
+    destination: Branch | Area,
     type: 'pickup' | 'delivery'
   ) => {
     dispatch(setDestination({ destination, type }));
-    if (destination.status === 'CLOSE') {
+    if ((destination as Branch).status === 'CLOSE') {
       dispatch(
         showToastMessage({
           type: 'warning',
@@ -131,11 +167,14 @@ const SelectBranch: NextPage<Props> = ({
 
   if (
     branchesLoading ||
-    locationsLoading ||
     !branches ||
     !branches.Data ||
-    !locations ||
-    !locations.Data
+    cartLoading ||
+    !cartItems ||
+    !cartItems.data
+    // locationsLoading ||
+    // !locations ||
+    // !locations.Data
   ) {
     return (
       <MainContentLayout>
