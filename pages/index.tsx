@@ -20,7 +20,7 @@ import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
 import { isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/components/widgets/CategoryWidget';
-import { suppressText } from '@/constants/*';
+import { alexandriaFontBold, suppressText } from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
@@ -192,7 +192,7 @@ const Home: NextPage<Props> = ({
                     <UpcomingOrders />
                     <div className="px-4">
                       <p
-                        className="relative text-md font-bold pb-4"
+                        className={`relative text-md font-bold py-4 text-lg ${alexandriaFontBold}`}
                         suppressHydrationWarning={suppressText}
                       >
                         {t('categories')}

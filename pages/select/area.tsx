@@ -3,7 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
-import { Vendor } from '@/types/index';
+import { ServerCart, Vendor } from '@/types/index';
 import { NextPage } from 'next';
 import {
   ChevronLeftIcon,
@@ -20,7 +20,7 @@ import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
 import { useEffect, useState } from 'react';
-import { debounce, map } from 'lodash';
+import { debounce, isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import {
   Accordion,
@@ -32,6 +32,7 @@ import { Icon } from '@mui/material';
 import { appLinks, suppressText } from '@/constants/*';
 import { CheckCircle, CircleOutlined } from '@mui/icons-material';
 import {
+  destinationHeaderObject,
   destinationId,
   setDestination,
 } from '@/redux/slices/searchParamsSlice';
@@ -39,6 +40,8 @@ import { useRouter } from 'next/router';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
+import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   element: Vendor;
@@ -49,22 +52,39 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const {
     locale: { lang, isRTL },
     searchParams: { method, destination },
+    customer: { userAgent },
+    cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
+  const destID = useAppSelector(destinationId);
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(0);
   const [allLocations, setAllLocations] = useState<any>();
   const router = useRouter();
-  const [selectedData, setSelectedData] = useState({
-    area: destinationId,
-    branch: destinationId,
-    method: method,
-  });
+  const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+  const [selectedArea, setSelectedArea] = useState<Area | undefined>(undefined);
+
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-  const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+
+  const { data: cartItems, isLoading: cartLoading } = useGetCartProductsQuery<{
+    data: AppQueryResult<ServerCart>;
+    isSuccess: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  }>(
+    {
+      userAgent,
+      area_branch: destObj,
+      PromoCode: promocode,
+      url,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
+
   const [
     triggerGetLocations,
     {
@@ -77,18 +97,42 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     isLoading: boolean;
     isSuccess: boolean;
   }>();
-  const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
-    useLazyGetBranchesQuery<{
-      data: AppQueryResult<Branch[]>;
-      isLoading: boolean;
-    }>();
+
+  // const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
+  //   useLazyGetBranchesQuery<{
+  //     data: AppQueryResult<Branch[]>;
+  //     isLoading: boolean;
+  //   }>();
 
   useEffect(() => {
-    triggerGetBranches({ lang, url, type: method }, false);
+    // triggerGetBranches({ lang, url, type: method }, false);
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
   const handleSelectMethod = async (
+    destination: Area | Branch,
+    type: 'pickup' | 'delivery'
+  ) => {
+    if (isNull(destID)) {
+      handleChangeArea(destination, type);
+    } else if (
+      type !== method ||
+      (type === method && destID !== destination.id)
+    ) {
+      // change
+      if (isEmpty(cartItems?.data?.Cart)) {
+        handleChangeArea(destination, type);
+      } else {
+        setSelectedArea(destination);
+        setShowChangeLocModal(true);
+      }
+    } else {
+      // not changed
+      router.back();
+    }
+  };
+
+  const handleChangeArea = (
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
@@ -102,6 +146,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     dispatch(setAreaBranchModalStatus(true));
     return router.back();
   };
+
   useEffect(() => {
     setAllLocations(locations?.Data);
   }, [locations]);
@@ -131,18 +176,21 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   };
 
   if (
-    branchesLoading ||
+    // branchesLoading ||
     locationsLoading ||
-    !branches ||
-    !branches.Data ||
     !locations ||
-    !locations.Data
+    !locations.Data ||
+    cartLoading ||
+    !cartItems ||
+    !cartItems.data
+    // !branches ||
+    // !branches.Data ||
   ) {
     return (
       <MainContentLayout>
         <ContentLoader type="AreaBranch" sections={8} />
       </MainContentLayout>
-    )
+    );
   }
 
   return (
@@ -225,6 +273,14 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           })}
         </div>
       </div>
+      <ChangeLocationModal
+        isOpen={showChangeLocModal}
+        onRequestClose={() => setShowChangeLocModal(false)}
+        url={url}
+        selectedMethod="delivery"
+        area_branch={selectedArea as Area}
+        changeLocation={handleChangeArea}
+      />
     </MainContentLayout>
   );
 };

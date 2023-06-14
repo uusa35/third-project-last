@@ -38,7 +38,7 @@ export const searchParamsSlice = createSlice({
 
 export const { setDestination, setCategory } = searchParamsSlice.actions;
 export const destinationId = (state: RootState) =>
-  state.searchParams.destination?.id;
+  state.searchParams.destination?.id?? null;
 export const destinationHeaderObject = (state: RootState) =>
   state.searchParams.method === 'pickup'
     ? { 'x-branch-id': state.searchParams.destination?.id ?? '' }
