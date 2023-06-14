@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useLazyChangeLocationQuery } from '@/redux/api/locationApi';
-import { suppressText } from '@/constants/*';
+import { imageSizes, suppressText } from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { Area, Branch } from '@/types/queries';
+import ChangeBranch from '@/appImages/change_branch.png';
+import CustomImage from '../CustomImage';
 
 type Props = {
   isOpen: boolean;
@@ -67,30 +69,32 @@ const ChangeLocationModal: FC<Props> = ({
         }`}
       >
         <div className="absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/2 flex flex-col items-center">
-          <div className=" bg-white rounded-lg w-full h-full">
+          <div className="flex flex-col justify-between items-center bg-white rounded-lg w-full h-full p-5">
             <div className="mt-5">
-              {/* <CustomImage
-            src={ChangeBranch.src}
-            alt="change"
-            width={imageSizes.xs}
-            height={imageSizes.xs}
-            className="h-auto w-auto"
-          /> */}
+              <CustomImage
+                src={ChangeBranch.src}
+                alt="change"
+                width={imageSizes.xs}
+                height={imageSizes.xs}
+                className="h-auto w-auto"
+              />
             </div>
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-center text-lg font-semibold mb-3 mt-5 capitalize font-tajwal-medium"
-            >
-              {t(`${'You_’re_about_to_change_your_location'}`)}
-            </p>
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-start text-sm capitalize font-tajwal-medium"
-            >
-              {t(
-                `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
-              )}
-            </p>
+            <div>
+              <p
+                suppressHydrationWarning={suppressText}
+                className="text-center text-lg font-semibold mb-3 mt-5 capitalize font-tajwal-medium"
+              >
+                {t(`${'You_’re_about_to_change_your_location'}`)}
+              </p>
+              <p
+                suppressHydrationWarning={suppressText}
+                className="text-center text-sm capitalize font-tajwal-medium"
+              >
+                {t(
+                  `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
+                )}
+              </p>
+            </div>
             <div
               suppressHydrationWarning={suppressText}
               className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize font-tajwal-medium"
