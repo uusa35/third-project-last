@@ -61,9 +61,12 @@ const OrderTrack: NextPage<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  const [triggerTrackOrder, { data: order, isSuccess }] =
+  const [triggerTrackOrder, { data: order, isSuccess, isLoading }] =
     useLazyTrackOrderQuery();
   const [currentOrder, setCurrentOrder] = useState<null | OrderTrack>(null);
+  const [currentOrderStatus, setCurrentOrderStatus] = useState<
+    'pending' | 'in-progress' | 'shipped' | 'completed'
+  >('pending');
 
   useEffect(() => {
     triggerTrackOrder({ order_code, url }).then((r) => {
@@ -76,6 +79,7 @@ const OrderTrack: NextPage<Props> = ({
         );
       } else {
         setCurrentOrder(r.data?.data);
+        setCurrentOrderStatus(r.data?.data.order_status);
       }
     });
   }, []);
@@ -96,6 +100,10 @@ const OrderTrack: NextPage<Props> = ({
   }, []);
 
   console.log('current', currentOrder);
+  console.log('current des', currentOrder?.destination);
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
     <MainContentLayout
@@ -104,39 +112,14 @@ const OrderTrack: NextPage<Props> = ({
       currentModule="track_order"
       showHelpBtn={true}
     >
-      {isNull(currentOrder) || !isSuccess ? (
+      {isNull(currentOrder) ? (
         <div className="flex flex-col space-y-4 absolute bottom-0 w-full border-t border-gray-200 p-4">
-          <button
-            className={`flex flex-row w-full justify-center items-center space-x-3 rounded-3xl bg-red-600 p-3 py-4 text-white capitlaize`}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4.5v15m7.5-7.5h-15"
-              />
-            </svg>
-            <p className="text-md text-center">{t('add_order')}</p>
-          </button>
-          <button
-            className={`flex flex-row w-full justify-center items-center space-x-3 rounded-3xl bg-white p-3 py-4 text-red-600 border border-red-600 capitalize`}
-          >
-            <p className="text-md text-center">{t('cancel order')}</p>
-          </button>
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
-            <p className="text-md text-extrabold">{t('no_address')}</p>
-            <p className="text-md text-extrabold">{t('no_address_des')}</p>
+            <p className="text-md text-extrabold">{t('order_not_found')}</p>
             <Link
               href={`${appLinks.addressCreate('')}`}
-              className={`${mainBtnClass} flex flex-row justify-center items-center`}
+              className={`${mainBtnClass} flex flex-row justify-center items-center hidden`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
             >
@@ -164,7 +147,23 @@ const OrderTrack: NextPage<Props> = ({
         <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
           <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 px-3">
             <h1 className="text-2xl font-bold">
-              {t('order_received_we_have_got_ur_order')}...
+              {currentOrderStatus === 'pending' &&
+                t('order_received_we_have_got_ur_order')}
+              {currentOrder &&
+                currentOrderStatus === 'in-progress' &&
+                t('preparing_order_we_r_making_ur_food')}
+              {currentOrder &&
+                currentOrderStatus === 'completed' &&
+                currentOrder.order_type === 'pickup' &&
+                t('order_is_ready_for_pickup_we_r_waiting')}
+              {currentOrder &&
+                currentOrderStatus === 'completed' &&
+                currentOrder.order_type === 'delivery' &&
+                t('order_is_ready_for_delivery')}
+              {currentOrder &&
+                currentOrderStatus === 'shipped' &&
+                t('order_is_shipped')}
+              ...
             </h1>
             <div className="flex flex-1 flex-row mt-2">
               <p className="text-md text-gray-400 mr-2">
@@ -176,27 +175,29 @@ const OrderTrack: NextPage<Props> = ({
             </div>
             {/* order id  */}
             <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 gap-2">
-              {currentOrder && currentOrder.order_status === 'pending' && (
+              {currentOrder && currentOrderStatus === 'pending' && (
                 <>
                   <div className="w-1/3 bg-red-600 h-1"></div>
                   <div className="w-1/3 bg-gray-200 h-1 "></div>
                   <div className="w-1/3 bg-gray-200 h-1 "></div>
                 </>
               )}
-              {currentOrder && currentOrder.order_status === 'on_progress' && (
+              {currentOrder && currentOrderStatus === 'in-progress' && (
                 <>
                   <div className="w-1/3 bg-red-600 h-1"></div>
                   <div className="w-1/3 bg-red-600 h-1 "></div>
                   <div className="w-1/3 bg-gray-200 h-1 "></div>
                 </>
               )}
-              {currentOrder && currentOrder.order_status === 'complete' && (
-                <>
-                  <div className="w-1/3 bg-red-600 h-1"></div>
-                  <div className="w-1/3 bg-red-600 h-1 "></div>
-                  <div className="w-1/3 bg-red-600 h-1 "></div>
-                </>
-              )}
+              {currentOrder &&
+                (currentOrderStatus === 'completed' ||
+                  currentOrderStatus === 'shipped') && (
+                  <>
+                    <div className="w-1/3 bg-red-600 h-1"></div>
+                    <div className="w-1/3 bg-red-600 h-1 "></div>
+                    <div className="w-1/3 bg-red-600 h-1 "></div>
+                  </>
+                )}
             </div>
             <div className="flex flex-1 flex-row text-gray-400">
               <p>{t('order_id')} :</p>
@@ -204,47 +205,49 @@ const OrderTrack: NextPage<Props> = ({
             </div>
           </div>
           {/*  Pick up (Branch)  */}
-          <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
-            <div className="capitlize text-xl mb-4 font-bold">
-              {t('pickup_from')}
-            </div>
-            <div className="flex w-full flex-row justify-between items-center ">
-              <div className={`p-2 bg-gray-100 rounded-full`}>
-                <MapPinIcon className="h-6 w-6 text-black" />
+          {currentOrder.order_type === 'pickup' && (
+            <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
+              <div className="capitlize text-xl mb-4 font-bold">
+                {t('pickup_from')}
               </div>
-              <div className="flex flex-1 w-full flex-col mx-3">
-                <p className="flex flex-1 text-gray-400">
-                  {t('branch_address')}
-                </p>
-                {/* <p>{handleDisplayAddress(currentOrder.address)}</p> */}
+              <div className="flex w-full flex-row justify-between items-center ">
+                <div className={`p-2 bg-gray-100 rounded-full`}>
+                  <MapPinIcon className="h-6 w-6 text-black" />
+                </div>
+                <div className="flex flex-1 w-full flex-col mx-3">
+                  <p className="flex flex-1 text-gray-400">
+                    {t('branch_address')}
+                  </p>
+                  {/* <p>{handleDisplayAddress(currentOrder.address)}</p> */}
+                </div>
+                {currentOrder &&
+                  currentOrder.destination.latitude &&
+                  currentOrder.destination.longitude && (
+                    <div className="flex ">
+                      <a
+                        target="blank"
+                        href={googleMapUrl(
+                          currentOrder.destination.latitude,
+                          currentOrder.destination.longitude
+                        )}
+                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                      >
+                        <div>{t('get_direction')}</div>
+                        <div>
+                          <SendOutlined
+                            className={`h-3 w-3 text-black ms-2 ${
+                              isRTL ? `rotate-180` : null
+                            }`}
+                          />
+                        </div>
+                      </a>
+                    </div>
+                  )}
               </div>
-              {currentOrder &&
-                currentOrder.latitude &&
-                currentOrder.longitude && (
-                  <div className="flex ">
-                    <a
-                      target="blank"
-                      href={googleMapUrl(
-                        currentOrder.latitude,
-                        currentOrder.longitude
-                      )}
-                      className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
-                    >
-                      <div>{t('get_direction')}</div>
-                      <div>
-                        <SendOutlined
-                          className={`h-3 w-3 text-black ms-2 ${
-                            isRTL ? `rotate-180` : null
-                          }`}
-                        />
-                      </div>
-                    </a>
-                  </div>
-                )}
             </div>
-          </div>
+          )}
           {/*  Delivery (Address)  */}
-          {currentOrder && currentOrder?.address && (
+          {currentOrder && currentOrder?.order_type === 'delivery' && (
             <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
               <div className="capitlize text-xl mb-4 font-bold">
                 {t('delivery_location')}
@@ -255,31 +258,32 @@ const OrderTrack: NextPage<Props> = ({
                 </div>
                 <div className="flex flex-1 w-full flex-col mx-3">
                   <p className="flex flex-1 text-black">
-                    {t(currentOrder?.address.type)}
+                    {t(toLower(currentOrder?.customer?.address?.type))}
                   </p>
-                  <p>{handleDisplayAddress(currentOrder.address)}</p>
+                  <p>{handleDisplayAddress(currentOrder?.customer.address)}</p>
                 </div>
-                {currentOrder.latitude && currentOrder.longitude && (
-                  <div className="flex ">
-                    <a
-                      target="blank"
-                      href={googleMapUrl(
-                        currentOrder.latitude,
-                        currentOrder.longitude
-                      )}
-                      className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
-                    >
-                      <div>{t('get_direction')}</div>
-                      <div>
-                        <SendOutlined
-                          className={`h-3 w-3 text-black ms-2 ${
-                            isRTL ? `rotate-180` : null
-                          }`}
-                        />
-                      </div>
-                    </a>
-                  </div>
-                )}
+                {currentOrder.destination?.latitude &&
+                  currentOrder.destination?.longitude && (
+                    <div className="flex ">
+                      <a
+                        target="blank"
+                        href={googleMapUrl(
+                          currentOrder.destination.latitude,
+                          currentOrder.destination.longitude
+                        )}
+                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                      >
+                        <div>{t('get_direction')}</div>
+                        <div>
+                          <SendOutlined
+                            className={`h-3 w-3 text-black ms-2 ${
+                              isRTL ? `rotate-180` : null
+                            }`}
+                          />
+                        </div>
+                      </a>
+                    </div>
+                  )}
               </div>
             </div>
           )}

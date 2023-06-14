@@ -288,5 +288,9 @@
   "order_not_found": "الطلب غير موجود",
   "no_orders_found" : "لم يتم العثور على أية طلبات",
   "You_’re_about_to_change_your_location":"انت علي وشك ان تغير موقعك",
-  "changing_your_location_might_result_in_removing_the_items_from_your_cart":"تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك"
+  "changing_your_location_might_result_in_removing_the_items_from_your_cart":"تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك",
+  "preparing_order_we_r_making_ur_food": "جاري تجهيز الطلب",
+  "order_is_ready_for_pickup_we_r_waiting": "الطلب جاهز للتسليم، في انتظارك",
+  "order_is_ready_for_delivery": "جاري توصيل طلبك الآن",
+  "order_is_shipped": "تم توصيل الطلب"
 }
