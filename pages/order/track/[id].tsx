@@ -99,8 +99,6 @@ const OrderTrack: NextPage<Props> = ({
     () => dispatch(toggleShowHelpModal(false));
   }, []);
 
-  console.log('current', currentOrder);
-  console.log('current des', currentOrder?.destination);
   if (isLoading) {
     return <></>;
   }
