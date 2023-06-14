@@ -10,7 +10,7 @@ import { appLinks, imageSizes, mainBtnClass, suppressText } from '@/constants/*'
 import MobileImg from '@/appImages/mobile.png';
 import CustomImage from '@/components/CustomImage';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
-import PhoneInput, { parsePhoneNumber, isValidPhoneNumber } from 'react-phone-number-input';
+import PhoneInput, { parsePhoneNumber, isValidPhoneNumber, getCountries } from 'react-phone-number-input';
 import SaveAddressIcon from '@/appIcons/save_address.svg';
 import SaveContactInfo from '@/appIcons/save_contact_info.svg';
 import ReOrderIcon from '@/appIcons/re-order_icon.svg';
@@ -43,7 +43,8 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     { id: 3, icon: <ReOrderIcon />, text: 'one-tap_re-ordering'},
     { id: 4, icon: <TrackOrderIcon />, text: 'tracking_orders'}
   ];
-  
+  const excludedCountries = ['IL']; 
+  const filteredCountries = getCountries().filter(country => !excludedCountries.includes(country));
   const {
     handleSubmit,
     control,
@@ -140,6 +141,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
                     style={{ borderBottomColor: '#e5e7eb' }}
                     onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
                     onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
+                    countries={filteredCountries}
                   />
                 )}
               />

@@ -297,7 +297,8 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       //  go to checkout
       router.push(appLinks.checkout.path);
     }
-  };
+  }
+}};
 
   /*
   btn msg when min charge and  sale notification

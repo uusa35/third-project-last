@@ -3,7 +3,7 @@ import MainModal from "./MainModal";
 import { useTranslation } from "react-i18next";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import 'react-phone-number-input/style.css';
-import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import PhoneInput, { getCountries, isValidPhoneNumber } from 'react-phone-number-input';
 import { 
     SentimentDissatisfied, 
     SentimentVeryDissatisfied,
@@ -46,6 +46,8 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
         { id: 4, icon: <SentimentSatisfiedOutlined fontSize="large" /> },
         { id: 5, icon: <MoodOutlined fontSize="large" /> },
     ]
+    const excludedCountries = ['IL']; 
+    const filteredCountries = getCountries().filter(country => !excludedCountries.includes(country));
     const {
         register,
         handleSubmit,
@@ -230,6 +232,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                                 onFocus={(e) => (e.target.style.borderBottomColor = '#3f3f46')}
                                 onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                                 {...field}
+                                countries={filteredCountries}
                                 />
                             )}
                         />
