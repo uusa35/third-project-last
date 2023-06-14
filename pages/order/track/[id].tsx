@@ -116,7 +116,7 @@ const OrderTrack: NextPage<Props> = ({
             <NoAddresses className="w-auto h-auto object-contain " />
             <p className="text-md text-extrabold">{t('order_not_found')}</p>
             <Link
-              href={`${appLinks.addressCreate('')}`}
+              href={`${appLinks.guestAddress.path}`}
               className={`${mainBtnClass} flex flex-row justify-center items-center hidden`}
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}

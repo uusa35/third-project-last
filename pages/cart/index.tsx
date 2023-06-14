@@ -260,16 +260,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   };
 
   const handelContinue = () => {
-    /*
-    = check if area or branch is selected  done 
-    = check  if 
-     or user 
-    = navigate
-    */
-    //  check if user id is null
-
-    // check with eng ahmed wheter the guest redirect is diffrent from the user redirect\
-
     if (isNull(customer_id)) {
       router.push(appLinks.login.path);
     } else if (isNull(destID) || prefrences.type === '') {
@@ -278,31 +268,13 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     } else if (method === 'delivery') {
       if (isAuth) {
         router.push(appLinks.createAuthAddress(customer_id));
-
-      // if isauth ask eng usama if user should navigate to alladdressses or to create user address
-      // if guest navigate to create guest address
-
-      // if(isAuth){
-
-      // }
-      router.push(appLinks.addressCreate(''));
+      } else {
+        router.push(appLinks.guestAddress.path);
+      }
     } else {
-      if (method === 'delivery') {
-        if (isAuth) {
-          router.push(appLinks.createAuthAddress(id));
-        } else {
-          router.push(appLinks.addressCreate('1')); 
-      } 
-    } else {
-      //  go to checkout
       router.push(appLinks.checkout.path);
     }
   };
-
-  /*
-  btn msg when min charge and  sale notification
-  min cart disable btn
-  */
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
@@ -385,7 +357,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       </div>
     </MainContentLayout>
   );
-}
+};
 export default Cart;
 
 export const getServerSideProps = wrapper.getServerSideProps(
