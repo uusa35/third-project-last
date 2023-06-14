@@ -53,11 +53,14 @@ import {
   enableAddToCart,
   removeFromCheckBox,
   removeMeter,
+  removeMinQtyValidationID,
   resetCheckBoxes,
   resetMeters,
+  resetMinQtyValidationID,
   resetRadioBtns,
   setCartProductQty,
   setInitialProductCart,
+  setMinQtyValidationID,
   setNotes,
   updateId,
   updatePrice,
@@ -145,6 +148,72 @@ const ProductShow: NextPage<Props> = ({
       window.removeEventListener('scroll', debounce(onScroll, 400));
     };
   }, [router.pathname]);
+  // min for checkbox and meter ===> optional and required
+  const handleValidateMinQty = () => {
+    dispatch(resetMinQtyValidationID());
+    const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
+    const groupByMeters = groupBy(productCart.QuantityMeters, 'addonID');
+
+    let allCheckboxesValid = true;
+    let allMetersValid = true;
+
+    // checkboxes review min quantities
+    for (const item in groupByCheckboxes) {
+      const sumOfSelectedChoices = sumBy(
+        groupByCheckboxes[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const checkboxSection = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0];
+
+      // in caase of optional check error put id of section in state
+      if (checkboxSection.selection_type === 'optional') {
+        if (sumOfSelectedChoices < checkboxSection.min_q) {
+          dispatch(setMinQtyValidationID(checkboxSection.id.toString()));
+        } else {
+          dispatch(removeMinQtyValidationID(checkboxSection.id.toString()));
+        }
+      }
+
+      if (sumOfSelectedChoices < checkboxSection.min_q) {
+        allCheckboxesValid = false;
+      }
+    }
+
+    // meter review min quantities
+    for (const item in groupByMeters) {
+      const sumOfSelectedChoices = sumBy(
+        groupByMeters[item],
+        (itm) => itm.addons[0].Value
+      );
+
+      const MeterSection = filter(
+        element?.Data?.sections,
+        (addon) => addon.id === parseInt(item)
+      )[0];
+
+      // in caase of optional check error put id of section in state
+      if (MeterSection.selection_type === 'optional') {
+        if (sumOfSelectedChoices < MeterSection.min_q) {
+          dispatch(setMinQtyValidationID(MeterSection.id.toString()));
+        } else {
+          dispatch(removeMinQtyValidationID(MeterSection.id.toString()));
+        }
+      }
+
+      if (sumOfSelectedChoices < MeterSection.min_q) {
+        allMetersValid = false;
+      }
+    }
+
+    // console.log({ groupByCheckboxes });
+    return allMetersValid && allCheckboxesValid;
+  };
+
+
 
   useEffect(() => {
     if (isSuccess && element.Data) {
@@ -242,56 +311,6 @@ const ProductShow: NextPage<Props> = ({
     return true;
   };
 
-  // min for checkbox and meter ===> optional and required
-  const handleValidateMinQty = () => {
-    const groupByCheckboxes = groupBy(productCart.CheckBoxes, 'addonID');
-    const groupByMeters = groupBy(productCart.QuantityMeters, 'addonID');
-
-    // checkboxes review min quantities
-    for (const item in groupByCheckboxes) {
-      const sumOfSelectedChoices = sumBy(
-        groupByCheckboxes[item],
-        (itm) => itm.addons[0].Value
-      );
-
-      const minQty = filter(
-        element?.Data?.sections,
-        (addon) => addon.id === parseInt(item)
-      )[0].min_q;
-
-      if (sumOfSelectedChoices < minQty) {
-        return false;
-      }
-
-      // console.log(
-      //   { item },
-      //   groupByCheckboxes[item],
-      //   { sumOfSelectedChoices },
-      //   { minQty }
-      // );
-    }
-
-    // meter review min quantities
-    for (const item in groupByMeters) {
-      const sumOfSelectedChoices = sumBy(
-        groupByMeters[item],
-        (itm) => itm.addons[0].Value
-      );
-
-      const minQty = filter(
-        element?.Data?.sections,
-        (addon) => addon.id === parseInt(item)
-      )[0].min_q;
-
-      if (sumOfSelectedChoices < minQty) {
-        return false;
-      }
-    }
-
-    // console.log({ groupByCheckboxes });
-    return true;
-  };
-
   useEffect(() => {
     if (
       isSuccess &&
@@ -319,8 +338,8 @@ const ProductShow: NextPage<Props> = ({
         element?.Data?.sections,
         (c) => c.must_select === 'multi' && c.selection_type === 'mandatory'
       );
-
-      handleValidateMinQty();
+      const MendatoryValidation = handleValidateMendatory();
+      const minValueValidation = handleValidateMinQty();
 
       if (
         (requiredRadioBtns.length > 0 && allRadioBtns.length === 0) ||
@@ -336,8 +355,8 @@ const ProductShow: NextPage<Props> = ({
         dispatch(disableAddToCart());
       } else {
         // to execute the for looop only when all those if conditions is failed
-        const MendatoryValidation = handleValidateMendatory();
-        const minValueValidation = handleValidateMinQty();
+        // const MendatoryValidation = handleValidateMendatory();
+        // const minValueValidation = handleValidateMinQty();
         console.log({ MendatoryValidation }, { minValueValidation });
         if (!MendatoryValidation || !minValueValidation) {
           dispatch(disableAddToCart());
@@ -410,7 +429,7 @@ const ProductShow: NextPage<Props> = ({
     }
   };
 
-  const handleResetInitialProductCart = () => {
+   const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
         setInitialProductCart({
@@ -447,10 +466,12 @@ const ProductShow: NextPage<Props> = ({
             element?.Data?.never_out_of_stock === 1,
           image: imgUrl(element?.Data.img[0]?.toString()),
           id: now().toString(),
+          MinQtyValidationID: '',
         })
       );
     }
   };
+
 
   const handleSelectAddOn = async (
     selection: ProductSection,
@@ -706,8 +727,8 @@ const ProductShow: NextPage<Props> = ({
               }
             });
           } else {
-            if (r.error && r.error.data) {
-              if (r.error.data.msg.includes('not available')) {
+            if (r?.error && r?.error?.data) {
+              if (r && r.error && r.error.data && typeof r.error.data.msg === 'string' && r.error.data.msg.includes('not available')) {
                 setIsOpenNotAvailable(true);
               } else {
                 dispatch(
@@ -1012,6 +1033,35 @@ const ProductShow: NextPage<Props> = ({
                           </p>
                         )
                       )}
+                       {s.selection_type === 'mandatory' ? (
+                        s.must_select === 'q_meter' ||
+                        s.must_select === 'multi' ? (
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`must_select_min_and_max`, {
+                              min: s.min_q,
+                              max: s.max_q,
+                            })}
+                          </p>
+                        ) : (
+                          // radio btn msg
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`field_must_select_at_least_one`)}
+                          </p>
+                        )
+                      ) : (
+                        // optional addons min qty msg
+                        productCart.MinQtyValidationID.includes(
+                          s.id.toString()
+                        ) && (
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`must_select_min_and_max`, {
+                              min: s.min_q,
+                              max: s.max_q,
+                            })}
+                          </p>
+                        )
+                      )}
+
                       {map(s.choices, (c, i) => (
                         <div className="flex items-center w-full pb-2" key={i}>
                           {s.must_select === 'q_meter' ? (
