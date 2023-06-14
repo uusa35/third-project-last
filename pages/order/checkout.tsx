@@ -124,7 +124,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (!addressID && method === `delivery`) {
-      router.push(appLinks.addressCreate(''));
+      router.push(appLinks.guestAddress.path);
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({

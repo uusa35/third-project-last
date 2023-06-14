@@ -43,8 +43,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             href={appLinks.selectArea.path}
             className="flex flex-1 flex-col px-4 space-y-2"
           >
-            <p>{t(`${destination_type}`)}</p>
-            <TextTrans ar={destination.name_ar} en={destination.name_en} />
+            <p>{destination_type && t(`${destination_type}`)}</p>
+            <TextTrans ar={destination?.name_ar} en={destination?.name_en} />
           </Link>
           {isRTL ? (
             <ChevronLeftIcon
@@ -62,8 +62,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
         <div className="flex h-auto w-full flex-col flex-1 justify-start items-start  px-4 py-4 space-y-2">
           <h1>{t(`delivery_address`)}</h1>
           <TextTrans
-            ar={destination.name_ar}
-            en={destination.name_en}
+            ar={destination?.name_ar}
+            en={destination?.name_en}
             className={`text-gray-600`}
           />
           <div className="flex flex-1 w-full">

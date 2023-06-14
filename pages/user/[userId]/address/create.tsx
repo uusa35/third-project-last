@@ -7,7 +7,6 @@ import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { UserAddressFields, Vendor } from '@/types/index';
-import HomeIcon from '@mui/icons-material/Home';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -33,12 +32,10 @@ import {
 import { filter, first, kebabCase, lowerCase, parseInt, toUpper } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import {
-  CottageOutlined,
-  BusinessOutlined,
-  WorkOutlineTwoTone,
-} from '@mui/icons-material';
 import { AppQueryResult } from '@/types/queries';
+import HomeIcon from '@/appIcons/home.svg';
+import ApartmentIcon from '@/appIcons/apartment.svg';
+import OfficeIcon from '@/appIcons/office.svg';
 
 type Props = {
   element: Vendor;
@@ -205,36 +202,33 @@ console.log({ errors, currentAddress, currentAddresses })
           <button
             onClick={() => setCurrentAddressType('HOUSE')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'HOUSE' && `border-red-600`
+              currentAddressType === 'HOUSE' && `!border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize `}
           >
-            <CottageOutlined
-              fontSize="large"
-              className={`${currentAddressType === 'HOUSE' && `text-red-600`}`}
+            <HomeIcon
+              fill={`${currentAddressType === 'HOUSE' && color}`}
             />
             <p>{t('house')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('APARTMENT')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'APARTMENT' && `border-red-600`
+              currentAddressType === 'APARTMENT' && `!border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize mx-3`}
           >
-            <BusinessOutlined
-              fontSize="large"
-              className={`${currentAddressType === 'APARTMENT' && `text-red-600`}`}
+            <ApartmentIcon
+              fill={`${currentAddressType === 'APARTMENT' && color}`}
             />
             <p>{t('apartment')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('OFFICE')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'OFFICE' && `border-red-600`
+              currentAddressType === 'OFFICE' && `!border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize`}
           >
-            <WorkOutlineTwoTone
-              fontSize="large"
-              className={`${currentAddressType === 'OFFICE' && `text-red-600`}`}
+            <OfficeIcon
+              fill={`${currentAddressType === 'OFFICE' && color}`}
             />
             <p>{t('office')}</p>
           </button>

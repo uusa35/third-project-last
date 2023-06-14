@@ -285,13 +285,13 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       // if(isAuth){
 
       // }
-      router.push(appLinks.addressCreate(''));
+      router.push(appLinks.guestAddress.path);
     } else {
       if (method === 'delivery') {
         if (isAuth) {
           router.push(appLinks.createAuthAddress(id));
         } else {
-          router.push(appLinks.addressCreate('1')); 
+          router.push(appLinks.guestAddress.path); 
       } 
     } else {
       //  go to checkout
