@@ -290,5 +290,9 @@
   "no_orders_found" : "لم يتم العثور على أية طلبات",
   "rate_is_required": "التقييم مطلوب",
   "note_is_required": "الملاحظات مطلوبة",
-  "thanks_for_your_feedback": "شكرًا لتقييمك"
+  "thanks_for_your_feedback": "شكرًا لتقييمك",
+  "preparing_order_we_r_making_ur_food": "جاري تجهيز الطلب",
+  "order_is_ready_for_pickup_we_r_waiting": "الطلب جاهز للتسليم، في انتظارك",
+  "order_is_ready_for_delivery": "جاري توصيل طلبك الآن",
+  "order_is_shipped": "تم توصيل الطلب"
 }

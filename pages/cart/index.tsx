@@ -57,18 +57,15 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
   const isAuth = useAppSelector(isAuthenticated);
-
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
 
-  // seturl
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
 
-  // get cart
   const {
     data: cartItems,
     isSuccess,
@@ -279,6 +276,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === 'delivery') {
+      if (isAuth) {
+        router.push(appLinks.createAuthAddress(customer_id));
+
       // if isauth ask eng usama if user should navigate to alladdressses or to create user address
       // if guest navigate to create guest address
 
@@ -291,12 +291,12 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         if (isAuth) {
           router.push(appLinks.createAuthAddress(id));
         } else {
-          router.push(appLinks.addressCreate('1'));
-        }
-      } else {
-        //  go to checkout
-        router.push(appLinks.checkout.path);
-      }
+          router.push(appLinks.addressCreate('1')); 
+      } 
+    } else {
+      //  go to checkout
+      router.push(appLinks.checkout.path);
+    }
   };
 
   /*
@@ -385,7 +385,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       </div>
     </MainContentLayout>
   );
-};
+}
 export default Cart;
 
 export const getServerSideProps = wrapper.getServerSideProps(
