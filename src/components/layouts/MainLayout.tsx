@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import {
   alexandriaFont,
   appLinks,
+  montserratFontRegular,
   scrollClass,
   setLang,
   suppressText,
@@ -166,7 +167,9 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}
-      className={`${router.locale === 'ar' ? alexandriaFont : alexandriaFont}
+      className={`${
+        router.locale === 'ar' ? montserratFontRegular : alexandriaFont
+      }
         flex-col justify-start items-start grow lg:flex lg:flex-row flex flex-row h-screen capitalize`}
     >
       {children}

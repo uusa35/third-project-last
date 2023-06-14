@@ -201,7 +201,6 @@
   "house_no": "رقم المنزل",
   "building_no": "رقم المبنى",
   "floor_no": "رقم الدور",
-  "apartment_no": "رقم الشقة",
   "office_no": "رقم المكتب",
   "notice": "ملاحظة",
   "other_phone_no": "رقم هاتف آخر",
@@ -287,5 +286,7 @@
   "sorry_we_do_not_delivery_here": "نأسف لا يوجد توصيل في الموقع المختار.",
   "delivery_address": "عنوان التوصيل",
   "order_not_found": "الطلب غير موجود",
-  "no_orders_found" : "لم يتم العثور على أية طلبات"
+  "no_orders_found" : "لم يتم العثور على أية طلبات",
+  "You_’re_about_to_change_your_location":"انت علي وشك ان تغير موقعك",
+  "changing_your_location_might_result_in_removing_the_items_from_your_cart":"تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك"
 }

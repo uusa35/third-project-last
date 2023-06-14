@@ -40,6 +40,7 @@ import WhenClosedModal from '@/components/modals/WhenClosedModal';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
+import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 
 type Props = {
   element: Vendor;
@@ -54,21 +55,22 @@ const SelectBranch: NextPage<Props> = ({
     locale: { lang, isRTL },
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
+  const destID = useAppSelector(destinationId);
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  const [open, setOpen] = useState(0);
+  // const [open, setOpen] = useState(0);
   const [openStoreClosedModal, setOpenClosedStore] = useState(false);
-  const [selectedData, setSelectedData] = useState({
-    area: destinationId,
-    branch: destinationId,
-    method: method,
-  });
-  const handleOpen = (value: any) => {
-    setOpen(open === value ? 0 : value);
-  };
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+
+  const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>(
+    undefined
+  );
+  // const handleOpen = (value: any) => {
+  //   setOpen(open === value ? 0 : value);
+  // };
+
   const [
     triggerGetLocations,
     { data: locations, isLoading: locationsLoading },
@@ -87,7 +89,20 @@ const SelectBranch: NextPage<Props> = ({
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 
-  const handleSelectMethod = async (
+  const handleSelectMethod = (
+    destination: Branch,
+    type: 'pickup' | 'delivery'
+  ) => {
+    // if when branch ormethod is changed
+    if (type !== method || (type === method && destID !== destination.id)) {
+      setSelectedBranch(destination);
+      setShowChangeLocModal(true);
+    } else {
+      handleChangeBranch(destination, type);
+    }
+  };
+
+  const handleChangeBranch = (
     destination: Branch,
     type: 'pickup' | 'delivery'
   ) => {
@@ -100,8 +115,7 @@ const SelectBranch: NextPage<Props> = ({
         })
       );
       setOpenClosedStore(true);
-    }
-    else {
+    } else {
       dispatch(setAreaBranchModalStatus(true));
     }
     router.back();
@@ -127,7 +141,7 @@ const SelectBranch: NextPage<Props> = ({
       <MainContentLayout>
         <ContentLoader type="AreaBranch" sections={8} />
       </MainContentLayout>
-    )
+    );
   }
 
   return (
@@ -182,6 +196,14 @@ const SelectBranch: NextPage<Props> = ({
       <WhenClosedModal
         isOpen={openStoreClosedModal}
         onRequestClose={() => setOpenClosedStore(false)}
+      />
+      <ChangeLocationModal
+        isOpen={showChangeLocModal}
+        onRequestClose={() => setShowChangeLocModal(false)}
+        url={url}
+        selectedMethod="pickup"
+        area_branch={selectedBranch as Branch}
+        changeLocation={handleChangeBranch}
       />
     </MainContentLayout>
   );

@@ -56,15 +56,15 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const [open, setOpen] = useState(0);
   const [allLocations, setAllLocations] = useState<any>();
   const router = useRouter();
-  const [selectedData, setSelectedData] = useState({
-    area: destinationId,
-    branch: destinationId,
-    method: method,
-  });
+  const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>(
+    undefined
+  );
+
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-  const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+
   const [
     triggerGetLocations,
     {
@@ -77,6 +77,8 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     isLoading: boolean;
     isSuccess: boolean;
   }>();
+
+  
   const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
     useLazyGetBranchesQuery<{
       data: AppQueryResult<Branch[]>;
