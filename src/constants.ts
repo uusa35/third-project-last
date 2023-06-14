@@ -12,7 +12,7 @@ export const appLinks = {
   login: { path: '/login' },
   createAuthAddress: (userId: number) => `/user/${userId}/address/create/`,
   userAddresses: (userId: number) => `/user/${userId}/address/`,
-  addressCreate: (addressId: string) => `/guest/address/create/${addressId}`,
+  guestAddress: { path: `/guest/address/create` },
   addressMap: { path: '/address/map' },
   cart: { path: '/cart' },
   checkout: { path: '/order/checkout' },

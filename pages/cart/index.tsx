@@ -267,9 +267,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === 'delivery') {
       if (isAuth) {
-        router.push(appLinks.createAuthAddress(id));
+        router.push(appLinks.createAuthAddress(customer_id));
       } else {
-        router.push(appLinks.addressCreate('1'));
+        router.push(appLinks.guestAddress.path);
       }
     } else {
       router.push(appLinks.checkout.path);
