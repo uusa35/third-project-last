@@ -18,7 +18,7 @@ export const addressApi = apiSlice.injectEndpoints({
       }
     >({
       query: ({ body, url }) => ({
-        url: `add-address`,
+        url: `user/address/create`,
         method: `POST`,
         headers: { url },
         body,
@@ -100,27 +100,27 @@ export const addressApi = apiSlice.injectEndpoints({
       }),
     }),
     getAddressesById: builder.query<
-    AppQueryResult<UserAddressFields[]>,
-    {
-      params: {
-        address_id: number
-      };
-      url: string;
-    }
-  >({
-    query: ({ params, url }) => ({
-      url: `user/showUserAddress`,
-      headers: { url },
-      params: { ...params },
-      validateStatus: (response, result) =>
-        response.status == 200 && result.status,
+      AppQueryResult<UserAddressFields[]>,
+      {
+        params: {
+          address_id: number
+        };
+        url: string;
+      }
+    >({
+      query: ({ params, url }) => ({
+        url: `user/showUserAddress`,
+        headers: { url },
+        params: { ...params },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
     }),
-  }),  
   }),
 });
 
-export const { 
-  useCreateAddressMutation, 
+export const {
+  useCreateAddressMutation,
   useCheckTimeAvilabilityMutation,
   useGetAddressesQuery,
   useLazyGetAddressesQuery,
