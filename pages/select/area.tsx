@@ -65,11 +65,9 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const router = useRouter();
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
   const [selectedArea, setSelectedArea] = useState<Area | undefined>(undefined);
-
   const handleOpen = (value: any) => {
     setOpen(open === value ? 0 : value);
   };
-
   const { data: cartItems, isLoading: cartLoading } = useGetCartProductsQuery<{
     data: AppQueryResult<ServerCart>;
     isSuccess: boolean;
@@ -84,7 +82,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     },
     { refetchOnMountOrArgChange: true }
   );
-
   const [
     triggerGetLocations,
     {

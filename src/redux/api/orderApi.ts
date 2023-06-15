@@ -32,26 +32,6 @@ export const orderApi = apiSlice.injectEndpoints({
             response.status == 200 && result.status,
         }),
       }),
-      addAddress: builder.query<
-        AppQueryResult<OrderAddress>,
-        {
-          address_type: string;
-          longitude: string;
-          latitude: string;
-          customer_id: number;
-          address: string[];
-          url: string;
-        }
-      >({
-        query: (params) => ({
-          url: `add-address`,
-          params,
-          headers: {
-            url: params.url,
-          },
-          method: 'POST',
-        }),
-      }),
       trackOrder: builder.query<
         AppQueryResult<OrderTrack>,
         {
@@ -160,7 +140,6 @@ export const orderApi = apiSlice.injectEndpoints({
 
 export const {
   useLazyAddFeedBackQuery,
-  useLazyAddAddressQuery,
   useLazyCheckOrderStatusQuery,
   useLazyCreateOrderQuery,
   useLazyTrackOrderQuery,

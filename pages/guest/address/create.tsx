@@ -15,16 +15,28 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useCreateAddressMutation, useLazyGetAddressesByIdQuery, useLazyGetAddressesQuery, useUpdateAddressMutation } from '@/redux/api/addressApi';
+import {
+  useCreateAddressMutation,
+  useLazyGetAddressesByIdQuery,
+  useLazyGetAddressesQuery,
+  useUpdateAddressMutation,
+} from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
-import { setCustomerAddress } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase, parseInt } from 'lodash';
+import {
+  setCustomerAddress,
+  setCustomerAddressType,
+} from '@/redux/slices/customerSlice';
+import { kebabCase, lowerCase, parseInt, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { CottageOutlined, BusinessOutlined, WorkOutlineTwoTone } from '@mui/icons-material';
+import {
+  CottageOutlined,
+  BusinessOutlined,
+  WorkOutlineTwoTone,
+} from '@mui/icons-material';
 import { AppQueryResult } from '@/types/queries';
 import HomeIcon from '@/appIcons/home.svg';
 import ApartmentIcon from '@/appIcons/apartment.svg';
@@ -32,12 +44,12 @@ import OfficeIcon from '@/appIcons/office.svg';
 
 type Props = {
   element: Vendor;
-  url: string
+  url: string;
 };
 
 const AddressCreate: NextPage<Props> = ({
   element,
-  url
+  url,
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -50,19 +62,12 @@ const AddressCreate: NextPage<Props> = ({
   } = useAppSelector((state) => state);
   const [currentAddressType, setCurrentAddressType] = useState<
     'HOUSE' | 'OFFICE' | 'APARTMENT'
-  >(
-    customer?.address?.type ? customer?.address?.type.toLowerCase() : 'home'
-  );
+  >(customer?.address?.type ? customer?.address?.type : 'HOUSE');
   const refForm = useRef<any>();
-  const [triggerAddAddress, { isLoading: AddAddressLoading }] =
+  const [triggerCreateAddress, { isLoading: createAddressLoading }] =
     useCreateAddressMutation();
-  const [triggerUpdateAddress, { isLoading: updateAddressLoading }] = 
-  useUpdateAddressMutation();
-  const [triggerGetAddressesById, 
-    { data: addresses, isLoading }, 
-    isSuccess
-  ] =
-  useLazyGetAddressesByIdQuery<{
+  const [triggerGetAddressesById, { data: addresses, isLoading }, isSuccess] =
+    useLazyGetAddressesByIdQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
     }>();
@@ -77,7 +82,7 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method,
-      address_type: 1,
+      address_type: currentAddressType,
       longitude: ``,
       latitude: ``,
       customer_id: customer.id?.toString(),
@@ -98,27 +103,20 @@ const AddressCreate: NextPage<Props> = ({
   });
 
   useEffect(() => {
-    if(url) {
+    if (url) {
       dispatch(setUrl(url));
     }
   }, []);
 
   useMemo(() => {
-    setValue(
-      'address_type',
-      currentAddressType === 'APARTMENT'
-        ? 'APARTMENT'
-        : currentAddressType === 'OFFICE'
-        ? 'OFFICE'
-        : 'HOUSE'
-    );
+    setValue('address_type', upperCase(currentAddressType));
+    dispatch(setCustomerAddressType(upperCase(currentAddressType)));
   }, [currentAddressType]);
-  console.log({ currentAddressType, color })
 
   const handelSaveAddress = async (body: any) => {
-    await triggerAddAddress({
+    await triggerCreateAddress({
       body: {
-        address_type: body.address_type,
+        address_type: upperCase(body.address_type),
         longitude: body.longitude,
         latitude: body.latitude,
         customer_id: body.customer_id,
@@ -147,10 +145,10 @@ const AddressCreate: NextPage<Props> = ({
         router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
-        if (r.error) {
+        if (r.error && r.error.data?.msg) {
           dispatch(
             showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
+              content: lowerCase(kebabCase(r.error?.data?.msg[`address`][0])),
               type: `error`,
             })
           );
@@ -166,8 +164,7 @@ const AddressCreate: NextPage<Props> = ({
       await handelSaveAddress(body);
     }
   };
-  
-  console.log(errors);
+
   return (
     <MainContentLayout
       url={url}
@@ -179,34 +176,30 @@ const AddressCreate: NextPage<Props> = ({
           <button
             onClick={() => setCurrentAddressType('HOUSE')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'HOUSE' && `!border-[${color}]`
+              currentAddressType === 'HOUSE' && `border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize `}
           >
-            <HomeIcon fill={`${
-              currentAddressType === 'HOUSE' && color
-            }`} />
+            <HomeIcon fill={`${currentAddressType === 'HOUSE' && color}`} />
             <p>{t('house')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('APARTMENT')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'APARTMENT' && `!border-[${color}]`
+              currentAddressType === 'APARTMENT' && `border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize mx-3`}
           >
-            <ApartmentIcon fill={`${
-              currentAddressType === 'APARTMENT' && color
-            }`} />
+            <ApartmentIcon
+              fill={`${currentAddressType === 'APARTMENT' && color}`}
+            />
             <p>{t('apartment')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('OFFICE')}
             className={`flex flex-1 flex-col border ${
-              currentAddressType === 'OFFICE' && `!border-[${color}]`
+              currentAddressType === 'OFFICE' && `border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize`}
           >
-            <OfficeIcon fill={`${
-              currentAddressType === 'OFFICE' && color
-            }`} />
+            <OfficeIcon fill={`${currentAddressType === 'OFFICE' && color}`} />
             <p>{t('office')}</p>
           </button>
         </div>
@@ -344,7 +337,7 @@ const AddressCreate: NextPage<Props> = ({
           </div>
 
           {/*  house_no  */}
-          {currentAddressType === 'home' && (
+          {currentAddressType === 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -374,7 +367,7 @@ const AddressCreate: NextPage<Props> = ({
 
           {/*  apartment  */}
           {/*  building_no  */}
-          {currentAddressType === 'apartment' && (
+          {currentAddressType === 'APARTMENT' && (
             <>
               <div className="w-full ">
                 <label
@@ -458,7 +451,7 @@ const AddressCreate: NextPage<Props> = ({
             </>
           )}
 
-          {currentAddressType === 'office' && (
+          {currentAddressType === 'OFFICE' && (
             <>
               {/*  office_no  */}
               <div className="w-full ">
@@ -571,7 +564,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
-          url
+          url,
         },
       };
     }
