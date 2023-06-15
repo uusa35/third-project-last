@@ -272,7 +272,7 @@ export interface OrderInvoice {
   };
   order_items: [
     {
-      ProductID: number;
+      id: number;
       quantity: number;
       item: string;
       item_ar: string;
@@ -322,18 +322,18 @@ export interface OrderTrack {
     email: string;
     phone: string;
     address: {
-      "paci": string | null;
-      "type": string | null;
-      "block": string | null;
-      "avenue": string | null;
-      "street": string | null;
-      "floor_no": string | null;
-      "house_no": string | null;
-      "office_no": string | null;
-      "additional": string | null;
-      "building_no": string | null;
+      paci: string | null;
+      type: string | null;
+      block: string | null;
+      avenue: string | null;
+      street: string | null;
+      floor_no: string | null;
+      house_no: string | null;
+      office_no: string | null;
+      additional: string | null;
+      building_no: string | null;
     };
-  }
+  };
   destination: {
     type: 'branch' | 'area';
     name_ar: string;
@@ -342,20 +342,22 @@ export interface OrderTrack {
     longitude?: string;
     latitude?: string;
     phone?: string;
-  }
-  products: [{
-    quantity: number;
-    item: string;
-    item_en: string;
-    item_ar: string;
-    price: string;
-    addon?: [any];
-    total: string;
-    subtotal: string;
-    discount: null | string | number;
-    delivery_fees: string;
-    extra_notes: null | string;
-  }];
+  };
+  products: [
+    {
+      quantity: number;
+      item: string;
+      item_en: string;
+      item_ar: string;
+      price: string;
+      addon?: [any];
+      total: string;
+      subtotal: string;
+      discount: null | string | number;
+      delivery_fees: string;
+      extra_notes: null | string;
+    }
+  ];
   total: string;
   subtotal: string;
   discount: string | null;

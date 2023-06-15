@@ -1,10 +1,10 @@
-import { appLinks, imageSizes, imgUrl, suppressText } from "@/constants/*";
-import { Vendor } from "@/types/index";
-import Link from "next/link";
-import React from "react";
-import CustomImage from "../CustomImage";
-import TextTrans from "../TextTrans";
-import { SocialIcon } from "react-social-icons";
+import { appLinks, imageSizes, imgUrl, suppressText } from '@/constants/*';
+import { Vendor } from '@/types/index';
+import Link from 'next/link';
+import React from 'react';
+import CustomImage from '../CustomImage';
+import TextTrans from '../TextTrans';
+import { SocialIcon } from 'react-social-icons';
 
 type Props = { element: Vendor };
 
@@ -37,6 +37,7 @@ export default function AsideContent({ element }: Props) {
             url={element.facebook}
             network="facebook"
             bgColor="white"
+            fgColor="black"
             className="!w-7 !h-7 text-stone-700"
           />
         )}
@@ -47,6 +48,7 @@ export default function AsideContent({ element }: Props) {
             url={element.instagram}
             network="instagram"
             bgColor="white"
+            fgColor="black"
             className="!w-7 !h-7 text-stone-700"
           />
         )}
@@ -57,6 +59,7 @@ export default function AsideContent({ element }: Props) {
             url={element.twitter}
             network="twitter"
             bgColor="white"
+            fgColor="black"
             className="!w-7 !h-7 text-stone-700"
           />
         )}

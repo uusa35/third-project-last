@@ -3,11 +3,18 @@ import { useTranslation } from 'react-i18next';
 import Modal from 'react-modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useLazyChangeLocationQuery } from '@/redux/api/locationApi';
-import { imageSizes, suppressText } from '@/constants/*';
+import {
+  alexandriaFontBold,
+  imageSizes,
+  mainBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { Area, Branch } from '@/types/queries';
 import ChangeBranch from '@/appImages/change_branch.png';
 import CustomImage from '../CustomImage';
+import ChangeLocationIcon from '@/appIcons/change_location.svg';
+import MainModal from './MainModal';
 
 type Props = {
   isOpen: boolean;
@@ -54,74 +61,47 @@ const ChangeLocationModal: FC<Props> = ({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      className={`w-full mx-auto ${isRTL ? 'right-0' : 'left-0'}`}
-      style={{
-        overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 100 },
-      }}
-      shouldFocusAfterRender={false}
-    >
-      <div
-        className={`w-full h-full flex   ${
-          isRTL ? 'justify-end' : 'justify-start'
-        }`}
-      >
-        <div className="absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/2 flex flex-col items-center">
-          <div className="flex flex-col justify-between items-center bg-white rounded-lg w-full h-full p-5">
-            <div className="mt-5">
-              <CustomImage
-                src={ChangeBranch.src}
-                alt="change"
-                width={imageSizes.xs}
-                height={imageSizes.xs}
-                className="h-auto w-auto"
-              />
-            </div>
-            <div>
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-center text-lg font-semibold mb-3 mt-5 capitalize font-tajwal-medium"
-              >
-                {t(`${'You_’re_about_to_change_your_location'}`)}
-              </p>
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-center text-sm capitalize font-tajwal-medium"
-              >
-                {t(
-                  `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
-                )}
-              </p>
-            </div>
-            <div
-              suppressHydrationWarning={suppressText}
-              className="flex justify-between w-full pt-5 gap-x-2 px-0 lg:px-5 capitalize font-tajwal-medium"
-            >
-              <button
-                onClick={onRequestClose}
-                suppressHydrationWarning={suppressText}
-                className="capitalize font-tajwal-medium"
-                style={{ color }}
-              >
-                {t('cancel')}
-              </button>
-              <button
-                suppressHydrationWarning={suppressText}
-                onClick={() => {
-                  handleChangeLocationReq();
-                }}
-                className="capitalize font-tajwal-medium"
-                style={{ color }}
-              >
-                {t('change')}
-              </button>
-            </div>
-          </div>
+    <MainModal isOpen={isOpen} closeModal={onRequestClose}>
+      <div className="flex flex-col justify-between items-center bg-white rounded-lg w-full h-full px-5">
+        <div>
+          <ChangeLocationIcon />
         </div>
+
+        <div className="mt-5 mb-10">
+          <p
+            suppressHydrationWarning={suppressText}
+            className={`text-center text-lg font-semibold mb-3 capitalize ${alexandriaFontBold}`}
+          >
+            {t(`${'You_’re_about_to_change_your_location'}`)}
+          </p>
+          <p
+            suppressHydrationWarning={suppressText}
+            className="text-center text-xs capitalize text-[#544A45] text-sm"
+          >
+            {t(
+              `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`
+            )}
+          </p>
+        </div>
+        <button
+          onClick={() => {
+            handleChangeLocationReq();
+          }}
+          className={`${mainBtnClass} text-center`}
+          style={{ backgroundColor: color }}
+          suppressHydrationWarning={suppressText}
+        >
+          {t('change')}
+        </button>
+        <button
+          onClick={onRequestClose}
+          className={`bg-gray-200 !text-black text-center ${mainBtnClass} mt-3`}
+          suppressHydrationWarning={suppressText}
+        >
+          {t('cancel')}
+        </button>
       </div>
-    </Modal>
+    </MainModal>
   );
 };
 
