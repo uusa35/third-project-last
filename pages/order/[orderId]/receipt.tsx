@@ -97,10 +97,7 @@ const orderReceipt: NextPage<Props> = ({
                   <div>
                     <Link
                       className="flex gap-x-1"
-                      href={`${appLinks.productShow(
-                        product.ProductID,
-                        product.item
-                      )}`}
+                      href={`${appLinks.productShow(product.id, product.item)}`}
                     >
                       <TextTrans
                         className={`capitalize ${alexandriaFontSemiBold}`}

@@ -33,8 +33,8 @@ export type Branch = {
   name_en: string;
   location: string;
   mobile: string;
-  lang: string;
-  lat: string;
+  long?: number | string;
+  lat?: number | string;
   status: string;
   delivery_type: string;
 };
@@ -50,6 +50,8 @@ export interface Area {
   name: string;
   name_ar: string;
   name_en: string;
+  long?: number | string;
+  lat?: number | string;
 }
 
 export interface Location {

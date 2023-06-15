@@ -29,7 +29,15 @@ import {
   setCustomerAddress,
   setCustomerAddressType,
 } from '@/redux/slices/customerSlice';
-import { filter, first, kebabCase, lowerCase, parseInt, toUpper } from 'lodash';
+import {
+  filter,
+  first,
+  kebabCase,
+  lowerCase,
+  parseInt,
+  toUpper,
+  upperCase,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { AppQueryResult } from '@/types/queries';
@@ -63,7 +71,7 @@ const AddressCreate: NextPage<Props> = ({
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const refForm = useRef<any>();
-  const [triggerAddAddress, { isLoading: AddAddressLoading }] =
+  const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
   const [triggerUpdateAddress, { isLoading: updateAddressLoading }] =
     useUpdateAddressMutation();
@@ -102,18 +110,16 @@ const AddressCreate: NextPage<Props> = ({
       additional: currentAddress?.address.additional,
     },
   });
-console.log({ errors, currentAddress, currentAddresses })
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
       triggerGetAddresses({ url }).then((r: any) => {
-        console.log({ currentAddresses: r })
         if (r.data) {
           setCurrentAddresses(r.data.data.address);
           const address = first(
             filter(currentAddress, (a) => a.type === currentAddressType)
           );
-          console.log({ address })
           if (address) {
             setCurrentAddress(address);
           }
@@ -122,8 +128,6 @@ console.log({ errors, currentAddress, currentAddresses })
     }
   }, []);
 
-  console.log('customer', customer);
-  console.log('currentAddressType', currentAddressType);
   useMemo(() => {
     setValue('address_type', currentAddressType);
     dispatch(setCustomerAddressType(currentAddressType));
@@ -136,10 +140,11 @@ console.log({ errors, currentAddress, currentAddresses })
       }
     }
   }, [currentAddressType]);
+
   const handleSaveAddress = async (body: any) => {
-    await triggerAddAddress({
+    await triggerCreateOrUpdateAddress({
       body: {
-        address_type: body.currentAddressType,
+        address_type: upperCase(body.address_type),
         longitude: body.longitude,
         latitude: body.latitude,
         customer_id: userId.toString(),
@@ -169,7 +174,7 @@ console.log({ errors, currentAddress, currentAddresses })
         router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
-        if (r.error) {
+        if (r.error && r.error.data?.msg) {
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
@@ -189,8 +194,6 @@ console.log({ errors, currentAddress, currentAddresses })
     }
   };
 
-  // console.log(errors);
-  // console.log({ addressId, address });
   return (
     <MainContentLayout
       url={url}
@@ -205,9 +208,7 @@ console.log({ errors, currentAddress, currentAddresses })
               currentAddressType === 'HOUSE' && `!border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize `}
           >
-            <HomeIcon
-              fill={`${currentAddressType === 'HOUSE' && color}`}
-            />
+            <HomeIcon fill={`${currentAddressType === 'HOUSE' && color}`} />
             <p>{t('house')}</p>
           </button>
           <button
@@ -227,9 +228,7 @@ console.log({ errors, currentAddress, currentAddresses })
               currentAddressType === 'OFFICE' && `!border-[${color}]`
             } justify-center items-center p-3 rounded-md capitalize`}
           >
-            <OfficeIcon
-              fill={`${currentAddressType === 'OFFICE' && color}`}
-            />
+            <OfficeIcon fill={`${currentAddressType === 'OFFICE' && color}`} />
             <p>{t('office')}</p>
           </button>
         </div>

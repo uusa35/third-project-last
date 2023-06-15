@@ -73,7 +73,7 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
         {CategoriesProducts.map((category) => {
           return (
             <section id={`${category.cat_id}`}>
-              <div className="mt-2 px-4">
+              <div className="mt-5 px-4">
                 {/* cat name */}
                 <button onClick={() => handleSearchRedirection(category.cat_id)}>
                   <TextTrans

@@ -59,7 +59,9 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             />
           )}
         </div>
-        <ElementMap lat="30.1302444" lng="31.279598" />
+        {destination.lat && destination.long && (
+          <ElementMap lat={destination.lat} lng={destination.long} />
+        )}
         <div className="flex h-auto w-full flex-col flex-1 justify-start items-start  px-4 py-4 space-y-2">
           <h1>{t(`delivery_address`)}</h1>
           <TextTrans

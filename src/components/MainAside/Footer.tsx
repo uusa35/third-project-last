@@ -7,9 +7,11 @@ export default function AsideFooter() {
   const { t } = useTranslation();
   return (
     <div
-      className={`absolute bottom-0 text-white underline underline-offset-2 text-xs md:text-sm xl:text-md flex flex-1 w-full flex-row justify-between items-center p-4`}
+      className={`absolute bottom-0 text-white  text-xs md:text-sm xl:text-md flex flex-1 w-full flex-row justify-between items-center p-4`}
     >
-      <div className={`flex flex-row gap-x-3 items-center`}>
+      <div
+        className={`flex flex-row gap-x-3 items-center underline underline-offset-2`}
+      >
         <Link href={appLinks.returnPolicy.path}>{t('return_policy')}</Link>
         <Link href={appLinks.shippingPolicy.path}>{t('shipping_policy')}</Link>
         <Link href={appLinks.privacyPolicy.path}>{t('privacy_policy')}</Link>
