@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { appLinks } from '@/constants/*';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import MapIcon from '@/appIcons/map_icon.svg';
+
 type Props = {
   element: Vendor;
   url: string;
