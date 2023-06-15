@@ -16,7 +16,7 @@ import TextTrans from '@/components/TextTrans';
 import Link from 'next/link';
 import { appLinks } from '@/constants/*';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
-
+import MapIcon from '@/appIcons/map_icon.svg';
 type Props = {
   element: Vendor;
   url: string;
@@ -34,7 +34,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
     <MainContentLayout
       url={url}
       showBackBtnHeader={true}
-      currentModule="address"
+      currentModule="set_delivery_location"
     >
       <div className="flex flex-1 flex-col min-h-screen">
         <div className="flex flex-row h-auto py-6 px-4 justify-start items-center">
@@ -77,7 +77,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
               }
               className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white`}
             >
-              {t(`continue`)}
+              {t(`deliver_here`)}
             </Link>
           </div>
         </div>

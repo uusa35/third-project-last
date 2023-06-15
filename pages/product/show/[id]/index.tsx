@@ -106,7 +106,7 @@ const ProductShow: NextPage<Props> = ({
     productCart,
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent, prefrences, id: user_id },
+    customer: { userAgent, prefrences },
     vendor: { logo },
     cart: { promocode },
   } = useAppSelector((state) => state);
@@ -135,8 +135,7 @@ const ProductShow: NextPage<Props> = ({
     id: product.id,
     lang,
     destination: desObject,
-    url,
-    user_id,
+    url
   });
   const [requiredSection, setRequiredSection] = useState(false);
   // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;

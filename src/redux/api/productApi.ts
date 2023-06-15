@@ -67,12 +67,11 @@ export const productApi = apiSlice.injectEndpoints({
         lang: Locale['lang'] | string | undefined;
         destination?: any;
         url: string;
-        user_id: string;
       }
     >({
-      query: ({ id, lang, url, destination = {}, user_id }: any) => ({
+      query: ({ id, lang, url, destination = {} }: any) => ({
         url: `itemDetails`,
-        params: { product_id: id, user_id },
+        params: { product_id: id },
         headers: {
           url,
           lang,
