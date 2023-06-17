@@ -30,7 +30,10 @@ import { useEffect, useState } from 'react';
 import { AppQueryResult } from '@/types/queries';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isEmpty, isObject, isUndefined, map } from 'lodash';
-import { setCustomerAddress } from '@/redux/slices/customerSlice';
+import {
+  setCustomerAddress,
+  setCustomerAddressType,
+} from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -89,13 +92,14 @@ const AddressIndex: NextPage<Props> = ({
     }
   };
 
-  const handleEdit = (address) => {
+  const handleEdit = (address: any) => {
     dispatch(setCustomerAddress(address));
-    console.log({ address: `${address.id}` });
+    console.log('address', address);
+    dispatch(setCustomerAddressType(address.type));
     router.push(appLinks.createAuthAddress(id));
   };
 
-  const handleDelete = async (address) => {
+  const handleDelete = async (address: any) => {
     await triggerDeleteAddress({
       params: {
         address_id: address.id,
@@ -147,10 +151,16 @@ const AddressIndex: NextPage<Props> = ({
 
                         {selectedAddress === address && (
                           <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md">
-                            <button onClick={() => handleEdit(address)} className="py-2 border-b-[1px] border-stone-200 w-full capitalize">
+                            <button
+                              onClick={() => handleEdit(address)}
+                              className="py-2 border-b-[1px] border-stone-200 w-full capitalize"
+                            >
                               {t('edit')}
                             </button>
-                            <button onClick={() => handleDelete(address)} className="text-red-600 py-2 capitalize">
+                            <button
+                              onClick={() => handleDelete(address)}
+                              className="text-red-600 py-2 capitalize"
+                            >
                               {t('delete')}
                             </button>
                           </div>
@@ -166,7 +176,9 @@ const AddressIndex: NextPage<Props> = ({
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
             <p className="text-md text-extrabold">{t('no_address')}</p>
-            <p className="text-md text-extrabold text-center w-full lg:w-[80%]">{t('no_address_des')}</p>
+            <p className="text-md text-extrabold text-center w-full lg:w-[80%]">
+              {t('no_address_des')}
+            </p>
           </div>
         )}
         <div className="relative -bottom-10 p-2 w-full">

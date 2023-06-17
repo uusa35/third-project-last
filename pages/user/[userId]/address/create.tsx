@@ -73,7 +73,7 @@ const AddressCreate: NextPage<Props> = ({
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const [currentAddressType, setCurrentAddressType] = useState<
     'HOUSE' | 'APARTMENT' | 'OFFICE'
-  >(currentAddress?.address?.type ?? 'HOUSE');
+  >(customer?.address?.type ?? 'HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -101,12 +101,12 @@ const AddressCreate: NextPage<Props> = ({
       customer_id: userId.toString(),
       phone: customer.phone,
       name: customer.name,
-      block: currentAddress?.address.block ?? ``,
-      street: currentAddress?.address.street ?? ``,
-      house_no: currentAddress?.address.house_no ?? ``,
-      floor_no: currentAddress?.address.floor_no ?? ``,
-      building_no: currentAddress?.address.building_no ?? ``,
-      office_no: currentAddress?.address.office_no ?? ``,
+      block: currentAddress?.address.block,
+      street: currentAddress?.address.street,
+      house_no: currentAddress?.address.house_no,
+      floor_no: currentAddress?.address.floor_no,
+      building_no: currentAddress?.address.building_no,
+      office_no: currentAddress?.address.office_no,
       city: currentAddress?.address.city ?? destination?.name,
       area: currentAddress?.address.area ?? destination?.name,
       avenue: currentAddress?.address.avenue,
@@ -119,20 +119,14 @@ const AddressCreate: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
       triggerGetAddresses({ url }).then((r: any) => {
-        // console.log('r ==>', r.data.data.address[0].address);
         if (r.data) {
-          // console.log('addressssss', r.data.data);
           setCurrentAddresses(r.data.data.address);
           const current = first(
-            filter(
-              r.data.data.address,
-              (a) => a.address.type === currentAddressType
-            )
+            filter(r.data.data.address, (a) => a.type === currentAddressType)
           );
-          console.log('addres from inside ======>', current);
-          // if (current.address) {
-          //   setCurrentAddress(current.address);
-          // }
+          if (current.address) {
+            setCurrentAddress(current);
+          }
         }
       });
     }
@@ -206,11 +200,6 @@ const AddressCreate: NextPage<Props> = ({
     }
   };
 
-  // if (isNull(currentAddress)) {
-  //   return <></>;
-  // }
-
-  console.log({ currentAddress, currentAddressType });
   return (
     <MainContentLayout
       url={url}
@@ -369,6 +358,7 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 {...register('street')}
+                defaultValue={currentAddress?.address?.street}
                 suppressHydrationWarning={suppressText}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('street')}`}
@@ -398,6 +388,7 @@ const AddressCreate: NextPage<Props> = ({
                 <input
                   {...register('house_no')}
                   suppressHydrationWarning={suppressText}
+                  defaultValue={currentAddress?.address?.house_no}
                   className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                   placeholder={`${t('house_no')}`}
                 />
@@ -429,6 +420,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('building_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.building_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('building_no')}`}
                   />
@@ -456,6 +448,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('floor_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.floor_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('floor_no')}`}
                   />
@@ -483,6 +476,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('apartment_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.apartment_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('apartment_no')}`}
                   />
@@ -514,6 +508,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('office_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.office_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('office_no')}`}
                   />
@@ -544,6 +539,7 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 {...register('notes')}
                 suppressHydrationWarning={suppressText}
+                defaultValue={currentAddress?.address?.notes}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('notice')}`}
               />
@@ -553,7 +549,7 @@ const AddressCreate: NextPage<Props> = ({
                 className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('notes_is_required')}
+                {t('notes')}
               </span>
             )}
           </div>
@@ -572,6 +568,7 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 {...register('other_phone')}
                 suppressHydrationWarning={suppressText}
+                defaultValue={currentAddress?.address?.other_phone}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('other_phone_no')}`}
               />
