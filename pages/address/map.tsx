@@ -17,6 +17,7 @@ import Link from 'next/link';
 import { appLinks } from '@/constants/*';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import MapIcon from '@/appIcons/map_icon.svg';
+import { isNull } from 'lodash';
 
 type Props = {
   element: Vendor;
@@ -31,6 +32,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
   } = useAppSelector((state) => state);
   const isAuth = useAppSelector(isAuthenticated);
   const { t } = useTranslation();
+
+  console.log(destination);
   return (
     <MainContentLayout
       url={url}
@@ -45,7 +48,11 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             className="flex flex-1 flex-col px-4 space-y-2"
           >
             <p>{destination_type && t(`${destination_type}`)}</p>
-            <TextTrans ar={destination?.name_ar} en={destination?.name_en} />
+            {!isNull(destination) ? (
+              <TextTrans ar={destination?.name_ar} en={destination?.name_en} />
+            ) : (
+              <p>{t('select_area')}</p>
+            )}
           </Link>
           {isRTL ? (
             <ChevronLeftIcon
@@ -63,28 +70,42 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
           <ElementMap lat={destination?.lat} lng={destination?.long} />
         )}
         <div className="flex h-auto w-full flex-col flex-1 justify-start items-start  px-4 py-4 space-y-2">
-          <h1>{t(`delivery_address`)}</h1>
-          <div className="flex">
-            <MapIcon />
-            <TextTrans
-              ar={destination?.name_ar}
-              en={destination?.name_en}
-              className={`text-gray-600`}
-            />
-          </div>
+          {!isNull(destination) && (
+            <>
+              <h1>{t(`delivery_address`)}</h1>
+              <div className="flex">
+                <MapIcon />
+                <TextTrans
+                  ar={destination?.name_ar}
+                  en={destination?.name_en}
+                  className={`text-gray-600 mx-4`}
+                />
+              </div>
+            </>
+          )}
+
           <div className="flex flex-1 w-full">
-            <Link
-              href={
-                method === 'delivery'
-                  ? isAuth && id
-                    ? appLinks.createAuthAddress(id)
-                    : 'else'
-                  : appLinks.cart.path
-              }
-              className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white`}
-            >
-              {t(`deliver_here`)}
-            </Link>
+            {isNull(destination) ? (
+              <button
+                disabled={true}
+                className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
+              >
+                {t(`deliver_here`)}
+              </button>
+            ) : (
+              <Link
+                href={
+                  method === 'delivery'
+                    ? isAuth && id
+                      ? appLinks.createAuthAddress(id)
+                      : 'else'
+                    : appLinks.cart.path
+                }
+                className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
+              >
+                {t(`deliver_here`)}
+              </Link>
+            )}
           </div>
         </div>
       </div>

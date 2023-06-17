@@ -32,6 +32,7 @@ import {
 import {
   filter,
   first,
+  isNull,
   kebabCase,
   lowerCase,
   parseInt,
@@ -118,14 +119,20 @@ const AddressCreate: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
       triggerGetAddresses({ url }).then((r: any) => {
+        // console.log('r ==>', r.data.data.address[0].address);
         if (r.data) {
+          // console.log('addressssss', r.data.data);
           setCurrentAddresses(r.data.data.address);
-          const address = first(
-            filter(currentAddress, (a) => a.type === currentAddressType)
+          const current = first(
+            filter(
+              r.data.data.address,
+              (a) => a.address.type === currentAddressType
+            )
           );
-          if (address) {
-            setCurrentAddress(address);
-          }
+          console.log('addres from inside ======>', current);
+          // if (current.address) {
+          //   setCurrentAddress(current.address);
+          // }
         }
       });
     }
@@ -174,7 +181,9 @@ const AddressCreate: NextPage<Props> = ({
         );
         // dispatch(setCustomerAddress(r.data.Data));
         setCurrentAddress(r.data.Data);
+        // if cart has items go to checkout
         router.push(`${appLinks.checkout.path}`);
+        // else go to home
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {
@@ -196,7 +205,12 @@ const AddressCreate: NextPage<Props> = ({
       await handleSaveAddress(body);
     }
   };
-console.log({ currentAddress, currentAddressType })
+
+  // if (isNull(currentAddress)) {
+  //   return <></>;
+  // }
+
+  console.log({ currentAddress, currentAddressType });
   return (
     <MainContentLayout
       url={url}
@@ -210,7 +224,7 @@ console.log({ currentAddress, currentAddressType })
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize `}
             style={{ borderColor: currentAddressType === 'HOUSE' && color }}
           >
-            {currentAddressType === 'HOUSE' ? <HomeActive /> : <HomeIcon /> }
+            {currentAddressType === 'HOUSE' ? <HomeActive /> : <HomeIcon />}
             <p>{t('house')}</p>
           </button>
           <button
@@ -218,7 +232,11 @@ console.log({ currentAddress, currentAddressType })
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
             style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
           >
-            {currentAddressType === 'APARTMENT' ? <ApartmentActive /> : <ApartmentIcon /> }
+            {currentAddressType === 'APARTMENT' ? (
+              <ApartmentActive />
+            ) : (
+              <ApartmentIcon />
+            )}
             <p>{t('apartment')}</p>
           </button>
           <button
@@ -226,7 +244,11 @@ console.log({ currentAddress, currentAddressType })
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
             style={{ borderColor: currentAddressType === 'OFFICE' && color }}
           >
-            {currentAddressType === 'OFFICE' ? <OfficeActive /> : <OfficeIcon /> }
+            {currentAddressType === 'OFFICE' ? (
+              <OfficeActive />
+            ) : (
+              <OfficeIcon />
+            )}
             <p>{t('office')}</p>
           </button>
         </div>
