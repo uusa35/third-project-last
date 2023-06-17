@@ -32,6 +32,7 @@ import {
 import {
   filter,
   first,
+  isNull,
   kebabCase,
   lowerCase,
   parseInt,
@@ -72,7 +73,7 @@ const AddressCreate: NextPage<Props> = ({
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const [currentAddressType, setCurrentAddressType] = useState<
     'HOUSE' | 'APARTMENT' | 'OFFICE'
-  >(currentAddress?.address?.type ?? 'HOUSE');
+  >(customer?.address?.type ?? 'HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -100,12 +101,12 @@ const AddressCreate: NextPage<Props> = ({
       customer_id: userId.toString(),
       phone: customer.phone,
       name: customer.name,
-      block: currentAddress?.address.block ?? ``,
-      street: currentAddress?.address.street ?? ``,
-      house_no: currentAddress?.address.house_no ?? ``,
-      floor_no: currentAddress?.address.floor_no ?? ``,
-      building_no: currentAddress?.address.building_no ?? ``,
-      office_no: currentAddress?.address.office_no ?? ``,
+      block: currentAddress?.address.block,
+      street: currentAddress?.address.street,
+      house_no: currentAddress?.address.house_no,
+      floor_no: currentAddress?.address.floor_no,
+      building_no: currentAddress?.address.building_no,
+      office_no: currentAddress?.address.office_no,
       city: currentAddress?.address.city ?? destination?.name,
       area: currentAddress?.address.area ?? destination?.name,
       avenue: currentAddress?.address.avenue,
@@ -120,11 +121,11 @@ const AddressCreate: NextPage<Props> = ({
       triggerGetAddresses({ url }).then((r: any) => {
         if (r.data) {
           setCurrentAddresses(r.data.data.address);
-          const address = first(
-            filter(currentAddress, (a) => a.type === currentAddressType)
+          const current = first(
+            filter(r.data.data.address, (a) => a.type === currentAddressType)
           );
-          if (address) {
-            setCurrentAddress(address);
+          if (current.address) {
+            setCurrentAddress(current);
           }
         }
       });
@@ -174,7 +175,9 @@ const AddressCreate: NextPage<Props> = ({
         );
         // dispatch(setCustomerAddress(r.data.Data));
         setCurrentAddress(r.data.Data);
+        // if cart has items go to checkout
         router.push(`${appLinks.checkout.path}`);
+        // else go to home
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {
@@ -196,7 +199,7 @@ const AddressCreate: NextPage<Props> = ({
       await handleSaveAddress(body);
     }
   };
-console.log({ currentAddress, currentAddressType })
+
   return (
     <MainContentLayout
       url={url}
@@ -210,7 +213,7 @@ console.log({ currentAddress, currentAddressType })
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize `}
             style={{ borderColor: currentAddressType === 'HOUSE' && color }}
           >
-            {currentAddressType === 'HOUSE' ? <HomeActive /> : <HomeIcon /> }
+            {currentAddressType === 'HOUSE' ? <HomeActive /> : <HomeIcon />}
             <p>{t('house')}</p>
           </button>
           <button
@@ -218,7 +221,11 @@ console.log({ currentAddress, currentAddressType })
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
             style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
           >
-            {currentAddressType === 'APARTMENT' ? <ApartmentActive /> : <ApartmentIcon /> }
+            {currentAddressType === 'APARTMENT' ? (
+              <ApartmentActive />
+            ) : (
+              <ApartmentIcon />
+            )}
             <p>{t('apartment')}</p>
           </button>
           <button
@@ -226,7 +233,11 @@ console.log({ currentAddress, currentAddressType })
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
             style={{ borderColor: currentAddressType === 'OFFICE' && color }}
           >
-            {currentAddressType === 'OFFICE' ? <OfficeActive /> : <OfficeIcon /> }
+            {currentAddressType === 'OFFICE' ? (
+              <OfficeActive />
+            ) : (
+              <OfficeIcon />
+            )}
             <p>{t('office')}</p>
           </button>
         </div>
@@ -347,6 +358,7 @@ console.log({ currentAddress, currentAddressType })
             <div className="relative rounded-md shadow-sm">
               <input
                 {...register('street')}
+                defaultValue={currentAddress?.address?.street}
                 suppressHydrationWarning={suppressText}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('street')}`}
@@ -376,6 +388,7 @@ console.log({ currentAddress, currentAddressType })
                 <input
                   {...register('house_no')}
                   suppressHydrationWarning={suppressText}
+                  defaultValue={currentAddress?.address?.house_no}
                   className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                   placeholder={`${t('house_no')}`}
                 />
@@ -407,6 +420,7 @@ console.log({ currentAddress, currentAddressType })
                   <input
                     {...register('building_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.building_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('building_no')}`}
                   />
@@ -434,6 +448,7 @@ console.log({ currentAddress, currentAddressType })
                   <input
                     {...register('floor_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.floor_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('floor_no')}`}
                   />
@@ -461,6 +476,7 @@ console.log({ currentAddress, currentAddressType })
                   <input
                     {...register('apartment_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.apartment_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('apartment_no')}`}
                   />
@@ -492,6 +508,7 @@ console.log({ currentAddress, currentAddressType })
                   <input
                     {...register('office_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.office_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('office_no')}`}
                   />
@@ -522,6 +539,7 @@ console.log({ currentAddress, currentAddressType })
               <input
                 {...register('notes')}
                 suppressHydrationWarning={suppressText}
+                defaultValue={currentAddress?.address?.notes}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('notice')}`}
               />
@@ -531,7 +549,7 @@ console.log({ currentAddress, currentAddressType })
                 className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('notes_is_required')}
+                {t('notes')}
               </span>
             )}
           </div>
@@ -550,6 +568,7 @@ console.log({ currentAddress, currentAddressType })
               <input
                 {...register('other_phone')}
                 suppressHydrationWarning={suppressText}
+                defaultValue={currentAddress?.address?.other_phone}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('other_phone_no')}`}
               />

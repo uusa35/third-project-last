@@ -7,8 +7,8 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<PhoneCheck>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
+          phone: string;
+          phone_country_code: string;
         };
         url: string;
       }
@@ -84,9 +84,9 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { 
-    useCheckPhoneMutation,
-    useVerifyCodeMutation,
-    useRegisterMutation,
-    useLoginMutation
+export const {
+  useCheckPhoneMutation,
+  useVerifyCodeMutation,
+  useRegisterMutation,
+  useLoginMutation
 } = authApi;

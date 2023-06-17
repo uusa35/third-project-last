@@ -13,7 +13,7 @@ const initialState: CustomerInfo = {
   address: {
     id: 0,
     customer_id: 0,
-    type: 0,
+    type: 'HOUSE',
     address: {},
     longitude: ``,
     latitude: ``,

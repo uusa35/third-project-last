@@ -24,15 +24,17 @@ export const apiSlice = createApi({
       headers.set('Cache-Control', 'no-store');
       if (isLocal) {
         headers.set('url', xDomain);
+      } else if (getState().appSetting.url && getState().appSetting.url.length > 2) {
+        headers.set('url', getState().appSetting.url);
       }
       if (!isNull(getState().customer.token)) {
-        headers.set('Authorization',`Bearer ${getState().customer.token}` );
+        headers.set('Authorization', `Bearer ${getState().customer.token}`);
       }
       return headers;
     },
     credentials: 'include',
   }),
-  tagTypes: ['Cart', 'Branch', 'Area','Product','Wishlist'],
+  tagTypes: ['Cart', 'Branch', 'Area', 'Product', 'Wishlist'],
   keepUnusedDataFor: 0,
   refetchOnReconnect: true,
   extractRehydrationInfo(action, { reducerPath }) {
