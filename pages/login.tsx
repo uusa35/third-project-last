@@ -72,6 +72,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
         await triggerLogin({body: {
           phone: userPhone,
           phone_country_code: userCountryCode,
+          UserAgent: customer.userAgent
         }, url}).then((r: any) => {
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));

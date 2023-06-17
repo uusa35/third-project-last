@@ -28,9 +28,9 @@ export const authApi = apiSlice.injectEndpoints({
             phone: string;
             phone_country_code: string;
             code: string,
-            type: 'register' | 'rest'
+            type: 'register' | 'reset'
         };
-        url: string;
+        url: string
       }
     >({
       query: ({ body, url }) => ({
@@ -48,7 +48,8 @@ export const authApi = apiSlice.injectEndpoints({
             phone: string;
             phone_country_code: string;
             name: string;
-            email: string
+            email: string;
+            UserAgent: string
         };
         url: string;
       }
@@ -67,6 +68,7 @@ export const authApi = apiSlice.injectEndpoints({
         body: {
             phone: string;
             phone_country_code: string;
+            UserAgent: string
         };
         url: string;
       }
