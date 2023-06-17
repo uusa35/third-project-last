@@ -1,6 +1,7 @@
 import NoFoundImage from '@/appImages/not_found.png';
 import { filter, map, toString } from 'lodash';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+export const appVersion = `0.0.1`;
 // export const xDomain = `next2-q.testbedbynd.com`;
 export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
@@ -25,7 +26,7 @@ export const appLinks = {
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
-  
+
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/orders' },
   wishlist: { path: '/wishlist' },
