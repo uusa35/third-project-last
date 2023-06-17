@@ -57,14 +57,20 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }, [url, , method, destination, desID]);
 
   const getVendor = () => {
-    triggerGetVendor(
-      {
-        lang: locale.lang,
-        url,
-        destination: desObject,
-      },
-      false
-    );
+    if (url) {
+      triggerGetVendor(
+        {
+          lang: locale.lang,
+          url,
+          destination: desObject,
+        },
+        false
+      ).then((r: any) => {
+        if (r.Data) {
+          dispatch(setVendor(r.Data));
+        }
+      });
+    }
   };
 
   useEffect(() => {
@@ -78,9 +84,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
           dispatch(setUserAgent(r.data.Data?.Id));
         }
       });
-    }
-    if (vendorSuccess && vendorElement && vendorElement.Data) {
-      dispatch(setVendor(vendorElement.Data));
     }
   };
 
