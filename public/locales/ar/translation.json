@@ -295,5 +295,7 @@
   "preparing_order_we_r_making_ur_food": "جاري تجهيز الطلب",
   "order_is_ready_for_pickup_we_r_waiting": "الطلب جاهز للتسليم، في انتظارك",
   "order_is_ready_for_delivery": "جاري توصيل طلبك الآن",
-  "order_is_shipped": "تم توصيل الطلب"
+  "order_is_shipped": "تم توصيل الطلب",
+  "set_delivery_location": "تحديد موقع التسليم",
+  "deliver_here": "توصيل هنا"
 }

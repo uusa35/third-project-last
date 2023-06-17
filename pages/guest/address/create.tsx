@@ -169,7 +169,7 @@ const AddressCreate: NextPage<Props> = ({
     <MainContentLayout
       url={url}
       showBackBtnHeader={true}
-      currentModule="addresses"
+      currentModule="address_details"
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <div className="flex mx-3 flex-row justify-center items-start mb-4">
