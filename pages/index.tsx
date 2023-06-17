@@ -59,9 +59,6 @@ const Home: NextPage<Props> = ({
   const router = useRouter();
   const [openPromoModal, setOpenPromoModal] = useState(true);
 
-  // console.log('desObject', desObject);
-
-  // seturl
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
@@ -242,6 +239,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale }) => {
       const url = req.headers.host;
+      if (!url) {
+        return { notFound: true };
+      }
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
@@ -256,7 +256,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           })
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data || !element || !url) {
+      if (isError || !element.status || !element.Data || !element) {
         return {
           notFound: true,
         };
