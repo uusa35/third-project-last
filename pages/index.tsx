@@ -216,7 +216,7 @@ const Home: NextPage<Props> = ({
               {/* in sm screens only */}
               <Footer element={vendorElement?.Data} />
               <CheckoutFixedBtn url={url} />
-              {HomePromocodeSuccess && HomePromocodeData?.data && (
+              {/* {HomePromocodeSuccess && HomePromocodeData?.data && (
                 <HomeModal
                   data={HomePromocodeData?.data}
                   isOpen={openPromoModal}
@@ -224,7 +224,7 @@ const Home: NextPage<Props> = ({
                     setOpenPromoModal(false);
                   }}
                 />
-              )}
+              )} */}
             </>
           )}
         </div>
