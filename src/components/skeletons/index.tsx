@@ -25,7 +25,7 @@ type Props = {
   sections: number;
 };
 
-export default function ContentLoader({ type, sections }: Props) {
+const ContentLoader = ({ type, sections }: Props) => {
   let SkeletonComponent: React.FC;
 
   switch (type) {
@@ -48,56 +48,58 @@ export default function ContentLoader({ type, sections }: Props) {
       SkeletonComponent = PopularSearchSkeleton;
       break;
     case 'MyOrders':
-        SkeletonComponent = OrderSkeleton;
-        break;
+      SkeletonComponent = OrderSkeleton;
+      break;
     case 'OrderITem':
-        SkeletonComponent = OrderItemSkeleton;
-        break;
+      SkeletonComponent = OrderItemSkeleton;
+      break;
     case 'ContactDetails':
-        SkeletonComponent = ContactDetailsSkeleton;
-        break;
+      SkeletonComponent = ContactDetailsSkeleton;
+      break;
     case 'Policy':
-        SkeletonComponent = PolicySkeleton;
-        break;
+      SkeletonComponent = PolicySkeleton;
+      break;
     case 'Home':
-        SkeletonComponent = HomePageSMSkeleton;
-    break;
+      SkeletonComponent = HomePageSMSkeleton;
+      break;
     case 'ProductShow':
-        SkeletonComponent = ProductShowSkeleton;
-    break;
+      SkeletonComponent = ProductShowSkeleton;
+      break;
     case 'ProductCart':
-        SkeletonComponent = ProductCartSkelton;
-    break;
+      SkeletonComponent = ProductCartSkelton;
+      break;
     case 'Promocode':
-        SkeletonComponent = PromoCodeSkelton;
-    break;
+      SkeletonComponent = PromoCodeSkelton;
+      break;
     case 'PaymentSummary':
-        SkeletonComponent = PaymentSummarySkelton;
-    break;
+      SkeletonComponent = PaymentSummarySkelton;
+      break;
     case 'OrderSuccess':
-        SkeletonComponent = OrderSuccessSkeleton;
-    break;
+      SkeletonComponent = OrderSuccessSkeleton;
+      break;
     case 'VendorInfo':
       SkeletonComponent = VendorInfoSkeleton;
-    break;
+      break;
     case 'AsideSkelton':
       SkeletonComponent = MainAsideSkelton;
-    break;
+      break;
     case 'SliderSkelton':
       SkeletonComponent = SliderSkelton;
-    break;
-    case 'Receipt': 
+      break;
+    case 'Receipt':
       SkeletonComponent = ReceiptSkeleton;
-    break;
+      break;
     default:
-      return null; 
+      return null;
   }
 
   return (
     <div>
       {Array.from({ length: sections }).map((_, index) => (
         <SkeletonComponent key={index} />
-       ))}
+      ))}
     </div>
   );
-}
+};
+
+export default ContentLoader;

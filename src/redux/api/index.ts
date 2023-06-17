@@ -24,7 +24,7 @@ export const apiSlice = createApi({
       headers.set('Cache-Control', 'no-store');
       if (isLocal) {
         headers.set('url', xDomain);
-      } else if (getState().appSetting.url && getState().appSetting.url.length > 2) {
+      } else if (getState().appSetting.url !== null && getState().appSetting.url.length > 2) {
         headers.set('url', getState().appSetting.url);
       }
       if (!isNull(getState().customer.token)) {

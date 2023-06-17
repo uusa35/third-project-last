@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'slick-carousel/slick/slick.css';
 import 'react-loading-skeleton/dist/skeleton.css';
-import 'src/i18n/config';
+import './../src/i18n/config';
 import type { NextWebVitalsMetric } from 'next/app';
 import { Provider } from 'react-redux';
 import { wrapper } from '@/redux//store';

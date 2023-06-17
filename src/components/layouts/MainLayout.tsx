@@ -51,26 +51,27 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
     useLazyCreateTempIdQuery();
 
+  console.log('url -=====>', url);
   // vendor..................................
   useEffect(() => {
-    getVendor();
+    if (!isNull(url)) {
+      getVendor();
+    }
   }, [url, , method, destination, desID]);
 
-  const getVendor = () => {
-    if (url) {
-      triggerGetVendor(
-        {
-          lang: locale.lang,
-          url,
-          destination: desObject,
-        },
-        false
-      ).then((r: any) => {
-        if (r.Data) {
-          dispatch(setVendor(r.Data));
-        }
-      });
-    }
+  const getVendor = async () => {
+    await triggerGetVendor(
+      {
+        lang: locale.lang,
+        url,
+        destination: desObject,
+      },
+      false
+    ).then((r: any) => {
+      if (r.Data) {
+        dispatch(setVendor(r.Data));
+      }
+    });
   };
 
   useEffect(() => {
@@ -169,6 +170,10 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     };
   }, [router.pathname]);
 
+  console.log(
+    'this ===>',
+    vendorSuccess && vendorElement && vendorElement.Data
+  );
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}

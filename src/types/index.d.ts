@@ -102,7 +102,7 @@ export type position = {
 
 export type appSetting = {
   // method: `delivery` | `pickup`;
-  url: string;
+  url: string | null;
   productPreview: `hor` | `ver`;
   showFooterElement: string;
   showHeader: boolean;

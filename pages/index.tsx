@@ -60,7 +60,7 @@ const Home: NextPage<Props> = ({
   const [openPromoModal, setOpenPromoModal] = useState(true);
 
   useEffect(() => {
-    if (url) {
+    if (!isNull(url)) {
       dispatch(setUrl(url));
     }
   }, []);
@@ -245,6 +245,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
+      store.dispatch(setUrl(url));
       const {
         data: element,
         isError,
