@@ -111,7 +111,6 @@ const ProductShow: NextPage<Props> = ({
     cart: { promocode },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
-  console.log({ destination, method });
   const dispatch = useAppDispatch();
   const [currentQty, setCurrentyQty] = useState<number>(
     productCart.ProductID === product.id ? productCart.Quantity : 1

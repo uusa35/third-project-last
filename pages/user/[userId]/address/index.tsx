@@ -68,7 +68,7 @@ const AddressIndex: NextPage<Props> = ({
       dispatch(setUrl(url));
     }
     triggerGetAddresses({ url }, false).then((res) =>
-      console.log({ addressRes: res })
+      
     );
   }, []);
 

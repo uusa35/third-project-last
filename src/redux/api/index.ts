@@ -12,7 +12,6 @@ export const apiSlice = createApi({
       headers,
       { getState, type, endpoint, extra }: RootState
     ) => {
-      console.log(getState())
       headers.set(
         'Access-Control-Allow-Headers',
         'X-Requested-With,Accept,Authentication,Content-Type'
