@@ -44,6 +44,9 @@ import { AppQueryResult } from '@/types/queries';
 import HomeIcon from '@/appIcons/home.svg';
 import ApartmentIcon from '@/appIcons/apartment.svg';
 import OfficeIcon from '@/appIcons/office.svg';
+import HomeActive from '@/appIcons/home_active.svg';
+import ApartmentActive from '@/appIcons/apartment_active.svg';
+import OfficeActive from '@/appIcons/office_active.svg';
 
 type Props = {
   element: Vendor;
@@ -65,11 +68,11 @@ const AddressCreate: NextPage<Props> = ({
     customer,
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
-  const [currentAddressType, setCurrentAddressType] = useState<
-    'HOUSE' | 'APARTMENT' | 'OFFICE'
-  >(customer?.address?.type ?? 'HOUSE');
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
+  const [currentAddressType, setCurrentAddressType] = useState<
+    'HOUSE' | 'APARTMENT' | 'OFFICE'
+  >(currentAddress?.address?.type ?? 'HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -91,7 +94,7 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method,
-      address_type: 'OFFICE',
+      address_type: currentAddress?.address?.type ?? 'HOUSE',
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
@@ -193,7 +196,7 @@ const AddressCreate: NextPage<Props> = ({
       await handleSaveAddress(body);
     }
   };
-
+console.log({ currentAddress, currentAddressType })
   return (
     <MainContentLayout
       url={url}
@@ -204,31 +207,26 @@ const AddressCreate: NextPage<Props> = ({
         <div className="flex mx-3 flex-row justify-center items-start mb-4">
           <button
             onClick={() => setCurrentAddressType('HOUSE')}
-            className={`flex flex-1 flex-col border ${
-              currentAddressType === 'HOUSE' && `!border-[${color}]`
-            } justify-center items-center p-3 rounded-md capitalize `}
+            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize `}
+            style={{ borderColor: currentAddressType === 'HOUSE' && color }}
           >
-            <HomeIcon fill={`${currentAddressType === 'HOUSE' && color}`} />
+            {currentAddressType === 'HOUSE' ? <HomeActive /> : <HomeIcon /> }
             <p>{t('house')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('APARTMENT')}
-            className={`flex flex-1 flex-col border ${
-              currentAddressType === 'APARTMENT' && `!border-[${color}]`
-            } justify-center items-center p-3 rounded-md capitalize mx-3`}
+            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
+            style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
           >
-            <ApartmentIcon
-              fill={`${currentAddressType === 'APARTMENT' && color}`}
-            />
+            {currentAddressType === 'APARTMENT' ? <ApartmentActive /> : <ApartmentIcon /> }
             <p>{t('apartment')}</p>
           </button>
           <button
             onClick={() => setCurrentAddressType('OFFICE')}
-            className={`flex flex-1 flex-col border ${
-              currentAddressType === 'OFFICE' && `!border-[${color}]`
-            } justify-center items-center p-3 rounded-md capitalize`}
+            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
+            style={{ borderColor: currentAddressType === 'OFFICE' && color }}
           >
-            <OfficeIcon fill={`${currentAddressType === 'OFFICE' && color}`} />
+            {currentAddressType === 'OFFICE' ? <OfficeActive /> : <OfficeIcon /> }
             <p>{t('office')}</p>
           </button>
         </div>
