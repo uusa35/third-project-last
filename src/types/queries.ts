@@ -105,7 +105,7 @@ export interface VerifyCode {
   phone: string;
   phone_country_code: string;
   code: string;
-  type: 'register' | 'rest'
+  type: 'register' | 'reset'
 }
 
 export interface Register {

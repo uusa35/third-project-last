@@ -27,7 +27,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const color = useAppSelector(themeColor);
-  const { customer: { phone, name, email, countryCode } } = useAppSelector((state) => state);
+  const { customer: { phone, name, email, countryCode, userAgent } } = useAppSelector((state) => state);
   const [triggerRegister] = useRegisterMutation();
 
   const {
@@ -56,7 +56,8 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
         phone,
         name: body.name,
         ...(body.email && { email: body.email }),
-        phone_country_code: countryCode
+        phone_country_code: countryCode,
+        UserAgent: userAgent
       },
       url,
     }).then((r: any) => {

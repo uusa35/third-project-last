@@ -37,7 +37,7 @@ const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
   const [otp, setOtp] = useState<string>(``);
   const color = useAppSelector(themeColor);
   const {
-    customer: { phone, countryCode },
+    customer: { phone, countryCode, userAgent },
   } = useAppSelector((state) => state);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -111,6 +111,7 @@ const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
           body: {
             phone,
             phone_country_code: countryCode,
+            UserAgent: userAgent
           },
           url,
         }).then((r: any) => {
