@@ -40,7 +40,7 @@ export const addressSchema = (method: string, t: any) =>
         .max(100)
         .when('address_type', (address_type, schema) => {
           console.log('address type', address_type)
-          if (address_type === 1 && method === `delivery`) {
+          if (address_type === 'HOUSE' && method === `delivery`) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
@@ -49,7 +49,7 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`) {
+          if (address_type === 'APARTMENT' && method === `delivery`) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
@@ -58,7 +58,7 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`) {
+          if (address_type === 'OFFICE' && method === `delivery`) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
@@ -67,13 +67,13 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 2 && method === `delivery`) {
+          if (address_type === 'APARTMENT' && method === `delivery`) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
         }),
       office_no: yup.mixed().when('address_type', (address_type, schema) => {
-        if (address_type === 3 && method === `delivery`) {
+        if (address_type === 'OFFICE' && method === `delivery`) {
           return schema.required(t(`validation.required`));
         }
         return schema.nullable(true);

@@ -96,29 +96,31 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
   }, [router.locale]);
 
   useEffect(() => {
-    if (router.locale !== locale.lang) {
-      dispatch(setLocale(router.locale));
+    if (router.locale) {
+      if (router.locale !== locale.lang) {
+        dispatch(setLocale(router.locale));
+      }
+      if (router.locale !== i18n.language) {
+        i18n.changeLanguage(router.locale);
+      }
+      moment.locale(router.locale);
+      yup.setLocale({
+        mixed: {
+          required: 'validation.required',
+        },
+        number: {
+          min: ({ min }) => ({ key: 'validation.min', values: { min } }),
+          max: ({ max }) => ({ key: 'validation.max', values: { max } }),
+        },
+        string: {
+          email: 'validation.email',
+          min: ({ min }) => ({ key: `validation.min`, values: min }),
+          max: ({ max }) => ({ key: 'validation.max', values: max }),
+          matches: 'validation.matches',
+        },
+      });
+      setLang(router.locale);
     }
-    if (router.locale !== i18n.language) {
-      i18n.changeLanguage(router.locale);
-    }
-    moment.locale(router.locale);
-    yup.setLocale({
-      mixed: {
-        required: 'validation.required',
-      },
-      number: {
-        min: ({ min }) => ({ key: 'validation.min', values: { min } }),
-        max: ({ max }) => ({ key: 'validation.max', values: { max } }),
-      },
-      string: {
-        email: 'validation.email',
-        min: ({ min }) => ({ key: `validation.min`, values: min }),
-        max: ({ max }) => ({ key: 'validation.max', values: max }),
-        matches: 'validation.matches',
-      },
-    });
-    setLang(router.locale);
   }, [router.locale]);
 
   useEffect(() => {
