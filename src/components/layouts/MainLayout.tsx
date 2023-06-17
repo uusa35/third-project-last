@@ -53,18 +53,24 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   // vendor..................................
   useEffect(() => {
-    getVendor();
+    if (!isNull(url)) {
+      getVendor();
+    }
   }, [url, , method, destination, desID]);
 
-  const getVendor = () => {
-    triggerGetVendor(
+  const getVendor = async () => {
+    await triggerGetVendor(
       {
         lang: locale.lang,
         url,
         destination: desObject,
       },
       false
-    );
+    ).then((r: any) => {
+      if (r.Data) {
+        dispatch(setVendor(r.Data));
+      }
+    });
   };
 
   useEffect(() => {
@@ -78,9 +84,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
           dispatch(setUserAgent(r.data.Data?.Id));
         }
       });
-    }
-    if (vendorSuccess && vendorElement && vendorElement.Data) {
-      dispatch(setVendor(vendorElement.Data));
     }
   };
 
@@ -125,7 +128,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     const handleRouteChangeStart: Handler = (url, { shallow }) => {
-      // console.log({ url });
       dispatch(hideSideMenu());
     };
     const handleChangeComplete: Handler = (url, { shallow }) => {
@@ -135,19 +137,14 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     };
 
     const handleRouteChangeError = (err, url) => {
-      // console.log(err, url);
       if (err.cancelled) {
-        console.log(`Route to ${url} was cancelled!`);
+        // console.log(`Route to ${url} was cancelled!`);
       }
     };
 
-    const handleHashChangeStart: Handler = (url) => {
-      // console.log({ url });
-    };
+    const handleHashChangeStart: Handler = (url) => {};
 
-    const handleHashChangeComplete: Handler = (url, { shallow }) => {
-      // console.log({ url });
-    };
+    const handleHashChangeComplete: Handler = (url, { shallow }) => {};
 
     router.events.on('routeChangeStart', handleRouteChangeStart);
     router.events.on('routeChangeComplete', handleChangeComplete);

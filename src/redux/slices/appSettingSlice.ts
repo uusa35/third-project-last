@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appSetting } from '@/types/index';
 
 const initialState: appSetting = {
-  url: ``,
+  url: null,
   productPreview: `hor`,
   showHeader: true,
   showFooter: true,
@@ -228,7 +228,7 @@ export const appSettingSlice = createSlice({
       };
     },
   },
- 
+
 });
 
 export const {

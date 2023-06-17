@@ -33,7 +33,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const isAuth = useAppSelector(isAuthenticated);
   const { t } = useTranslation();
 
-  console.log(destination);
+
   return (
     <MainContentLayout
       url={url}
