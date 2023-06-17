@@ -21,11 +21,11 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   return (
     <Suspense>
       <Provider store={store}>
-        <ErrorBoundary FallbackComponent={ErrorHandler}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </ErrorBoundary>
+        {/* <ErrorBoundary FallbackComponent={ErrorHandler}> */}
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+        {/* </ErrorBoundary> */}
       </Provider>
     </Suspense>
   );
