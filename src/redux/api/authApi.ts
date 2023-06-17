@@ -7,8 +7,8 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<PhoneCheck>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
+          phone: string;
+          phone_country_code: string;
         };
         url: string;
       }
@@ -25,10 +25,10 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<VerifyCode>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
-            code: string,
-            type: 'register' | 'rest'
+          phone: string;
+          phone_country_code: string;
+          code: string,
+          type: 'register' | 'rest'
         };
         url: string;
       }
@@ -45,10 +45,10 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<Register>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
-            name: string;
-            email: string
+          phone: string;
+          phone_country_code: string;
+          name: string;
+          email: string
         };
         url: string;
       }
@@ -65,8 +65,8 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<Register>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
+          phone: string;
+          phone_country_code: string;
         };
         url: string;
       }
@@ -82,9 +82,9 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { 
-    useCheckPhoneMutation,
-    useVerifyCodeMutation,
-    useRegisterMutation,
-    useLoginMutation
+export const {
+  useCheckPhoneMutation,
+  useVerifyCodeMutation,
+  useRegisterMutation,
+  useLoginMutation
 } = authApi;
