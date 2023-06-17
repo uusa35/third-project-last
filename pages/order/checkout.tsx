@@ -44,6 +44,7 @@ import moment from 'moment';
 import { NextPage } from 'next';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 type Props = {
   url: string;
@@ -64,6 +65,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   } = useAppSelector((state) => state);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(isAuthenticated);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
@@ -124,7 +126,11 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (!addressID && method === `delivery`) {
-      router.push(appLinks.guestAddress.path);
+      if (isAuth) {
+        router.push(appLinks.createAuthAddress(customer_id));
+      } else {
+        router.push(appLinks.guestAddress.path);
+      }
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({
