@@ -121,7 +121,7 @@ const AddressIndex: NextPage<Props> = ({
                 className="flex flex-col w-auto justify-start items-start mx-4 space-y-4"
                 key={address.id}
               >
-                <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 overflow-hidden w-full text-sm">
+                <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 w-full text-sm">
                   <div
                     className={`flex flex-1 flex-row justify-between items-start`}
                   >
@@ -147,10 +147,10 @@ const AddressIndex: NextPage<Props> = ({
 
                         {selectedAddress === address && (
                           <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md">
-                            <button onClick={() => handleEdit(address)}>
+                            <button onClick={() => handleEdit(address)} className="py-2 border-b-[1px] border-stone-200 w-full capitalize">
                               {t('edit')}
                             </button>
-                            <button onClick={() => handleDelete(address)}>
+                            <button onClick={() => handleDelete(address)} className="text-red-600 py-2 capitalize">
                               {t('delete')}
                             </button>
                           </div>
@@ -171,7 +171,7 @@ const AddressIndex: NextPage<Props> = ({
         )}
         <div className="relative -bottom-10 p-2 w-full">
           <Link
-            href={`${appLinks.guestAddress.path}`}
+            href={`${appLinks.createAuthAddress(id)}`}
             className={`${mainBtnClass} flex flex-row justify-center items-center`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
