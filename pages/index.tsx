@@ -218,7 +218,7 @@ const Home: NextPage<Props> = ({
               <CheckoutFixedBtn url={url} />
               {homePromocodeSuccess &&
                 homePromocodeData?.data &&
-                !isEmpty(homePromocodeData?.data)(
+                !isEmpty(homePromocodeData?.data) && (
                   <HomeModal
                     data={homePromocodeData?.data}
                     isOpen={openPromoModal}
