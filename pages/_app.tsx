@@ -14,6 +14,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import '@/styles/index.css';
 import '@/styles/slick.css';
 import 'react-phone-number-input/style.css';
+import { isLocal } from '@/constants/*';
 
 const App: FC<AppProps> = ({ Component, ...rest }) => {
   const { store, props } = wrapper.useWrappedStore(rest);
@@ -21,11 +22,17 @@ const App: FC<AppProps> = ({ Component, ...rest }) => {
   return (
     <Suspense>
       <Provider store={store}>
-        {/* <ErrorBoundary FallbackComponent={ErrorHandler}> */}
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
-        {/* </ErrorBoundary> */}
+        {isLocal ? (
+          <ErrorBoundary FallbackComponent={ErrorHandler}>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </ErrorBoundary>
+        ) : (
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        )}
       </Provider>
     </Suspense>
   );
