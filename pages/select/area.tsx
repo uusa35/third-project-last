@@ -37,7 +37,7 @@ import {
   setDestination,
 } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
@@ -103,6 +103,10 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
 
   useEffect(() => {
     // triggerGetBranches({ lang, url, type: method }, false);
+
+    if (url) {
+      dispatch(setUrl(url));
+    }
     triggerGetLocations({ lang, url, type: method }, false);
   }, []);
 

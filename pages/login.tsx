@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
@@ -24,6 +24,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { setCustomer, signIn } from '@/redux/slices/customerSlice';
 import { checkPhone } from 'src/validations';
 import { map, upperCase, upperFirst } from 'lodash';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -55,6 +56,13 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       phone: customer.phone ?? ``
     },
   });
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
   const [triggerCheckPhone] = useCheckPhoneMutation();
   const [triggerLogin] = useLoginMutation();
   const onSubmit = async (body: any) => {

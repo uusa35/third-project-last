@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { CottageOutlined, SendOutlined } from '@mui/icons-material';
 import { orderApi, useLazyTrackOrderQuery } from '@/redux/api/orderApi';
 import { useEffect, useState } from 'react';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   appLinks,
   googleMapUrl,
@@ -96,6 +96,9 @@ const OrderTrack: NextPage<Props> = ({
   };
 
   useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
     () => dispatch(toggleShowHelpModal(false));
   }, []);
 

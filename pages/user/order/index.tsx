@@ -2,7 +2,7 @@ import CustomImage from '@/components/CustomImage';
 import MainHead from '@/components/MainHead';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import EmptyOrders from '@/appImages/empty_orders.png';
 import Search from '@/appIcons/gray_search.svg';
@@ -34,7 +34,7 @@ import { AppQueryResult, UpcomingOrders } from '@/types/queries';
 import EmptyUserOrders from '@/components/order/EmptyUserOrders';
 import UpcomingCompletedOrder from '@/components/order/UpcomingCompletedOrder';
 import ContentLoader from '@/components/skeletons';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { NextPage } from 'next';
 
 type Props = {
@@ -57,6 +57,12 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
   }>({ url, lang, destination }, { refetchOnMountOrArgChange: true });
   const [triggerTrackOrder, { data: order, isSuccess: orderSuccess }] =
     useLazyTrackOrderQuery();
+
+    useEffect(() => {
+      if (url) {
+        dispatch(setUrl(url));
+      }
+    }, []);
 
   const handleChange = async (search: string) => {
     if (search && search?.length >= 3) {

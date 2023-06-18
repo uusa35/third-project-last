@@ -38,7 +38,7 @@ import {
 } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
 import WhenClosedModal from '@/components/modals/WhenClosedModal';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
@@ -111,6 +111,9 @@ const SelectBranch: NextPage<Props> = ({
     }>();
 
   useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
     triggerGetBranches({ lang, url, type: method }, false);
     // triggerGetLocations({ lang, url, type: method }, false);
   }, []);

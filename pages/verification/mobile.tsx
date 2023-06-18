@@ -1,7 +1,7 @@
 import MainHead from '@/components/MainHead'
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrentModule } from '@/redux/slices/appSettingSlice';
+import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
 import { wrapper } from '@/redux/store';
 import React, { Fragment, useEffect, useState } from 'react';
 import Mobile from '@/appImages/mobile.png';
@@ -41,6 +41,13 @@ const MobileVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
   const handleSendOtp = () => {
     router.push(`${appLinks.otpVerification.path}`);
   }
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
   return (
     <Fragment>
       <MainHead

@@ -65,10 +65,10 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   } = useAppSelector((state) => state);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(isAuthenticated);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
+   const isAuth = useAppSelector(isAuthenticated);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     'visa' | 'knet' | 'cash_on_delivery' | null
   >(null);
@@ -95,7 +95,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
 
   // map marker
   const LocationMarker = ({ icon, longitude, latitude }: any) => {
-    
+    console.log('longitude,latitude', longitude, latitude);
     return <Image src={icon} alt="map marker" width={30} height={30} />;
   };
 
@@ -125,8 +125,8 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     } else if (isNull(destID) || prefrences.type === '') {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
-    } else if (!addressID && method === `delivery`) {
-      if (isAuth) {
+    } else if (method === `delivery`) {
+      if(isAuth) {
         router.push(appLinks.createAuthAddress(customer_id));
       } else {
         router.push(appLinks.guestAddress.path);
