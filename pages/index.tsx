@@ -184,7 +184,7 @@ const Home: NextPage<Props> = ({
             <>
               <div className={`py-4`}>
                 {!isEmpty(categories) &&
-                vendorElement?.Data?.template_type === 'basic_category' ? (
+                vendorElement?.Data?.template_type === 'THEME_TWO_CATEGORY_LIST' ? (
                   <>
                     <UpcomingOrders />
                     <div className="px-4">
