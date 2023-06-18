@@ -11,8 +11,7 @@ import { alexandriaFont, alexandriaFontBold, appLinks } from '@/constants/*';
 import Link from 'next/link';
 import { setCategory } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { themeColor } from '@/redux/slices/vendorSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 type Props = {
   CategoriesProducts: Product[];
@@ -22,15 +21,12 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const color = useAppSelector(themeColor);
-  const bgclass = '!bg-'.concat('[', color, ']');
 
   const handleSearchRedirection = (id: string) => {
     dispatch(setCategory(id));
     router.push(`${appLinks.productSearch.path}`);
-  };
+  }
   // console.log(CategoriesProducts.map((i) => i.cat_id));
-
   return (
     <div>
       {/* sticky header */}
@@ -47,7 +43,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
           <ListOutlined />
         </div>
         <ScrollSpy
-          currentClassName={`active_cat ${bgclass}`}
+          onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
           items={CategoriesProducts.map((i) => i.cat_id)}
@@ -59,9 +55,12 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
             return (
               <a
                 href={`#${category.cat_id}`}
-                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 rounded-full whitespace-nowrap bg-zinc-100`}
+                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${category.cat_id == currentId ? `text-white` : ''}`}
+                style={{
+                  backgroundColor: category.cat_id == currentId ? color : 'var(--zinc-100)',
+                }}
               >
-                {category.name}
+              {category.name}
               </a>
             );
           })}
