@@ -26,7 +26,7 @@ export const vendorApi = apiSlice.injectEndpoints({
     }),
 
     getHomePromocode: builder.query<
-      AppQueryResult<HomePromoCode>,
+      AppQueryResult<HomePromoCode[]>,
       {
         lang: Locale['lang'] | string | undefined;
         url: string | undefined;

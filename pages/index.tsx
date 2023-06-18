@@ -118,7 +118,7 @@ const Home: NextPage<Props> = ({
     isLoading: homePromocodeLoading,
     isSuccess: homePromocodeSuccess,
   } = useGetHomePromocodeQuery<{
-    data: AppQueryResult<HomePromoCode>;
+    data: AppQueryResult<HomePromoCode[]>;
     isSuccess: boolean;
     isLoading: boolean;
   }>(
@@ -216,7 +216,7 @@ const Home: NextPage<Props> = ({
               {/* in sm screens only */}
               <Footer element={vendorElement?.Data} />
               <CheckoutFixedBtn url={url} />
-              {/* {homePromocodeSuccess && homePromocodeData?.data && (
+              {homePromocodeSuccess && homePromocodeData?.data && (
                 <HomeModal
                   data={homePromocodeData?.data}
                   isOpen={openPromoModal}
@@ -224,7 +224,7 @@ const Home: NextPage<Props> = ({
                     setOpenPromoModal(false);
                   }}
                 />
-              )} */}
+              )}
             </>
           )}
         </div>

@@ -68,7 +68,7 @@ const HomeModal: FC<Props> = ({
                 // src={
                 //   'https://html.com/wp-content/uploads/very-large-flamingo.jpg'
                 // }
-                src={data[0].promo_image}
+                src={data[0]?.promo_image ?? ''}
                 width={100}
                 height={100}
                 alt="cover img"
