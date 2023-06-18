@@ -1089,7 +1089,8 @@ const ProductShow: NextPage<Props> = ({
                                     handleSelectAddOn(s, c, s.must_select, true)
                                   }
                                   type="button"
-                                  className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-lg font-semibold rounded-full pb-3 bg-red-600 disabled:bg-gray-200 disabled:cursor-not-allowed"
+                                  className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-lg font-semibold rounded-full pb-3 disabled:!bg-gray-200 disabled:cursor-not-allowed"
+                                  style={{backgroundColor: color}}
                                 >
                                   +
                                 </button>
