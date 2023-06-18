@@ -56,11 +56,11 @@ const AdsScrollBar: FC<Props> = ({ slider = [] }) => {
       {!isEmpty(slider) && (
         <Slider {...settings}>
           {slider.map((img) => (
-            <div className="w-40 h-20 pe-3">
+            <div className="w-40 h-20 pe-5 rounded-md">
               <CustomImage
                 src={img}
                 alt="ads"
-                className="w-full h-full object-fill"
+                className="w-full h-full object-fill rounded-md"
               />
             </div>
           ))}
