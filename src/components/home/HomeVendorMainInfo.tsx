@@ -45,7 +45,12 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
     <div className="py-5">
       <div className="flex gap-x-2 justify-between items-start capitalize">
         <div className="flex grow gap-x-2">
-          <Link href={appLinks.home.path} scroll={true} className={`w-1/4`}>
+          <Link
+            href={appLinks.home.path}
+            scroll={true}
+            className={`w-1/4 rounded-md`}
+            style={{ boxShadow: '0px 0px 10px 0px #cfcdcd' }}
+          >
             <CustomImage
               width={imageSizes.xs}
               height={imageSizes.xs}
