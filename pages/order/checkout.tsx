@@ -68,7 +68,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
-   const isAuth = useAppSelector(isAuthenticated);
+  const isAuth = useAppSelector(isAuthenticated);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     'visa' | 'knet' | 'cash_on_delivery' | null
   >(null);
@@ -126,9 +126,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === `delivery`) {
-      if(isAuth) {
+      if (isAuth) {    // check on address id of user
         router.push(appLinks.createAuthAddress(customer_id));
-      } else {
+      } else if (!addressID) {
         router.push(appLinks.guestAddress.path);
       }
     } else if (isNull(selectedPaymentMethod)) {
