@@ -14,7 +14,7 @@ export default function AsideContent({ element }: Props) {
       <Link
         scroll={true}
         href={appLinks.home.path}
-        className={`flex-col items-center text-center text-white z-50`}
+        className={`flex flex-col items-center justify-center text-center text-white z-50`}
       >
         <CustomImage
           src={`${imgUrl(element.logo)}`}
