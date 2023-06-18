@@ -69,7 +69,8 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
                 }`}
                 style={{
                   backgroundColor:
-                    category.cat_id == currentId ? color : 'var(--zinc-100)',
+                    category.cat_id == currentId ? color : '#F3F2F2',
+                  transition: category.cat_id == currentId ? 'all 0.5s' : '',
                 }}
               >
                 {category.name}
