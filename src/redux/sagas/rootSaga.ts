@@ -5,7 +5,6 @@ import {
   triggerEnableLoading,
   triggerShowToastMessage,
   triggerResetEntireApp,
-  triggerUpdateCartProductPrice,
 } from './triggers';
 
 export default function* rootSaga() {
@@ -14,7 +13,6 @@ export default function* rootSaga() {
     fork(triggerChangeLang),
     fork(triggerShowToastMessage),
     fork(triggerResetEntireApp),
-    fork(triggerUpdateCartProductPrice),
   ]);
   yield take(REHYDRATE); // Wait for rehydrate to prevent sagas from running with empty store
   yield take(PURGE);

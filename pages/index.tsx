@@ -59,11 +59,8 @@ const Home: NextPage<Props> = ({
   const router = useRouter();
   const [openPromoModal, setOpenPromoModal] = useState(true);
 
-  // console.log('desObject', desObject);
-
-  // seturl
   useEffect(() => {
-    if (url) {
+    if (!isNull(url)) {
       dispatch(setUrl(url));
     }
   }, []);
@@ -117,9 +114,9 @@ const Home: NextPage<Props> = ({
 
   // get promo modal data
   const {
-    data: HomePromocodeData,
-    isLoading: HomePromocodeLoading,
-    isSuccess: HomePromocodeSuccess,
+    data: homePromocodeData,
+    isLoading: homePromocodeLoading,
+    isSuccess: homePromocodeSuccess,
   } = useGetHomePromocodeQuery<{
     data: AppQueryResult<HomePromoCode>;
     isSuccess: boolean;
@@ -219,15 +216,15 @@ const Home: NextPage<Props> = ({
               {/* in sm screens only */}
               <Footer element={vendorElement?.Data} />
               <CheckoutFixedBtn url={url} />
-              {HomePromocodeSuccess && (
+              {/* {homePromocodeSuccess && homePromocodeData?.data && (
                 <HomeModal
-                  data={HomePromocodeData?.data}
+                  data={homePromocodeData?.data}
                   isOpen={openPromoModal}
                   onRequestClose={() => {
                     setOpenPromoModal(false);
                   }}
                 />
-              )}
+              )}  */}
             </>
           )}
         </div>
@@ -242,9 +239,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale }) => {
       const url = req.headers.host;
+      if (!url) {
+        return { notFound: true };
+      }
       if (store.getState().locale.lang !== locale) {
         store.dispatch(setLocale(locale));
       }
+      store.dispatch(setUrl(url));
       const {
         data: element,
         isError,
@@ -256,7 +257,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           })
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
-      if (isError || !element.status || !element.Data || !element || !url) {
+      if (isError || !element.Data || !element) {
         return {
           notFound: true,
         };

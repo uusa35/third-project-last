@@ -118,14 +118,19 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     },
     { refetchOnMountOrArgChange: true }
   );
+
   const handleCreateOrder = async () => {
     if (!customer_id) {
       router.push(appLinks.login.path);
     } else if (isNull(destID) || prefrences.type === '') {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
-    } else if (!isAuth && method === `delivery`) {
-      router.push(appLinks.guestAddress.path);
+    } else if (method === `delivery`) {
+      if(isAuth) {
+        router.push(appLinks.createAuthAddress(customer_id));
+      } else {
+        router.push(appLinks.guestAddress.path);
+      }
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({

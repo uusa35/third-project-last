@@ -30,10 +30,7 @@ import { useEffect, useState } from 'react';
 import { AppQueryResult } from '@/types/queries';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isEmpty, isObject, isUndefined, map } from 'lodash';
-import {
-  setCustomerAddress,
-  setCustomerAddressType,
-} from '@/redux/slices/customerSlice';
+import { setCustomerAddress } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -58,21 +55,16 @@ const AddressIndex: NextPage<Props> = ({
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
     }>();
-  const { refetch: refetchAddresses } = useGetAddressesQuery<{
-    refetch: () => void;
-  }>({ url });
   const [triggerDeleteAddress] = useDeleteAddressMutation();
 
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url }, false).then((res) =>
-      console.log({ addressRes: res })
-    );
+    triggerGetAddresses({ url }, false);
   }, []);
 
-  const handelDisplayAddress = (address) => {
+  const handelDisplayAddress = (address: any) => {
     if (address && !isUndefined(address) && isObject(address)) {
       const addressValues =
         !isUndefined(address) &&
@@ -84,7 +76,7 @@ const AddressIndex: NextPage<Props> = ({
     }
   };
 
-  const showHideEditBtn = (address) => {
+  const showHideEditBtn = (address: any) => {
     if (selectedAddress === address) {
       setSelectedAddress(null);
     } else {
@@ -94,8 +86,7 @@ const AddressIndex: NextPage<Props> = ({
 
   const handleEdit = (address: any) => {
     dispatch(setCustomerAddress(address));
-    console.log('address', address);
-    dispatch(setCustomerAddressType(address.type));
+    console.log({ address: `${address.id}` });
     router.push(appLinks.createAuthAddress(id));
   };
 
@@ -107,8 +98,7 @@ const AddressIndex: NextPage<Props> = ({
       },
       url,
     }).then((r) => {
-      console.log({ deleteAddress: r });
-      refetchAddresses();
+      triggerGetAddresses({ url }, false);
     });
   };
 
@@ -118,14 +108,14 @@ const AddressIndex: NextPage<Props> = ({
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
       <div className="relative h-[100vh]">
-        {isSuccess && !isEmpty(addresses?.data?.address) ? (
+        {isSuccess && addresses?.data && !isEmpty(addresses?.data?.address) ? (
           <div>
             {map(addresses?.data?.address, (address) => (
               <div
                 className="flex flex-col w-auto justify-start items-start mx-4 space-y-4"
                 key={address.id}
               >
-                <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 w-full text-sm">
+                <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 overflow-hidden w-full text-sm">
                   <div
                     className={`flex flex-1 flex-row justify-between items-start`}
                   >
@@ -151,16 +141,10 @@ const AddressIndex: NextPage<Props> = ({
 
                         {selectedAddress === address && (
                           <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md">
-                            <button
-                              onClick={() => handleEdit(address)}
-                              className="py-2 border-b-[1px] border-stone-200 w-full capitalize"
-                            >
+                            <button onClick={() => handleEdit(address)}>
                               {t('edit')}
                             </button>
-                            <button
-                              onClick={() => handleDelete(address)}
-                              className="text-red-600 py-2 capitalize"
-                            >
+                            <button onClick={() => handleDelete(address)}>
                               {t('delete')}
                             </button>
                           </div>
@@ -183,7 +167,7 @@ const AddressIndex: NextPage<Props> = ({
         )}
         <div className="relative -bottom-10 p-2 w-full">
           <Link
-            href={`${appLinks.createAuthAddress(id)}`}
+            href={`${appLinks.guestAddress.path}`}
             className={`${mainBtnClass} flex flex-row justify-center items-center`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}

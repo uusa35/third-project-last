@@ -25,10 +25,10 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<VerifyCode>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
-            code: string,
-            type: 'register' | 'reset'
+          phone: string;
+          phone_country_code: string;
+          code: string,
+          type: 'register' | 'reset'
         };
         url: string
       }
@@ -45,11 +45,11 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<Register>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
-            name: string;
-            email: string;
-            UserAgent: string
+          phone: string;
+          phone_country_code: string;
+          name: string;
+          email: string;
+          UserAgent: string
         };
         url: string;
       }
@@ -66,9 +66,9 @@ export const authApi = apiSlice.injectEndpoints({
       AppQueryResult<Register>,
       {
         body: {
-            phone: string;
-            phone_country_code: string;
-            UserAgent: string
+          phone: string;
+          phone_country_code: string;
+          UserAgent: string
         };
         url: string;
       }

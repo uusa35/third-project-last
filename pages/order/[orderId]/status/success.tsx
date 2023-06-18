@@ -53,7 +53,7 @@ const OrderSuccess: NextPage<Props> = ({ url,orderId }): React.ReactElement => {
     data: AppQueryResult<Order>;
     isLoading: boolean;
   }>();
-  console.log({ orderId })
+  
   useEffect(() => {
     triggerGetOrderStatus({ 
       status: 'success', 
