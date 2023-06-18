@@ -216,15 +216,17 @@ const Home: NextPage<Props> = ({
               {/* in sm screens only */}
               <Footer element={vendorElement?.Data} />
               <CheckoutFixedBtn url={url} />
-              {homePromocodeSuccess && homePromocodeData?.data && (
-                <HomeModal
-                  data={homePromocodeData?.data}
-                  isOpen={openPromoModal}
-                  onRequestClose={() => {
-                    setOpenPromoModal(false);
-                  }}
-                />
-              )}
+              {homePromocodeSuccess &&
+                homePromocodeData?.data &&
+                !isEmpty(homePromocodeData?.data)(
+                  <HomeModal
+                    data={homePromocodeData?.data}
+                    isOpen={openPromoModal}
+                    onRequestClose={() => {
+                      setOpenPromoModal(false);
+                    }}
+                  />
+                )}
             </>
           )}
         </div>
