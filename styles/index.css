@@ -3,7 +3,7 @@ html {
   }
 
 .active_cat {
-    background-color: #E30015;
+    /* background-color: #E30015; */
     transition: all 0.5s;
     color: white;
 }

@@ -11,21 +11,24 @@ import { alexandriaFont, alexandriaFontBold, appLinks } from '@/constants/*';
 import Link from 'next/link';
 import { setCategory } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   CategoriesProducts: Product[];
 };
 
-const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
+const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const color = useAppSelector(themeColor);
+  const bgclass = '!bg-'.concat('[', color, ']');
 
   const handleSearchRedirection = (id: string) => {
     dispatch(setCategory(id));
     router.push(`${appLinks.productSearch.path}`);
-  }
+  };
   // console.log(CategoriesProducts.map((i) => i.cat_id));
 
   return (
@@ -44,7 +47,7 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
           <ListOutlined />
         </div>
         <ScrollSpy
-          currentClassName="active_cat"
+          currentClassName={`active_cat ${bgclass}`}
           // rootEl="div"
           componentTag="div"
           items={CategoriesProducts.map((i) => i.cat_id)}
@@ -75,7 +78,9 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
             <section id={`${category.cat_id}`}>
               <div className="mt-5 px-4">
                 {/* cat name */}
-                <button onClick={() => handleSearchRedirection(category.cat_id)}>
+                <button
+                  onClick={() => handleSearchRedirection(category.cat_id)}
+                >
                   <TextTrans
                     className={`text-lg mt-5 ${alexandriaFontBold}`}
                     ar={category.name_ar}
@@ -107,6 +112,5 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
       />
     </div>
   );
-}
+};
 export default ProductListView;
-
