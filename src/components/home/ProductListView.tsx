@@ -11,7 +11,8 @@ import { alexandriaFont, alexandriaFontBold, appLinks } from '@/constants/*';
 import Link from 'next/link';
 import { setCategory } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   CategoriesProducts: Product[];
@@ -21,11 +22,18 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const color = useAppSelector(themeColor);
+  const [currentId, setCurrentId] = useState<string | null>(null);
+  const handleUpdate = (el: HTMLElement | null) => {
+    if (el) {
+      setCurrentId(el.id);
+    }
+  };
 
   const handleSearchRedirection = (id: string) => {
     dispatch(setCategory(id));
     router.push(`${appLinks.productSearch.path}`);
-  }
+  };
   // console.log(CategoriesProducts.map((i) => i.cat_id));
   return (
     <div>
@@ -43,6 +51,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
           <ListOutlined />
         </div>
         <ScrollSpy
+          currentClassName=""
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
@@ -55,12 +64,15 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
             return (
               <a
                 href={`#${category.cat_id}`}
-                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${category.cat_id == currentId ? `text-white` : ''}`}
+                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
+                  category.cat_id == currentId ? `text-white` : ''
+                }`}
                 style={{
-                  backgroundColor: category.cat_id == currentId ? color : 'var(--zinc-100)',
+                  backgroundColor:
+                    category.cat_id == currentId ? color : 'var(--zinc-100)',
                 }}
               >
-              {category.name}
+                {category.name}
               </a>
             );
           })}
