@@ -10,7 +10,7 @@ import {
   ChevronRightIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import TextTrans from '@/components/TextTrans';
 import Link from 'next/link';
@@ -18,6 +18,8 @@ import { appLinks } from '@/constants/*';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import MapIcon from '@/appIcons/map_icon.svg';
 import { isNull } from 'lodash';
+import { useEffect } from 'react';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -32,6 +34,13 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
   } = useAppSelector((state) => state);
   const isAuth = useAppSelector(isAuthenticated);
   const { t } = useTranslation();
+  const dispatch=useAppDispatch()
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
 
   return (

@@ -12,9 +12,11 @@ import {
   MapIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { SendOutlined } from '@mui/icons-material';
+import { useEffect } from 'react';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -26,6 +28,14 @@ const OrderTrack: NextPage<Props> = ({ element, url }): React.ReactElement => {
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
+
   return (
     <MainContentLayout
       url={url}

@@ -2,13 +2,15 @@ import CustomImage from '@/components/CustomImage';
 import MainHead from '@/components/MainHead';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import EmptyOrders from '@/appImages/empty_orders.png';
 import NoOrder from '@/appImages/no_order.png';
 import { Search } from '@mui/icons-material';
 import { suppressText } from '@/constants/*';
 import { NextPage } from 'next';
+import { useAppDispatch } from '@/redux/hooks';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   url: string
@@ -16,6 +18,13 @@ type Props = {
 
 const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
+  const dispatch=useAppDispatch()
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   return (
     <Suspense>

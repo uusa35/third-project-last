@@ -52,9 +52,9 @@ const HomeModal: FC<Props> = ({
           isRTL ? 'justify-end' : 'justify-start'
         }`}
       >
-        <div className="absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/2">
+        <div className="flex items-center justify-center absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/2">
           <div
-            className={`relative flex flex-col items-end justify-between rounded-lg h-full`}
+            className={`relative flex flex-col items-end justify-between rounded-lg w-[90%] aspect-square`}
             // style={{
             //   backgroundColor: color,
             //   backgroundImage: `url(${data[0].promo_image})`,
@@ -76,7 +76,10 @@ const HomeModal: FC<Props> = ({
               />
             </div>
             <div className="absolute h-full w-full flex flex-col justify-between items-end z-10 py-5 rounded-lg">
-              <button className={`mt-2 px-5 pb-5`} onClick={onRequestClose}>
+              <button
+                className={`mt-2 px-5 pb-5`}
+                onClick={() => onRequestClose()}
+              >
                 <XMarkIcon
                   className={`w-6 h-6 text-black text-base bg-white rounded-full p-1`}
                 />

@@ -15,7 +15,7 @@ import { suppressText } from '@/constants/*';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { useLazyGetTimingsQuery } from '@/redux/api/cartApi';
-import { showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setPreferences } from '@/redux/slices/customerSlice';
 import { Router, useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons';
@@ -72,6 +72,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   const daysInCurrentMonth = today.daysInMonth();
 
   useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
     triggerGetVendor(
       {
         lang,

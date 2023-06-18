@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import React from 'react';
+import React, { useEffect } from 'react';
 import FailureIcon from '@/appImages/failed.svg';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
@@ -11,11 +11,19 @@ import PaymentSummary from '@/components/PaymentSummary';
 import CartProduct from '@/components/widgets/product/CartProduct';
 import CallusIcon from '@/appIcons/call_us_green.svg';
 import { NextPage } from 'next';
+import { setUrl } from '@/redux/slices/appSettingSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 type Props = { url: string };
 const OrderFailure: NextPage<Props> = ({ url }): React.ReactElement => {
-
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   const DetailComponent = ({
     title,
@@ -121,7 +129,7 @@ const OrderFailure: NextPage<Props> = ({ url }): React.ReactElement => {
       </div>
     </MainContentLayout>
   );
-}
+};
 
 export default OrderFailure;
 

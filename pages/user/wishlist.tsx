@@ -15,6 +15,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   setCurrentModule,
+  setUrl,
   showHeader,
   showToastMessage,
 } from '@/redux/slices/appSettingSlice';
@@ -56,6 +57,12 @@ const Wishlist: NextPage<Props> = ({ url }): React.ReactElement => {
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   const handelDeleteFromWishList = async (id: number | string) => {
     await triggerDeleteFromWishList({ url, product_id: id.toString() }).then(

@@ -1,5 +1,5 @@
 import MainContentLayout from '@/layouts/MainContentLayout';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Suspense } from 'react';
 import MainHead from '@/components/MainHead';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ import {
 } from '@/constants/*';
 import { useRouter } from 'next/router';
 import { useGetInvoiceQuery } from '@/redux/api/orderApi';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { AppQueryResult } from '@/types/queries';
 import {
   CheckBoxes,
@@ -32,6 +32,7 @@ import PaymentSummary from '@/components/PaymentSummary';
 import ContentLoader from '@/components/skeletons';
 import Link from 'next/link';
 import { NextPage } from 'next';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   url: string;
@@ -43,6 +44,7 @@ const orderReceipt: NextPage<Props> = ({
   orderId,
 }): React.ReactElement => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const {
     searchParams: { destination },
@@ -69,7 +71,11 @@ const orderReceipt: NextPage<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  console.log({ orderReceiptData });
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   return (
     <Suspense>
