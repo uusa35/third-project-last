@@ -145,14 +145,16 @@ export default function CartProduct({
             >
               <div
                 onClick={() => HandelDecIncRmv(product, 'dec')}
-                className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center"
+                className="rounded-full text-white cursor-pointer h-4 w-4 flex items-center justify-center"
+                style={{backgroundColor:color}}
               >
                 -
               </div>
               <label className="text-xs">{product.Quantity}</label>
               <div
                 onClick={() => HandelDecIncRmv(product, 'inc')}
-                className="rounded-full text-white cursor-pointer h-4 w-4 bg-red-500 flex items-center justify-center"
+                className="rounded-full text-white cursor-pointer h-4 w-4 flex items-center justify-center"
+                style={{backgroundColor:color}}
               >
                 +
               </div>

@@ -18,7 +18,11 @@ import { useTranslation } from 'react-i18next';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
-import { destinationHeaderObject, setCategory } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationHeaderObject,
+  setCategory,
+} from '@/redux/slices/searchParamsSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = { url: string };
 export default function AsideHeader({ url }: Props) {
@@ -32,6 +36,7 @@ export default function AsideHeader({ url }: Props) {
     searchParams: { method },
     cart: { promocode },
   } = useAppSelector((state) => state);
+  const color = useAppSelector(themeColor);
   const destObj = useAppSelector(destinationHeaderObject);
 
   const handleChangeLang = async (locale: string) => {
@@ -87,9 +92,7 @@ export default function AsideHeader({ url }: Props) {
       </div>
 
       {/* cart , search , lang right icons */}
-      <div
-        className={`flex flex-row justify-start items-start gap-3  z-50`}
-      >
+      <div className={`flex flex-row justify-start items-start gap-3  z-50`}>
         <Link
           scroll={true}
           href={appLinks.cart.path}
@@ -101,7 +104,10 @@ export default function AsideHeader({ url }: Props) {
             {isSuccess &&
               cartItems.data &&
               cartItems.data?.Cart?.length > 0 && (
-                <div className="absolute -top-3 left-3 opacity-90  rounded-full bg-red-600 w-5 h-5 border border-white shadow-xl flex items-center justify-center text-white text-xxs">
+                <div
+                  style={{ backgroundColor: color }}
+                  className="absolute -top-3 left-3 opacity-90  rounded-full  w-5 h-5 border border-white shadow-xl flex items-center justify-center text-white text-xxs"
+                >
                   <span className={`pt-[2.5px] shadow-md`}>
                     {cartItems.data?.Cart?.length}
                   </span>

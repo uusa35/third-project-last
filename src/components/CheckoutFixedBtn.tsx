@@ -2,7 +2,13 @@ import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { alexandriaFont, alexandriaFontMeduim, appLinks, suppressText } from '../constants';
+import {
+  alexandriaFont,
+  alexandriaFontMeduim,
+  appLinks,
+  convertColor,
+  suppressText,
+} from '../constants';
 import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
 import PrepareStatusIcon from '@/appIcons/status_home_prepare.svg';
 import DeliveryStatusIcon from '@/appIcons/status_home_delivery.svg';
@@ -100,8 +106,13 @@ export default function CheckoutFixedBtn({
                   <p
                     suppressHydrationWarning={suppressText}
                     className={`flex items-center justify-center rounded-full w-8 h-8 ${
-                      cartLessThanMin ? 'bg-black bg-opacity-10' : 'bg-red-800'
+                      cartLessThanMin ? 'bg-opacity-10' : ''
                     }`}
+                    style={{
+                      backgroundColor: cartLessThanMin
+                        ? 'black'
+                        : convertColor(color, 150),
+                    }}
                   >
                     {cartItems?.data?.Cart.length}
                   </p>

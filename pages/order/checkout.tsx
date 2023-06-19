@@ -10,7 +10,7 @@ import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
 import { wrapper } from '@/redux/store';
 import CartProduct from '@/components/widgets/product/CartProduct';
-import AddIcon from '@/appIcons/add_checkout.svg';
+// import AddIcon from '@/appIcons/add_checkout.svg';
 import Link from 'next/link';
 import {
   alexandriaFont,
@@ -39,6 +39,7 @@ import WhenClosedModal from '@/components/modals/WhenClosedModal';
 import {
   RadioButtonCheckedOutlined,
   CircleOutlined,
+  Add,
 } from '@mui/icons-material';
 import moment from 'moment';
 import { NextPage } from 'next';
@@ -126,7 +127,8 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === `delivery`) {
-      if (isAuth) {    // check on address id of user
+      if (isAuth) {
+        // check on address id of user
         router.push(appLinks.createAuthAddress(customer_id));
       } else if (!addressID) {
         router.push(appLinks.guestAddress.path);
@@ -263,12 +265,14 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
 
               <Link
                 href={appLinks.home.path}
-                className="flex items-center gap-x-1 rounded-full border border-[#E30015] text-[#E30015] w-fit text-xs py-1 px-3  mt-3"
+                className="flex items-center gap-x-1 rounded-full border w-fit text-xs py-1 px-3  mt-3"
+                style={{ borderColor: color, color }}
               >
-                <AddIcon />
+                <Add color={color} fontSize="small" />
                 <p
                   suppressHydrationWarning={suppressText}
                   className={`${alexandriaFont}`}
+                  style={{ color }}
                 >
                   {t('add_items')}
                 </p>
