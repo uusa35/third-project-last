@@ -18,27 +18,21 @@ type Props = {
   CategoriesProducts: Product[];
 };
 
-const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
+const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const color = useAppSelector(themeColor);
-  const activeCatStyle = {
-    backgroundColor: 'red',
-    color: 'white',
-    /* Add more styles as needed */
+  const [currentId, setCurrentId] = useState<string | null>(null);
+  const handleUpdate = (el: HTMLElement | null) => {
+    if (el) {
+      setCurrentId(el.id);
+    }
   };
 
   const handleSearchRedirection = (id: string) => {
     dispatch(setCategory(id));
     router.push(`${appLinks.productSearch.path}`);
-  }
-  const [currentId, setCurrentId] = useState<string | null>(null);
-
-  const handleUpdate = (el: HTMLElement | null) => {
-    if (el) {
-      setCurrentId(el.id);
-    }
   };
   // console.log(CategoriesProducts.map((i) => i.cat_id));
   return (
@@ -57,6 +51,7 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
           <ListOutlined />
         </div>
         <ScrollSpy
+          currentClassName=""
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
@@ -69,12 +64,16 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
             return (
               <a
                 href={`#${category.cat_id}`}
-                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${category.cat_id == currentId ? `text-white` : ''}`}
+                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
+                  category.cat_id == currentId ? `text-white` : ''
+                }`}
                 style={{
-                  backgroundColor: category.cat_id == currentId ? color : 'var(--zinc-100)',
+                  backgroundColor:
+                    category.cat_id == currentId ? color : '#F3F2F2',
+                  transition: category.cat_id == currentId ? 'all 0.5s' : '',
                 }}
               >
-              {category.name}
+                {category.name}
               </a>
             );
           })}
@@ -91,7 +90,9 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
             <section id={`${category.cat_id}`}>
               <div className="mt-5 px-4">
                 {/* cat name */}
-                <button onClick={() => handleSearchRedirection(category.cat_id)}>
+                <button
+                  onClick={() => handleSearchRedirection(category.cat_id)}
+                >
                   <TextTrans
                     className={`text-lg mt-5 ${alexandriaFontBold}`}
                     ar={category.name_ar}
@@ -123,6 +124,5 @@ const ProductListView:FC<Props> = ({ CategoriesProducts }) => {
       />
     </div>
   );
-}
+};
 export default ProductListView;
-
