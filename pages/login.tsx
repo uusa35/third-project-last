@@ -91,25 +91,8 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     }).then(async (r: any) => {
       if (r.error) {
         router.push(appLinks.otpVerification.path);
-<<<<<<< HEAD
-      }
-      else {
-        router.push(appLinks.userLogin.path);
-=======
       } else {
-        await triggerLogin({
-          body: {
-            phone: userPhone,
-            phone_country_code: userCountryCode,
-            UserAgent: customer.userAgent,
-          },
-          url,
-        }).then((r: any) => {
-          dispatch(setCustomer(r.data.data.user));
-          dispatch(signIn(r.data.data.token));
-          router.back();
-        });
->>>>>>> usama
+        router.push(appLinks.userLogin.path);
       }
       dispatch(
         setCustomer({

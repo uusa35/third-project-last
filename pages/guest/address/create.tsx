@@ -13,7 +13,7 @@ import {
   EllipsisVerticalIcon,
   HomeIcon,
   BuildingOffice2Icon,
-  BriefcaseIcon
+  BriefcaseIcon,
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
@@ -184,7 +184,13 @@ const AddressCreate: NextPage<Props> = ({
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
             style={{ borderColor: currentAddressType === 'HOUSE' && color }}
           >
-            <HomeIcon className={`w-8 h-8 ${currentAddressType === 'HOUSE' ? `text-[${color}]` : 'text-zinc-400'}`} />
+            <HomeIcon
+              className={`w-8 h-8 ${
+                currentAddressType === 'HOUSE'
+                  ? `text-[${color}]`
+                  : 'text-zinc-400'
+              }`}
+            />
             <p>{t('house')}</p>
           </button>
           <button
@@ -192,7 +198,13 @@ const AddressCreate: NextPage<Props> = ({
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
             style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
           >
-            <BuildingOffice2Icon className={`w-8 h-8 ${currentAddressType === 'APARTMENT' ? `text-[${color}]` : 'text-zinc-400'}`} />
+            <BuildingOffice2Icon
+              className={`w-8 h-8 ${
+                currentAddressType === 'APARTMENT'
+                  ? `text-[${color}]`
+                  : 'text-zinc-400'
+              }`}
+            />
             <p>{t('apartment')}</p>
           </button>
           <button
@@ -200,7 +212,13 @@ const AddressCreate: NextPage<Props> = ({
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
             style={{ borderColor: currentAddressType === 'OFFICE' && color }}
           >
-            <BriefcaseIcon className={`w-8 h-8 ${currentAddressType === 'OFFICE' ? `text-[${color}]` : 'text-zinc-400'}`} />
+            <BriefcaseIcon
+              className={`w-8 h-8 ${
+                currentAddressType === 'OFFICE'
+                  ? `text-[${color}]`
+                  : 'text-zinc-400'
+              }`}
+            />
             <p>{t('office')}</p>
           </button>
         </div>
@@ -365,9 +383,36 @@ const AddressCreate: NextPage<Props> = ({
               )}
             </div>
           )}
-
-          {/*  apartment  */}
           {/*  building_no  */}
+          {currentAddressType !== 'HOUSE' && (
+            <div className="w-full ">
+              <label
+                suppressHydrationWarning={suppressText}
+                htmlFor="building_no"
+                className="block text-sm font-medium text-gray-900"
+              >
+                {t('building_no')}*
+              </label>
+              <div className="relative rounded-md shadow-sm">
+                <input
+                  {...register('building_no')}
+                  suppressHydrationWarning={suppressText}
+                  className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                  placeholder={`${t('building_no')}`}
+                />
+              </div>
+              {errors?.building_no?.message && (
+                <span
+                  className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('building_no_is_required')}
+                </span>
+              )}
+            </div>
+          )}
+          {/*  apartment  */}
+
           {currentAddressType === 'APARTMENT' && (
             <>
               <div className="w-full ">
