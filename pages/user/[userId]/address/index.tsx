@@ -86,7 +86,6 @@ const AddressIndex: NextPage<Props> = ({
 
   const handleEdit = (address: any) => {
     dispatch(setCustomerAddress(address));
-    console.log({ address: `${address.id}` });
     router.push(appLinks.createAuthAddress(id));
   };
 
@@ -108,9 +107,9 @@ const AddressIndex: NextPage<Props> = ({
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
       <div className="relative h-[100vh]">
-        {isSuccess && addresses?.data && !isEmpty(addresses?.data?.address) ? (
+        {isSuccess && addresses?.data && !isEmpty(addresses?.data) ? (
           <div>
-            {map(addresses?.data?.address, (address) => (
+            {map(addresses?.data, (address) => (
               <div
                 className="flex flex-col w-auto justify-start items-start mx-4 space-y-4"
                 key={address.id}
@@ -122,7 +121,7 @@ const AddressIndex: NextPage<Props> = ({
                     <div>
                       <h5 className="font-semibold pb-2">{address.type}</h5>
                       <div className="text-zinc-600">
-                        <p>{handelDisplayAddress(address?.address)}</p>
+                        <p>{handelDisplayAddress(address)}</p>
                         <p>{name}</p>
                         <p>
                           {countryCode}
