@@ -82,13 +82,18 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-x-1">
-                    <MinOrderIcon />
-                    <p suppressHydrationWarning={suppressText}>
-                      {t('min_order')} :{' '}
-                      {element?.Data?.delivery?.minimum_order_price} {t('kwd')}
-                    </p>
-                  </div>
+                  {parseFloat(element?.Data?.delivery?.minimum_order_price) ? (
+                    <div className="flex items-center gap-x-1">
+                      <MinOrderIcon />
+                      <p suppressHydrationWarning={suppressText}>
+                        {t('min_order')} :{' '}
+                        {element?.Data?.delivery?.minimum_order_price}{' '}
+                        {t('kwd')}
+                      </p>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </>
               )}
 
