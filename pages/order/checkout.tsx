@@ -120,6 +120,8 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     { refetchOnMountOrArgChange: true }
   );
 
+  // get user address
+
   const handleCreateOrder = async () => {
     if (!customer_id && !isAuth) {
       router.push(appLinks.login.path);
@@ -137,7 +139,6 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       }
     }
     if (isNull(selectedPaymentMethod)) {
-      console.log('rooonaaa');
       dispatch(
         showToastMessage({
           content: 'please_select_payment_method',
@@ -146,14 +147,13 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       );
     }
     if (
-      !isNull(customer_id) &&
+      // !isNull(customer_id) &&
       !isNull(selectedPaymentMethod) &&
       selectedPaymentMethod &&
       !isNull(userAgent)
     ) {
       await triggerCreateOrder({
         params: {
-          user_id: customer_id,
           ...(method === `delivery` ? { address_id: addressID } : {}),
           order_type: prefrences.type,
           // order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
