@@ -139,11 +139,17 @@ const AddressIndex: NextPage<Props> = ({
                         </div>
 
                         {selectedAddress === address && (
-                          <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md">
-                            <button onClick={() => handleEdit(address)}>
+                          <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md capitalize">
+                            <button
+                              onClick={() => handleEdit(address)}
+                              className={`capitalize mb-2`}
+                            >
                               {t('edit')}
                             </button>
-                            <button onClick={() => handleDelete(address)}>
+                            <button
+                              onClick={() => handleDelete(address)}
+                              className={`capitalize mb-2 text-red-600`}
+                            >
                               {t('delete')}
                             </button>
                           </div>
