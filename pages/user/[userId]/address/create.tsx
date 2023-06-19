@@ -126,7 +126,6 @@ const AddressCreate: NextPage<Props> = ({
           const current = first(
             filter(r.data.data, (a) => a.type === currentAddressType)
           );
-          console.log('curernt', current);
           if (current?.address) {
             setCurrentAddress(current);
           }
