@@ -21,7 +21,7 @@ import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { useCheckPhoneMutation, useLoginMutation } from '@/redux/api/authApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { setCustomer, signIn } from '@/redux/slices/customerSlice';
+import { setCustomer, signIn, signOut } from '@/redux/slices/customerSlice';
 import { checkPhone } from 'src/validations';
 import { map, upperCase, upperFirst } from 'lodash';
 import { setUrl } from '@/redux/slices/appSettingSlice';
@@ -62,6 +62,11 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       dispatch(setUrl(url));
     }
   }, []);
+
+  const handleGuest = () => {
+    setIsOpen(true); 
+    dispatch(signOut);
+  }
 
   const [triggerCheckPhone] = useCheckPhoneMutation();
   const [triggerLogin] = useLoginMutation();
@@ -176,7 +181,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
           <button 
               className="w-full underline text-center pb-10" 
               suppressHydrationWarning={suppressText}
-              onClick={() => setIsOpen(true)}
+              onClick={handleGuest}
             >
               {upperFirst(`${t('or_continue_as_guest')}`)} 
           </button>
