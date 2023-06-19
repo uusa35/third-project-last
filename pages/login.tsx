@@ -30,7 +30,7 @@ import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
 import { useCheckPhoneMutation, useLoginMutation } from '@/redux/api/authApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { setCustomer, signIn } from '@/redux/slices/customerSlice';
+import { setCustomer, signIn, signOut } from '@/redux/slices/customerSlice';
 import { checkPhone } from 'src/validations';
 import { map, upperCase, upperFirst } from 'lodash';
 import { setUrl } from '@/redux/slices/appSettingSlice';
@@ -73,6 +73,11 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       dispatch(setUrl(url));
     }
   }, []);
+
+  const handleGuest = () => {
+    setIsOpen(true); 
+    dispatch(signOut);
+  }
 
   const [triggerCheckPhone] = useCheckPhoneMutation();
   const [triggerLogin] = useLoginMutation();
@@ -166,28 +171,23 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
                   </p>
                 )}
               </div>
-            )}
-          </div>
-          <div className="px-4">
-            {map(signInAdvantages, (advantage) => (
-              <div className="flex pb-3" key={advantage.id}>
-                {advantage.icon}
-                <span
-                  className="px-3 text-sm text-zinc-800"
-                  suppressHydrationWarning={suppressText}
-                >
-                  {t(advantage.text)}
-                </span>
-              </div>
-            ))}
-          </div>
-          <button
-            className={`${mainBtnClass} flex flex-row justify-center items-center my-4`}
-            style={{ backgroundColor: color }}
-            suppressHydrationWarning={suppressText}
-            type="submit"
-          >
-            {t('send')} {upperCase(`${t('otp')}`)}
+              ))}
+            </div>
+            <button
+              className={`${mainBtnClass} flex flex-row justify-center items-center my-4`}
+              style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
+              type="submit"
+            >
+             {t('send')} {' '} {upperCase(`${t('otp')}`)}
+            </button>
+          </form>
+          <button 
+              className="w-full underline text-center pb-10" 
+              suppressHydrationWarning={suppressText}
+              onClick={handleGuest}
+            >
+              {upperFirst(`${t('or_continue_as_guest')}`)} 
           </button>
         </form>
         <button
