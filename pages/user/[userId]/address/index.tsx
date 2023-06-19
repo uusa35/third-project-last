@@ -9,7 +9,7 @@ import { wrapper } from '@/redux/store';
 import { UserAddressFields, Vendor } from '@/types/index';
 import {
   EllipsisVerticalIcon,
-  PlusSmallIcon,
+  PlusSmallIcon
 } from '@heroicons/react/24/outline';
 import NoAddresses from '@/appImages/no_address.svg';
 import {

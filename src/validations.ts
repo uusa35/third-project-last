@@ -99,3 +99,19 @@ export const checkPhone = yup
     phone: yup.number().min(10000000000).max(999999999999),
   })
   .required();
+
+  export const loginSchema = (isResetPassword: boolean) => {
+    return yup.lazy((values) => {
+      if (isResetPassword) {
+        return yup.object().shape({
+          new_password: yup.string().required().min(6),
+          confirmation_password: yup.string().required().oneOf([yup.ref('new_password'), null]),
+        });
+      } else {
+        return yup.object().shape({
+          password: yup.string().required().min(6),
+        });
+      }
+    });
+  };
+  

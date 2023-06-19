@@ -11,6 +11,9 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   EllipsisVerticalIcon,
+  HomeIcon,
+  BuildingOffice2Icon,
+  BriefcaseIcon
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
@@ -38,7 +41,7 @@ import {
   WorkOutlineTwoTone,
 } from '@mui/icons-material';
 import { AppQueryResult } from '@/types/queries';
-import HomeIcon from '@/appIcons/home.svg';
+// import HomeIcon from '@/appIcons/home.svg';
 import ApartmentIcon from '@/appIcons/apartment.svg';
 import OfficeIcon from '@/appIcons/office.svg';
 import HomeActive from '@/appIcons/home_active.svg';
@@ -181,7 +184,7 @@ const AddressCreate: NextPage<Props> = ({
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
             style={{ borderColor: currentAddressType === 'HOUSE' && color }}
           >
-            {currentAddressType === 'HOUSE' ? <HomeActive /> : <HomeIcon /> }
+            <HomeIcon className={`w-8 h-8 ${currentAddressType === 'HOUSE' ? `text-[${color}]` : 'text-zinc-400'}`} />
             <p>{t('house')}</p>
           </button>
           <button
@@ -189,7 +192,7 @@ const AddressCreate: NextPage<Props> = ({
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
             style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
           >
-            {currentAddressType === 'APARTMENT' ? <ApartmentActive /> : <ApartmentIcon /> }
+            <BuildingOffice2Icon className={`w-8 h-8 ${currentAddressType === 'APARTMENT' ? `text-[${color}]` : 'text-zinc-400'}`} />
             <p>{t('apartment')}</p>
           </button>
           <button
@@ -197,7 +200,7 @@ const AddressCreate: NextPage<Props> = ({
             className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
             style={{ borderColor: currentAddressType === 'OFFICE' && color }}
           >
-            {currentAddressType === 'OFFICE' ? <OfficeActive /> : <OfficeIcon /> }
+            <BriefcaseIcon className={`w-8 h-8 ${currentAddressType === 'OFFICE' ? `text-[${color}]` : 'text-zinc-400'}`} />
             <p>{t('office')}</p>
           </button>
         </div>

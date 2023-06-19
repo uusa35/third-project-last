@@ -68,7 +68,8 @@ export const authApi = apiSlice.injectEndpoints({
         body: {
           phone: string;
           phone_country_code: string;
-          UserAgent: string
+          UserAgent: string,
+          password: string
         };
         url: string;
       }

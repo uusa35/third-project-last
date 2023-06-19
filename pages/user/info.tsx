@@ -41,6 +41,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
       name: name ?? ``,
       email: email ?? ``,
       phone,
+      password: null
     },
   });
 
@@ -57,6 +58,8 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
         name: body.name,
         ...(body.email && { email: body.email }),
         phone_country_code: countryCode,
+        password: body.password,
+        password_confirmation: body.password,
         UserAgent: userAgent
       },
       url,
@@ -127,7 +130,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                   )}
                 </div>
               )}
-              <div className="relative mt-5">
+              <div className="relative mt-5 pb-4">
                 <input 
                     type="email" 
                     id="email"
@@ -145,6 +148,34 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                 {t('your_email_optional')}
                 </label>
               </div>
+              <div className="relative pb-4 mt-5">
+                  <input 
+                      type="text" 
+                      id="password"  
+                      {...register('password')}
+                      className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[2px] appearance-none focus:outline-none focus:ring-0  peer" 
+                      style={{ borderBottomColor: '#e5e7eb', caretColor: color }}
+                      onFocus={(e) => e.target.style.borderBottomColor = color }
+                      onBlur={(e) => e.target.style.borderBottomColor = '#e5e7eb' }
+                      placeholder=" " 
+                    />
+                  <label 
+                      htmlFor="password"  
+                      className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
+                      suppressHydrationWarning={suppressText}
+                  >
+                      {t('your_password')}
+                  </label>
+              </div>
+              {errors?.password?.message && (
+                <div className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}>
+                  {errors?.password?.message && (
+                    <p suppressHydrationWarning={suppressText}>
+                      {t('password_is_required')}
+                    </p>
+                  )}
+                </div>
+              )}
               <button 
                 className={`mt-5 ${mainBtnClass}`} 
                 style={{

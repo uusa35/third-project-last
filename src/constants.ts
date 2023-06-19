@@ -11,6 +11,7 @@ export const appLinks = {
   root: { path: '/home' },
   home: { path: '/home' },
   login: { path: '/login' },
+  userLogin: { path: '/verification/password' },
   createAuthAddress: (userId: number) => `/user/${userId}/address/create/`,
   userAddresses: (userId: number) => `/user/${userId}/address/`,
   guestAddress: { path: `/guest/address/create` },
