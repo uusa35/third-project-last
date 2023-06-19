@@ -297,5 +297,17 @@
   "order_is_ready_for_delivery": "جاري توصيل طلبك الآن",
   "order_is_shipped": "تم توصيل الطلب",
   "set_delivery_location": "تحديد موقع التسليم",
-  "deliver_here": "توصيل هنا"
+  "deliver_here": "توصيل هنا",
+  "password": "كلمة المرور",
+  "enter_your_password_to_continue": "أدخِل كلمة المرور لتواصل",
+  "please_enter_your_password_or_forget_password.": "برجاء إدخال كلمة المرور أو نسيت كلمة السر",
+  "your_password": "كلمة السر الخاصة بك",
+  "forget_password?": " نسيت كلمة المرور ؟",
+  "password_is_required": "كلمة المرور مطلوبة",
+  "new_password": "كلمة المرور الجديدة",
+  "new_password_is_required": "كلمة المرور الجديدة مطلوبة",
+  "confirm_password": "تأكيد كلمة المرور",
+  "confirm_password_is_required": "تأكيد كلمة المرور مطلوب",
+  "save": "حفظ",
+  "the_password_you_entered_is_incorrect.": "كلمة المرور التي قمت بإدخالها غير صحيحة"
 }

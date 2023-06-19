@@ -323,5 +323,18 @@
   "order_is_ready_for_delivery": "order is ready for delivery",
   "order_is_shipped" : "order is shipped",
   "set_delivery_location": "set delivery location",
-  "deliver_here": "deliver here"
+  "deliver_here": "deliver here",
+  "enter_password": "enter password",
+  "password": "password",
+  "enter_your_password_to_continue": "enter your password to continue",
+  "please_enter_your_password_or_forget_password.": "please enter your password or forget password.",
+  "your_password": "your password",
+  "forget_password?": "forget password ?",
+  "password_is_required": "password is required",
+  "new_password": "new password",
+  "new_password_is_required": "new password is required",
+  "confirm_password": "confirm password",
+  "confirm_password_is_required": "confirm password is required",
+  "save": "save",
+  "the_password_you_entered_is_incorrect.": "the password you entered is incorrect."
 }
