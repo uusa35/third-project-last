@@ -9,26 +9,22 @@ import { useTranslation } from 'react-i18next';
 
 type Props = { element: Vendor };
 
-const Footer:FC<Props> = ({ element }) => {
+const Footer: FC<Props> = ({ element }) => {
   const { t } = useTranslation();
   return (
     <div>
-      <div className={`w-full px-3 text-center text-xs bg-white`}>
-        <p className=" font-bold">{t('rights_reserved')}</p>
-        <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
-      </div>
       <div className="lg:hidden flex flex-col items-center justify-center border-b px-4 py-8 mb-5">
         <Link
           scroll={true}
           href={appLinks.home.path}
-          className={`flex-col items-center text-center z-50`}
+          className={`flex flex-col items-center justify-center text-center z-50`}
         >
           <CustomImage
             src={`${imgUrl(element.logo)}`}
             alt={element.name}
-            className={`relative object-contain w-28 h-28 shadow-2xl rounded-full mb-4 border border-stone-200 bg-white`}
-            width={imageSizes.md}
-            height={imageSizes.md}
+            className={`relative object-contain w-20 h-20 shadow-2xl rounded-full mb-4 border border-stone-200 bg-white`}
+            width={imageSizes.sm}
+            height={imageSizes.sm}
           />
           <TextTrans
             ar={element.name_ar}
@@ -86,7 +82,12 @@ const Footer:FC<Props> = ({ element }) => {
           </Link>
         </div>
       </div>
+
+      <div className={`w-full px-3 text-center text-xs bg-white`}>
+        <p className=" font-bold">{t('rights_reserved')}</p>
+        <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
+      </div>
     </div>
   );
-}
+};
 export default Footer;
