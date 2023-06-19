@@ -4,6 +4,7 @@ import {
   alexandriaFontLight,
   alexandriaFontMeduim,
   alexandriaFontSemiBold,
+  appLinks,
   suppressText,
 } from '@/constants/*';
 import { useGetUpcomingOrdersQuery } from '@/redux/api/orderApi';
@@ -17,8 +18,9 @@ import PreparingIcon from '@/appIcons/order_status_preparing.svg';
 import Slider from 'react-slick';
 import ContentLoader from '../skeletons';
 import { isEmpty } from 'lodash';
+import { useRouter } from 'next/router';
 
-const UpComingOrders:FC = () => {
+const UpComingOrders: FC = () => {
   const { t } = useTranslation();
   const {
     locale: { lang },
@@ -26,6 +28,7 @@ const UpComingOrders:FC = () => {
     customer: { phone },
   } = useAppSelector((state) => state);
   const desObject = useAppSelector(destinationHeaderObject);
+  const router = useRouter();
 
   const { data, isSuccess, isLoading } = useGetUpcomingOrdersQuery(
     {
@@ -47,7 +50,7 @@ const UpComingOrders:FC = () => {
     slidesToScroll: 1,
     initialSlide: 0,
     // variableWidth: true,
-    useTransform: false,
+    // useTransform: false,
     centerMode: true,
     centerPadding: '50px 0px 0px',
     responsive: [
@@ -146,6 +149,11 @@ const UpComingOrders:FC = () => {
                           </div>
                           <div className="flex md:block justify-end w-full md:w-auto">
                             <button
+                              onClick={() =>
+                                router.push(
+                                  appLinks.orderTrack(order.order_code)
+                                )
+                              }
                               className={`whitespace-nowrap bg-[#F3F2F2] text-[#1A1615] h-fit rounded-full px-2 text-xxs ${alexandriaFontSemiBold}`}
                             >
                               {t('track_order')}
@@ -165,5 +173,5 @@ const UpComingOrders:FC = () => {
       )}
     </>
   );
-}
+};
 export default UpComingOrders;
