@@ -48,10 +48,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const {
-    customer: { userAgent, id },
     searchParams: { method },
     cart: { enable_promocode, promocode },
-    customer: { id: customer_id, prefrences },
+    customer: { id: customer_id, prefrences, userAgent, address },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
@@ -216,14 +215,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
 
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
-    // console.log('promo', value);
-    //  don't check if dest is selected cause promo is not showing if cart is empty
-
-    /*
-    check if promo val is not empty or undef
-    if user is logged in or guest   ===> later
-    */
-
     // remove promo if exists
     if (enable_promocode) {
       dispatch(resetPromo());
@@ -237,7 +228,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
           dispatch(setPromocode(value));
-
           dispatch(
             showToastMessage({
               content: lowerCase(kebabCase(r.data.msg)),
@@ -260,17 +250,14 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   };
 
   const handelContinue = () => {
-    if (isNull(customer_id)) {
+    if (isNull(customer_id) && !isAuth) {
       router.push(appLinks.login.path);
     } else if (isNull(destID) || prefrences.type === '') {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
-    } else if (method === 'delivery') {
-      if (isAuth) {
-        router.push(appLinks.createAuthAddress(customer_id));
-      } else {
-        router.push(appLinks.guestAddress.path);
-      }
+    } else if (method === 'delivery' && !isAuth && !address.id) {
+      // should check on address of user too but nothing in state so check in checkout
+      router.push(appLinks.guestAddress.path);
     } else {
       router.push(appLinks.checkout.path);
     }
