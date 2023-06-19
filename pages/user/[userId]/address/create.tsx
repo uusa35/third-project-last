@@ -45,7 +45,6 @@ import {
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { AppQueryResult } from '@/types/queries';
-import HomeIcon from '@/appIcons/home.svg';
 import ApartmentIcon from '@/appIcons/apartment.svg';
 import OfficeIcon from '@/appIcons/office.svg';
 import HomeActive from '@/appIcons/home_active.svg';
