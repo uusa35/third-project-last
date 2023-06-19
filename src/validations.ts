@@ -39,7 +39,6 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          console.log('address type', address_type)
           if (address_type === 'HOUSE' && method === `delivery`) {
             return schema.required(t(`validation.required`));
           }
@@ -100,18 +99,17 @@ export const checkPhone = yup
   })
   .required();
 
-  export const loginSchema = (isResetPassword: boolean) => {
-    return yup.lazy((values) => {
-      if (isResetPassword) {
-        return yup.object().shape({
-          new_password: yup.string().required().min(6),
-          confirmation_password: yup.string().required().oneOf([yup.ref('new_password'), null]),
-        });
-      } else {
-        return yup.object().shape({
-          password: yup.string().required().min(6),
-        });
-      }
-    });
-  };
-  
+export const loginSchema = (isResetPassword: boolean) => {
+  return yup.lazy((values) => {
+    if (isResetPassword) {
+      return yup.object().shape({
+        new_password: yup.string().required().min(6),
+        confirmation_password: yup.string().required().oneOf([yup.ref('new_password'), null]),
+      });
+    } else {
+      return yup.object().shape({
+        password: yup.string().required().min(6),
+      });
+    }
+  });
+};

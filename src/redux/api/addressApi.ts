@@ -54,7 +54,7 @@ export const addressApi = apiSlice.injectEndpoints({
       }
     >({
       query: ({ url }) => ({
-        url: `user/getUserAddress`,
+        url: `user/address`,
         headers: { url },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
