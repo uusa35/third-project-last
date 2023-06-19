@@ -121,26 +121,31 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   );
 
   const handleCreateOrder = async () => {
-    if (!customer_id) {
+    if (!customer_id && !isAuth) {
       router.push(appLinks.login.path);
-    } else if (isNull(destID) || prefrences.type === '') {
+    }
+    if (isNull(destID) || prefrences.type === '') {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
-    } else if (method === `delivery`) {
+    }
+    if (method === `delivery`) {
       if (isAuth) {
         // check on address id of user
         router.push(appLinks.createAuthAddress(customer_id));
       } else if (!addressID) {
         router.push(appLinks.guestAddress.path);
       }
-    } else if (isNull(selectedPaymentMethod)) {
+    }
+    if (isNull(selectedPaymentMethod)) {
+      console.log('rooonaaa');
       dispatch(
         showToastMessage({
           content: 'please_select_payment_method',
           type: `error`,
         })
       );
-    } else if (
+    }
+    if (
       !isNull(customer_id) &&
       !isNull(selectedPaymentMethod) &&
       selectedPaymentMethod &&
