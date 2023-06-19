@@ -71,7 +71,7 @@ export const addressSchema = (method: string, t: any) =>
           }
           return schema.nullable(true);
         }),
-      office_no: yup.mixed().when('address_type', (address_type, schema) => {
+      office_no: yup.string().when('address_type', (address_type, schema) => {
         if (address_type === 'OFFICE' && method === `delivery`) {
           return schema.required(t(`validation.required`));
         }

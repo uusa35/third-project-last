@@ -321,7 +321,7 @@
   "preparing_order_we_r_making_ur_food": "preparing order we are making your food",
   "order_is_ready_for_pickup_we_r_waiting": "order is ready for pickup. we are waiting",
   "order_is_ready_for_delivery": "order is ready for delivery",
-  "order_is_shipped" : "order is shipped",
+  "order_is_shipped": "order is shipped",
   "set_delivery_location": "set delivery location",
   "deliver_here": "deliver here",
   "enter_password": "enter password",
@@ -336,5 +336,7 @@
   "confirm_password": "confirm password",
   "confirm_password_is_required": "confirm password is required",
   "save": "save",
-  "the_password_you_entered_is_incorrect.": "the password you entered is incorrect."
+  "the_password_you_entered_is_incorrect.": "the password you entered is incorrect.",
+  "building_no_is_required": "building number is required.",
+  "office_no_is_required": "office number is required."
 }

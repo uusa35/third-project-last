@@ -309,5 +309,7 @@
   "confirm_password": "تأكيد كلمة المرور",
   "confirm_password_is_required": "تأكيد كلمة المرور مطلوب",
   "save": "حفظ",
-  "the_password_you_entered_is_incorrect.": "كلمة المرور التي قمت بإدخالها غير صحيحة"
+  "the_password_you_entered_is_incorrect.": "كلمة المرور التي قمت بإدخالها غير صحيحة",
+  "building_no_is_required" : "رقم المبنى مطلوب",
+  "office_no_is_required" : "رقم المكتب مطلوب"
 }
