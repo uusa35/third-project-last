@@ -52,9 +52,9 @@ const HomeModal: FC<Props> = ({
           isRTL ? 'justify-end' : 'justify-start'
         }`}
       >
-        <div className="flex items-center justify-center absolute w-full lg:w-2/4 xl:w-1/3 top-[20%] px-5 h-1/3">
+        <div className="flex items-center justify-center absolute w-full lg:w-2/4 xl:w-1/3 h-1/3 md:h-1/2  top-[20%] px-5 ">
           <div
-            className={`relative flex flex-col items-end justify-between rounded-lg h-full aspect-square`}
+            className={`relative flex flex-col items-end justify-between rounded-lg max-w-[100%] h-full aspect-square`}
             // style={{
             //   backgroundColor: color,
             //   backgroundImage: `url(${data[0].promo_image})`,
