@@ -7,6 +7,7 @@ import {
   alexandriaFontMeduim,
   appLinks,
   convertColor,
+  shadeColor,
   suppressText,
 } from '../constants';
 import ScheduelStatusIcon from '@/appIcons/status_home_scheduel.svg';
@@ -111,7 +112,7 @@ export default function CheckoutFixedBtn({
                     style={{
                       backgroundColor: cartLessThanMin
                         ? 'black'
-                        : convertColor(color, 150),
+                        : shadeColor(color, -50),
                     }}
                   >
                     {cartItems?.data?.Cart.length}

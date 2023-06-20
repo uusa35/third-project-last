@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { ReactBurgerMenu, slide as Menu } from 'react-burger-menu';
+import { slide as Menu } from 'react-burger-menu';
 import { useTranslation } from 'react-i18next';
 import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -10,24 +10,15 @@ import {
   alexandriaFontBold,
   alexandriaFontMeduim,
   appLinks,
-  convertColor,
-  imageSizes,
-  imgUrl,
-  submitBtnClass,
   suppressText,
 } from '@/constants/*';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { Close, ChevronRightOutlined } from '@mui/icons-material';
-import { setLocale } from '@/redux/slices/localeSlice';
-import CustomImage from '@/components/CustomImage';
-import { isEmpty } from 'lodash';
-// import LoadingSpinner from '@/components/LoadingSpinner';
 import {
-  BuildingStorefrontIcon,
-  MapPinIcon,
-} from '@heroicons/react/24/outline';
-import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+  Close,
+  ChevronRightOutlined,
+  ChevronLeftOutlined,
+} from '@mui/icons-material';
 import HorizentalLine from './HorizentalLine';
 import AppFooter from './AppFooter';
 
@@ -47,6 +38,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
   const isAuth = useAppSelector(isAuthenticated);
   const router = useRouter();
   const {
+    locale: { isRTL },
     appSetting,
     customer: { id, token, name },
   } = useAppSelector((state) => state);
@@ -116,11 +108,6 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   <Link
                     className="flex justify-between items-center"
                     href={appLinks.login.path}
-                    // onClick={() =>
-                    //   dispatch(
-                    //     signIn('113|NwpzCgmMhu6EfyYVDlHguGwFBqCpYlAu04CsSKTh')
-                    //   )
-                    // } //test
                   >
                     <div className="flex gap-x-2">
                       <FastSignInIcon />
@@ -134,7 +121,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                         {t('to_orderfast_now')}
                       </p>
                     </div>
-                    <ChevronRightOutlined />
+                    {isRTL ? <ChevronLeftOutlined /> : <ChevronRightOutlined />}
                   </Link>
                 )}
               </div>

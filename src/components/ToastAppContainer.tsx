@@ -19,28 +19,31 @@ const ToastAppContainer = () => {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (showToast) {
-      toast(t(content), {
-        type,
-        onClose: () => {
-          dispatch(hideToastMessage());
-        },
-      });
-    }
-  }, [showToast]);
+  // useEffect(() => {
+  //   if (showToast) {
+  //     // toast(t(content), { type });
+  //     // dispatch(hideToastMessage());
+
+  //     // toast(t(content), {
+  //     //   type,
+  //     //   onClose: () => {
+  //     //     dispatch(hideToastMessage());
+  //     //   },
+  //     // });
+  //   }
+  // }, [showToast]);
 
   return (
     <Suspense>
       <ToastContainer
         position={isRTL ? `top-center` : 'top-center'}
-        className={`${tajwalFont}  opacity-90 shadow-inner font-extrabold text-white text-center`}
-        autoClose={3000}
+        className={`${tajwalFont} shadow-inner font-extrabold text-white text-center lg:w-2/4 xl:w-1/3`}
+        // autoClose={3000}
         hideProgressBar={true}
         newestOnTop={true}
         transition={Flip}
         limit={1}
-        closeOnClick
+        // closeOnClick
         rtl={isRTL}
         pauseOnFocusLoss
         pauseOnHover
@@ -53,13 +56,13 @@ const ToastAppContainer = () => {
         // progressClassName={`bg-red-900`}
         toastClassName={`p-0 m-0 w-full`}
         //bodyClassName={`p-0 m-0 w-full`}
-        toastStyle={{
-          backgroundColor: type === `error` ? `red` : '#12b764',
-          color: `white`,
-          fontSize: '14px',
-        }}
+        // toastStyle={{
+        //   backgroundColor: type === `error` ? `red` : '#12b764',
+        //   color: `white`,
+        //   fontSize: '14px',
+        // }}
         closeButton={
-          <div>
+          <div className="flex items-center">
             <CloseIcon style={{ color: `white` }} />
           </div>
         }
