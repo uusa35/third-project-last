@@ -164,6 +164,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     } else {
       await triggerCreateOrder({
         params: {
+          ...(isAuth ? {} : { user_id: customer_id }),
           ...(method === `delivery`
             ? isAuth
               ? { address_id: UserAddress.data[0].id }
