@@ -19,6 +19,7 @@ import VendorInfoSkeleton from './VendorInfoSkeleton';
 import MainAsideSkelton from './MainAsideSkelton';
 import SliderSkelton from './SliderSkelton';
 import ReceiptSkeleton from './ReceiptSkeleton';
+import OrderFailureSkeleton from './PaymentFailureSkeleton';
 
 type Props = {
   type: string;
@@ -88,6 +89,9 @@ const ContentLoader = ({ type, sections }: Props) => {
       break;
     case 'Receipt':
       SkeletonComponent = ReceiptSkeleton;
+      break;
+    case 'OrderFailure':
+      SkeletonComponent = OrderFailureSkeleton;
       break;
     default:
       return null;

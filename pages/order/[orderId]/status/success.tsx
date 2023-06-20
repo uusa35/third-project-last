@@ -252,4 +252,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
           },
         };
       }
-  );
+);

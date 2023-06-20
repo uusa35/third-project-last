@@ -338,5 +338,11 @@
   "save": "save",
   "the_password_you_entered_is_incorrect.": "the password you entered is incorrect.",
   "building_no_is_required": "building number is required.",
-  "office_no_is_required": "office number is required."
+  "office_no_is_required": "office number is required.",
+  "city_is_required": "city is required",
+  "street_is_required": "street is required",
+  "house_no_is_required": "house no is required",
+  "floor_no_is_required": "floor no is required",
+  "apartment_no_is_required": "apartment no is required",
+  "save_receipt": "save receipt"
 }

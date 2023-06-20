@@ -11,9 +11,10 @@ import { isNull } from 'lodash';
 
 type Props = {
   data: ServerCart;
+  isFailure: boolean
 };
 
-export default function PaymentSummary({ data }: Props) {
+export default function PaymentSummary({ data, isFailure }: Props) {
   const { t } = useTranslation();
   const {
     searchParams: { method },
@@ -32,7 +33,8 @@ export default function PaymentSummary({ data }: Props) {
               data-cy="sub-total"
             >
               {/* {enable_promocode ? data.sub_total : data.subTotal} */}
-              {data.promo_code_discount ? data.sub_total : data.subTotal}
+              {isFailure && data.subtotal}
+              {!isFailure && data.promo_code_discount ? data.sub_total : data.subTotal}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
               {t('kwd')}

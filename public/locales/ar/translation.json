@@ -311,5 +311,10 @@
   "save": "حفظ",
   "the_password_you_entered_is_incorrect.": "كلمة المرور التي قمت بإدخالها غير صحيحة",
   "building_no_is_required" : "رقم المبنى مطلوب",
-  "office_no_is_required" : "رقم المكتب مطلوب"
+  "city_is_required": "المدينة مطلوبة",
+  "street_is_required": "الشارع مطلوب",
+  "house_no_is_required": "رقم المنزل مطلوب",
+  "floor_no_is_required": "رقم الطابق مطلوب",
+  "apartment_no_is_required": "رقم المبنى مطلوب",
+  "save_receipt": "حفظ الفاتورة"
 }
