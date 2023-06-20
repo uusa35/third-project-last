@@ -65,8 +65,8 @@ export const addressApi = apiSlice.injectEndpoints({
       {
         body: {
           address_id: number;
-          address_type: string,
-          address: any
+          address_type: string;
+          address: any;
         };
         url: string;
       }
@@ -85,7 +85,7 @@ export const addressApi = apiSlice.injectEndpoints({
       {
         params: {
           address_id: number;
-          address_type: string,
+          address_type: string;
         };
         url: string;
       }
@@ -103,13 +103,31 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<UserAddressFields[]>,
       {
         params: {
-          address_id: number
+          address_id: number;
         };
         url: string;
       }
     >({
       query: ({ params, url }) => ({
         url: `user/showUserAddress`,
+        headers: { url },
+        params: { ...params },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+      }),
+    }),
+
+    getAddressesByType: builder.query<
+      AppQueryResult<Address>,
+      {
+        params: {
+          address_id: number;
+        };
+        url: string;
+      }
+    >({
+      query: ({ params, url }) => ({
+        url: `user/address`,
         headers: { url },
         params: { ...params },
         validateStatus: (response, result) =>
@@ -126,6 +144,6 @@ export const {
   useLazyGetAddressesQuery,
   useUpdateAddressMutation,
   useDeleteAddressMutation,
-  useLazyGetAddressesByIdQuery
-} =
-  addressApi;
+  useLazyGetAddressesByIdQuery,
+  useGetAddressesByTypeQuery,
+} = addressApi;

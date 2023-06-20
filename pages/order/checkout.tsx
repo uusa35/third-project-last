@@ -6,7 +6,7 @@ import Image from 'next/image';
 import OrderDetails from '@/components/checkout/OrderDetails';
 import { useTranslation } from 'react-i18next';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
-import { AppQueryResult } from '@/types/queries';
+import { Address, AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
 import { wrapper } from '@/redux/store';
 import CartProduct from '@/components/widgets/product/CartProduct';
@@ -46,6 +46,7 @@ import { NextPage } from 'next';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
+import { useGetAddressesByTypeQuery } from '@/redux/api/addressApi';
 
 type Props = {
   url: string;
@@ -59,7 +60,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       userAgent,
       id: customer_id,
       notes,
-      address: { id: addressID, longitude, latitude },
+      address: { id: addressID, longitude, latitude, type },
     },
     searchParams: { method, destination },
     cart: { enable_promocode, promocode },
@@ -121,43 +122,56 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   );
 
   // get user address
+  const { data: UserAddress, isSuccess: UserAddressSuccess } =
+    useGetAddressesByTypeQuery<{
+      data: AppQueryResult<Address>;
+      isSuccess: boolean;
+    }>(
+      {
+        type,
+        url,
+      },
+      { refetchOnMountOrArgChange: true, skip: !isAuth }
+    );
 
+  console.log({ UserAddress });
+
+  // create order
   const handleCreateOrder = async () => {
     if (!customer_id && !isAuth) {
       router.push(appLinks.login.path);
-    }
-    if (isNull(destID) || prefrences.type === '') {
-      // open select modal
+    } else if (isNull(destID) || prefrences.type === '') {
       dispatch(setAreaBranchModalStatus(true));
-    }
-    if (method === `delivery`) {
-      if (isAuth) {
-        // check on address id of user
-        router.push(appLinks.createAuthAddress(customer_id));
-      } else if (!addressID) {
-        router.push(appLinks.guestAddress.path);
-      }
-    }
-    if (isNull(selectedPaymentMethod)) {
+    } else if (method === 'delivery' && !isAuth && !addressID) {
+      router.push(appLinks.guestAddress.path);
+    } else if (
+      method === 'delivery' &&
+      isAuth &&
+      (!UserAddressSuccess ||
+        !UserAddress.data ||
+        isEmpty(UserAddress.data) ||
+        !UserAddress.data[0] ||
+        !UserAddress.data[0]?.id)
+    ) {
+      router.push(appLinks.createAuthAddress(customer_id));
+    } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({
           content: 'please_select_payment_method',
           type: `error`,
         })
       );
-    }
-    if (
-      // !isNull(customer_id) &&
-      !isNull(selectedPaymentMethod) &&
-      selectedPaymentMethod &&
-      !isNull(userAgent)
-    ) {
+    } else {
       await triggerCreateOrder({
         params: {
-          ...(method === `delivery` ? { address_id: addressID } : {}),
+          ...(method === `delivery`
+            ? isAuth
+              ? { address_id: UserAddress.data[0].id }
+              : { address_id: addressID }
+            : {}),
           order_type: prefrences.type,
           // order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
-          UserAgent: userAgent,
+          ...(isAuth ? {} : { UserAgent: userAgent }),
           Messg: notes,
           PaymentMethod: selectedPaymentMethod,
           PromoCode: promocode,
