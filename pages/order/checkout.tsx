@@ -186,6 +186,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
         area_branch: destObj,
         url,
       }).then((r: any) => {
+        console.log({ r });
         if (r.data) {
           if (r.data.status) {
             if (selectedPaymentMethod === 'cash_on_delivery') {
