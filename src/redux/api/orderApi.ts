@@ -21,7 +21,7 @@ export const orderApi = apiSlice.injectEndpoints({
         }
       >({
         query: ({ params, area_branch, url }) => ({
-          url: `new-create-order`,
+          url: `create-order`,
           method: 'POST',
           params,
           headers: {
