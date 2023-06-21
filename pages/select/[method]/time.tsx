@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { mainBtnClass, toEn } from '@/constants/*';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { isArray, isEmpty, isUndefined, map, reverse } from 'lodash';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -25,6 +25,7 @@ import { NextPage } from 'next';
 type Day = {
   day: string;
   date: string;
+  rawDate: Moment;
 };
 type Props = {
   url: string;
@@ -58,7 +59,11 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     autoplay: false,
   });
   const [isScheduled, setIsScheduled] = useState<boolean>(false);
-  const [selectedDay, setSelectedDay] = useState({ day: ``, date: `` });
+  const [selectedDay, setSelectedDay] = useState({
+    day: ``,
+    date: ``,
+    rawDate: moment('now'),
+  });
   const [isBtnEnabled, setIsBtnEnabled] = useState<boolean>(true);
   const [selectedHour, setSelectedHour] = useState<string | undefined>(
     undefined
@@ -66,7 +71,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   const [type, setType] = useState<
     'delivery_now' | 'delivery_later' | 'pickup_now' | 'pickup_later'
   >('delivery_now');
-  moment.locale(lang);
   const today = moment();
   const days: Day[] = [];
   const daysInCurrentMonth = today.daysInMonth();
@@ -100,16 +104,32 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
       day.isBefore(today.clone().add(1, 'month'));
 
     if (isToday) {
-      days.push({ day: `${t('today')}`, date: day.format('DD MMM Y') });
+      days.push({
+        day: `${t('today')}`,
+        date: day.format('DD MMM Y'),
+        rawDate: day.locale('en'),
+      });
     } else if (isTomorrow) {
-      days.push({ day: `${t('tomorrow')}`, date: day.format('DD MMM Y') });
+      days.push({
+        day: `${t('tomorrow')}`,
+        date: day.format('DD MMM Y'),
+        rawDate: day.locale('en'),
+      });
     } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
-      days.push({ day: day.format('dddd'), date: day.format('DD MMM Y') });
+      days.push({
+        day: day.format('dddd'),
+        date: day.format('DD MMM Y'),
+        rawDate: day.locale('en'),
+      });
     }
   }
 
   useEffect(() => {
-    setSelectedDay({ day: days[0].day, date: days[0].date });
+    setSelectedDay({
+      day: days[0].day,
+      date: days[0].date,
+      rawDate: days[0].rawDate.locale('en'),
+    });
     if (isScheduled) {
       setIsBtnEnabled(false);
       if (!isEmpty(method) && method === 'delivery') {
@@ -126,36 +146,39 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
         setType('pickup_now');
       }
     }
-  }, [isScheduled]);
+  }, [isScheduled, lang]);
 
   useEffect(() => {
-    triggerGetTimings(
-      {
-        type,
-        date: toEn(moment(selectedDay?.date).format('YYYY-MM-DD')),
-        area_branch: desObject,
-        url,
-      },
-      false
-    ).then((r) => {
-      if (r?.error && r.error.data) {
-        setIsBtnEnabled(false);
-        setSelectedHour(undefined);
-        dispatch(
-          showToastMessage({ type: 'error', content: `no_timings_available` })
-        );
-      } else if (r && r.data && r.data.Data) {
-        setIsBtnEnabled(true);
-        if (
-          r.data.Data === 'OPEN' &&
-          (type === 'delivery_now' || type === 'pickup_now')
-        ) {
-          setSelectedHour(moment().format('HH:mm a').toString());
-        } else {
-          setSelectedHour(r.data.Data[0]);
+    if (selectedDay && selectedDay.rawDate) {
+      triggerGetTimings(
+        {
+          type,
+          // date: toEn(moment(selectedDay?.date).format('YYYY-MM-DD')),
+          date: selectedDay.rawDate?.format('YYYY-MM-DD'),
+          area_branch: desObject,
+          url,
+        },
+        false
+      ).then((r) => {
+        if (r?.error && r.error.data) {
+          setIsBtnEnabled(false);
+          setSelectedHour(undefined);
+          dispatch(
+            showToastMessage({ type: 'error', content: `no_timings_available` })
+          );
+        } else if (r && r.data && r.data.Data && r.data.Data.length > 1) {
+          setIsBtnEnabled(true);
+          if (
+            r.data.Data === 'OPEN' &&
+            (type === 'delivery_now' || type === 'pickup_now')
+          ) {
+            setSelectedHour(moment().format('HH:mm a').toString());
+          } else {
+            setSelectedHour(r.data.Data[0]);
+          }
         }
-      }
-    });
+      });
+    }
   }, [selectedDay]);
 
   useEffect(() => {
@@ -168,8 +191,20 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     setIsScheduled(value === 'scheduled');
   };
 
-  const handleDaySelect = ({ day, date }: { day: string; date: string }) => {
-    setSelectedDay({ day, date });
+  const handleDaySelect = ({
+    day,
+    date,
+    rawDate,
+  }: {
+    day: string;
+    date: string;
+    rawDate: Moment;
+  }) => {
+    setSelectedDay({
+      day,
+      date,
+      rawDate,
+    });
   };
 
   const handleClick = () => {
@@ -236,11 +271,14 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
           </label>
           {isScheduled && (
             <div className={`overflow-x-auto flex flex-row`}>
-              {map(days, (day, index) => (
-                <div className="p-2 ps-0" key={index}>
+              {map(days, (day, i) => (
+                <div className="p-2 ps-0" key={i}>
                   <div
                     className={`w-[96px] h-20 p-2 flex flex-col justify-center items-center text-center rounded-lg capitlalize ${
-                      selectedDay.date === day.date && 'text-white'
+                      selectedDay?.rawDate?.format('YYYY-MM-DD') ==
+                      day.rawDate.format('YYYY-MM-DD')
+                        ? `text-white`
+                        : ``
                     }`}
                     style={{
                       backgroundColor: `${
@@ -251,11 +289,15 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                     <button
                       className="capitalize flex flex-col justify-center items-center"
                       onClick={() =>
-                        handleDaySelect({ day: day.day, date: day.date })
+                        handleDaySelect({
+                          day: day.day,
+                          date: day.date,
+                          rawDate: day.rawDate,
+                        })
                       }
                     >
-                      <span className="flex text-md">{day.day}</span>
-                      <span className="flex flex-row text-md">{day.date}</span>
+                      <span className="flex text-sm">{day.day}</span>
+                      <span className="flex flex-row text-sm">{day.date}</span>
                     </button>
                   </div>
                 </div>
@@ -324,7 +366,6 @@ export default SelectTime;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, query }) => {
-      console.log('query', query.method !== 'pickup');
       const { method }: any = query;
       if (!req.headers.host) {
         return {
