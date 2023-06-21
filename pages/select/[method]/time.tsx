@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { mainBtnClass, toEn } from '@/constants/*';
-import moment, { Moment } from 'moment';
-import { isArray, isEmpty, isUndefined, map, reverse } from 'lodash';
+import moment, { Moment, locale } from 'moment';
+import { isArray, isEmpty, isNull, isUndefined, map, reverse } from 'lodash';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'moment/locale/ar';
@@ -71,9 +71,8 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   const [type, setType] = useState<
     'delivery_now' | 'delivery_later' | 'pickup_now' | 'pickup_later'
   >('delivery_now');
-  const today = moment();
-  const days: Day[] = [];
-  const daysInCurrentMonth = today.daysInMonth();
+  const [days, setDays] = useState<Day[] | null>(null);
+  moment.locale(lang);
 
   useEffect(() => {
     if (url) {
@@ -92,61 +91,74 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     } else if (!isEmpty(method) && method === 'pickup') {
       setType('pickup_now');
     }
+    handleDays();
   }, []);
 
-  for (let i = 0; i < 31; i++) {
-    const day = moment().startOf('day').add(i, 'days');
-    const isToday = i === 0 || day.isSame(today, 'day');
-    const isTomorrow =
-      i === 1 || day.isSame(today.clone().add(1, 'day'), 'day');
-    const isWithinNextMonth =
-      day.isSameOrAfter(today, 'day') &&
-      day.isBefore(today.clone().add(1, 'month'));
+  const handleDays = () => {
+    const today = moment();
+    const days: Day[] = [];
+    const daysInCurrentMonth = today.daysInMonth();
+    for (let i = 0; i < 31; i++) {
+      const day = moment().startOf('day').add(i, 'days');
+      const isToday = i === 0 || day.isSame(today, 'day');
+      const isTomorrow =
+        i === 1 || day.isSame(today.clone().add(1, 'day'), 'day');
+      const isWithinNextMonth =
+        day.isSameOrAfter(today, 'day') &&
+        day.isBefore(today.clone().add(1, 'month'));
 
-    if (isToday) {
-      days.push({
-        day: `${t('today')}`,
-        date: day.format('DD MMM Y'),
-        rawDate: day.locale('en'),
-      });
-    } else if (isTomorrow) {
-      days.push({
-        day: `${t('tomorrow')}`,
-        date: day.format('DD MMM Y'),
-        rawDate: day.locale('en'),
-      });
-    } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
-      days.push({
-        day: day.format('dddd'),
-        date: day.format('DD MMM Y'),
-        rawDate: day.locale('en'),
-      });
+      if (isToday) {
+        days.push({
+          day: `${t('today')}`,
+          date: day.format('DD MMM Y'),
+          rawDate: day.locale('en'),
+        });
+      } else if (isTomorrow) {
+        days.push({
+          day: `${t('tomorrow')}`,
+          date: day.format('DD MMM Y'),
+          rawDate: day.locale('en'),
+        });
+      } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
+        days.push({
+          day: day.format('dddd'),
+          date: day.format('DD MMM Y'),
+          rawDate: day.locale('en'),
+        });
+      }
     }
-  }
+    setDays(days);
+  };
 
   useEffect(() => {
-    setSelectedDay({
-      day: days[0].day,
-      date: days[0].date,
-      rawDate: days[0].rawDate.locale('en'),
-    });
-    if (isScheduled) {
-      setIsBtnEnabled(false);
-      if (!isEmpty(method) && method === 'delivery') {
-        setType('delivery_later');
-      } else if (!isEmpty(method) && method == 'pickup') {
-        setType('pickup_later');
-      }
-    } else {
-      setIsBtnEnabled(true);
-      setSelectedHour(moment().format('HH:mm a').toString());
-      if (!isEmpty(method) && method === 'delivery') {
-        setType('delivery_now');
-      } else if (!isEmpty(method) && method === 'pickup') {
-        setType('pickup_now');
+    if (!isNull(days)) {
+      setSelectedDay({
+        day: days[0].day,
+        date: days[0].date,
+        rawDate: days[0].rawDate.locale('en'),
+      });
+      if (isScheduled) {
+        setIsBtnEnabled(false);
+        if (!isEmpty(method) && method === 'delivery') {
+          setType('delivery_later');
+        } else if (!isEmpty(method) && method == 'pickup') {
+          setType('pickup_later');
+        }
+      } else {
+        setIsBtnEnabled(true);
+        setSelectedHour(moment().format('HH:mm a').toString());
+        if (!isEmpty(method) && method === 'delivery') {
+          setType('delivery_now');
+        } else if (!isEmpty(method) && method === 'pickup') {
+          setType('pickup_now');
+        }
       }
     }
   }, [isScheduled, lang]);
+
+  useEffect(() => {
+    handleDays();
+  }, [lang]);
 
   useEffect(() => {
     if (selectedDay && selectedDay.rawDate) {
@@ -282,7 +294,10 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                     }`}
                     style={{
                       backgroundColor: `${
-                        selectedDay.date === day.date ? color : '#F5F5F5'
+                        selectedDay?.rawDate?.format('YYYY-MM-DD') ==
+                        day.rawDate.format('YYYY-MM-DD')
+                          ? color
+                          : '#F5F5F5'
                       }`,
                     }}
                   >
