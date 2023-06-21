@@ -38,12 +38,12 @@ const ToastAppContainer = () => {
       <ToastContainer
         position={isRTL ? `top-center` : 'top-center'}
         className={`${tajwalFont} shadow-inner font-extrabold text-white text-center lg:w-2/4 xl:w-1/3`}
-        // autoClose={3000}
+        autoClose={3000}
         hideProgressBar={true}
         newestOnTop={true}
         transition={Flip}
         limit={1}
-        // closeOnClick
+        closeOnClick
         rtl={isRTL}
         pauseOnFocusLoss
         pauseOnHover

@@ -139,8 +139,8 @@ export default function CartProduct({
           {/* quantity meter */}
           {!checkoutProduct && (
             <div
-              className={`flex items-center gap-x-2 ${
-                lang === 'ar' && 'flex-row-reverse'
+              className={`flex gap-x-2 ${
+                lang === 'ar' && 'flex-row-reverse justify-end'
               }`}
             >
               <div
