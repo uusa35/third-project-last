@@ -17,7 +17,7 @@ type Props = {
 };
 
 const PrivacyPolicy: NextPage<Props> = ({ url, element }): React.ReactElement => {
-  const { isRTL } = useAppSelector((state) => state);
+  const { locale: { isRTL } } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const privacyPolicy = find(element, (e) => e.key === 'Privacy policy');
 

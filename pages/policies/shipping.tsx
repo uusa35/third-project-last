@@ -17,7 +17,7 @@ type Props = {
 };
 
 const ShippingPolicy: NextPage<Props> = ({ url, element }): React.ReactElement => {
-  const { isRTL } = useAppSelector((state) => state);
+  const { locale: { isRTL } } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const shippingPolicy = find(element, (e) => e.key === 'Shipping policy');
 

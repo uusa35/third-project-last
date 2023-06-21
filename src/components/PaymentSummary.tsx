@@ -11,10 +11,10 @@ import { isNull } from 'lodash';
 
 type Props = {
   data: ServerCart;
-  isFailure: boolean
+  isFailure?: boolean
 };
 
-export default function PaymentSummary({ data, isFailure }: Props) {
+export default function PaymentSummary({ data, isFailure= false }: Props) {
   const { t } = useTranslation();
   const {
     searchParams: { method },

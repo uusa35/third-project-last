@@ -168,7 +168,7 @@ const {
                         )}
                         </div>
                     )}
-                    <button className="capitalize text-gray-500" onClick={handleForgetPassword}>{t('forget_password?')}</button>
+                    {/* <button className="capitalize text-gray-500" onClick={handleForgetPassword}>{t('forget_password?')}</button> */}
                 </> 
             )}
             {isResetPassword && (

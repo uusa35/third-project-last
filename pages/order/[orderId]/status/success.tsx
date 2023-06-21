@@ -217,10 +217,6 @@ const OrderSuccess: NextPage<Props> = ({ url,orderId }): React.ReactElement => {
           <span className="ps-3 pe-2 capitalize">{t('need_help?')}</span>
           <span>{t('contact_us')}</span>
         </button>
-        <button className="flex items-center text-red-600 pb-5">
-          <CancelIcon />
-          <span className="ps-3 capitalize">{t('cancel_order')}</span>
-        </button>
       </div>
       <HelpModal
         isOpen={isOpen}

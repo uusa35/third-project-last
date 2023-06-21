@@ -186,7 +186,7 @@
   "save_address": "حفظ العنوان",
   "order_created_successfully": "شكرا .. تم إتمام طلبك",
   "pickup_now": "استلام الان",
-  "delivery_now": "توصيل الان الي",
+  "delivery_now": "توصيل الآن إلى",
   "pickup_later": "استلام",
   "delivery_later": "توصيل",
   "deliver_to": "توصيل الي",
@@ -316,5 +316,8 @@
   "house_no_is_required": "رقم المنزل مطلوب",
   "floor_no_is_required": "رقم الطابق مطلوب",
   "apartment_no_is_required": "رقم المبنى مطلوب",
-  "save_receipt": "حفظ الفاتورة"
+  "save_receipt": "حفظ الفاتورة",
+  "popular_search": "المنتجات الشائعة",
+  "add_items": "إضافة منتجات",
+  "office_no_is_required": "رقم المكتب مطلوب"
 }
