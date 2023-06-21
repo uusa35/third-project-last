@@ -102,7 +102,7 @@ const OrderFailure: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
         </div>
         <DetailComponent title="order_id" info={`${t('order')} #${order.data.order_id}`}  />
         <DetailComponent title="date_time" info={order.data.delivery_date_time}  />
-        <DetailComponent title="order_type" info={order.data.orderType}  />
+        <DetailComponent title="order_type" info={`${t(order.data.orderType)}`}  />
         <DetailComponent title="contact_info" info={`${order.data.customer.name} ${order.data.customer.phone}`} />
       </div>
       {/* items */}
