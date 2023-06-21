@@ -230,10 +230,11 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
           dispatch(setPromocode(value));
           dispatch(
             showToastMessage({
-              content: lowerCase(kebabCase(r.data.msg)),
+              content: r.data.msg,
               type: `success`,
             })
           );
+          refetchCart();
         } else if (r.error && r.error?.data && r.error?.data?.msg) {
           dispatch(resetPromo());
           dispatch(
@@ -243,8 +244,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             })
           );
         }
-
-        refetchCart();
       });
     }
   };
