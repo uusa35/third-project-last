@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { mainBtnClass, toEn } from '@/constants/*';
-import moment, { Moment } from 'moment';
+import moment, { Moment, locale } from 'moment';
 import { isArray, isEmpty, isNull, isUndefined, map, reverse } from 'lodash';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -72,6 +72,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     'delivery_now' | 'delivery_later' | 'pickup_now' | 'pickup_later'
   >('delivery_now');
   const [days, setDays] = useState<Day[] | null>(null);
+  moment.locale(lang);
 
   useEffect(() => {
     if (url) {
