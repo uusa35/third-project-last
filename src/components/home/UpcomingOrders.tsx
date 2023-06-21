@@ -23,7 +23,7 @@ import { useRouter } from 'next/router';
 const UpComingOrders: FC = () => {
   const { t } = useTranslation();
   const {
-    locale: { lang },
+    locale: { lang, isRTL, dir },
     appSetting: { url },
     customer: { phone },
   } = useAppSelector((state) => state);
@@ -43,6 +43,7 @@ const UpComingOrders: FC = () => {
   var settings = {
     // dots: true,
     // className: 'transform-none',
+    rtl: isRTL,
     arrows: false,
     infinite: false,
     speed: 500,
@@ -52,13 +53,14 @@ const UpComingOrders: FC = () => {
     // variableWidth: true,
     // useTransform: false,
     centerMode: true,
-    centerPadding: '50px 0px 0px',
+    centerPadding: isRTL ? '0px 0px 0px 50px' : '50px 0px 0px',
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          centerPadding: isRTL ? '0px 0px 0px 50px' : '50px 0px 0px',
           //   infinite: true,
           //   dots: true,
         },
@@ -68,7 +70,8 @@ const UpComingOrders: FC = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerPadding: '30px 0px 0px',
+          // centerPadding: '30px 0px 0px',
+          centerPadding: isRTL ? '0px 0px 0px 30px' : '30px 0px 0px',
           //   initialSlide: 2,
         },
       },
@@ -77,7 +80,8 @@ const UpComingOrders: FC = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          centerPadding: '10px 0px 0px',
+          // centerPadding: '10px 0px 0px',
+          centerPadding: isRTL ? '0px 0px 0px 10px' : '10px 0px 0px',
         },
       },
     ],
@@ -100,7 +104,7 @@ const UpComingOrders: FC = () => {
                 </p>
                 <Slider {...settings}>
                   {data?.data.map((order) => (
-                    <div className="px-2">
+                    <div className="px-2" dir={dir}>
                       <div
                         className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full`}
                       >
