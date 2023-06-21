@@ -255,9 +255,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                       }
                     >
                       <span className="flex text-md">{day.day}</span>
-                      <span className="flex flex-row text-md">
-                        {moment(day.date).format('DD MMM')}
-                      </span>
+                      <span className="flex flex-row text-md">{day.date}</span>
                     </button>
                   </div>
                 </div>

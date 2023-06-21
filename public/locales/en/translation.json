@@ -344,5 +344,6 @@
   "house_no_is_required": "house no is required",
   "floor_no_is_required": "floor no is required",
   "apartment_no_is_required": "apartment no is required",
-  "save_receipt": "save receipt"
+  "save_receipt": "save receipt",
+  "customer_id_is_required": "please enter login page and sign in as a guest in order to continue your information."
 }

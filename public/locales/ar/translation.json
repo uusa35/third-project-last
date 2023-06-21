@@ -286,9 +286,9 @@
   "sorry_we_do_not_delivery_here": "نأسف لا يوجد توصيل في الموقع المختار.",
   "delivery_address": "عنوان التوصيل",
   "order_not_found": "الطلب غير موجود",
-  "no_orders_found" : "لم يتم العثور على أية طلبات",
-  "You_’re_about_to_change_your_location":"انت علي وشك ان تغير موقعك",
-  "changing_your_location_might_result_in_removing_the_items_from_your_cart":"تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك",
+  "no_orders_found": "لم يتم العثور على أية طلبات",
+  "You_’re_about_to_change_your_location": "انت علي وشك ان تغير موقعك",
+  "changing_your_location_might_result_in_removing_the_items_from_your_cart": "تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك",
   "rate_is_required": "التقييم مطلوب",
   "note_is_required": "الملاحظات مطلوبة",
   "thanks_for_your_feedback": "شكرًا لتقييمك",
@@ -310,7 +310,7 @@
   "confirm_password_is_required": "تأكيد كلمة المرور مطلوب",
   "save": "حفظ",
   "the_password_you_entered_is_incorrect.": "كلمة المرور التي قمت بإدخالها غير صحيحة",
-  "building_no_is_required" : "رقم المبنى مطلوب",
+  "building_no_is_required": "رقم المبنى مطلوب",
   "city_is_required": "المدينة مطلوبة",
   "street_is_required": "الشارع مطلوب",
   "house_no_is_required": "رقم المنزل مطلوب",
@@ -319,5 +319,6 @@
   "save_receipt": "حفظ الفاتورة",
   "popular_search": "المنتجات الشائعة",
   "add_items": "إضافة منتجات",
-  "office_no_is_required": "رقم المكتب مطلوب"
+  "office_no_is_required": "رقم المكتب مطلوب",
+  "customer_id_is_required": "لم يتم ادخال بيانات يرجى الدخول لصفحة التسجيل وادخال بياناتك كضيف لاستكمال باقي المعلومات"
 }

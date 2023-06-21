@@ -164,12 +164,26 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
+    console.log('test');
     if (destination.method === 'pickup') {
       // await checkTimeAvailability();
     } else {
       await handelSaveAddress(body);
     }
   };
+
+  useEffect(() => {
+    if (errors.customer_id) {
+      router.push(appLinks.login.path).then(() => {
+        dispatch(
+          showToastMessage({
+            type: 'error',
+            content: 'customer_id_is_required',
+          })
+        );
+      });
+    }
+  }, [errors]);
 
   return (
     <MainContentLayout
