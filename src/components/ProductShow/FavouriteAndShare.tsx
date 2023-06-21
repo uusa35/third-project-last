@@ -29,7 +29,7 @@ const FavouriteAndShare:FC<Props> = ({
   const [triggerAddToWishList] = useAddToWishListMutation();
   const [triggerDeleteFromWishList] = useDeleteFromWishListMutation();
 
-  console.log({ isAuth });
+  // console.log({ isAuth });
 
   const handleAddRemvWishlist = async () => {
     if (isAuth) {

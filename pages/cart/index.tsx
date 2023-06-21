@@ -228,13 +228,13 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
           dispatch(setPromocode(value));
+          refetchCart();
           dispatch(
             showToastMessage({
               content: r.data.msg,
               type: `success`,
             })
           );
-          refetchCart();
         } else if (r.error && r.error?.data && r.error?.data?.msg) {
           dispatch(resetPromo());
           dispatch(
