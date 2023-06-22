@@ -1,20 +1,34 @@
+import { jsx } from '@emotion/react';
+import { FC } from 'react';
 import {
   alexandriaFont,
   alexandriaFontSemiBold,
   suppressText,
 } from '@/constants/*';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ServerCart } from '../types';
 import { useAppSelector } from '@/redux/hooks';
 import { isNull } from 'lodash';
 
 type Props = {
-  data: ServerCart;
-  isFailure?: boolean
+  sub_total: string | number;
+  promo_code_discount?: string | number;
+  tax: string | number;
+  free_delivery: boolean;
+  delivery_fees: string | number;
+  total_cart_after_tax?: string | number;
+  total: string | number;
 };
 
-export default function PaymentSummary({ data, isFailure= false }: Props) {
+const PaymentSummary: FC<Props> = ({
+  sub_total = '',
+  promo_code_discount = '',
+  tax = '',
+  free_delivery = false,
+  delivery_fees = '',
+  total_cart_after_tax = '',
+  total = '',
+}): JSX.Element => {
   const { t } = useTranslation();
   const {
     searchParams: { method },
@@ -32,9 +46,7 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
               className={`px-2`}
               data-cy="sub-total"
             >
-              {/* {enable_promocode ? data.sub_total : data.subTotal} */}
-              {isFailure && data.subtotal}
-              {!isFailure && data.promo_code_discount ? data.sub_total : data.subTotal}
+              {sub_total}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
               {t('kwd')}
@@ -43,7 +55,7 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
         </div>
 
         {/* {enable_promocode && ( */}
-        {data.promo_code_discount && (
+        {promo_code_discount ? (
           <>
             <div className="flex justify-between mb-2">
               <p suppressHydrationWarning={suppressText}>
@@ -54,7 +66,7 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
                   suppressHydrationWarning={suppressText}
                   className={`px-2 text-red-600`}
                 >
-                  {data.promo_code_discount}
+                  {promo_code_discount}
                 </p>
                 <p
                   className={`uppercase text-red-600`}
@@ -65,16 +77,17 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
               </div>
             </div>
           </>
+        ) : (
+          <></>
         )}
 
         {/* {(enable_promocode && data.tax)  */}
-        {(data.promo_code_discount && data.tax) || data.tax ? (
+        {(promo_code_discount && tax) || tax ? (
           <div className="flex justify-between mb-2">
             <p suppressHydrationWarning={suppressText}>{t('tax')} </p>
             <div className={`flex flex-row`}>
               <p suppressHydrationWarning={suppressText} className={`px-2`}>
-                {/* {enable_promocode ? data.tax : tax} */}
-                {data.tax}
+                {tax}
               </p>
               <p
                 className={`uppercase`}
@@ -95,13 +108,9 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
             <div className={`flex flex-row`}>
               <p suppressHydrationWarning={suppressText} className={`px-2`}>
                 {/* {enable_promocode */}
-                {data.promo_code_discount
-                  ? data.free_delivery === false
-                    ? data.delivery_fee
-                    : 0
-                  : isNull(data.delivery_fees)
+                {free_delivery === true || isNull(delivery_fees)
                   ? 0
-                  : data.delivery_fees}
+                  : delivery_fees}
               </p>
               <p
                 className={`uppercase`}
@@ -122,9 +131,8 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
           <div className={`flex flex-row`}>
             <p suppressHydrationWarning={suppressText} className={`px-2`}>
               {/* {enable_promocode  */}
-              {data.promo_code_discount
-                ? data.total_cart_after_tax
-                : data.total}
+              {total_cart_after_tax || total}
+              {/* {promo_code_discount ? total_cart_after_tax : total} */}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
               {t('kwd')}
@@ -134,4 +142,6 @@ export default function PaymentSummary({ data, isFailure= false }: Props) {
       </>
     </div>
   );
-}
+};
+
+export default PaymentSummary;
