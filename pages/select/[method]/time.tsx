@@ -29,10 +29,7 @@ type Day = {
 };
 type Props = {
   url: string;
-  days: Day[];
-  selectedDay: Day;
-  handleDaySelect: (day: Day) => void;
-  method: 'pickup | delivery';
+  method: 'pickup' | 'delivery';
 };
 
 const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
@@ -109,13 +106,13 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
 
       if (isToday) {
         days.push({
-          day: `${t('today')}`,
+          day: `today`,
           date: day.format('DD MMM Y'),
           rawDate: day.locale('en'),
         });
       } else if (isTomorrow) {
         days.push({
-          day: `${t('tomorrow')}`,
+          day: `tomorrow`,
           date: day.format('DD MMM Y'),
           rawDate: day.locale('en'),
         });
@@ -311,7 +308,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                         })
                       }
                     >
-                      <span className="flex text-sm">{day.day}</span>
+                      <span className="flex text-sm">{t(day.day)}</span>
                       <span className="flex flex-row text-sm">{day.date}</span>
                     </button>
                   </div>
