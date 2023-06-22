@@ -120,16 +120,14 @@ export const addressApi = apiSlice.injectEndpoints({
     getAddressesByType: builder.query<
       AppQueryResult<Address>,
       {
-        params: {
-          address_id: number;
-        };
+        type: string;
         url: string;
       }
     >({
-      query: ({ params, url }) => ({
+      query: ({ type, url }) => ({
         url: `user/address`,
         headers: { url },
-        params: { ...params },
+        params: { type },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),

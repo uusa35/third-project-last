@@ -147,11 +147,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     } else if (
       method === 'delivery' &&
       isAuth &&
-      (!UserAddressSuccess ||
-        !UserAddress.data ||
-        isEmpty(UserAddress.data) ||
-        !UserAddress.data[0] ||
-        !UserAddress.data[0]?.id)
+      (!UserAddressSuccess || !UserAddress.data || !UserAddress.data.id)
     ) {
       router.push(appLinks.createAuthAddress(customer_id));
     } else if (isNull(selectedPaymentMethod)) {
@@ -164,10 +160,11 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     } else {
       await triggerCreateOrder({
         params: {
-          ...(isAuth ? {} : { user_id: customer_id }),
+          // ...(isAuth ? {} : { user_id: customer_id }),
+          user_id: customer_id,
           ...(method === `delivery`
             ? isAuth
-              ? { address_id: UserAddress.data[0].id }
+              ? { address_id: UserAddress.data.id }
               : { address_id: addressID }
             : {}),
           order_type: prefrences.type,
@@ -198,10 +195,10 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                 })
               );
             } else {
-              window.open(r.data.Data, '_self');
+              window.open(r.data.Data.PaymentURL, '_self');
             }
           } else {
-            router.replace(appLinks.orderFailure(r.data.data.order_id));
+            // router.replace(appLinks.orderFailure(r.data.data.order_id));
           }
         } else {
           if (r.error && r.error.data && r.error.data.msg) {
