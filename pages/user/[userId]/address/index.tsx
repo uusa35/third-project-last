@@ -172,7 +172,7 @@ const AddressIndex: NextPage<Props> = ({
         )}
         <div className="relative -bottom-10 p-2 w-full">
           <Link
-            href={`${appLinks.guestAddress.path}`}
+            href={`${appLinks.createAuthAddress(id)}`}
             className={`${mainBtnClass} flex flex-row justify-center items-center`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
