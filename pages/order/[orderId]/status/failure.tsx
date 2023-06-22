@@ -145,7 +145,24 @@ const OrderFailure: NextPage<Props> = ({ url, orderId }): React.ReactElement => 
         >
           {t('order_summary')}
         </p>
-        <PaymentSummary data={order.data} isFailure={true} />
+        <PaymentSummary 
+         sub_total={
+          order?.data?.subtotal || 0 
+        }
+        total={order?.data?.total || 0}
+        total_cart_after_tax={
+          order?.data?.total_cart_after_tax || 0
+        }
+        promo_code_discount={
+          order?.data?.promo_code_discount || 0
+        }
+        delivery_fees={
+          order?.data?.delivery_fees ||
+          0
+        }
+        free_delivery={order?.data?.free_delivery || false}
+        tax={order?.data?.tax || 0}
+        />
       </div>
 
       <div>
