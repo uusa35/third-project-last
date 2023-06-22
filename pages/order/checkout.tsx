@@ -159,7 +159,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       );
     } else {
       await triggerCreateOrder({
-        params: {
+        body: {
           // ...(isAuth ? {} : { user_id: customer_id }),
           user_id: customer_id,
           ...(method === `delivery`
@@ -198,7 +198,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
               window.open(r.data.Data.PaymentURL, '_self');
             }
           } else {
-            // router.replace(appLinks.orderFailure(r.data.data.order_id));
+            router.replace(appLinks.orderFailure(r.data.data.order_id));
           }
         } else {
           if (r.error && r.error.data && r.error.data.msg) {

@@ -15,15 +15,15 @@ export const orderApi = apiSlice.injectEndpoints({
       createOrder: builder.query<
         AppQueryResult<Order>,
         {
-          params: OrderUser;
+          body: OrderUser;
           area_branch: any;
           url: string;
         }
       >({
-        query: ({ params, area_branch, url }) => ({
+        query: ({ body, area_branch, url }) => ({
           url: `new-create-order`,
           method: 'POST',
-          params,
+          body,
           headers: {
             ...area_branch,
             url,
@@ -43,8 +43,7 @@ export const orderApi = apiSlice.injectEndpoints({
           url: `track-order`,
           headers: { url },
           params: { order_code },
-          validateStatus: (response, result) =>
-            result?.status,
+          validateStatus: (response, result) => result?.status,
         }),
       }),
       checkOrderStatus: builder.query<
