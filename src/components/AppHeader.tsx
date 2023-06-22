@@ -102,7 +102,7 @@ const AppHeader: FC<Props> = ({
         </button>
         <div className={`flex flex-1 justify-center items-center  `}>
           <span
-            className={`text-xl capitalize truncate ${alexandriaFontSemiBold}`}
+            className={`text-lg capitalize truncate ${alexandriaFontSemiBold}`}
             suppressHydrationWarning={suppressText}
             style={{ maxWidth: '20ch', textOverflow: 'truncate' }}
           >

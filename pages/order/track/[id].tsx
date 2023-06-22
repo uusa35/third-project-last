@@ -147,7 +147,7 @@ const OrderTrack: NextPage<Props> = ({
       ) : (
         <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
           <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 px-3">
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-xl font-bold">
               {currentOrderStatus === 'pending' &&
                 t('order_received_we_have_got_ur_order')}
               {currentOrder &&
@@ -250,9 +250,9 @@ const OrderTrack: NextPage<Props> = ({
           {/*  Delivery (Address)  */}
           {currentOrder && currentOrder?.order_type === 'delivery' && (
             <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
-              <div className="capitlize text-xl mb-4 font-bold">
+              <p className="capitlize text-lg mb-4 font-bold">
                 {t('delivery_location')}
-              </div>
+              </p>
               <div className="flex w-full flex-row justify-between items-center ">
                 <div className={`p-2 bg-gray-100 rounded-full`}>
                   <BuildingOfficeIcon className="h-6 w-6 text-black" />
@@ -291,9 +291,9 @@ const OrderTrack: NextPage<Props> = ({
 
           {/* your order */}
           <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
-            <div className="capitlize text-xl my-4 font-bold">
+            <p className="capitlize text-lg my-4 font-bold">
               {t('ur_order')}
-            </div>
+            </p>
             {/*  item */}
             {currentOrder &&
               currentOrder.products &&
@@ -303,7 +303,7 @@ const OrderTrack: NextPage<Props> = ({
                   key={i}
                 >
                   <div className="flex flex-col  space-y-2">
-                    <div className="text-lg font-bold">
+                    <div className="text-base font-bold">
                       <TextTrans
                         ar={`${p.item_ar} x${p.quantity}`}
                         en={`${p.item_en} x${p.quantity}`}
@@ -327,17 +327,17 @@ const OrderTrack: NextPage<Props> = ({
           </div>
           {/* Payment details */}
           <div className="flex flex-1 flex-col w-full px-3 pb-6">
-            <div className="capitlize text-xl my-4 font-bold">
+            <p className="capitlize text-lg my-4 font-bold">
               {t('payment_details')}
-            </div>
+            </p>
             {/*  item */}
             <div className="flex w-full flex-row justify-between items-start">
               <div className="flex flex-col  w-full space-y-2">
                 <div className="flex flex-row justify-start items-center space-x-4">
                   <BanknotesIcon className="h-6 w-6 me-2" />
-                  <div className="text-lg font-bold">
+                  <p className="text-base font-bold">
                     {t('cash_on_delivery')}
-                  </div>
+                  </p>
                 </div>
                 {/* subtotal */}
                 <div className="flex flex-row justify-between items-center">
@@ -357,9 +357,9 @@ const OrderTrack: NextPage<Props> = ({
                 {/* total */}
                 <div className="flex flex-row justify-between items-center">
                   <div className="text-lg font-bold">{t('total')}</div>
-                  <div className="text-lg font-bold">
+                  <p className="text-base font-bold">
                     {currentOrder?.total} {t('kd')}
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>
