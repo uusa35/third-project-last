@@ -106,12 +106,10 @@ export default function CheckoutFixedBtn({
                 <div className="flex items-center gap-x-3">
                   <p
                     suppressHydrationWarning={suppressText}
-                    className={`flex items-center justify-center rounded-full w-8 h-8 ${
-                      cartLessThanMin ? 'bg-opacity-10' : ''
-                    }`}
+                    className={`flex items-center justify-center rounded-full w-8 h-8 `}
                     style={{
                       backgroundColor: cartLessThanMin
-                        ? 'black'
+                        ? '#00000026'
                         : shadeColor(color, -50),
                     }}
                   >
