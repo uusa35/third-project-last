@@ -20,6 +20,7 @@ import {
   suppressText,
 } from '@/constants/*';
 import Link from 'next/link';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 type Props = {
   OrderStatus?: boolean;
@@ -43,6 +44,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
     },
     searchParams: { method, destination },
   } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(isAuthenticated);
 
   const DetailComponent = ({
     icon,
@@ -110,7 +112,9 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
         <DetailComponent
           onclick={() =>
             method === 'delivery'
-              ? router.push(appLinks.guestAddress.path)
+              ? isAuth
+                ? router.push(appLinks.userAddresses(id))
+                : router.push(appLinks.guestAddress.path)
               : router.push(appLinks.selectBranch.path)
           }
           icon={
