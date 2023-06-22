@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
-import { apiUrl, isLocal, xDomain } from '../../constants';
+import { apiUrl, isLocal, xDomain } from '@/constants/index';
 import { RootState } from '@/redux/store';
 import { isNull } from 'lodash';
 
