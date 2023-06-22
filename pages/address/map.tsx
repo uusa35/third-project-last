@@ -20,6 +20,7 @@ import MapIcon from '@/appIcons/map_icon.svg';
 import { isNull } from 'lodash';
 import { useEffect } from 'react';
 import { setUrl } from '@/redux/slices/appSettingSlice';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   element: Vendor;
@@ -33,6 +34,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
     searchParams: { destination, destination_type, method },
   } = useAppSelector((state) => state);
   const isAuth = useAppSelector(isAuthenticated);
+  const color = useAppSelector(themeColor);
   const { t } = useTranslation();
   const dispatch=useAppDispatch()
 
@@ -97,7 +99,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             {isNull(destination) ? (
               <button
                 disabled={true}
-                className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
+                className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
+                style={{backgroundColor: color}}
               >
                 {t(`deliver_here`)}
               </button>
@@ -110,7 +113,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
                       : 'else'
                     : appLinks.cart.path
                 }
-                className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl bg-red-600 disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
+                className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
+                style={{backgroundColor: color}}
               >
                 {t(`deliver_here`)}
               </Link>
