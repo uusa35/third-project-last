@@ -262,6 +262,8 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   };
 
+  console.log(cartItems?.data);
+
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
       {/* if cart is empty */}
@@ -308,7 +310,25 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
                 >
                   {t('order_review')}
                 </p>
-                <PaymentSummary data={cartItems?.data} />
+                <PaymentSummary
+                  sub_total={
+                    cartItems?.data?.subTotal || cartItems?.data?.sub_total || 0
+                  }
+                  total={cartItems?.data?.total || 0}
+                  total_cart_after_tax={
+                    cartItems?.data?.total_cart_after_tax || 0
+                  }
+                  promo_code_discount={
+                    cartItems?.data?.promo_code_discount || 0
+                  }
+                  delivery_fees={
+                    cartItems?.data?.delivery_fees ||
+                    cartItems?.data?.delivery_fee ||
+                    0
+                  }
+                  free_delivery={cartItems?.data?.free_delivery || false}
+                  tax={cartItems?.data?.tax || 0}
+                />
               </div>
             </div>
 
