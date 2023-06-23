@@ -77,8 +77,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             />
           )}
         </div>
-        {destination?.lat && destination?.long && (
-          <ElementMap lat={destination?.lat} lng={destination?.long} />
+        {destination?.latitude && destination?.longitude && (
+          <ElementMap lat={destination?.latitude} lng={destination?.longitude} />
         )}
         <div className="flex h-auto w-full flex-col flex-1 justify-start items-start  px-4 py-4 space-y-2">
           {!isNull(destination) && (

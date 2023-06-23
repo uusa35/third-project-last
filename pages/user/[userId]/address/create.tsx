@@ -50,6 +50,8 @@ import OfficeIcon from '@/appIcons/office.svg';
 import HomeActive from '@/appIcons/home_active.svg';
 import ApartmentActive from '@/appIcons/apartment_active.svg';
 import OfficeActive from '@/appIcons/office_active.svg';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   element: Vendor;
@@ -70,7 +72,9 @@ const AddressCreate: NextPage<Props> = ({
     locale: { isRTL },
     customer,
     searchParams: { method, destination },
+    cart: { promocode },
   } = useAppSelector((state) => state);
+  const desObject = useAppSelector(destinationHeaderObject);
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const [currentAddressType, setCurrentAddressType] = useState<
@@ -79,8 +83,6 @@ const AddressCreate: NextPage<Props> = ({
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
-  const [triggerUpdateAddress, { isLoading: updateAddressLoading }] =
-    useUpdateAddressMutation();
   const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
@@ -116,7 +118,12 @@ const AddressCreate: NextPage<Props> = ({
       additional: currentAddress?.address.additional,
     },
   });
-
+  const { data: cartItems } = useGetCartProductsQuery({
+    userAgent: customer.userAgent,
+    area_branch: desObject,
+    url,
+    PromoCode: promocode,
+  });
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
@@ -146,7 +153,7 @@ const AddressCreate: NextPage<Props> = ({
       }
     }
   }, [currentAddressType]);
-
+console.log({ cartItems });
   const handleSaveAddress = async (body: any) => {
     await triggerCreateOrUpdateAddress({
       body: {
@@ -177,10 +184,12 @@ const AddressCreate: NextPage<Props> = ({
         );
         // dispatch(setCustomerAddress(r.data.Data));
         setCurrentAddress(r.data.Data);
-        // if cart has items go to checkout
-        router.push(`${appLinks.checkout.path}`);
-        // else go to home
-        // checkTimeAvailability();
+        if(cartItems?.data?.Cart.length > 0) {
+          router.push(`${appLinks.checkout.path}`);
+        }
+        else {
+          router.push(`${appLinks.home.path}`);
+        }
       } else {
         if (r.error && r.error.data?.msg) {
           dispatch(

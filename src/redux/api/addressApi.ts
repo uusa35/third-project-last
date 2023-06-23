@@ -84,8 +84,7 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<Address>,
       {
         params: {
-          address_id: number;
-          address_type: string;
+          address_id: number
         };
         url: string;
       }
