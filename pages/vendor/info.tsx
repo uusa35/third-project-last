@@ -251,7 +251,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                 </p>
                 <button
                   onClick={handleOpenPopup}
-                  className={`flex flex-col flex-1 w-1/2 justify-center items-center bg-gray-50 rounded-3xl p-3 shadow-xl`}
+                  className={`flex flex-col flex-1 w-2/3 lg:w-1/2 justify-center items-center bg-gray-50 rounded-3xl p-3 shadow-xl`}
                 >
                   <p
                     suppressHydrationWarning={suppressText}

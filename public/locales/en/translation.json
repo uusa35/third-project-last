@@ -200,7 +200,7 @@
   "close": "closed",
   "busy": "busy",
   "add_to_cart": "add to cart",
-  "item_added_successfully": "added",
+  "item_added_successfully": "1 item added to your cart",
   "this_branch": "this branch",
   "this_area": "this area",
   "select_address": "select address",
@@ -346,5 +346,6 @@
   "apartment_no_is_required": "apartment no is required",
   "save_receipt": "save receipt",
   "customer_id_is_required": "please enter login page and sign in as a guest in order to continue your information.",
-  "address_deleted_successfully": "address deleted successfully"
+  "address_deleted_successfully": "address deleted successfully",
+  "please_provide_all_required_information": "please provide all required information"
 }
