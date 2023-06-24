@@ -110,7 +110,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
                   method === 'delivery'
                     ? isAuth && id
                       ? appLinks.createAuthAddress(id)
-                      : 'else'
+                      : appLinks.cart.path
                     : appLinks.cart.path
                 }
                 className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl disabled:bg-stone-400 p-3 px-8 text-white capitalize`}
