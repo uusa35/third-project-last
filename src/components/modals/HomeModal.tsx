@@ -75,18 +75,15 @@ const HomeModal: FC<Props> = ({
                 className="object-fill w-full h-full rounded-lg"
               />
             </div>
-            <div className="absolute h-full w-full flex flex-col justify-between items-end z-10 py-5 rounded-lg">
-              <button
-                className={`mt-2 px-5 pb-5`}
-                onClick={() => onRequestClose()}
-              >
+            <div className="absolute h-full w-full flex flex-col justify-between items-end z-10 p-5 rounded-lg">
+              <button className={``} onClick={() => onRequestClose()}>
                 <XMarkIcon
                   className={`w-6 h-6 text-black text-base bg-white rounded-full p-1`}
                 />
               </button>
 
               {/* apply copon btn */}
-              <div className="px-5 pb-5 w-full">
+              <div className="w-full">
                 <button
                   onClick={() => ApplyPromocode()}
                   className={`bg-white text-black w-full text-md rounded-full h-8 pt-2 pb-8 mx-auto capitalize ${alexandriaFont}`}

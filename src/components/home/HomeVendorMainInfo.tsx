@@ -48,13 +48,12 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
           <Link
             href={appLinks.home.path}
             scroll={true}
-            className={`w-1/4 rounded-md`}
-            style={{ boxShadow: '0px 0px 10px 0px #cfcdcd' }}
+            className={` w-1/3 md:w-1/4 rounded-md`}
           >
             <CustomImage
               width={imageSizes.xs}
               height={imageSizes.xs}
-              className="rounded-md w-full h-fit aspect-square"
+              className="rounded-md w-full h-fit aspect-square border border-[#D6D6D6]"
               alt={element?.Data?.name ?? ''}
               src={imgUrl(element?.Data?.logo ?? '')}
             />
