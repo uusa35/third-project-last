@@ -77,8 +77,8 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
             />
           )}
         </div>
-        {destination?.lat && destination?.long && (
-          <ElementMap lat={destination?.lat} lng={destination?.long} />
+        {destination?.latitude && destination?.longitude && (
+          <ElementMap lat={destination?.latitude} lng={destination?.longitude} />
         )}
         <div className="flex h-auto w-full flex-col flex-1 justify-start items-start  px-4 py-4 space-y-2">
           {!isNull(destination) && (
@@ -110,7 +110,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
                   method === 'delivery'
                     ? isAuth && id
                       ? appLinks.createAuthAddress(id)
-                      : 'else'
+                      : appLinks.cart.path
                     : appLinks.cart.path
                 }
                 className={`flex justify-center items-center w-full h-14 mt-[10%] rounded-3xl disabled:bg-stone-400 p-3 px-8 text-white capitalize`}

@@ -87,6 +87,8 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
+import PlusIcon from '@/appIcons/plus.svg';
+import MinusIcon from '@/appIcons/minus.svg';
 
 type Props = {
   product: Product;
@@ -141,11 +143,13 @@ const ProductShow: NextPage<Props> = ({
   // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
     const onScroll = () => setOffset(window.pageYOffset);
+    console.log({ offset });
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', debounce(onScroll, 400));
+      window.removeEventListener('scroll', onScroll);
     };
-  }, [router.pathname]);
+  }, []);
+  
   // min for checkbox and meter ===> optional and required
   const handleValidateMinQty = () => {
     dispatch(resetMinQtyValidationID());
@@ -668,7 +672,7 @@ const ProductShow: NextPage<Props> = ({
       setRequiredSection(true);
       dispatch(
         showToastMessage({
-          content: `please_review_sections_some_r_required`,
+          content: `please_provide_all_required_information`,
           type: `error`,
         })
       );
@@ -769,8 +773,8 @@ const ProductShow: NextPage<Props> = ({
       />
       <MainContentLayout url={url}>
         {isSuccess && !isNull(element) && element.Data ? (
-          <>
-            <div className="flex justify-between items-center p-3 sticky top-0 z-50 w-full capitalize bg-white border-b-20">
+          <div>
+            <div className={`flex justify-between items-center p-3 ${offset > 80 ? 'fixed lg:sticky' : 'sticky'} top-0 z-50 w-full capitalize bg-white border-b-20`}>
               <div className="flex">
                 <button onClick={() => router.back()}>
                   {router.locale === 'en' ? <West /> : <East />}
@@ -1015,7 +1019,7 @@ const ProductShow: NextPage<Props> = ({
                         paddingRight: 0,
                       }}
                     >
-                      {(s.must_select === 'q_meter' ||
+                      {/* {(s.must_select === 'q_meter' ||
                         s.must_select === 'multi') &&
                       s.selection_type === 'mandatory' ? (
                         <p className={`flex -w-full text-red-600 pb-3`}>
@@ -1028,6 +1032,34 @@ const ProductShow: NextPage<Props> = ({
                         s.selection_type === 'mandatory' && (
                           <p className={`flex -w-full text-red-600 pb-3`}>
                             {t(`field_must_select_at_least_one`)}
+                          </p>
+                        )
+                      )} */}
+                       {s.selection_type === 'mandatory' ? (
+                        s.must_select === 'q_meter' ||
+                        s.must_select === 'multi' ? (
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`must_select_min_and_max`, {
+                              min: s.min_q,
+                              max: s.max_q,
+                            })}
+                          </p>
+                        ) : (
+                          // radio btn msg
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`field_must_select_at_least_one`)}
+                          </p>
+                        )
+                      ) : (
+                        // optional addons min qty msg
+                        productCart.MinQtyValidationID.includes(
+                          s.id.toString()
+                        ) && (
+                          <p className={`flex -w-full text-red-600 pb-3`}>
+                            {t(`must_select_min_and_max`, {
+                              min: s.min_q,
+                              max: s.max_q,
+                            })}
                           </p>
                         )
                       )}
@@ -1192,22 +1224,22 @@ const ProductShow: NextPage<Props> = ({
                       disabled={currentQty === element.Data?.amount}
                       onClick={handleIncrease}
                       type="button"
-                      className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-xl font-semibold rounded-full pb-3 disabled:bg-gray-300"
+                      className="w-6 h-6 lg:w-8 lg:h-8 flex items-center justify-center text-white text-base rounded-full disabled:bg-gray-300"
                       style={{ backgroundColor: color }}
                     >
-                      +
+                      <PlusIcon />
                     </button>
                     <span className="text-black text-xl inline-block text-center w-10 h-7">
                       {currentQty}
                     </span>
                     <button
-                      disabled={currentQty === 0}
+                      disabled={currentQty === 1}
                       onClick={handleDecrease}
                       type="button"
-                      className={`w-6 h-6 lg:w-7 lg:h-7 text-base lg:text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                      className={`w-6 h-6 lg:w-8 lg:h-8 flex justify-center items-center bg-white border-[1px] rounded-full disabled:border-gray-300 disabled:text-gray-300`}
                       style={{ borderColor: color, color }}
                     >
-                      -
+                      <MinusIcon />
                     </button>
                   </div>
                 </div>
@@ -1260,7 +1292,7 @@ const ProductShow: NextPage<Props> = ({
                 />
               </div>
             </div>
-          </>
+          </div>
         ) : (
           <ContentLoader type="ProductShow" sections={1} />
         )}

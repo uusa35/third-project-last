@@ -28,7 +28,7 @@ import {
 } from '@/redux/api/addressApi';
 import { useEffect, useState } from 'react';
 import { Address, AppQueryResult } from '@/types/queries';
-import { setUrl } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { isEmpty, isObject, isUndefined, map } from 'lodash';
 import { setCustomerAddress } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
@@ -94,11 +94,23 @@ const AddressIndex: NextPage<Props> = ({
     await triggerDeleteAddress({
       params: {
         address_id: address.id,
-        address_type: address.type,
       },
       url,
     }).then((r) => {
-      triggerGetAddresses({ url }, false);
+      if(r?.data?.status) {
+        dispatch(showToastMessage({
+          content: `address_deleted_successfully`,
+          type: `success`
+        }));
+        console.log({ deleteAddressRes: r });
+        triggerGetAddresses({ url }, false);
+      }
+      else {
+        dispatch(showToastMessage({
+          content: r.error.data.msg,
+          type: `error`
+        }))
+      }
     });
   };
 
@@ -142,15 +154,15 @@ const AddressIndex: NextPage<Props> = ({
                           <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md capitalize">
                             <button
                               onClick={() => handleEdit(address)}
-                              className={`capitalize mb-2`}
+                              className={`capitalize pb-2 px-2 border-b-[1px] border-stone-300 w-100  text-start`}
                             >
                               {t('edit')}
                             </button>
                             <button
                               onClick={() => handleDelete(address)}
-                              className={`capitalize mb-2 text-red-600`}
+                              className={`capitalize py-2 mb-2 px-2 text-red-600  text-start`}
                             >
-                              {t('delete')}
+                              {t('remove')}
                             </button>
                           </div>
                         )}

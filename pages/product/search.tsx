@@ -178,7 +178,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                   {router.locale === 'en' ? <West /> : <East />}
                 </button>
                 <input
-                  type="search"
+                  type="text"
                   name="search"
                   id="search"
                   defaultValue={searchKey}
