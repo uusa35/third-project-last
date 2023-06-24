@@ -252,26 +252,32 @@ const orderReceipt: NextPage<Props> = ({
                 </p>
               </div>
               <div className="pb-36 space-y-1">
-              {/* <PaymentSummary
+                <PaymentSummary
                   sub_total={
-                    cartItems?.data?.subTotal || cartItems?.data?.sub_total || 0
-                  }
-                  total={cartItems?.data?.total || 0}
-                  total_cart_after_tax={
-                    cartItems?.data?.total_cart_after_tax || 0
-                  }
-                  promo_code_discount={
-                    cartItems?.data?.promo_code_discount || 0
-                  }
-                  delivery_fees={
-                    cartItems?.data?.delivery_fees ||
-                    cartItems?.data?.delivery_fee ||
+                    orderReceiptData.data.payment_summary?.subTotal ||
+                    orderReceiptData.data.payment_summary?.sub_total ||
                     0
                   }
-                  free_delivery={cartItems?.data?.free_delivery || false}
-                  tax={cartItems?.data?.tax || 0}
-                /> */}
-                <PaymentSummary data={orderReceiptData.data.payment_summary} />
+                  total={orderReceiptData.data.payment_summary?.total || 0}
+                  total_cart_after_tax={
+                    orderReceiptData.data.payment_summary
+                      ?.total_cart_after_tax || 0
+                  }
+                  promo_code_discount={
+                    orderReceiptData.data.payment_summary
+                      ?.promo_code_discount || 0
+                  }
+                  delivery_fees={
+                    orderReceiptData.data.payment_summary?.delivery_fees ||
+                    orderReceiptData.data.payment_summary?.delivery_fee ||
+                    0
+                  }
+                  free_delivery={
+                    orderReceiptData.data.payment_summary?.free_delivery ||
+                    false
+                  }
+                  tax={orderReceiptData.data.payment_summary?.tax || 0}
+                />
               </div>
 
               {/* reorder */}

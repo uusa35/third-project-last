@@ -8,26 +8,35 @@ import {
   imgUrl,
 } from '@/constants/*';
 import Link from 'next/link';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { isNull, kebabCase, lowerCase } from 'lodash';
 import { suppressText } from '@/constants/*';
 import TextTrans from '@/components/TextTrans';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
+import { setCategory } from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   element: Category;
 };
 const CategoryWidget: FC<Props> = ({ element }) => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   // const {
   //   branch,
   //   area,
   //   appSetting: { method },
   // } = useAppSelector((state) => state);
 
+  const handleSearchRedirection = (id: string) => {
+    dispatch(setCategory(id));
+    router.push(`${appLinks.productSearch.path}`);
+  };
+
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
-      <Link
-        href={'#'}
+      <button
+        onClick={() => handleSearchRedirection(element.id.toString())}
         className={`aspect-square shadow-lg rounded-lg capitalize `}
         suppressHydrationWarning={suppressText}
         data-cy="category"
@@ -62,7 +71,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
             </p>
           </div>
         </div>
-      </Link>
+      </button>
     </motion.div>
   );
 };
