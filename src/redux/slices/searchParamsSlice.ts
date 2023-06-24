@@ -26,6 +26,15 @@ export const searchParamsSlice = createSlice({
       destination_type: action.payload.type === 'pickup' ? 'branch' : 'area',
       destination: action.payload.destination,
     }),
+    resetDestination: (
+      state: typeof initialState,
+      action: PayloadAction<void | undefined>
+    ) => ({
+      ...state,
+      method: null,
+      destination_type: null,
+      destination: null,
+    }),
     setCategory: (
       state: typeof initialState,
       action: PayloadAction<number>
@@ -36,9 +45,9 @@ export const searchParamsSlice = createSlice({
   },
 });
 
-export const { setDestination, setCategory } = searchParamsSlice.actions;
+export const { setDestination, setCategory, resetDestination } = searchParamsSlice.actions;
 export const destinationId = (state: RootState) =>
-  state.searchParams.destination?.id?? null;
+  state.searchParams.destination?.id ?? null;
 export const destinationHeaderObject = (state: RootState) =>
   state.searchParams.method === 'pickup'
     ? { 'x-branch-id': state.searchParams.destination?.id ?? '' }
