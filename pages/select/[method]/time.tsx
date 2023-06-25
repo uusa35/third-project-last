@@ -85,13 +85,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
       false
     ).then((r) => {
       if (r?.Data?.delivery?.delivery_time) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-        console.log('fired -+++++++++++++++++++++=----->');
-=======
->>>>>>> 53997c0f89cee55938dc48991fd7ba5e26f6af6d
-=======
->>>>>>> usama
         setSelectedHour(
           moment()
             .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
