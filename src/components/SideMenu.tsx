@@ -99,7 +99,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                     </div>
                     <button
                       className="bg-white rounded-xl text-sm font-semibold px-2 py-px"
-                      onClick={() => dispatch(signOut())}
+                      onClick={() => dispatch(signOut(undefined))}
                     >
                       {t('sign_out')}
                     </button>
