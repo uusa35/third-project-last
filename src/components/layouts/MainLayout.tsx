@@ -138,7 +138,6 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
     const handleRouteChangeError = (err, url) => {
       if (err.cancelled) {
-        // console.log(`Route to ${url} was cancelled!`);
       }
     };
 

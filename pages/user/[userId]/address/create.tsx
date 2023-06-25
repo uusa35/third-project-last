@@ -153,7 +153,7 @@ const AddressCreate: NextPage<Props> = ({
       }
     }
   }, [currentAddressType]);
-console.log({ cartItems });
+
   const handleSaveAddress = async (body: any) => {
     await triggerCreateOrUpdateAddress({
       body: {
@@ -184,10 +184,9 @@ console.log({ cartItems });
         );
         // dispatch(setCustomerAddress(r.data.Data));
         setCurrentAddress(r.data.Data);
-        if(cartItems?.data?.Cart.length > 0) {
+        if (cartItems?.data?.Cart.length > 0) {
           router.push(`${appLinks.checkout.path}`);
-        }
-        else {
+        } else {
           router.push(`${appLinks.home.path}`);
         }
       } else {

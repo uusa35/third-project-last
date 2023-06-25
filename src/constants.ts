@@ -143,7 +143,7 @@ export const displayUserAddress = (address: any) => {
     ),
     (a) => a
   );
-  // console.log({ formattedAddress });
+
   formattedAddress = toString(formattedAddress).replaceAll(',', ' / ');
 
   return formattedAddress;

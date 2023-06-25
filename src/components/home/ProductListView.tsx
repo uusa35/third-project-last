@@ -13,6 +13,7 @@ import { setCategory } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
+import { isEmpty } from 'lodash';
 
 type Props = {
   CategoriesProducts: Product[];
@@ -60,8 +61,8 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
           className="flex gap-x-2 overflow-x-scroll scrollbar-hide"
           offset={-200}
         >
-          {CategoriesProducts.map((category) => {
-            return (
+          {CategoriesProducts.map((category) =>
+            !isEmpty(category.items) ? (
               <a
                 href={`#${category.cat_id}`}
                 className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
@@ -75,8 +76,10 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
               >
                 {category.name}
               </a>
-            );
-          })}
+            ) : (
+              <></>
+            )
+          )}
         </ScrollSpy>
       </header>
 
@@ -85,8 +88,8 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
       {/* products and cats names */}
 
       <div>
-        {CategoriesProducts.map((category) => {
-          return (
+        {CategoriesProducts.map((category) =>
+          !isEmpty(category.items) ? (
             <section id={`${category.cat_id}`}>
               <div className="mt-5 px-4">
                 {/* cat name */}
@@ -113,8 +116,10 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
                 </div>
               </div>
             </section>
-          );
-        })}
+          ) : (
+            <></>
+          )
+        )}
       </div>
 
       <MenuModal

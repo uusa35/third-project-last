@@ -19,27 +19,13 @@ const ToastAppContainer = () => {
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   if (showToast) {
-  //     // toast(t(content), { type });
-  //     // dispatch(hideToastMessage());
-
-  //     // toast(t(content), {
-  //     //   type,
-  //     //   onClose: () => {
-  //     //     dispatch(hideToastMessage());
-  //     //   },
-  //     // });
-  //   }
-  // }, [showToast]);
-
   return (
     <Suspense>
       <ToastContainer
         position={isRTL ? `top-center` : 'top-center'}
-        className={`${tajwalFont} shadow-inner font-extrabold text-white text-center lg:w-2/4 xl:w-1/3`}
-        autoClose={3000}
-        hideProgressBar={true}
+        toastClassName={`${tajwalFont} shadow-inner font-extrabold text-white text-center p-8  sm:mx-10 sm:mt-10 sm:w-[80%] lg:w-full`}
+        autoClose={2000}
+        hideProgressBar={false}
         newestOnTop={true}
         transition={Flip}
         limit={1}
@@ -48,13 +34,16 @@ const ToastAppContainer = () => {
         pauseOnFocusLoss
         pauseOnHover
         // bodyStyle={{ height: 'auto' }}
-        style={{
-          width: 'max-content',
-          minWidth: '300px',
-        }}
+        // style={{
+        //   width: 'max-content',
+        //   minWidth: '350px',
+        //   minHeight: '40px',
+        //   display: 'flex',
+        //   alignSelf: 'center',
+        // }}
         theme="colored"
         // progressClassName={`bg-red-900`}
-        toastClassName={`p-0 m-0 w-full`}
+        // toastClassName={`p-0 m-0 w-full`}
         //bodyClassName={`p-0 m-0 w-full`}
         // toastStyle={{
         //   backgroundColor: type === `error` ? `red` : '#12b764',

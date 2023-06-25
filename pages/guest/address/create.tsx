@@ -164,7 +164,6 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    console.log('test');
     if (destination.method === 'pickup') {
       // await checkTimeAvailability();
     } else {

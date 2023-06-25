@@ -133,9 +133,6 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       },
       { refetchOnMountOrArgChange: true, skip: !isAuth }
     );
-
-  console.log({ UserAddress });
-
   // create order
   const handleCreateOrder = async () => {
     if (!customer_id && !isAuth) {
@@ -176,14 +173,15 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           ...(prefrences.date && prefrences.time
             ? {
                 Date: prefrences.date,
-                Time: moment(prefrences.time, ['h:mm A']).format('HH:mm:ss'),
+                Time: moment(prefrences.time, ['h:mm A'])
+                  .locale('en')
+                  .format('HH:mm:ss'),
               }
             : {}),
         },
         area_branch: destObj,
         url,
       }).then((r: any) => {
-        console.log({ r });
         if (r.data) {
           if (r.data.status) {
             if (selectedPaymentMethod === 'cash_on_delivery') {
