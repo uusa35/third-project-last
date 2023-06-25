@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import EmptyCartImage from '@/appIcons/cart_empty.svg';
 
-const EmptyCart:FC = () => {
+const EmptyCart: FC = () => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   return (
@@ -24,20 +24,22 @@ const EmptyCart:FC = () => {
         height={imageSizes.xl}
       /> */}
       <div className="capitalize text-center">
-        <p suppressHydrationWarning={suppressText} className="font-bold pb-1">
-          {t('your_cart_is_empty')}
-        </p>
-        <p
-          suppressHydrationWarning={suppressText}
-          className="text-[#544A45] text-sm mb-5"
-        >
-          {t('add_some_items_to_your_cart')}
-        </p>
+        <div className='my-5'>
+          <p suppressHydrationWarning={suppressText} className="font-bold pb-1">
+            {t('your_cart_is_empty')}
+          </p>
+          <p
+            suppressHydrationWarning={suppressText}
+            className="text-[#544A45] text-sm mb-5"
+          >
+            {t('add_some_items_to_your_cart')}
+          </p>
+        </div>
 
         <Link
           href={appLinks.home.path}
           scroll={true}
-          className={`w-full text-sm px-4 py-2 text-white rounded-full`}
+          className={`w-full text-sm px-8 py-2 text-white rounded-full`}
           style={{ backgroundColor: color }}
         >
           {t('continue_shopping')}
@@ -45,5 +47,5 @@ const EmptyCart:FC = () => {
       </div>
     </div>
   );
-}
+};
 export default EmptyCart;

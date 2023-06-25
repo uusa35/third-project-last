@@ -336,13 +336,13 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
               cartLessThanMin={
                 promocode
                   ? parseFloat(
-                      cartItems?.data?.minimum_order_price?.toString() ?? ''
+                      cartItems?.data?.minimum_order_price?.toString() || ''
                     ) >
                     parseFloat(
-                      cartItems?.data?.total_cart_after_tax?.toString() ?? ''
+                      cartItems?.data?.total_cart_after_tax?.toString() || ''
                     )
                   : parseFloat(
-                      cartItems?.data?.minimum_order_price?.toString() ?? ''
+                      cartItems?.data?.minimum_order_price?.toString() || ''
                     ) > parseFloat(cartItems?.data?.total?.toString())
               }
               url={url}

@@ -6,6 +6,13 @@ import {
   Bars3Icon,
   ShoppingBagIcon,
 } from '@heroicons/react/24/outline';
+
+import SearchIcon from '@/appIcons/aside_search.svg';
+import ShoppingCartIcon from '@/appIcons/aside_shopping_cart.svg';
+import BurgerMenuIcon from '@/appIcons/aside_burger_menu.svg';
+import AsideAR from '@/appIcons/aside_ar.svg';
+import AsideEN from '@/appIcons/aside_en.svg';
+
 import { setLocale } from '@/redux/slices/localeSlice';
 import {
   hideSideMenu,
@@ -31,7 +38,7 @@ export default function AsideHeader({ url }: Props) {
   const router = useRouter();
   const {
     appSetting: { sideMenuOpen },
-    locale: { otherLang },
+    locale: { otherLang, lang },
     customer: { userAgent },
     searchParams: { method },
     cart: { promocode },
@@ -83,12 +90,11 @@ export default function AsideHeader({ url }: Props) {
     >
       {/* burger menu */}
       <div
-        className="flex items-center gap-3  z-50 w-10 h-10 rounded-full flex justify-center items-center bg-white text-black capitalize cursor-pointer"
         onClick={() =>
           sideMenuOpen ? dispatch(hideSideMenu()) : dispatch(showSideMenu())
         }
       >
-        <Bars3Icon className={`w-5 h-5 text-stone-700`} />
+        <BurgerMenuIcon />
       </div>
 
       {/* cart , search , lang right icons */}
@@ -100,13 +106,13 @@ export default function AsideHeader({ url }: Props) {
           suppressHydrationWarning={suppressText}
         >
           <div className="relative">
-            <ShoppingBagIcon className={` w-5 h-5 text-stone-700`} />
+            <ShoppingCartIcon />
             {isSuccess &&
               cartItems.data &&
               cartItems.data?.Cart?.length > 0 && (
                 <div
                   style={{ backgroundColor: color }}
-                  className="absolute -top-3 left-3 opacity-90  rounded-full  w-5 h-5 border border-white shadow-xl flex items-center justify-center text-white text-xxs"
+                  className="absolute top-0 right-0 opacity-90  rounded-full  w-5 h-5 border border-white shadow-xl flex items-center justify-center text-white text-xxs"
                 >
                   <span className={`pt-[2.5px] shadow-md`}>
                     {cartItems.data?.Cart?.length}
@@ -116,21 +122,17 @@ export default function AsideHeader({ url }: Props) {
           </div>
         </Link>
         <button
-          scroll={true}
+          // scroll={true}
           onClick={() => {
             dispatch(setCategory(null));
             router.push(`${appLinks.productSearch.path}`);
           }}
-          className={`w-10 h-10 rounded-full flex justify-center items-center bg-white text-black capitalize`}
           suppressHydrationWarning={suppressText}
         >
-          <MagnifyingGlassIcon className={`w-5 h-5 text-stone-700`} />
+          <SearchIcon />
         </button>
-        <button
-          onClick={() => handleChangeLang(otherLang)}
-          className={`w-10 h-10 rounded-full flex justify-center items-center bg-white  text-black capitalize text-lg`}
-        >
-          {t(`${otherLang}`)}
+        <button onClick={() => handleChangeLang(lang === 'ar' ? 'en' : 'ar')}>
+          {lang === 'ar' ? <AsideEN /> : <AsideAR />}
         </button>
       </div>
     </div>

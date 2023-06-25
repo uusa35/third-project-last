@@ -21,6 +21,8 @@ import { isEmpty, map } from 'lodash';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
+import PlusIcon from '@/appIcons/plus.svg';
+import MinusIcon from '@/appIcons/minus.svg';
 
 type Props = {
   product: ProductCart;
@@ -46,7 +48,10 @@ export default function CartProduct({
       {!checkoutProduct && (
         <Link
           className="w-1/4"
-          href={`${appLinks.productShow(product.ProductID, product.ProductName)}`}
+          href={`${appLinks.productShow(
+            product.ProductID,
+            product.ProductName
+          )}`}
         >
           <CustomImage
             src={imgUrl(product.ProductImage)}
@@ -63,7 +68,10 @@ export default function CartProduct({
         <div>
           <Link
             className="flex gap-x-1"
-            href={`${appLinks.productShow(product.ProductID, product.ProductName)}`}
+            href={`${appLinks.productShow(
+              product.ProductID,
+              product.ProductName
+            )}`}
           >
             <TextTrans
               className={`capitalize ${alexandriaFontSemiBold}`}
@@ -139,24 +147,24 @@ export default function CartProduct({
           {/* quantity meter */}
           {!checkoutProduct && (
             <div
-              className={`flex gap-x-2 ${
+              className={`flex items-center gap-x-2 ${
                 lang === 'ar' && 'flex-row-reverse justify-end'
               }`}
             >
               <div
                 onClick={() => HandelDecIncRmv(product, 'dec')}
-                className="rounded-full text-white cursor-pointer h-4 w-4 flex items-center justify-center"
-                style={{backgroundColor:color}}
+                className="rounded-full text-white cursor-pointer  w-5 h-5 flex items-center justify-center"
+                style={{ backgroundColor: color }}
               >
-                -
+                <MinusIcon />
               </div>
-              <label className="text-xs">{product.Quantity}</label>
+              <label className="flex items-center">{product.Quantity}</label>
               <div
                 onClick={() => HandelDecIncRmv(product, 'inc')}
-                className="rounded-full text-white cursor-pointer h-4 w-4 flex items-center justify-center"
-                style={{backgroundColor:color}}
+                className="rounded-full text-white cursor-pointer w-5 h-5 flex items-center justify-center"
+                style={{ backgroundColor: color }}
               >
-                +
+                <PlusIcon />
               </div>
             </div>
           )}
