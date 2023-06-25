@@ -21,8 +21,6 @@ import { isEmpty, map } from 'lodash';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import PlusIcon from '@/appIcons/plus.svg';
-import MinusIcon from '@/appIcons/minus.svg';
 
 type Props = {
   product: ProductCart;
@@ -153,18 +151,18 @@ export default function CartProduct({
             >
               <div
                 onClick={() => HandelDecIncRmv(product, 'dec')}
-                className="rounded-full text-white cursor-pointer  w-5 h-5 flex items-center justify-center"
+                className="rounded-full text-white cursor-pointer  w-5 h-5 flex items-center justify-center text-lg"
                 style={{ backgroundColor: color }}
               >
-                <MinusIcon />
+                -
               </div>
-              <label className="flex items-center">{product.Quantity}</label>
+              <label className="flex items-center px-1">{product.Quantity}</label>
               <div
                 onClick={() => HandelDecIncRmv(product, 'inc')}
-                className="rounded-full text-white cursor-pointer w-5 h-5 flex items-center justify-center"
+                className="rounded-full text-white cursor-pointer w-5 h-5 flex items-center justify-center text-lg"
                 style={{ backgroundColor: color }}
               >
-                <PlusIcon />
+                +
               </div>
             </div>
           )}
