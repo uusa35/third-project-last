@@ -76,6 +76,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   >(null);
   const [openStoreClosedModal, setOpenClosedStore] = useState(false);
   const [triggerCreateOrder, { isLoading }] = useLazyCreateOrderQuery();
+  const [cartLessThanMin, setcartLessThanMin] = useState<boolean | undefined>(
+    undefined
+  );
 
   // payment methoda array to map
   const paymentMethods: {
@@ -121,6 +124,24 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     { refetchOnMountOrArgChange: true }
   );
 
+  // cart min order
+  useEffect(() => {
+    if (
+      isSuccess &&
+      cartItems?.data &&
+      cartItems?.data &&
+      cartItems?.data?.Cart
+    ) {
+      setcartLessThanMin(
+        promocode
+          ? parseFloat(cartItems?.data?.minimum_order_price?.toString() || '') >
+              parseFloat(cartItems?.data?.sub_total?.toString() || '')
+          : parseFloat(cartItems?.data?.minimum_order_price?.toString() || '') >
+              parseFloat(cartItems?.data?.subTotal?.toString())
+      );
+    }
+  }, [isSuccess]);
+
   // get user address
   const { data: UserAddress, isSuccess: UserAddressSuccess } =
     useGetAddressesByTypeQuery<{
@@ -133,6 +154,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       },
       { refetchOnMountOrArgChange: true, skip: !isAuth }
     );
+
   // create order
   const handleCreateOrder = async () => {
     if (!customer_id && !isAuth) {
@@ -219,12 +241,15 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     <p>loading</p>;
   }
 
+  console.log({ cartLessThanMin });
+
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="checkout">
       {isSuccess &&
         cartItems?.data &&
         cartItems?.data &&
         cartItems?.data?.Cart &&
+        // cartLessThanMin === null &&
         (isEmpty(cartItems?.data?.Cart) ? (
           <EmptyCart />
         ) : (
@@ -353,7 +378,23 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                 free_delivery={cartItems?.data?.free_delivery || false}
                 tax={cartItems?.data?.tax || 0}
               />
+
+              {cartLessThanMin && (
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
+                >{`${t('add_a_minimum_of')} ${
+                  parseFloat(
+                    cartItems?.data?.minimum_order_price?.toString() || ''
+                  ) -
+                  (parseFloat(cartItems?.data?.subTotal.toString()) ||
+                    parseFloat(cartItems?.data?.sub_total?.toString() || '') ||
+                    0)
+                }  ${t('kd')} ${t('to_place_your_order')}`}</p>
+              )}
+
               <button
+                disabled={cartLessThanMin}
                 onClick={() => handleCreateOrder()}
                 className={`w-full rounded-full py-2 my-4 text-white capitalize ${alexandriaFontMeduim}`}
                 style={{ backgroundColor: color }}

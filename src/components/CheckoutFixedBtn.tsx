@@ -84,7 +84,12 @@ export default function CheckoutFixedBtn({
                   suppressHydrationWarning={suppressText}
                   className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
                 >{`${t('add_a_minimum_of')} ${
-                  cartItems?.data?.minimum_order_price
+                  parseFloat(
+                    cartItems?.data?.minimum_order_price?.toString() || ''
+                  ) -
+                  (parseFloat(cartItems?.data?.subTotal.toString()) ||
+                    parseFloat(cartItems?.data?.sub_total?.toString() || '') ||
+                    0)
                 }  ${t('kd')} ${t('to_place_your_order')}`}</p>
               )}
 
