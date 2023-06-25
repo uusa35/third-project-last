@@ -756,7 +756,7 @@ const ProductShow: NextPage<Props> = ({
       />
       <MainContentLayout url={url}>
         {isSuccess && !isNull(element) && element.Data ? (
-          <div>
+          <div className={`min-h-screen`}>
             <div
               className={`flex justify-between items-center p-3 ${
                 offset > 80 ? 'fixed lg:sticky' : 'sticky'
@@ -1309,8 +1309,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         productApi.endpoints.getProduct.initiate({
           id,
           lang: locale,
-          // ...(destination?.id ? { branch_id: destination?.id } : {}),
-          // ...(destination?.id ? { area_id: destination?.id } : {}),
           url: req.headers.host,
         })
       );

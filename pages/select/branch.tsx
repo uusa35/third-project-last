@@ -192,7 +192,7 @@ const SelectBranch: NextPage<Props> = ({
       showBackBtnHeader={true}
       currentModule={`${t('select_branch')}`}
     >
-      <div className="flex flex-1 flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen">
         {map(branches.Data, (b: Branch, i) => (
           <button
             onClick={() => handleSelectMethod(b, 'pickup')}

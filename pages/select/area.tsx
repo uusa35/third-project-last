@@ -200,7 +200,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       showBackBtnHeader={true}
       currentModule={`${t('select_area')}`}
     >
-      <div className="flex flex-1 flex-col min-h-screen">
+      <div className="flex  flex-col min-h-screen">
         <div className="flex flex-row w-full h-auto justify-center items-center p-6 outline-none">
           <MagnifyingGlassIcon
             className={`absolute ltr:left-14 rtl:right-14 text-gray-500 w-8 h-8 pt-1`}
