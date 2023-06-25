@@ -100,7 +100,6 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
   }, [latest, currentProducts, previousPage, currentPage]);
 
   const onScroll = () => {
-    console.log('scroll');
     if (listRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
       if (scrollTop + clientHeight === scrollHeight) {

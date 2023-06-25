@@ -26,8 +26,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import TextTrans from '../TextTrans';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
-import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationHeaderObject,
+  resetDestination,
+} from '@/redux/slices/searchParamsSlice';
 import { wrapper } from '@/redux/store';
+import { resetPreferences, setPreferences } from '@/redux/slices/customerSlice';
+import moment, { Moment } from 'moment';
 
 type Props = {
   url: string;
@@ -43,8 +48,8 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
     customer: { prefrences },
     locale: { lang, isRTL, dir },
   } = useAppSelector((state) => state);
-  const [activeTabIndex, setActiveTabIndex] = useState(
-    method === 'delivery' || method === null ? 0 : 1
+  const [activeTabIndex, setActiveTabIndex] = useState<'delivery' | 'pickup'>(
+    method === 'delivery' || method === null ? 'delivery' : 'pickup'
   );
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
@@ -52,7 +57,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
     dispatch(setAreaBranchModalStatus(false));
   };
   const desObject = useAppSelector(destinationHeaderObject);
-  // console.log({ method });
+
   useEffect(() => {
     triggerGetVendor(
       {
@@ -61,8 +66,32 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
         destination: desObject,
       },
       false
-    );
-  }, []);
+    ).then((r) => {
+      if (
+        vendorElement?.Data?.delivery?.delivery_time &&
+        prefrences.type === ''
+      ) {
+        const currentDefaultTiming: Moment = moment(
+          vendorElement?.Data?.delivery?.delivery_time,
+          'HH:mm A'
+        ).locale('en');
+        if (currentDefaultTiming && currentDefaultTiming.isValid()) {
+          dispatch(
+            setPreferences({
+              date: moment().format('YYYY-MM-DD'),
+              time: currentDefaultTiming.format('HH:mm a'),
+              type: 'delivery_now',
+            })
+          );
+        }
+      }
+    });
+  }, [activeTabIndex]);
+
+  const handleClick = (i: 'delivery' | 'pickup') => {
+    setActiveTabIndex(i);
+  };
+
   return (
     <>
       <MainModal isOpen={areaBranchIsOpen} closeModal={onRequestClose}>
@@ -84,21 +113,37 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             </h5>
           </div>
 
-          <div className="border-b-[1px] border-slate-200 flex justify-between" dir={dir}>
+          <div
+            className="border-b-[1px] border-slate-200 flex justify-between"
+            dir={dir}
+          >
             <ul className="flex justify-between w-full">
               <li
-                onClick={() => setActiveTabIndex(0)}
-                className={`${activeTabIndex === 0 ? 'active' : ''} w-1/2`}
+                onClick={() => handleClick('delivery')}
+                className={`${
+                  activeTabIndex === 'delivery' ? 'active' : ''
+                } w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${activeTabIndex === 1 ? 'text-stone-500' : 'font-semibold'}`}
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${
+                    activeTabIndex === 'pickup'
+                      ? 'text-stone-500'
+                      : 'font-semibold'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
-                  <span className="flex justify-center items-center px-5 capitalize" dir={dir}>
-                    {activeTabIndex === 0 ? <DeliveryIcon /> : <NonActiveDeliveryIcon />}
+                  <span
+                    className="flex justify-center items-center px-5 capitalize"
+                    dir={dir}
+                  >
+                    {activeTabIndex === 'delivery' ? (
+                      <DeliveryIcon />
+                    ) : (
+                      <NonActiveDeliveryIcon />
+                    )}
                     <span className="px-3 text-base">{t('delivery')}</span>
                   </span>
-                  {activeTabIndex === 0 && (
+                  {activeTabIndex === 'delivery' && (
                     <div
                       className="w-full h-1 rounded-tl rounded-tr mt-2"
                       style={{ backgroundColor: color }}
@@ -107,18 +152,28 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 </button>
               </li>
               <li
-                onClick={() => setActiveTabIndex(1)}
-                className={`${activeTabIndex === 1 ? 'active' : ''} w-1/2`}
+                onClick={() => handleClick('pickup')}
+                className={`${
+                  activeTabIndex === 'pickup' ? 'active' : ''
+                } w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${activeTabIndex === 0 ? 'text-stone-500' : 'font-semibold'}`}
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${
+                    activeTabIndex === 'pickup'
+                      ? 'text-stone-500'
+                      : 'font-semibold'
+                  }`}
                   suppressHydrationWarning={suppressText}
                 >
                   <span className="flex justify-center items-center px-7 capitalize">
-                    {activeTabIndex === 1 ? <ActivePickupIcon /> : <PickupIcon />}
+                    {activeTabIndex === 'pickup' ? (
+                      <ActivePickupIcon />
+                    ) : (
+                      <PickupIcon />
+                    )}
                     <span className="px-3 text-base">{t('pickup')}</span>
                   </span>
-                  {activeTabIndex === 1 && (
+                  {activeTabIndex === 'pickup' && (
                     <div
                       className="w-full h-1 rounded-tl rounded-tr mt-2"
                       style={{ backgroundColor: color }}
@@ -129,11 +184,11 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             </ul>
           </div>
           <div>
-            {activeTabIndex === 0 && (
+            {activeTabIndex === 'delivery' && (
               <>
                 <Link
                   href={appLinks.selectArea.path}
-                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200`}
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 capitalize`}
                   dir={dir}
                 >
                   <div className="flex justify-between items-center">
@@ -143,13 +198,14 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                         className="text-sm text-stone-500 text-capitalize pb-1"
                         suppressHydrationWarning={suppressText}
                       >
-                        {upperFirst(`${t('delivering_to')}`)}
+                        {t('delivering_to')}
                       </h6>
                       <p className="text-start capitalize">
                         {method === 'delivery' ? (
                           <TextTrans
                             en={destination.name_en}
                             ar={destination.name_ar}
+                            length={30}
                           />
                         ) : (
                           t('select_address')
@@ -165,11 +221,11 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 </Link>
               </>
             )}
-            {activeTabIndex === 1 && (
+            {activeTabIndex === 'pickup' && (
               <>
                 <Link
                   href={appLinks.selectBranch.path}
-                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 capitalize ${
                     isRTL && 'flex-row-reverse'
                   }`}
                 >
@@ -205,33 +261,44 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             <Link
               href={appLinks.selectTime(method)}
               className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${
-              isNull(method) && 'pointer-events-none'}`}
+                isNull(method) && 'pointer-events-none'
+              }`}
               dir={dir}
             >
               <div className="flex justify-between items-center">
                 <WatchLaterOutlined style={{ color }} />
                 <div className="px-3 text-sm">
                   <h6
-                    className="text-sm text-stone-500 pb-1"
+                    className="text-sm text-stone-500 pb-1 capitalize"
                     suppressHydrationWarning={suppressText}
                   >
-                    {activeTabIndex === 0 ? upperFirst(`${t('delivery_in')}`) : upperFirst(`${t('pickup_in')}`)}
+                    {activeTabIndex === 'delivery'
+                      ? t('delivery_in')
+                      : t('pickup_in')}
                   </h6>
-                  <p suppressHydrationWarning={suppressText} className="text-base capitalize">
-                    {prefrences.type === 'delivery_now' ||
-                    prefrences.type === 'pickup_now' ? (
+                  <p
+                    suppressHydrationWarning={suppressText}
+                    className="text-base capitalize"
+                  >
+                    {(prefrences.type === 'delivery_now' ||
+                      prefrences.type === 'pickup_now') &&
+                    vendorElement?.Data?.delivery?.delivery_time ? (
                       <>
                         {vendorElement?.Data?.delivery?.delivery_time
-                          ? `${t('now_within')} ${
+                          ? `${
                               vendorElement?.Data?.delivery?.delivery_time
                             } ${t('minutes')}`
                           : t('select_time')}
                       </>
                     ) : prefrences.type === 'delivery_later' ||
                       prefrences.type === 'pickup_later' ? (
-                      <div dir={dir}>
+                      <div className={`flex flex-1`}>
                         <span className={`pe-2`}>{prefrences?.date}</span>
-                        <span>{prefrences?.time}</span>
+                        <span>
+                          {moment(prefrences?.time, 'h:mm a')
+                            .locale(lang)
+                            .format('h:mm a')}
+                        </span>
                       </div>
                     ) : (
                       t('select_time')
@@ -252,7 +319,11 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
               onClick={onRequestClose}
-              disabled={prefrences.date === '' && prefrences.time === ''}
+              disabled={
+                prefrences.date === '' ||
+                prefrences.time === '' ||
+                method !== activeTabIndex
+              }
             >
               {t('confirm')}
             </button>

@@ -56,19 +56,20 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     autoplay: false,
   });
   const [isScheduled, setIsScheduled] = useState<boolean>(false);
-  const [selectedDay, setSelectedDay] = useState({
-    day: ``,
-    date: ``,
-    rawDate: moment('now'),
-  });
   const [isBtnEnabled, setIsBtnEnabled] = useState<boolean>(true);
-  const [selectedHour, setSelectedHour] = useState<string | undefined>(
-    undefined
+  const [selectedHour, setSelectedHour] = useState<Moment>(
+    moment().locale('en')
   );
   const [type, setType] = useState<
     'delivery_now' | 'delivery_later' | 'pickup_now' | 'pickup_later'
   >('delivery_now');
   const [days, setDays] = useState<Day[] | null>(null);
+  const [selectedDay, setSelectedDay] = useState({
+    day: ``,
+    date: ``,
+    rawDate: moment().locale('en'),
+  });
+
   moment.locale(lang);
 
   useEffect(() => {
@@ -82,7 +83,15 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
         destination: desObject,
       },
       false
-    );
+    ).then((r) => {
+      if (r?.Data?.delivery?.delivery_time) {
+        setSelectedHour(
+          moment()
+            .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
+            .locale('en')
+        );
+      }
+    });
     if (!isEmpty(method) && method === 'delivery') {
       setType('delivery_now');
     } else if (!isEmpty(method) && method === 'pickup') {
@@ -143,7 +152,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
         }
       } else {
         setIsBtnEnabled(true);
-        setSelectedHour(moment().format('HH:mm a').toString());
         if (!isEmpty(method) && method === 'delivery') {
           setType('delivery_now');
         } else if (!isEmpty(method) && method === 'pickup') {
@@ -163,15 +171,14 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
         {
           type,
           // date: toEn(moment(selectedDay?.date).format('YYYY-MM-DD')),
-          date: selectedDay.rawDate?.format('YYYY-MM-DD'),
+          date: selectedDay.rawDate?.locale('en').format('YYYY-MM-DD'),
           area_branch: desObject,
           url,
         },
         false
-      ).then((r) => {
+      ).then((r: any) => {
         if (r?.error && r.error.data) {
           setIsBtnEnabled(false);
-          setSelectedHour(undefined);
           dispatch(
             showToastMessage({ type: 'error', content: `no_timings_available` })
           );
@@ -181,9 +188,21 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
             r.data.Data === 'OPEN' &&
             (type === 'delivery_now' || type === 'pickup_now')
           ) {
-            setSelectedHour(moment().format('HH:mm a').toString());
+            if (vendorElement?.Data?.delivery?.delivery_time) {
+              setSelectedHour(
+                moment()
+                  .locale('en')
+                  .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
+              );
+            }
           } else {
-            setSelectedHour(r.data.Data[0]);
+            const firstTiming: Moment = moment(
+              r.data.Data[0],
+              'HH:mm A'
+            ).locale('en');
+            if (firstTiming && firstTiming.isValid()) {
+              handleSelectHour(firstTiming);
+            }
           }
         }
       });
@@ -191,7 +210,11 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   }, [selectedDay]);
 
   useEffect(() => {
-    if (!isUndefined(selectedHour)) {
+    if (
+      isScheduled &&
+      selectedHour.isValid() &&
+      selectedDay.rawDate.isValid()
+    ) {
       setIsBtnEnabled(true);
     }
   }, [selectedHour]);
@@ -216,16 +239,24 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     });
   };
 
+  const handleSelectHour = (time: Moment) => {
+    if (time.isValid()) {
+      setSelectedHour(time);
+    }
+  };
+
   const handleClick = () => {
-    dispatch(
-      setPreferences({
-        date: toEn(moment(selectedDay?.date).format('YYYY-MM-DD')),
-        time: selectedHour,
-        type,
-      })
-    );
-    // put other scenario here if you want
-    router.back();
+    if (selectedDay.rawDate.isValid() && selectedHour.isValid()) {
+      dispatch(
+        setPreferences({
+          date: selectedDay.rawDate.locale('en').format('YYYY-MM-DD'),
+          time: selectedHour.locale('en').format('h:mm a'),
+          type,
+        })
+      );
+      // put other scenario here if you want
+      router.back();
+    }
   };
 
   if (!vendorSuccess)
@@ -316,7 +347,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
               ))}
             </div>
           )}
-          {isScheduled && (
+          {isScheduled && selectedHour && (
             <div>
               {timings && timingsSuccess && isArray(timings.Data) && (
                 <div className="w-100 space-y-4 mt-4">
@@ -326,8 +357,13 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                         type="radio"
                         name="hour"
                         value={time}
-                        checked={selectedHour === time}
-                        onChange={() => setSelectedHour(time)}
+                        checked={
+                          selectedHour.locale('en').format('HH:mm a') ===
+                          moment(time, 'HH:mm A').locale('en').format('HH:mm a')
+                        }
+                        onChange={() =>
+                          handleSelectHour(moment(time, 'HH:mm A').locale('en'))
+                        }
                         className="h-4 w-4 me-1"
                         style={{ accentColor: color }}
                       />
@@ -357,12 +393,15 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
               className="px-1 inline-block"
               suppressHydrationWarning={suppressText}
             >
-              {isScheduled && timings && timings.Data && !isEmpty(timings?.Data)
+              {isScheduled &&
+              timings &&
+              !isEmpty(timings?.Data) &&
+              selectedHour.isValid()
                 ? `${selectedDay.day} ${
                     selectedDay.day !== 'اليوم' && selectedDay.day !== 'today'
                       ? selectedDay.date
                       : ''
-                  } ${selectedHour ?? ``}`
+                  } - ${selectedHour.locale(lang).format('h:mm a') ?? ``}`
                 : `${t('now_within')} ${
                     vendorElement?.Data?.delivery?.delivery_time
                   } ${t('minutes')}`}

@@ -204,13 +204,13 @@ const SelectBranch: NextPage<Props> = ({
                 ar={b.name_ar}
                 en={b.name_en}
                 className="text-black font-bold "
-                length={60}
+                length={45}
               />
               <TextTrans
                 ar={b.location}
                 en={b.location}
-                className="text-gray-400 font-bold "
-                length={50}
+                className="text-stone-400 font-thin"
+                length={45}
               />
             </div>
             <div className="">

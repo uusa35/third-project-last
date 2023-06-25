@@ -79,8 +79,6 @@ const Wishlist: NextPage<Props> = ({ url }): React.ReactElement => {
     );
   };
 
-  // console.log({ wishlistProducts });
-
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule={'whishlist'}>
       <MainHead title={t('wishlist')} description={`${t('whishlist')}`} />

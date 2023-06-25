@@ -87,8 +87,6 @@ const UpComingOrders: FC = () => {
     ],
   };
 
-  // console.log({ data });
-
   return (
     <>
       {phone && (

@@ -262,8 +262,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   };
 
-  console.log(cartItems?.data);
-
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
       {/* if cart is empty */}
