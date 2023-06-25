@@ -379,28 +379,32 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                 tax={cartItems?.data?.tax || 0}
               />
 
-              {cartLessThanMin && (
-                <p
-                  suppressHydrationWarning={suppressText}
-                  className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
-                >{`${t('add_a_minimum_of')} ${
-                  parseFloat(
-                    cartItems?.data?.minimum_order_price?.toString() || ''
-                  ) -
-                  (parseFloat(cartItems?.data?.subTotal.toString()) ||
-                    parseFloat(cartItems?.data?.sub_total?.toString() || '') ||
-                    0)
-                }  ${t('kd')} ${t('to_place_your_order')}`}</p>
-              )}
+              <div className="my-4">
+                {cartLessThanMin && (
+                  <p
+                    suppressHydrationWarning={suppressText}
+                    className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
+                  >{`${t('add_a_minimum_of')} ${
+                    parseFloat(
+                      cartItems?.data?.minimum_order_price?.toString() || ''
+                    ) -
+                    (parseFloat(cartItems?.data?.subTotal.toString()) ||
+                      parseFloat(
+                        cartItems?.data?.sub_total?.toString() || ''
+                      ) ||
+                      0)
+                  }  ${t('kd')} ${t('to_place_your_order')}`}</p>
+                )}
 
-              <button
-                disabled={cartLessThanMin}
-                onClick={() => handleCreateOrder()}
-                className={`w-full rounded-full py-2 my-4 text-white capitalize ${alexandriaFontMeduim}`}
-                style={{ backgroundColor: color }}
-              >
-                {t('place_order')}
-              </button>
+                <button
+                  disabled={cartLessThanMin}
+                  onClick={() => handleCreateOrder()}
+                  className={`w-full rounded-full py-2 text-white capitalize ${alexandriaFontMeduim}`}
+                  style={{ backgroundColor: color }}
+                >
+                  {t('place_order')}
+                </button>
+              </div>
             </div>
           </>
         ))}
