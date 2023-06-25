@@ -22,7 +22,7 @@ import ToastAppContainer from '../ToastAppContainer';
 import moment from 'moment';
 import * as yup from 'yup';
 import { useLazyCreateTempIdQuery } from '@/redux/api/CustomerApi';
-import { setUserAgent } from '@/redux/slices/customerSlice';
+import { isAuthenticated, setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '../skeletons';
@@ -41,6 +41,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
     searchParams: { destination, method },
     customer: { userAgent },
   } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const desObject = useAppSelector(destinationHeaderObject);
@@ -75,7 +76,7 @@ const MainLayout: FC<Props> = ({ children }): JSX.Element => {
 
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess, tempIdSuccess, url]);
+  }, [vendorSuccess, tempIdSuccess, url, isAuth]);
 
   const setAppDefaults = async () => {
     if (isNull(userAgent) && url) {
