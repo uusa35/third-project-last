@@ -189,7 +189,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               <>
                 <Link
                   href={appLinks.selectArea.path}
-                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200`}
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 capitalize`}
                   dir={dir}
                 >
                   <div className="flex justify-between items-center">
@@ -226,7 +226,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
               <>
                 <Link
                   href={appLinks.selectBranch.path}
-                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 ${
+                  className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 capitalize ${
                     isRTL && 'flex-row-reverse'
                   }`}
                 >

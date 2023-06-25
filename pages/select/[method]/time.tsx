@@ -177,7 +177,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
           url,
         },
         false
-      ).then((r) => {
+      ).then((r: any) => {
         if (r?.error && r.error.data) {
           setIsBtnEnabled(false);
           dispatch(

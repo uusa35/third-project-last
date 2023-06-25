@@ -176,7 +176,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           ...(prefrences.date && prefrences.time
             ? {
                 Date: prefrences.date,
-                Time: moment(prefrences.time, ['h:mm A']).format('HH:mm:ss'),
+                Time: moment(prefrences.time, ['h:mm A'])
+                  .locale('en')
+                  .format('HH:mm:ss'),
               }
             : {}),
         },
