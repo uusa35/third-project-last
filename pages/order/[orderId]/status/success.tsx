@@ -20,7 +20,10 @@ import { orderApi, useLazyCheckOrderStatusQuery } from '@/redux/api/orderApi';
 import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { destinationId, destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationId,
+  destinationHeaderObject,
+} from '@/redux/slices/searchParamsSlice';
 import { isUndefined, map } from 'lodash';
 import NeedHelpIcon from '@/appIcons/need_help.svg';
 import CancelIcon from '@/appIcons/cancel_order.svg';
@@ -33,42 +36,48 @@ import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
 
 type Props = {
-    url: string;
-    orderId: string
+  url: string;
+  orderId: string;
 };
 
-const OrderSuccess: NextPage<Props> = ({ url,orderId }): React.ReactElement => {
+const OrderSuccess: NextPage<Props> = ({
+  url,
+  orderId,
+}): React.ReactElement => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const dispatch = useAppDispatch();
-  console.log({ DestinationId, desObject  })
   const {
     customer: { userAgent },
-    cart: { promocode }
+    cart: { promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
-  const [triggerGetOrderStatus, { data: order, isLoading }] = useLazyCheckOrderStatusQuery<{
-    data: AppQueryResult<Order>;
-    isLoading: boolean;
-  }>();
-  
+  const [triggerGetOrderStatus, { data: order, isLoading }] =
+    useLazyCheckOrderStatusQuery<{
+      data: AppQueryResult<Order>;
+      isLoading: boolean;
+    }>();
+
   useEffect(() => {
-    triggerGetOrderStatus({ 
-      status: 'success', 
-      order_id: orderId, 
-      url, 
-      area_branch: destObj, 
-      userAgent 
-    }, false);
+    triggerGetOrderStatus(
+      {
+        status: 'success',
+        order_id: orderId,
+        url,
+        area_branch: destObj,
+        userAgent,
+      },
+      false
+    );
   }, [orderId]);
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
-  
+
   const {
     data: cartItems,
     isSuccess,
@@ -92,51 +101,58 @@ const OrderSuccess: NextPage<Props> = ({ url,orderId }): React.ReactElement => {
     refetchCart();
   }, []);
 
-  console.log({ order })
   return (
-   <>
-   {!isUndefined(order?.data) ?  (
-     <MainContentLayout showBackBtnHeader={true} currentModule={`${t('order')} #${order.data.order_id}`}>
-      {/* image and text */}
-      {/* if guest */}
-        <div className="px-5">
-          <div className="flex justify-center py-5">
-            <Success />
-          </div>
-          <div className="flex flex-col items-center justify-center text-center mb-7">
-            <p
-              suppressHydrationWarning={suppressText}
-              className="font-semibold lg:w-3/4 text-lg"
-            >
-              {t('your_order_is_successfully_done')}
-            </p>
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 py-2 text-sm"
-            >
-              {t('success_msg')}
-            </p>
+    <>
+      {!isUndefined(order?.data) ? (
+        <MainContentLayout
+          showBackBtnHeader={true}
+          currentModule={`${t('order')} #${order.data.order_id}`}
+        >
+          {/* image and text */}
+          {/* if guest */}
+          <div className="px-5">
+            <div className="flex justify-center py-5">
+              <Success />
+            </div>
+            <div className="flex flex-col items-center justify-center text-center mb-7">
+              <p
+                suppressHydrationWarning={suppressText}
+                className="font-semibold lg:w-3/4 text-lg"
+              >
+                {t('your_order_is_successfully_done')}
+              </p>
+              <p
+                suppressHydrationWarning={suppressText}
+                className="text-[#544A45] lg:w-3/4 py-2 text-sm"
+              >
+                {t('success_msg')}
+              </p>
 
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 text-sm py-1"
-            >
-              {t('estimated_time')}{' '}
-              <span className="text-[#1A1615] font-bold">
-                :{order.data.estimated_time?.from} {order.data.estimated_time?.to && `- ${order.data.estimated_time?.to}`}
-              </span>
-            </p>
+              <p
+                suppressHydrationWarning={suppressText}
+                className="text-[#544A45] lg:w-3/4 text-sm py-1"
+              >
+                {t('estimated_time')}{' '}
+                <span className="text-[#1A1615] font-bold">
+                  :{order.data.estimated_time?.from}{' '}
+                  {order.data.estimated_time?.to &&
+                    `- ${order.data.estimated_time?.to}`}
+                </span>
+              </p>
 
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 text-sm"
-            >
-              {t('order_id')} <span className="text-[#1A1615] font-bold">: # {order.data.order_id}</span>
-            </p>
+              <p
+                suppressHydrationWarning={suppressText}
+                className="text-[#544A45] lg:w-3/4 text-sm"
+              >
+                {t('order_id')}{' '}
+                <span className="text-[#1A1615] font-bold">
+                  : # {order.data.order_id}
+                </span>
+              </p>
+            </div>
           </div>
-        </div>
-        {/* if user */}
-        {/* <div className="px-5">
+          {/* if user */}
+          {/* <div className="px-5">
           <div className="flex justify-center py-5">
             <SuccessScheduled />
           </div>
@@ -150,102 +166,124 @@ const OrderSuccess: NextPage<Props> = ({ url,orderId }): React.ReactElement => {
           </div>
         </div> */}
 
-      {/* orderDetails */}
-      <div className="p-5 border-b-4">
-        <GuestOrderStatus order={order.data} />
-      </div>
-
-      {/* payment method */}
-      <div className="p-5 border-b-4">
-        <p suppressHydrationWarning={suppressText} className="font-bold mb-3">
-          {t('payment_method')}
-        </p>
-        {order.data.payment_method === 'C.O.D' && <div className="flex items-center gap-x-2 text-sm">
-          <CashIcon />
-          <p suppressHydrationWarning={suppressText}>
-            {t('cash_on_delivery')}
-          </p>
-        </div>}
-        {order.data.payment_method === 'knet' && <div className="flex items-center gap-x-2 text-sm">
-          <KnetIcon />
-          <p suppressHydrationWarning={suppressText}>
-          {order.data.payment_method}
-          </p>
-        </div>}
-        {order.data.payment_method === 'visa' && <div className="flex items-center gap-x-2 text-sm">
-          <CreditIcon />
-          <p suppressHydrationWarning={suppressText}>
-            {order.data.payment_method}
-          </p>
-        </div>}
-      </div>
-
-      {/* items */}
-      <div className="p-5 border-b-4">
-        <p suppressHydrationWarning={suppressText} className="font-bold pb-5">
-          {t('order_items')}
-        </p>
-        {map(order.data.items, (item, index) => (
-          <div key={index} className="flex justify-between items-center border-t-2 border-gray-200 py-5">
-            <div>
-              <div className="flex pb-2 items-end">
-                <h5 className="pe-6">
-                  <TextTrans en={item.item_en} ar={item.item_ar}  />
-                </h5>
-                <span className="text-sm">x{item.quantity}</span>
-              </div>
-              <div className="flex flex-wrap items-center">
-              {map(item.addon, (a) => (
-                <div key={a.addon_id} className="pe-3 pb-4">
-                  <div
-                    className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
-                    <span className="pe-2 text-sm">x{a.addon_quantity}</span>
-                    <TextTrans en={a.addon_name_en} ar={a.addon_name_ar} className="text-sm" />
-                  </div>
-                </div>
-              ))}
-              </div>
-              <p>{item.extra_notes}</p>
-            </div>
-            <p className="uppercase">{item.total} {' '} {t('kwd')}</p>
+          {/* orderDetails */}
+          <div className="p-5 border-b-4">
+            <GuestOrderStatus order={order.data} />
           </div>
-        ))}
-      </div>
-      <div className="p-5">
-        <button className="flex items-center pb-5" onClick={() => setIsOpen(true)}>
-          <NeedHelpIcon />
-          <span className="ps-3 pe-2 capitalize">{t('need_help?')}</span>
-          <span>{t('contact_us')}</span>
-        </button>
-      </div>
-      <HelpModal
-        isOpen={isOpen}
-        onRequestClose={() => setIsOpen(false)}
-      />
-    </MainContentLayout>
-   ) : (
-    <ContentLoader type="OrderSuccess" sections={1} />
-   )}
-   </>
+
+          {/* payment method */}
+          <div className="p-5 border-b-4">
+            <p
+              suppressHydrationWarning={suppressText}
+              className="font-bold mb-3"
+            >
+              {t('payment_method')}
+            </p>
+            {order.data.payment_method === 'C.O.D' && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <CashIcon />
+                <p suppressHydrationWarning={suppressText}>
+                  {t('cash_on_delivery')}
+                </p>
+              </div>
+            )}
+            {order.data.payment_method === 'knet' && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <KnetIcon />
+                <p suppressHydrationWarning={suppressText}>
+                  {order.data.payment_method}
+                </p>
+              </div>
+            )}
+            {order.data.payment_method === 'visa' && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <CreditIcon />
+                <p suppressHydrationWarning={suppressText}>
+                  {order.data.payment_method}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* items */}
+          <div className="p-5 border-b-4">
+            <p
+              suppressHydrationWarning={suppressText}
+              className="font-bold pb-5"
+            >
+              {t('order_items')}
+            </p>
+            {map(order.data.items, (item, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center border-t-2 border-gray-200 py-5"
+              >
+                <div>
+                  <div className="flex pb-2 items-end">
+                    <h5 className="pe-6">
+                      <TextTrans en={item.item_en} ar={item.item_ar} />
+                    </h5>
+                    <span className="text-sm">x{item.quantity}</span>
+                  </div>
+                  <div className="flex flex-wrap items-center">
+                    {map(item.addon, (a) => (
+                      <div key={a.addon_id} className="pe-3 pb-4">
+                        <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
+                          <span className="pe-2 text-sm">
+                            x{a.addon_quantity}
+                          </span>
+                          <TextTrans
+                            en={a.addon_name_en}
+                            ar={a.addon_name_ar}
+                            className="text-sm"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p>{item.extra_notes}</p>
+                </div>
+                <p className="uppercase">
+                  {item.total} {t('kwd')}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="p-5">
+            <button
+              className="flex items-center pb-5"
+              onClick={() => setIsOpen(true)}
+            >
+              <NeedHelpIcon />
+              <span className="ps-3 pe-2 capitalize">{t('need_help?')}</span>
+              <span>{t('contact_us')}</span>
+            </button>
+          </div>
+          <HelpModal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} />
+        </MainContentLayout>
+      ) : (
+        <ContentLoader type="OrderSuccess" sections={1} />
+      )}
+    </>
   );
-}
+};
 export default OrderSuccess;
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) =>
-      async ({ req, query }) => {
-        const { orderId }: any = query;
-        const url = req.headers.host;
-        if (!url || !orderId) {
-          return {
-            notFound: true,
-          };
-        }
+  (store) =>
+    async ({ req, query }) => {
+      const { orderId }: any = query;
+      const url = req.headers.host;
+      if (!url || !orderId) {
         return {
-          props: {
-            url: req.headers.host,
-            orderId
-          },
+          notFound: true,
         };
       }
+      return {
+        props: {
+          url: req.headers.host,
+          orderId,
+        },
+      };
+    }
 );

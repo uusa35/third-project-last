@@ -57,12 +57,6 @@ const GuestOrderModal: FC<Props> = ({
     const parsedCountryCode = `+${
       parsePhoneNumber(body.phone)?.countryCallingCode
     }`;
-
-    // console.log({
-    //   ...body,
-    //   phone: parsedPhone,
-    //   phone_country_code: parsedCountryCode,
-    // });
     await triggerSaveCustomerInfo({
       body: {
         ...body,

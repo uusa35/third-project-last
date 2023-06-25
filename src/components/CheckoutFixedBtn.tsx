@@ -67,7 +67,6 @@ export default function CheckoutFixedBtn({
     { refetchOnMountOrArgChange: true }
   );
 
-  // console.log(cartLessThanMin);
   return (
     <div>
       {isSuccess &&

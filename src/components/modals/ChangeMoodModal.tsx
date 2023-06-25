@@ -67,7 +67,6 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
       },
       false
     ).then((r) => {
-      console.log('r', r);
       if (
         vendorElement?.Data?.delivery?.delivery_time &&
         prefrences.type === ''

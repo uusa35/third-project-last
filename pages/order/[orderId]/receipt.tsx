@@ -52,7 +52,6 @@ const orderReceipt: NextPage<Props> = ({
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
 
-  // console.log({ orderId });
   const {
     data: orderReceiptData,
     isSuccess,

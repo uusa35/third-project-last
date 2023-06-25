@@ -85,7 +85,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
       false
     ).then((r) => {
       if (r?.Data?.delivery?.delivery_time) {
-        console.log('fired -+++++++++++++++++++++=----->');
         setSelectedHour(
           moment()
             .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
@@ -189,15 +188,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
             r.data.Data === 'OPEN' &&
             (type === 'delivery_now' || type === 'pickup_now')
           ) {
-            console.log('here');
             if (vendorElement?.Data?.delivery?.delivery_time) {
-              console.log(
-                'current',
-                moment()
-                  .locale('en')
-                  .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
-                  .format('HH:mm a')
-              );
               setSelectedHour(
                 moment()
                   .locale('en')
@@ -209,7 +200,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
               r.data.Data[0],
               'HH:mm A'
             ).locale('en');
-            console.log('firstTiming', firstTiming);
             if (firstTiming && firstTiming.isValid()) {
               handleSelectHour(firstTiming);
             }

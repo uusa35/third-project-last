@@ -136,20 +136,19 @@ const ProductShow: NextPage<Props> = ({
     id: product.id,
     lang,
     destination: desObject,
-    url
+    url,
   });
   const [requiredSection, setRequiredSection] = useState(false);
   // const minPrice = minBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   // const maxPrice = maxBy(element?.Data?.sections?.[0]?.choices, (choice) => Number(choice?.price))?.price;
   useEffect(() => {
     const onScroll = () => setOffset(window.pageYOffset);
-    console.log({ offset });
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, []);
-  
+
   // min for checkbox and meter ===> optional and required
   const handleValidateMinQty = () => {
     dispatch(resetMinQtyValidationID());
@@ -210,12 +209,8 @@ const ProductShow: NextPage<Props> = ({
         allMetersValid = false;
       }
     }
-
-    // console.log({ groupByCheckboxes });
     return allMetersValid && allCheckboxesValid;
   };
-
-
 
   useEffect(() => {
     if (isSuccess && element.Data) {
@@ -259,10 +254,6 @@ const ProductShow: NextPage<Props> = ({
       element?.Data?.sections,
       (c) => c.selection_type === 'mandatory'
     );
-
-    // console.log('pro cart', productCart);
-    // console.log('required sec', requiredSections);
-
     for (const i in requiredSections) {
       // radio btns
       if (requiredSections[i].must_select === 'single') {
@@ -271,8 +262,6 @@ const ProductShow: NextPage<Props> = ({
           productCart.RadioBtnsAddons.filter(
             (rb) => rb.addonID === requiredSections[i].id && rb.addons.Value
           ).length > 0;
-
-        // console.log('rbExist', rbExist);
         if (!rbExist) {
           return false;
         }
@@ -286,7 +275,6 @@ const ProductShow: NextPage<Props> = ({
             (cb) => cb.addonID === requiredSections[i].id && cb.addons[0].Value
           ).length > 0;
 
-        // console.log('cbExist', cbExist);
         if (!cbExist) {
           return false;
         }
@@ -302,8 +290,6 @@ const ProductShow: NextPage<Props> = ({
               return qm;
             }
           }).length > 0;
-
-        // console.log('qmExist', qmExist, sumValue, requiredSections[i].min_q);
         if (!qmExist || sumValue < requiredSections[i].min_q) {
           return false;
         }
@@ -431,7 +417,7 @@ const ProductShow: NextPage<Props> = ({
     }
   };
 
-   const handleResetInitialProductCart = () => {
+  const handleResetInitialProductCart = () => {
     if (isSuccess && !isNull(element) && element.Data) {
       dispatch(
         setInitialProductCart({
@@ -473,7 +459,6 @@ const ProductShow: NextPage<Props> = ({
       );
     }
   };
-
 
   const handleSelectAddOn = async (
     selection: ProductSection,
@@ -552,14 +537,6 @@ const ProductShow: NextPage<Props> = ({
           currentSelectionAddonsValues,
           (qm) => qm.addons[0].Value
         );
-
-        // console.log(
-        //   currentSelectionAddonsValues,
-        //   { currentMeter },
-        //   { sumSelectedMeterValues },
-        //   selection.max_q
-        // );
-
         // update value and check max qty
         const Value =
           sumSelectedMeterValues + 1 <= selection.max_q
@@ -730,7 +707,13 @@ const ProductShow: NextPage<Props> = ({
             });
           } else {
             if (r?.error && r?.error?.data) {
-              if (r && r.error && r.error.data && typeof r.error.data.msg === 'string' && r.error.data.msg.includes('not available')) {
+              if (
+                r &&
+                r.error &&
+                r.error.data &&
+                typeof r.error.data.msg === 'string' &&
+                r.error.data.msg.includes('not available')
+              ) {
                 setIsOpenNotAvailable(true);
               } else {
                 dispatch(
@@ -774,7 +757,11 @@ const ProductShow: NextPage<Props> = ({
       <MainContentLayout url={url}>
         {isSuccess && !isNull(element) && element.Data ? (
           <div>
-            <div className={`flex justify-between items-center p-3 ${offset > 80 ? 'fixed lg:sticky' : 'sticky'} top-0 z-50 w-full capitalize bg-white border-b-20`}>
+            <div
+              className={`flex justify-between items-center p-3 ${
+                offset > 80 ? 'fixed lg:sticky' : 'sticky'
+              } top-0 z-50 w-full capitalize bg-white border-b-20`}
+            >
               <div className="flex">
                 <button onClick={() => router.back()}>
                   {router.locale === 'en' ? <West /> : <East />}
@@ -1035,7 +1022,7 @@ const ProductShow: NextPage<Props> = ({
                           </p>
                         )
                       )} */}
-                       {s.selection_type === 'mandatory' ? (
+                      {s.selection_type === 'mandatory' ? (
                         s.must_select === 'q_meter' ||
                         s.must_select === 'multi' ? (
                           <p className={`flex -w-full text-red-600 pb-3`}>
@@ -1122,7 +1109,7 @@ const ProductShow: NextPage<Props> = ({
                                   }
                                   type="button"
                                   className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-lg font-semibold rounded-full pb-3 disabled:!bg-gray-200 disabled:cursor-not-allowed"
-                                  style={{backgroundColor: color}}
+                                  style={{ backgroundColor: color }}
                                 >
                                   +
                                 </button>
@@ -1307,7 +1294,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ query, locale, req, resolvedUrl }) => {
       const { id, branchId, areaId }: any = query;
-      console.log({ id });
       if (!id || !req.headers.host) {
         return {
           notFound: true,
