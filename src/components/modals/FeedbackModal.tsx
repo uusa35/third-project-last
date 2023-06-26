@@ -31,10 +31,8 @@ type Props = {
 const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element => {
     const { t } = useTranslation();
     const router = useRouter();
-    const {
-        locale: { isRTL, dir },
-      } = useAppSelector((state) => state);
-      const color = useAppSelector(themeColor);
+    const { locale: { isRTL, dir } } = useAppSelector((state) => state);
+    const color = useAppSelector(themeColor);
     const [rateVal, setRateVal] = useState<number>();
     const [phone, setPhone] = useState();
     const [triggerCreateFeedback] = useCreateFeedbackMutation();
@@ -65,7 +63,6 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
           phone: ``,
         },
       });
-      console.log({ errors })
     
       const onSubmit = async (body: any) => {
         await triggerCreateFeedback({ body, url }).then((r: any) => {
@@ -102,6 +99,10 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
             <Controller
               name="note"
               control={control}
+              rules={{
+                minLength: { value: 2, message: "Note must be at least 2 characters" },
+                maxLength: { value: 460, message: `Note must not exceed 460 characters` }
+              }}
               render={({ field }) => (
                 <>
                   <textarea
@@ -110,7 +111,10 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                     cols={10}
                     className="bg-gray-100 w-full resize-none h-16 capitalize placeholder:text-gray-500 focus:outline-none"
                     placeholder={t('your_feedback')}
-                    onChange={(e) => field.onChange(e.target.value)} // Use field.onChange instead of the inline arrow function
+                    onChange={(e) => {
+                      const value = e.target.value.slice(0, 460);
+                      field.onChange(value);
+                    }}
                   />
                   <p className="text-end text-gray-500">
                     {field.value.length}/{460}
