@@ -388,11 +388,11 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                     parseFloat(
                       cartItems?.data?.minimum_order_price?.toString() || ''
                     ) -
-                    (parseFloat(cartItems?.data?.subTotal.toString()) ||
-                      parseFloat(
-                        cartItems?.data?.sub_total?.toString() || ''
-                      ) ||
-                      0)
+                    (cartItems?.data?.subTotal
+                      ? parseFloat(cartItems?.data?.subTotal.toString())
+                      : parseFloat(
+                          cartItems?.data?.sub_total?.toString() || ''
+                        ))
                   ).toFixed(3)}  ${t('kd')} ${t('to_place_your_order')}`}</p>
                 )}
 
