@@ -125,9 +125,9 @@ export default function CheckoutFixedBtn({
                 </div>
 
                 <p suppressHydrationWarning={suppressText}>
-                  {promocode
-                    ? cartItems?.data?.total_cart_after_tax
-                    : cartItems?.data?.total}{' '}
+                  {cartItems?.data?.total
+                    ? cartItems?.data?.total
+                    : cartItems?.data?.total_cart_after_tax}{' '}
                   {t('kwd')}
                 </p>
               </div>

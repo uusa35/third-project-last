@@ -127,6 +127,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             type: `success`,
           })
         );
+        dispatch(resetPromo());
       } else {
         if (r.error && r.error.data && r.error.data.msg) {
           dispatch(
@@ -163,6 +164,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             type: `success`,
           })
         );
+        dispatch(resetPromo());
       } else {
         if (r.error && r.error.data && r.error.data.msg) {
           dispatch(
@@ -200,6 +202,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             type: `success`,
           })
         );
+        if (enable_promocode) {
+          dispatch(resetPromo());
+        }
       } else {
         if (r.error && r.error.data && r.error.data.msg) {
           dispatch(
@@ -225,7 +230,16 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         url,
         area_branch: destObj,
       }).then((r: any) => {
-        if (r.data && r.data.status && r.data.promoCode) {
+        // console.log({ r });
+        if (r.error && r.error?.msg) {
+          dispatch(resetPromo());
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.msg)),
+              type: `error`,
+            })
+          );
+        } else if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
           dispatch(setPromocode(value));
           refetchCart();
@@ -233,14 +247,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             showToastMessage({
               content: r.data.msg,
               type: `success`,
-            })
-          );
-        } else if (r.error && r.error?.data && r.error?.data?.msg) {
-          dispatch(resetPromo());
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg)),
-              type: `error`,
             })
           );
         }
@@ -332,7 +338,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
 
             <CheckoutFixedBtn
               cartLessThanMin={
-                promocode
+                cartItems?.data?.sub_total
                   ? parseFloat(
                       cartItems?.data?.minimum_order_price?.toString() || ''
                     ) > parseFloat(cartItems?.data?.sub_total?.toString() || '')

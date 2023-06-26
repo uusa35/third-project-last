@@ -113,6 +113,10 @@ export const cartApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
+      transformErrorResponse(r) {
+        // console.log('in transform', { r });
+        return r.data;
+      },
     }),
     changeLocation: builder.query<
       AppQueryResult<any>,
