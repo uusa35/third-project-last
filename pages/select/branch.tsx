@@ -1,7 +1,7 @@
 import ElementMap from '@/components/address/ElementMap';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
-import { vendorApi } from '@/redux/api/vendorApi';
+import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { ServerCart, Vendor } from '@/types/index';
 import { NextPage } from 'next';
@@ -43,6 +43,8 @@ import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { setPreferences } from '@/redux/slices/customerSlice';
+import moment from 'moment';
 
 type Props = {
   element: Vendor;
@@ -65,26 +67,13 @@ const SelectBranch: NextPage<Props> = ({
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
-  // const [open, setOpen] = useState(0);
   const [openStoreClosedModal, setOpenClosedStore] = useState(false);
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-
   const [selectedBranch, setSelectedBranch] = useState<Branch | undefined>(
     undefined
   );
-
-  // const handleOpen = (value: any) => {
-  //   setOpen(open === value ? 0 : value);
-  // };
-
-  // const [
-  //   triggerGetLocations,
-  //   { data: locations, isLoading: locationsLoading },
-  // ] = useLazyGetLocationsQuery<{
-  //   data: AppQueryResult<Location[]>;
-  //   isLoading: boolean;
-  // }>();
-
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
   const {
     data: cartItems,
     isLoading: cartLoading,
@@ -103,7 +92,6 @@ const SelectBranch: NextPage<Props> = ({
     },
     { refetchOnMountOrArgChange: true }
   );
-
   const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
     useLazyGetBranchesQuery<{
       data: AppQueryResult<Branch[]>;
@@ -141,7 +129,7 @@ const SelectBranch: NextPage<Props> = ({
     }
   };
 
-  const handleChangeBranch = (
+  const handleChangeBranch = async (
     destination: Branch | Area,
     type: 'pickup' | 'delivery'
   ) => {
@@ -156,6 +144,26 @@ const SelectBranch: NextPage<Props> = ({
       setOpenClosedStore(true);
     } else {
       dispatch(setAreaBranchModalStatus(true));
+      await triggerGetVendor(
+        {
+          lang,
+          url,
+          destination: destObj,
+        },
+        false
+      ).then((r: any) => {
+        if (r?.data?.Data?.delivery?.delivery_time) {
+          dispatch(
+            setPreferences({
+              date: moment().locale('en').format('YYYY-MM-DD'),
+              time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
+                .locale('en')
+                .format('mm'),
+              type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+            })
+          );
+        }
+      });
     }
     router.back();
   };

@@ -1,7 +1,7 @@
 import ElementMap from '@/components/address/ElementMap';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
-import { vendorApi } from '@/redux/api/vendorApi';
+import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { ServerCart, Vendor } from '@/types/index';
 import { NextPage } from 'next';
@@ -42,6 +42,8 @@ import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { setPreferences } from '@/redux/slices/customerSlice';
+import moment from 'moment';
 
 type Props = {
   element: Vendor;
@@ -94,16 +96,10 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     isLoading: boolean;
     isSuccess: boolean;
   }>();
-
-  // const [triggerGetBranches, { data: branches, isLoading: branchesLoading }] =
-  //   useLazyGetBranchesQuery<{
-  //     data: AppQueryResult<Branch[]>;
-  //     isLoading: boolean;
-  //   }>();
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
 
   useEffect(() => {
-    // triggerGetBranches({ lang, url, type: method }, false);
-
     if (url) {
       dispatch(setUrl(url));
     }
@@ -133,7 +129,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     }
   };
 
-  const handleChangeArea = (
+  const handleChangeArea = async (
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
@@ -145,7 +141,27 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       })
     );
     dispatch(setAreaBranchModalStatus(true));
-    return router.back();
+    await triggerGetVendor(
+      {
+        lang,
+        url,
+        destination: destObj,
+      },
+      false
+    ).then((r: any) => {
+      if (r?.data?.Data?.delivery?.delivery_time) {
+        dispatch(
+          setPreferences({
+            date: moment().locale('en').format('YYYY-MM-DD'),
+            time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
+              .locale('en')
+              .format('mm'),
+            type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+          })
+        );
+      }
+    });
+    router.back();
   };
 
   useEffect(() => {
