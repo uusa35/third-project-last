@@ -37,6 +37,7 @@ import moment, { Moment } from 'moment';
 type Props = {
   url: string;
 };
+
 const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -285,7 +286,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                       <>
                         {prefrences.type
                           ? `${moment(prefrences.time, 'mm')
-                              .locale('en')
+                              .locale(lang)
                               .format('mm')} ${t('minutes')}`
                           : t('select_time')}
                       </>
@@ -294,9 +295,9 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                       <div className={`flex flex-1`}>
                         <span className={`pe-2`}>{prefrences?.date}</span>
                         <span>
-                          {moment(prefrences?.time, 'h:mm a')
+                          {moment(prefrences?.time, 'hh:mm a')
                             .locale(lang)
-                            .format('h:mm a')}
+                            .format('hh:mm a')}
                         </span>
                       </div>
                     ) : (

@@ -20,7 +20,7 @@ import { truncate } from 'lodash';
 
 type Props = { url: string };
 
-const DeliveryPickup:FC<Props> = ({ url }) => {
+const DeliveryPickup: FC<Props> = ({ url }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -200,6 +200,6 @@ const DeliveryPickup:FC<Props> = ({ url }) => {
       <ChangeMoodModal url={url} />
     </div>
   );
-}
+};
 
 export default DeliveryPickup;
