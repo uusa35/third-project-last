@@ -59,36 +59,6 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
   };
   const desObject = useAppSelector(destinationHeaderObject);
 
-  useEffect(() => {
-    triggerGetVendor(
-      {
-        url,
-        lang,
-        destination: desObject,
-      },
-      false
-    ).then((r) => {
-      if (
-        vendorElement?.Data?.delivery?.delivery_time &&
-        prefrences.type === ''
-      ) {
-        const currentDefaultTiming: Moment = moment(
-          vendorElement?.Data?.delivery?.delivery_time,
-          'HH:mm A'
-        ).locale('en');
-        if (currentDefaultTiming && currentDefaultTiming.isValid()) {
-          dispatch(
-            setPreferences({
-              date: moment().format('YYYY-MM-DD'),
-              time: currentDefaultTiming.format('HH:mm a'),
-              type: 'delivery_now',
-            })
-          );
-        }
-      }
-    });
-  }, [activeTabIndex]);
-
   const handleClick = (i: 'delivery' | 'pickup') => {
     setActiveTabIndex(i);
   };
@@ -285,9 +255,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     prefrences.type === 'pickup_now' ? (
                       <>
                         {prefrences.type
-                          ? `${moment(prefrences.time, 'mm')
-                              .locale(lang)
-                              .format('mm')} ${t('minutes')}`
+                          ? `${prefrences.time} ${t('minutes')}`
                           : t('select_time')}
                       </>
                     ) : prefrences.type === 'delivery_later' ||

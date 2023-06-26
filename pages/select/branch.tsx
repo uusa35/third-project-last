@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import {
@@ -58,7 +58,7 @@ const SelectBranch: NextPage<Props> = ({
   const {
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent },
+    customer: { userAgent, prefrences },
     cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
@@ -142,14 +142,14 @@ const SelectBranch: NextPage<Props> = ({
         })
       );
       setOpenClosedStore(true);
-      router.back();
+      return router.back();
     } else {
       dispatch(setAreaBranchModalStatus(true));
       await triggerGetVendor(
         {
           lang,
           url,
-          destination: destObj,
+          destination: { 'x-branch-id': destination.id },
         },
         false
       )
@@ -158,10 +158,8 @@ const SelectBranch: NextPage<Props> = ({
             dispatch(
               setPreferences({
                 date: moment().locale('en').format('YYYY-MM-DD'),
-                time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
-                  .locale('en')
-                  .format('mm'),
-                type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+                time: r?.data.Data?.delivery?.delivery_time,
+                type: 'pickup_now',
               })
             );
           }
