@@ -122,7 +122,6 @@ const ProductShow: NextPage<Props> = ({
   const [isNotAvailable, setIsOpenNotAvailable] = useState(false);
   const [offset, setOffset] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
-
   const [outOfStock, setOutOfStock] = useState<boolean>(false);
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
@@ -345,7 +344,7 @@ const ProductShow: NextPage<Props> = ({
         // to execute the for looop only when all those if conditions is failed
         // const MendatoryValidation = handleValidateMendatory();
         // const minValueValidation = handleValidateMinQty();
-        console.log({ MendatoryValidation }, { minValueValidation });
+        // console.log({ MendatoryValidation }, { minValueValidation });
         if (!MendatoryValidation || !minValueValidation) {
           dispatch(disableAddToCart());
         } else {

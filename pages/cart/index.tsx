@@ -279,15 +279,15 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             {/* delivery fees always come with 0 but in dashboard it is not 0 */}
             <SaleNotification
               delivery_fees={
-                enable_promocode
-                  ? parseFloat(cartItems?.data?.delivery_fee ?? '')
+                cartItems?.data?.delivery_fee
+                  ? parseFloat(cartItems?.data?.delivery_fee)
                   : parseFloat(cartItems?.data?.delivery_fees)
               }
               min_for_free_delivery={parseFloat(
                 cartItems?.data?.free_delivery_data ?? ''
               )}
               total={
-                enable_promocode
+                cartItems?.data?.sub_total
                   ? parseFloat(cartItems?.data?.sub_total?.toString() ?? '')
                   : parseFloat(cartItems?.data?.subTotal?.toString() ?? '')
               }

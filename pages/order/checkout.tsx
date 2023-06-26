@@ -100,7 +100,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
 
   // map marker
   const LocationMarker = ({ icon, longitude, latitude }: any) => {
-    console.log('longitude,latitude', longitude, latitude);
+    // console.log('longitude,latitude', longitude, latitude);
     return <Image src={icon} alt="map marker" width={30} height={30} />;
   };
 
@@ -241,7 +241,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     <p>loading</p>;
   }
 
-  console.log({ cartLessThanMin });
+  // console.log({ cartLessThanMin });
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="checkout">
@@ -384,16 +384,16 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                   <p
                     suppressHydrationWarning={suppressText}
                     className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
-                  >{`${t('add_a_minimum_of')} ${
+                  >{`${t('add_a_minimum_of')} ${(
                     parseFloat(
                       cartItems?.data?.minimum_order_price?.toString() || ''
                     ) -
-                    (parseFloat(cartItems?.data?.subTotal.toString()) ||
-                      parseFloat(
-                        cartItems?.data?.sub_total?.toString() || ''
-                      ) ||
-                      0)
-                  }  ${t('kd')} ${t('to_place_your_order')}`}</p>
+                    (cartItems?.data?.subTotal
+                      ? parseFloat(cartItems?.data?.subTotal.toString())
+                      : parseFloat(
+                          cartItems?.data?.sub_total?.toString() || ''
+                        ))
+                  ).toFixed(3)}  ${t('kd')} ${t('to_place_your_order')}`}</p>
                 )}
 
                 <button
