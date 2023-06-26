@@ -148,20 +148,21 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         destination: destObj,
       },
       false
-    ).then((r: any) => {
-      if (r?.data?.Data?.delivery?.delivery_time) {
-        dispatch(
-          setPreferences({
-            date: moment().locale('en').format('YYYY-MM-DD'),
-            time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
-              .locale('en')
-              .format('mm'),
-            type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
-          })
-        );
-      }
-    });
-    router.back();
+    )
+      .then((r: any) => {
+        if (r?.data?.Data?.delivery?.delivery_time) {
+          dispatch(
+            setPreferences({
+              date: moment().locale('en').format('YYYY-MM-DD'),
+              time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
+                .locale('en')
+                .format('mm'),
+              type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+            })
+          );
+        }
+      })
+      .then(() => router.back());
   };
 
   useEffect(() => {
