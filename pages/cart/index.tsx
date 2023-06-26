@@ -230,7 +230,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         url,
         area_branch: destObj,
       }).then((r: any) => {
-        // console.log({ r });
+        console.log({ r });
         if (r.error && r.error?.msg) {
           dispatch(resetPromo());
           dispatch(
