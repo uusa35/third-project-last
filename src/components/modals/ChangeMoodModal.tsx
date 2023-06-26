@@ -280,14 +280,13 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     suppressHydrationWarning={suppressText}
                     className="text-base capitalize"
                   >
-                    {(prefrences.type === 'delivery_now' ||
-                      prefrences.type === 'pickup_now') &&
-                    vendorElement?.Data?.delivery?.delivery_time ? (
+                    {prefrences.type === 'delivery_now' ||
+                    prefrences.type === 'pickup_now' ? (
                       <>
-                        {vendorElement?.Data?.delivery?.delivery_time
-                          ? `${
-                              vendorElement?.Data?.delivery?.delivery_time
-                            } ${t('minutes')}`
+                        {prefrences.type
+                          ? `${moment(prefrences.time, 'mm')
+                              .locale('en')
+                              .format('mm')} ${t('minutes')}`
                           : t('select_time')}
                       </>
                     ) : prefrences.type === 'delivery_later' ||
