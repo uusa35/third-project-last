@@ -336,7 +336,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
               </div>
             </div>
 
-            <CheckoutFixedBtn
+            {/* <CheckoutFixedBtn
               cartLessThanMin={
                 cartItems?.data?.sub_total
                   ? parseFloat(
@@ -349,7 +349,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
               url={url}
               cart={true}
               handelContinueInCart={() => handelContinue()}
-            />
+            /> */}
 
             {/* select modal */}
             <ChangeMoodModal url={url} />
