@@ -65,7 +65,7 @@ const AddressIndex: NextPage<Props> = ({
   }, []);
 
   const handelDisplayAddress = (address: any) => {
-    console.log('address', address);
+    // console.log('address', address);
     if (address && !isUndefined(address) && isObject(address)) {
       const addressValues =
         !isUndefined(address) &&
@@ -102,7 +102,7 @@ const AddressIndex: NextPage<Props> = ({
           content: `address_deleted_successfully`,
           type: `success`
         }));
-        console.log({ deleteAddressRes: r });
+        // console.log({ deleteAddressRes: r });
         triggerGetAddresses({ url }, false);
       }
       else {
