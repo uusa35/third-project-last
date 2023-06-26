@@ -89,7 +89,7 @@ export const addressSchema = (method: string, t: any) =>
 export const feedbackSchema = yup.object().shape({
   user_name: yup.string().min(2).max(50).required(),
   rate: yup.number().min(1).max(5).required(),
-  note: yup.string().min(2).max(500).required(),
+  note: yup.string().min(2).max(460).required(),
   phone: yup.string().min(0).max(999999999999),
 });
 
