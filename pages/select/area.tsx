@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { debounce, isEmpty, isNull, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import {
@@ -42,7 +42,7 @@ import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
-import { setPreferences } from '@/redux/slices/customerSlice';
+import { resetPreferences, setPreferences } from '@/redux/slices/customerSlice';
 import moment from 'moment';
 
 type Props = {
@@ -54,7 +54,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const {
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent },
+    customer: { userAgent, prefrences },
     cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
@@ -141,11 +141,11 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       })
     );
     dispatch(setAreaBranchModalStatus(true));
-    await triggerGetVendor(
+    triggerGetVendor(
       {
         lang,
         url,
-        destination: destObj,
+        destination: { 'x-area-id': destination.id },
       },
       false
     )
@@ -154,12 +154,12 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           dispatch(
             setPreferences({
               date: moment().locale('en').format('YYYY-MM-DD'),
-              time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
-                .locale('en')
-                .format('mm'),
-              type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+              time: r?.data.Data?.delivery?.delivery_time,
+              type: 'delivery_now',
             })
           );
+        } else {
+          dispatch(resetPreferences(undefined));
         }
       })
       .then(() => router.back());
