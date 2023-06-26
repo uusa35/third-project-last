@@ -7,10 +7,17 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { mainBtnClass, toEn } from '@/constants/*';
 import moment, { Moment, locale } from 'moment';
-import { isArray, isEmpty, isNull, isUndefined, map, reverse } from 'lodash';
+import {
+  isArray,
+  isEmpty,
+  isNull,
+  isUndefined,
+  lowerCase,
+  map,
+  reverse,
+} from 'lodash';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import 'moment/locale/ar';
 import { suppressText } from '@/constants/*';
 import { useLazyGetVendorQuery } from '@/redux/api/vendorApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
@@ -198,7 +205,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
           } else {
             const firstTiming: Moment = moment(
               r.data.Data[0],
-              'HH:mm A'
+              'HH:mm a'
             ).locale('en');
             if (firstTiming && firstTiming.isValid()) {
               handleSelectHour(firstTiming);
@@ -349,29 +356,38 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
           )}
           {isScheduled && selectedHour && (
             <div>
-              {timings && timingsSuccess && isArray(timings.Data) && (
-                <div className="w-100 space-y-4 mt-4">
-                  {map(timings.Data, (time, i) => (
-                    <label key={i} className="flex items-center w-full">
-                      <input
-                        type="radio"
-                        name="hour"
-                        value={time}
-                        checked={
-                          selectedHour.locale('en').format('HH:mm a') ===
-                          moment(time, 'HH:mm A').locale('en').format('HH:mm a')
-                        }
-                        onChange={() =>
-                          handleSelectHour(moment(time, 'HH:mm A').locale('en'))
-                        }
-                        className="h-4 w-4 me-1"
-                        style={{ accentColor: color }}
-                      />
-                      <span className="mx-2">{time}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
+              {timings &&
+                timingsSuccess &&
+                isArray(timings.Data) &&
+                timings.Data.length > 1 && (
+                  <div className="w-100 space-y-4 mt-4">
+                    {map(timings.Data, (time, i) => (
+                      <label key={i} className="flex items-center w-full">
+                        <input
+                          type="radio"
+                          name="hour"
+                          value={time}
+                          checked={
+                            selectedHour.locale('en').format('h:mm A') ===
+                            moment(time, 'h:mm A').locale('en').format('h:mm A')
+                          }
+                          onChange={() => {
+                            handleSelectHour(
+                              moment(time, 'h:mm A').locale('en')
+                            );
+                          }}
+                          className="h-4 w-4 me-1"
+                          style={{ accentColor: color }}
+                        />
+                        <span className="mx-2">
+                          {moment(time, 'h:mm A')
+                            .locale(lang)
+                            .format('hh:mm A')}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                )}
             </div>
           )}
         </div>

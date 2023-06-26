@@ -142,6 +142,7 @@ const SelectBranch: NextPage<Props> = ({
         })
       );
       setOpenClosedStore(true);
+      router.back();
     } else {
       dispatch(setAreaBranchModalStatus(true));
       await triggerGetVendor(
@@ -151,21 +152,22 @@ const SelectBranch: NextPage<Props> = ({
           destination: destObj,
         },
         false
-      ).then((r: any) => {
-        if (r?.data?.Data?.delivery?.delivery_time) {
-          dispatch(
-            setPreferences({
-              date: moment().locale('en').format('YYYY-MM-DD'),
-              time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
-                .locale('en')
-                .format('mm'),
-              type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
-            })
-          );
-        }
-      });
+      )
+        .then((r: any) => {
+          if (r?.data?.Data?.delivery?.delivery_time) {
+            dispatch(
+              setPreferences({
+                date: moment().locale('en').format('YYYY-MM-DD'),
+                time: moment(r?.data.Data?.delivery?.delivery_time, 'mm')
+                  .locale('en')
+                  .format('mm'),
+                type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+              })
+            );
+          }
+        })
+        .then(() => router.back());
     }
-    router.back();
   };
 
   const Icon = ({ id, open }: { id: number; open: number }) => {
