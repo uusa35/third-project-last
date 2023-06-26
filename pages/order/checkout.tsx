@@ -100,7 +100,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
 
   // map marker
   const LocationMarker = ({ icon, longitude, latitude }: any) => {
-    console.log('longitude,latitude', longitude, latitude);
+    // console.log('longitude,latitude', longitude, latitude);
     return <Image src={icon} alt="map marker" width={30} height={30} />;
   };
 
@@ -241,7 +241,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     <p>loading</p>;
   }
 
-  console.log({ cartLessThanMin });
+  // console.log({ cartLessThanMin });
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="checkout">
