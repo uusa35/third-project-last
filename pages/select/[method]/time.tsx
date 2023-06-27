@@ -76,29 +76,32 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     date: ``,
     rawDate: moment().locale('en'),
   });
-
   moment.locale(lang);
 
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetVendor(
-      {
-        lang,
-        url,
-        destination: desObject,
-      },
-      false
-    ).then((r) => {
-      if (r?.Data?.delivery?.delivery_time) {
-        setSelectedHour(
-          moment()
-            .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
-            .locale('en')
-        );
-      }
-    });
+    if (!isScheduled) {
+      triggerGetVendor(
+        {
+          lang,
+          url,
+          destination: desObject,
+        },
+        false
+      ).then((r: any) => {
+        if (r?.data?.Data?.delivery?.delivery_time) {
+          dispatch(
+            setPreferences({
+              date: moment().locale('en').format('YYYY-MM-DD'),
+              time: r?.data.Data?.delivery?.delivery_time,
+              type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+            })
+          );
+        }
+      });
+    }
     if (!isEmpty(method) && method === 'delivery') {
       setType('delivery_now');
     } else if (!isEmpty(method) && method === 'pickup') {
@@ -164,6 +167,26 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
         } else if (!isEmpty(method) && method === 'pickup') {
           setType('pickup_now');
         }
+        if (!isEmpty(method)) {
+          triggerGetVendor(
+            {
+              lang,
+              url,
+              destination: desObject,
+            },
+            false
+          ).then((r: any) => {
+            if (r?.data?.Data?.delivery?.delivery_time) {
+              dispatch(
+                setPreferences({
+                  date: moment().locale('en').format('YYYY-MM-DD'),
+                  time: r?.data.Data?.delivery?.delivery_time,
+                  type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
+                })
+              );
+            }
+          });
+        }
       }
     }
   }, [isScheduled, lang]);
@@ -195,13 +218,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
             r.data.Data === 'OPEN' &&
             (type === 'delivery_now' || type === 'pickup_now')
           ) {
-            if (vendorElement?.Data?.delivery?.delivery_time) {
-              setSelectedHour(
-                moment()
-                  .locale('en')
-                  .add(vendorElement?.Data?.delivery?.delivery_time, 'minutes')
-              );
-            }
           } else {
             const firstTiming: Moment = moment(
               r.data.Data[0],
@@ -253,7 +269,11 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
   };
 
   const handleClick = () => {
-    if (selectedDay.rawDate.isValid() && selectedHour.isValid()) {
+    if (
+      selectedDay.rawDate.isValid() &&
+      selectedHour.isValid() &&
+      isScheduled
+    ) {
       dispatch(
         setPreferences({
           date: selectedDay.rawDate.locale('en').format('YYYY-MM-DD'),
@@ -262,8 +282,8 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
         })
       );
       // put other scenario here if you want
-      router.back();
     }
+    router.back();
   };
 
   if (!vendorSuccess)
