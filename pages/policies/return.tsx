@@ -1,3 +1,4 @@
+import Policy from '@/components/Policy';
 import TextTrans from '@/components/TextTrans';
 import ContentLoader from '@/components/skeletons';
 import MainContentLayout from '@/layouts/MainContentLayout';
@@ -17,7 +18,6 @@ type Props = {
 };
 
 const ReturnPolicy: NextPage<Props> = ({ url, element }): React.ReactElement => {
-  const { locale: { isRTL } } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const returnPolicy = find(element, (e) => e.key === 'Return policy');
 
@@ -34,23 +34,7 @@ const ReturnPolicy: NextPage<Props> = ({ url, element }): React.ReactElement => 
       currentModule="return_policy"
     >
       {returnPolicy ? (
-        <div className="p-5">
-          <h2 className="font-bold pb-2">
-            <TextTrans 
-              en={returnPolicy?.title_en} 
-              ar={returnPolicy?.title_ar} 
-              className="!uppercase text-lg"
-            />
-          </h2>
-          <p className="text-[#544A45]">
-            <TextTrans 
-              en={returnPolicy?.content_en}
-              ar={returnPolicy?.content_ar} 
-              className="block break-words"
-              length={isRTL ? returnPolicy?.content_ar.length : returnPolicy?.content_en.length}
-            />
-          </p>
-        </div>
+        <Policy policyType={returnPolicy} />
       ): (
         <ContentLoader type="Policy" sections={1} />
       )}

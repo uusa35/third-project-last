@@ -11,7 +11,7 @@
   "my_addresses": "العناوين",
   "rights_reserved": "© جميع الحقوق محفوظة لماكدونالدز 2023",
   "sign_in": "تسجيل الدخول",
-  "to_orderfast_now": "لتسريع الطلب الان",
+  "to_orderfast_now": "لتسريع الطلب الآن",
   "Welcome_back": "مرحبا بعودتك",
   "sign_out": "تسجيل خروج",
   "get_your_favourite_food_in": "احصل على طعامك المفضل",
@@ -189,7 +189,7 @@
   "delivery_now": "توصيل الآن إلى",
   "pickup_later": "استلام",
   "delivery_later": "توصيل",
-  "deliver_to": "توصيل الي",
+  "deliver_to": "توصيل إلى",
   "our_branches": "فروعنا",
   "min_order_with_delivery": "أقل طلب للتوصيل",
   "opening_hours": "ساعات العمل",
@@ -325,5 +325,8 @@
   "failure_msg": "نأسف لذلك ، لقد فشلت عملية الدفع الخاصة بك للطلب بسبب بعض المشاكل. لا تقلق ، يحدث هذا عادة ، يمكنك الاتصال بالدعم الفني أو المطعم للحصول على المساعدة.",
   "address_deleted_successfully": "تم حذف العنوان بنجاح",
   "please_provide_all_required_information": "يرجى تقديم جميع المعلومات المطلوبة",
-  "enter_password": "أدخِل كلمة المرور"
+  "enter_password": "أدخِل كلمة المرور",
+  "confirm_password_doesnt_match_new_password": "تأكيد كلمة المرور لا تتطابق مع كلمة المرور الجديدة",
+  "password_changed_successfully": "تم تغيير كلمة المرور بنجاح",
+  "edit": "تعديل"
 }

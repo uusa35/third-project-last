@@ -49,6 +49,7 @@ const AddressIndex: NextPage<Props> = ({
   const [selectedAddress, setSelectedAddress] = useState(null);
   const {
     customer: { id, countryCode, name, phone },
+    locale: { isRTL }
   } = useAppSelector((state) => state);
   const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
     useLazyGetAddressesQuery<{
@@ -151,7 +152,7 @@ const AddressIndex: NextPage<Props> = ({
                         </div>
 
                         {selectedAddress === address && (
-                          <div className="pe-5 absolute top-full left-1/2 transform -translate-x-[100%] bg-white rounded-lg py-2 px-4 shadow-md capitalize">
+                          <div className={`pe-5 absolute top-full transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${isRTL ? '-left-1/2 translate-x-[40%]' : ' left-1/2 -translate-x-[100%]'}`}>
                             <button
                               onClick={() => handleEdit(address)}
                               className={`capitalize pb-2 px-2 border-b-[1px] border-stone-300 w-100  text-start`}

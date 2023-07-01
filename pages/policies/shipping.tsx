@@ -1,3 +1,4 @@
+import Policy from '@/components/Policy';
 import TextTrans from '@/components/TextTrans';
 import ContentLoader from '@/components/skeletons';
 import MainContentLayout from '@/layouts/MainContentLayout';
@@ -17,7 +18,6 @@ type Props = {
 };
 
 const ShippingPolicy: NextPage<Props> = ({ url, element }): React.ReactElement => {
-  const { locale: { isRTL } } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const shippingPolicy = find(element, (e) => e.key === 'Shipping policy');
 
@@ -34,23 +34,7 @@ const ShippingPolicy: NextPage<Props> = ({ url, element }): React.ReactElement =
       currentModule="shipping_policy"
     >
       {shippingPolicy ? (
-        <div className="p-5">
-          <h2 className="font-bold pb-2">
-            <TextTrans 
-              en={shippingPolicy?.title_en} 
-              ar={shippingPolicy?.title_ar} 
-              className="!uppercase text-lg"
-            />
-          </h2>
-          <p className="text-[#544A45]">
-            <TextTrans 
-              en={shippingPolicy?.content_en}
-              ar={shippingPolicy?.content_ar} 
-              className="block break-words"
-              length={isRTL ? shippingPolicy?.content_ar.length : shippingPolicy?.content_en.length}
-            />
-          </p>
-        </div>
+        <Policy policyType={shippingPolicy} />
       ): (
         <ContentLoader type="Policy" sections={1} />
       )}

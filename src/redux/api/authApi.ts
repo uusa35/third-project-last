@@ -1,5 +1,5 @@
 import { apiSlice } from './index';
-import { AppQueryResult, PhoneCheck, Register, VerifyCode } from '@/types/queries';
+import { AppQueryResult, PhoneCheck, Register, ResetPassword, VerifyCode } from '@/types/queries';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -49,6 +49,8 @@ export const authApi = apiSlice.injectEndpoints({
           phone_country_code: string;
           name: string;
           email: string;
+          password: string;
+          password_confirmation: string;
           UserAgent: string
         };
         url: string;
@@ -82,6 +84,26 @@ export const authApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) => result.status,
       }),
     }),
+    resetPassword: builder.mutation<
+      AppQueryResult<ResetPassword>,
+      {
+        body: {
+          phone: string;
+          phone_country_code: string;
+          new_password: string;
+          confirm_password: string;
+        };
+        url: string;
+      }
+    >({
+      query: ({ body, url }) => ({
+        url: `v2/user/reset/password`,
+        method: `POST`,
+        headers: { url },
+        body,
+        validateStatus: (response, result) => result,
+      }),
+    }),
   }),
 });
 
@@ -89,5 +111,6 @@ export const {
   useCheckPhoneMutation,
   useVerifyCodeMutation,
   useRegisterMutation,
-  useLoginMutation
+  useLoginMutation,
+  useResetPasswordMutation
 } = authApi;

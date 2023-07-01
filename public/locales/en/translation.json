@@ -347,5 +347,7 @@
   "save_receipt": "save receipt",
   "customer_id_is_required": "please enter login page and sign in as a guest in order to continue your information.",
   "address_deleted_successfully": "address deleted successfully",
-  "please_provide_all_required_information": "please provide all required information"
+  "please_provide_all_required_information": "please provide all required information",
+  "confirm_password_doesnt_match_new_password": "confirm password doesn't match new password",
+  "password_changed_successfully": "password changed successfully"
 }

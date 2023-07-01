@@ -19,27 +19,17 @@ import ContactUsIcon from '@/appIcons/info_contactus.svg';
 import FeedbackIcon from '@/appIcons/feedback.svg';
 import {
   appLinks,
-  convertColor,
-  iconColor,
   imageSizes,
-  imgUrl,
-  submitBtnClass,
-  suppressText,
+  suppressText
 } from '@/constants/*';
-import {
-  setCurrentModule,
-  resetShowFooterElement,
-  setShowFooterElement,
-  setUrl,
-} from '@/redux/slices/appSettingSlice';
+import { setUrl } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
-import Feedback from '@/components/Feedback';
 import Facebook from '@/appIcons/messenger.svg';
 import Twitter from '@/appIcons/twitter.png';
 import Instagram from '@/appIcons/instgram.svg';
+import Call from '@/appIcons/call.svg';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import PoweredByQ from '@/components/PoweredByQ';
 import Link from 'next/link';
 import TextTrans from '@/components/TextTrans';
 import { ChevronRightOutlined, ChevronLeftOutlined } from '@mui/icons-material';
@@ -52,11 +42,7 @@ type Props = {
   url: string;
   element: Vendor;
 };
-type DetailsItem = {
-  icon: any;
-  text: string;
-  content: any;
-};
+
 const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const {
     locale: { isRTL, lang },
@@ -67,8 +53,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const color = useAppSelector(themeColor);
   const [showModal, SetShowModal] = useState(false);
   const desObject = useAppSelector(destinationHeaderObject);
-  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
-  useLazyGetVendorQuery();
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] = useLazyGetVendorQuery();
 
   useEffect(() => {
     if (url) {
@@ -90,6 +75,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const handleOpenPopup = () => {
     SetShowModal(true);
   };
+
   return (
     <Suspense>
       <MainHead
@@ -103,7 +89,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
         instagram={element.instagram}
       />
       <MainContentLayout url={url} showBackBtnHeader currentModule="info">
-        {vendorElement ? (
+        {vendorElement && vendorElement.Data ? (
           <>
             <Link
               scroll={true}
@@ -120,7 +106,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
               <TextTrans
                 ar={vendorElement?.Data?.name_ar}
                 en={vendorElement?.Data?.name_en}
-                className="capitalize text-black text-md text-center my-3"
+                className="capitalize text-md text-center my-3"
               />
               <TextTrans
                 ar={vendorElement?.Data?.desc}
@@ -145,7 +131,8 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                 {isRTL ? <ChevronLeftOutlined /> : <ChevronRightOutlined />}
               </Link>
               {/* min_charge */}
-              <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
+              {vendorElement?.Data?.delivery?.minimum_order_price && (
+                <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
                 <div
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
@@ -158,6 +145,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   {vendorElement?.Data?.delivery?.minimum_order_price} {t(`kwd`)}
                 </div>
               </div>
+              )}
               {/* working hours */}
               <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
                 <div
@@ -177,12 +165,12 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   <span className="text-lg px-2">{t('payment_options')}</span>
                 </div>
                 <div className="flex justify-center">
-                  {vendorElement?.Data?.Payment_Methods.visa === '1' && (
+                  {vendorElement?.Data?.Payment_Methods.visa === 1 && (
                     <div className="">
                       <Visa className={`h-auto w-8`} />
                     </div>
                   )}
-                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery === '1' && (
+                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery === 1 && (
                     <div className="px-3">
                       <CashOnDelivery className={`h-auto w-8`} />
                     </div>
@@ -234,6 +222,15 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                         height={22}
                       />
                     </a>
+                  )}
+                  {vendorElement?.Data?.phone && (
+                    <a
+                    target="blank"
+                    href={`tel:${vendorElement?.Data?.phone}`}
+                    className="px-2"
+                  >
+                    <Call />
+                  </a>
                   )}
                 </div>
               </div>
