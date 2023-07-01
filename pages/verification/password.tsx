@@ -104,7 +104,7 @@ const UserPassword: NextPage<Props> = ({
         if (r.error) {
           dispatch(
             showToastMessage({
-              content: `the_password_you_entered_is_incorrect.`,
+              content: `the_password_you_entered_is_incorrect`,
               type: `error`,
             })
           );
