@@ -18,14 +18,14 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import ToastAppContainer from '../ToastAppContainer';
+import ToastAppContainer from '@/components/ToastAppContainer';
 import moment from 'moment';
 import * as yup from 'yup';
 import { useLazyCreateTempIdQuery } from '@/redux/api/CustomerApi';
 import { isAuthenticated, setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
-import ContentLoader from '../skeletons';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   children: ReactNode | undefined;
