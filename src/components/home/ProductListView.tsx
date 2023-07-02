@@ -76,7 +76,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
           <ListOutlined />
         </div>
         <ScrollSpy
-          currentClassName=""
+          // currentClassName=""
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
@@ -88,6 +88,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
           {CategoriesProducts.map((category) =>
             !isEmpty(category.items) ? (
               <a
+                key={category.cat_id}
                 href={`#${category.cat_id}`}
                 className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
                   category.cat_id == currentId ? `text-white active-cat` : ''
@@ -114,7 +115,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
       <div>
         {CategoriesProducts.map((category) =>
           !isEmpty(category.items) ? (
-            <section id={`${category.cat_id}`}>
+            <section id={`${category.cat_id}`} key={category.cat_id}>
               <div className="mt-5 px-4">
                 {/* cat name */}
                 <button
