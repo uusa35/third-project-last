@@ -215,7 +215,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 scroll={true}
                 href={`/branch`}
               >
-                <OurBranches />
+                <OurBranches stroke={color} fill="none" />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
