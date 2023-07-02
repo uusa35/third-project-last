@@ -28,6 +28,7 @@ import CartIcon from '@/appIcons/more_cart.svg';
 import OrdersIcon from '@/appIcons/more_orders.svg';
 import WishlistIcon from '@/appIcons/more_love.svg';
 import AddressIcon from '@/appIcons/more_address.svg';
+import OurBranches from '@/appIcons/our_branches.svg';
 import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
@@ -193,7 +194,6 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 </p>
               </Link>
               <HorizentalLine className="my-3" />
-
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
@@ -207,6 +207,20 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                   className="capitalize"
                 >
                   {t('my_addresses')}
+                </p>
+              </Link>
+              <HorizentalLine className="my-3" />
+              <Link
+                className="flex gap-x-3  items-center ps-1"
+                scroll={true}
+                href={`/branch`}
+              >
+                <OurBranches />
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className="capitalize"
+                >
+                  {t('our_branches')}
                 </p>
               </Link>
               <HorizentalLine className="my-3" />
