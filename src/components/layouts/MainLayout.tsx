@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
@@ -34,7 +34,7 @@ type Props = {
 
 type Handler = (...evts: any[]) => void;
 
-const MainLayout: FC<Props> = ({ children }): JSX.Element => {
+const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
   const {
     appSetting: { url, sideMenuOpen },
     locale,

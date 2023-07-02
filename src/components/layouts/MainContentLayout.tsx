@@ -43,7 +43,6 @@ type Props = {
 
 const MainContentLayout: FC<Props> = ({
   children,
-
   currentModule = 'home',
   backHome = false,
   backRoute = null,
