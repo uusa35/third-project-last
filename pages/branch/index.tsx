@@ -26,7 +26,6 @@ import { setLocale } from 'yup';
 
 type Props = {
   url: string;
-  element: StaticPage[];
 };
 
 const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
@@ -42,10 +41,13 @@ const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetBranches({
-      url,
-      lang,
-    });
+    triggerGetBranches(
+      {
+        url,
+        lang,
+      },
+      false
+    );
   }, []);
 
   if (!isSuccess) return null;
