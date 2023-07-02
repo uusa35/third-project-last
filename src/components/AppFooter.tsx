@@ -2,10 +2,11 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { appVersion } from '../constants';
+import { useAppSelector } from '@/redux/hooks';
 
 type Props = {};
 
-const AppFooter: FC<Props> = ({}): JSX.Element => {
+const AppFooter: FC<Props> = ({}): React.ReactNode => {
   const { t } = useTranslation();
   const router = useRouter();
 

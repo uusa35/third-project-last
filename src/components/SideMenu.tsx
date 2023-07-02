@@ -19,9 +19,8 @@ import {
   ChevronRightOutlined,
   ChevronLeftOutlined,
 } from '@mui/icons-material';
-import HorizentalLine from './HorizentalLine';
-import AppFooter from './AppFooter';
-
+import HorizentalLine from '@/components/HorizentalLine';
+import AppFooter from '@/components/AppFooter';
 import FastSignInIcon from '@/appIcons/fast_signin.svg';
 import MenuIcon from '@/appIcons/more_menu.svg';
 import CartIcon from '@/appIcons/more_cart.svg';
@@ -33,7 +32,7 @@ import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
 
-const SideMenu: FC<Props> = (): JSX.Element => {
+const SideMenu: FC<Props> = (): React.ReactNode => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthenticated);
@@ -213,9 +212,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={`/branch`}
+                href={appLinks.branchIndex.path}
               >
-                <OurBranches />
+                <OurBranches fill={color} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"

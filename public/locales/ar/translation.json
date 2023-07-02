@@ -334,5 +334,12 @@
   "try_again": "حاول مرة أخرى",
   "ooops_no_internet_connection": "خطأ ! لا يوجد اتصال بالانترنت",
   "check_your_internet_connection_and_try_again": "افحص الانترنت وحاول مرة أخرى",
-  "your_order_has_been_scheduled_successfully": "تم الطلب بنجاح"
+  "your_order_has_been_scheduled_successfully": "تم الطلب بنجاح",
+  "saturday": "السبت",
+  "sunday": "الأحد",
+  "monday": "الإثنين",
+  "tuesday": "الثلاثاء",
+  "wednesday": "الأربعاء",
+  "thursday": "الخميس",
+  "friday": "الجمعة"
 }

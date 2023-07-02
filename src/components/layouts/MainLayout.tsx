@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
@@ -18,14 +18,14 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import { setVendor } from '@/redux/slices/vendorSlice';
-import ToastAppContainer from '../ToastAppContainer';
+import ToastAppContainer from '@/components/ToastAppContainer';
 import moment from 'moment';
 import * as yup from 'yup';
 import { useLazyCreateTempIdQuery } from '@/redux/api/CustomerApi';
 import { isAuthenticated, setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
-import ContentLoader from '../skeletons';
+import ContentLoader from '@/components/skeletons';
 
 type Props = {
   children: ReactNode | undefined;
@@ -34,7 +34,7 @@ type Props = {
 
 type Handler = (...evts: any[]) => void;
 
-const MainLayout: FC<Props> = ({ children }): JSX.Element => {
+const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
   const {
     appSetting: { url, sideMenuOpen },
     locale,

@@ -16,9 +16,6 @@ import { useTranslation } from 'react-i18next';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
-const AppFooter = dynamic(() => import(`@/components/AppFooter`), {
-  ssr: false,
-});
 const SideMenu = dynamic(() => import(`@/components/SideMenu`), {
   ssr: false,
 });
@@ -34,32 +31,24 @@ type Props = {
   showAppFooter?: boolean;
   hideBack?: boolean;
   showMotion?: boolean;
-  handleSubmit?: (element?: any) => void | undefined | Promise<any>;
-  handleIncreaseProductQty?: () => void;
-  handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
   productOutStock?: boolean | undefined;
 };
 
 const MainContentLayout: FC<Props> = ({
   children,
-
   currentModule = 'home',
   backHome = false,
   backRoute = null,
   showBackBtnHeader = false,
   showAppFooter = false,
   showHelpBtn = false,
-
   hideBack = false,
   showMotion = true,
-  handleSubmit,
-  handleIncreaseProductQty,
-  handleDecreaseProductQty,
   productCurrentQty,
   productOutStock,
   url,
-}): JSX.Element => {
+}): React.ReactNode => {
   const {
     appSetting: { showHeader, url: appUrl, showFooterElement },
   } = useAppSelector((state) => state);
@@ -88,7 +77,7 @@ const MainContentLayout: FC<Props> = ({
 
   const Button = () => {
     return (
-      <div className='pt-5 space-x-3'>
+      <div className="pt-5 space-x-3">
         <button
           onClick={() => window.location.reload()}
           className={`text-center text-md capitalize text-white px-12 py-2 rounded-full flex items-center`}
@@ -96,7 +85,7 @@ const MainContentLayout: FC<Props> = ({
           style={{ backgroundColor: color }}
         >
           <ReloadIcon />
-          <span className='px-1'>{t('try_again')}</span>
+          <span className="px-1">{t('try_again')}</span>
         </button>
       </div>
     );
@@ -127,16 +116,13 @@ const MainContentLayout: FC<Props> = ({
           children
         ) : (
           <OffLineWidget
-            img={`${NoNetwork.src}`} 
+            img={`${NoNetwork.src}`}
             message={`ooops_no_internet_connection`}
             desc={`check_your_internet_connection_and_try_again`}
             buttons={<Button />}
           />
         )}
       </main>
-      {/* <ScrollToTopButton /> */}
-      {/* {showAppFooter && <AppFooter />} */}
-
       <NextNProgress
         color={color}
         startPosition={0.3}

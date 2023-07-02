@@ -355,5 +355,12 @@
   "try_again": "try again",
   "ooops_no_internet_connection": "ooops ! no internet connection",
   "check_your_internet_connection_and_try_again": "check your internet connection and try again",
-  "your_order_has_been_scheduled_successfully": "your order has been scheduled successfully"
+  "your_order_has_been_scheduled_successfully": "your order has been scheduled successfully",
+  "saturday": "saturday",
+  "sunday": "sunday",
+  "monday": "monday",
+  "tuesday": "tuesday",
+  "wednesday": "wednesday",
+  "thursday": "thursday",
+  "friday": "friday"
 }

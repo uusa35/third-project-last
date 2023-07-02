@@ -27,7 +27,7 @@ import { setPreferences } from '@/redux/slices/customerSlice';
 import { Router, useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
-import 'moment/locale/ar';
+// import 'moment/locale/ar'; // conflict reading arabic timing in 12 hrs mode
 
 // check availability in case no date will return else will just navigate to checkout.
 type Day = {
@@ -40,7 +40,7 @@ type Props = {
   method: 'pickup' | 'delivery';
 };
 
-const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
+const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -293,6 +293,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
       </MainContentLayout>
     );
 
+  console.log({ timings });
   return (
     <Suspense>
       <MainHead
@@ -366,7 +367,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                         })
                       }
                     >
-                      <span className="flex text-sm">{t(day.day)}</span>
+                      <span className="flex text-sm">
+                        {t(lowerCase(day.day))}
+                      </span>
                       <span className="flex flex-row text-sm">{day.date}</span>
                     </button>
                   </div>
@@ -400,9 +403,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
                           style={{ accentColor: color }}
                         />
                         <span className="mx-2">
-                          {moment(time, 'h:mm A')
+                          {moment(time, 'hh:mm a')
                             .locale(lang)
-                            .format('hh:mm A')}
+                            .format('h:mm A')}
                         </span>
                       </label>
                     ))}
