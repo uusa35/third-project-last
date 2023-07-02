@@ -2,10 +2,9 @@ import React, { FC, Suspense } from 'react';
 import { imageSizes, imgUrl } from '@/constants/*';
 import CustomImage from '@/components/CustomImage';
 import { Vendor } from '@/types/index';
-
-import AsideFooter from '../MainAside/Footer';
-import AsideHeader from '../MainAside/Header';
-import AsideContent from '../MainAside/Content';
+import AsideFooter from '@/components/MainAside/Footer';
+import AsideHeader from '@/components/MainAside/Header';
+import AsideContent from '@/components/MainAside/Content';
 
 type Props = {
   element: Vendor;
