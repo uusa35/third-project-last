@@ -349,5 +349,10 @@
   "address_deleted_successfully": "address deleted successfully",
   "please_provide_all_required_information": "please provide all required information",
   "confirm_password_doesnt_match_new_password": "confirm password doesn't match new password",
-  "password_changed_successfully": "password changed successfully"
+  "password_changed_successfully": "password changed successfully",
+  "nothing_to_eat_here": "nothing to eat here !",
+  "we_are _sorry_that_we_can't_find_the_page_please_go_back_or_try_again": "we are sorry that we can't find the page , please go back or try again.",
+  "try_again": "try again",
+  "ooops_no_internet_connection": "ooops ! no internet connection",
+  "check_your_internet_connection_and_try_again": "check your internet connection and try again"
 }
