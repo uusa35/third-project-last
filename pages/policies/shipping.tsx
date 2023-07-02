@@ -19,7 +19,6 @@ type Props = {
 const ShippingPolicy: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const [triggerVendorStaticPages, { data: element }] = useLazyGetVendorStaticPagesQuery();
-  console.log({ element })
   const shippingPolicy = find(element?.Data, (e) => e.key === 'Shipping policy');
 
   useEffect(() => {
