@@ -25,7 +25,6 @@ export const appLinks = {
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number, slug?: string) =>
     `/product/show/${id}?slug=${slug}`,
-  ourBranches: { path: '/vendor/branches' },
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
