@@ -27,7 +27,7 @@ import { setPreferences } from '@/redux/slices/customerSlice';
 import { Router, useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
-// import 'moment/locale/ar';
+// import 'moment/locale/ar'; // conflict reading arabic timing in 12 hrs mode
 
 // check availability in case no date will return else will just navigate to checkout.
 type Day = {
