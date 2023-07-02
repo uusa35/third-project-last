@@ -9,6 +9,9 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { isUndefined } from 'lodash';
 import { scrollClass, suppressText } from '@/constants/*';
+import NoNetwork from '@/appImages/no_network.png';
+import ReloadIcon from '@/appIcons/reload.svg';
+import { useTranslation } from 'react-i18next';
 // import ScrollToTopButton from '@/components/ScrollToTopButton';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
@@ -63,6 +66,7 @@ const MainContentLayout: FC<Props> = ({
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleStatusChange = () => {
@@ -81,6 +85,22 @@ const MainContentLayout: FC<Props> = ({
       dispatch(setUrl(url));
     }
   }, []);
+
+  const Button = () => {
+    return (
+      <div className='pt-5 space-x-3'>
+        <button
+          onClick={() => window.location.reload()}
+          className={`text-center text-md capitalize text-white px-12 py-2 rounded-full flex items-center`}
+          suppressHydrationWarning={suppressText}
+          style={{ backgroundColor: color }}
+        >
+          <ReloadIcon />
+          <span className='px-1'>{t('try_again')}</span>
+        </button>
+      </div>
+    );
+  };
 
   return (
     <motion.div
@@ -107,8 +127,10 @@ const MainContentLayout: FC<Props> = ({
           children
         ) : (
           <OffLineWidget
-            message={`network_is_not_available_please_check_your_internet`}
-            img={`${NoInternet.src}`}
+            img={`${NoNetwork.src}`} 
+            message={`ooops_no_internet_connection`}
+            desc={`check_your_internet_connection_and_try_again`}
+            buttons={<Button />}
           />
         )}
       </main>

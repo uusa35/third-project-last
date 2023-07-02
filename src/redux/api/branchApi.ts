@@ -9,7 +9,7 @@ export const branchApi = apiSlice.injectEndpoints({
       {
         lang: Locale['lang'] | string | undefined;
         url: string;
-        type: string | undefined;
+        type?: string | undefined;
       }
     >({
       query: ({ lang, url, type }) => ({

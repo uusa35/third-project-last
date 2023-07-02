@@ -20,4 +20,4 @@ export const staticPagesApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetVendorStaticPagesQuery } = staticPagesApi;
+export const { useLazyGetVendorStaticPagesQuery } = staticPagesApi;

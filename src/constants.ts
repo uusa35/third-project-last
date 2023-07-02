@@ -152,3 +152,4 @@ export const displayUserAddress = (address: any) => {
 export const whatsappUrl = `https://api.whatsapp.com/send?phone=`;
 export const googleMapUrl = (lang: string, lat: string) =>
   `http://maps.google.com/maps?z=18&q=${lang},${lat}`;
+

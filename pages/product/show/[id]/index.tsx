@@ -396,7 +396,7 @@ const ProductShow: NextPage<Props> = ({
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
   };
-
+``
   const handleIncrease = () => {
     if (element && !outOfStock) {
       setCurrentyQty(currentQty + 1);
@@ -1223,7 +1223,7 @@ const ProductShow: NextPage<Props> = ({
                       onClick={handleDecrease}
                       type="button"
                       className={`w-6 h-6 lg:w-8 lg:h-8 flex justify-center items-center bg-white border-[1px] rounded-full disabled:border-gray-300 disabled:text-gray-300`}
-                      style={{ borderColor: color, color }}
+                      style={{ backgroundColor: color }}
                     >
                       <MinusIcon />
                     </button>
