@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import OrderItemSkeleton from './OrderItemSkeleton';
 
-const VendorInfoSkeleton:FC = () => {
+const VendorInfoSkeleton:FC = (): React.ReactElement => {
     const VendorInfo = Array.from({ length: 5 }, (_, index) => (
         <div key={index} className="py-2">
             <Skeleton width={'100%'} height={35} />

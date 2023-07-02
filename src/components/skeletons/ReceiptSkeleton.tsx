@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const ReceiptSkeleton:FC = () => {
+const ReceiptSkeleton:FC = (): React.ReactElement => {
   return (
     <div className="p-4">
         <div className="border-b-2 border-zinc-200 pt-2 pb-5">

@@ -4,7 +4,7 @@ import OrderItemSkeleton from './OrderItemSkeleton';
 import OrderDetails from '../checkout/OrderDetails';
 import PaymentSummarySkelton from './PaymentSummarySkelton';
 
-const OrderFailureSkeleton:FC = () => {
+const OrderFailureSkeleton:FC = (): React.ReactElement => {
     const OrderInfo = Array.from({ length: 6 }, (_, index) => (
         <div key={index} className="py-2">
             <Skeleton containerClassName='w-full' height={50} />

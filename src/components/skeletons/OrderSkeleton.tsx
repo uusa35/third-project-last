@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const OrderSkeleton:FC = () => {
+const OrderSkeleton:FC = (): React.ReactElement => {
   const orderDetails = Array.from({ length: 4 }, (_, index) => (
     <div key={index} className="py-1">
       <Skeleton containerClassName='w-full' width={'60%'} height={20} />

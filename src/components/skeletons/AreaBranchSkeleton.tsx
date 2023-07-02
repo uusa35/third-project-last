@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const AreaBranchSkeleton:FC = () => {
+const AreaBranchSkeleton:FC = (): React.ReactElement => {
   return (
     <div className="px-5 py-2">
         <Skeleton containerClassName='w-full' height={50} />

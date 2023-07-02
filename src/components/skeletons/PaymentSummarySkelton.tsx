@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const PaymentSummarySkelton:FC = () => {
+const PaymentSummarySkelton:FC = (): React.ReactElement => {
   return (
     <div className="p-5">
       <Skeleton width={140} height={20} className="mb-3" />

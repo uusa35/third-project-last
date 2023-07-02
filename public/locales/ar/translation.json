@@ -333,5 +333,6 @@
   "we_are _sorry_that_we_can't_find_the_page_please_go_back_or_try_again": "نعتذر أننا لم نستطع أن نجد الصفحة، من فضلك قم بالعودة أو حاول مرة أخرى",
   "try_again": "حاول مرة أخرى",
   "ooops_no_internet_connection": "خطأ ! لا يوجد اتصال بالانترنت",
-  "check_your_internet_connection_and_try_again": "افحص الانترنت وحاول مرة أخرى"
+  "check_your_internet_connection_and_try_again": "افحص الانترنت وحاول مرة أخرى",
+  "your_order_has_been_scheduled_successfully": "تم الطلب بنجاح"
 }

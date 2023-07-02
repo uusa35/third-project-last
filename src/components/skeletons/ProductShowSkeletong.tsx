@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const ProductShowSkeleton:FC = () => {
+const ProductShowSkeleton:FC = (): React.ReactElement => {
   return (
     <div>
       <Skeleton width={'100%'} height={70} />

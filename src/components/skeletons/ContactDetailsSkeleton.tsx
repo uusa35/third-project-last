@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const ContactDetailsSkeleton:FC = () => {
+const ContactDetailsSkeleton:FC = (): React.ReactElement => {
     const orderDetails = Array.from({ length: 6 }, (_, index) => (
         <Skeleton key={index} width={200} height={20} />
       ));

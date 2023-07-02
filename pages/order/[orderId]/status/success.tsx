@@ -34,6 +34,7 @@ import { setUrl } from '@/redux/slices/appSettingSlice';
 import OrderSuccessSkeleton from '@/components/skeletons/OrderSuccessSkeleton';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
+import { isAuthenticated } from '@/redux/slices/customerSlice';
 
 type Props = {
   url: string;
@@ -46,6 +47,7 @@ const OrderSuccess: NextPage<Props> = ({
 }): React.ReactElement => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const isAuth = useAppSelector(isAuthenticated);
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const dispatch = useAppDispatch();
@@ -100,6 +102,7 @@ const OrderSuccess: NextPage<Props> = ({
   useEffect(() => {
     refetchCart();
   }, []);
+  console.log({ isAuth })
 
   return (
     <>
@@ -108,51 +111,8 @@ const OrderSuccess: NextPage<Props> = ({
           showBackBtnHeader={true}
           currentModule={`${t('order')} #${order.data.order_id}`}
         >
-          {/* image and text */}
-          {/* if guest */}
+        {/* {order.orderType === 'pickup_later' || order.orderType === 'delivery_later' ? (
           <div className="px-5">
-            <div className="flex justify-center py-5">
-              <Success />
-            </div>
-            <div className="flex flex-col items-center justify-center text-center mb-7">
-              <p
-                suppressHydrationWarning={suppressText}
-                className="font-semibold lg:w-3/4 text-lg"
-              >
-                {t('your_order_is_successfully_done')}
-              </p>
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-[#544A45] lg:w-3/4 py-2 text-sm"
-              >
-                {t('success_msg')}
-              </p>
-
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-[#544A45] lg:w-3/4 text-sm py-1"
-              >
-                {t('estimated_time')}{' '}
-                <span className="text-[#1A1615] font-bold">
-                  :{order.data.estimated_time?.from}{' '}
-                  {order.data.estimated_time?.to &&
-                    `- ${order.data.estimated_time?.to}`}
-                </span>
-              </p>
-
-              <p
-                suppressHydrationWarning={suppressText}
-                className="text-[#544A45] lg:w-3/4 text-sm"
-              >
-                {t('order_id')}{' '}
-                <span className="text-[#1A1615] font-bold">
-                  : # {order.data.order_id}
-                </span>
-              </p>
-            </div>
-          </div>
-          {/* if user */}
-          {/* <div className="px-5">
           <div className="flex justify-center py-5">
             <SuccessScheduled />
           </div>
@@ -164,7 +124,42 @@ const OrderSuccess: NextPage<Props> = ({
               {t('your_order_has_been_scheduled_successfully')}
             </p>
           </div>
-        </div> */}
+        </div>
+        ): ( */}
+          <div className="px-5">
+          <div className="flex justify-center py-5">
+            <Success />
+          </div>
+          <div className="flex flex-col items-center justify-center text-center mb-7">
+            <p
+              suppressHydrationWarning={suppressText}
+              className="font-semibold"
+            >
+              {t('your_order_has_been_scheduled_successfully')}
+            </p>
+            <p
+              suppressHydrationWarning={suppressText}
+              className="text-[#544A45] lg:w-3/4 text-sm py-1"
+            >
+              {t('estimated_time')}{' '}
+              <span className="text-[#1A1615] font-bold">
+                :{order.data.estimated_time?.from}{' '}
+                {order.data.estimated_time?.to &&
+                  `- ${order.data.estimated_time?.to}`}
+              </span>
+            </p>
+            <p
+              suppressHydrationWarning={suppressText}
+              className="text-[#544A45] lg:w-3/4 text-sm"
+            >
+              {t('order_id')}{' '}
+              <span className="text-[#1A1615] font-bold">
+                : # {order.data.order_id}
+              </span>
+            </p>
+          </div>
+        </div>
+        {/* )} */}
 
           {/* orderDetails */}
           <div className="p-5 border-b-4">

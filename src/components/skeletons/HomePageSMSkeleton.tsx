@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const HomePageSMSkeleton:FC = () => {
+const HomePageSMSkeleton:FC = (): React.ReactElement => {
   const skeletonContent = (
     <div className="py-2">
       <Skeleton height={140} />

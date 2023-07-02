@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const OrderItemSkeleton:FC = () => {
+const OrderItemSkeleton:FC = (): React.ReactElement => {
 
   return (
       <div className="flex justify-between">

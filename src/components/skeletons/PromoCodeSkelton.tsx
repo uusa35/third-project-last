@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const PromoCodeSkelton:FC = () => {
+const PromoCodeSkelton:FC = (): React.ReactElement => {
   return (
     <div className="py-3 px-5">
       <Skeleton width={140} height={20} className="mb-3" />
