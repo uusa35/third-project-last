@@ -113,6 +113,15 @@ export interface Register {
   phone_country_code: string;
   name: string;
   email: string;
+  password: string;
+  password_confirmation: string
+}
+
+export interface ResetPassword {
+  phone: string;
+  phone_country_code: string;
+  new_password: string;
+  confirm_password?: string
 }
 
 export interface UserOrders {
