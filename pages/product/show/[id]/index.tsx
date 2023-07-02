@@ -101,7 +101,7 @@ const ProductShow: NextPage<Props> = ({
   url,
   currentLocale,
   resolvedUrl,
-}): React.ReactElement => {
+}): React.ReactNode => {
   const { t } = useTranslation();
   const router = useRouter();
   const {
@@ -396,7 +396,7 @@ const ProductShow: NextPage<Props> = ({
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
   };
-``
+  ``;
   const handleIncrease = () => {
     if (element && !outOfStock) {
       setCurrentyQty(currentQty + 1);

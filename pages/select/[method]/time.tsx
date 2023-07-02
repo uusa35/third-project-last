@@ -40,7 +40,7 @@ type Props = {
   method: 'pickup' | 'delivery';
 };
 
-const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
+const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const router = useRouter();

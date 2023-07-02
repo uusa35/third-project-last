@@ -27,8 +27,8 @@ export const appLinks = {
     `/product/show/${id}?slug=${slug}`,
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
+  branchIndex: { path: '/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
-
   accountInfo: { path: '/user/info' },
   orderHistory: { path: '/orders' },
   wishlist: { path: '/wishlist' },

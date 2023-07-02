@@ -43,7 +43,6 @@ type Props = {
 
 const MainContentLayout: FC<Props> = ({
   children,
-
   currentModule = 'home',
   backHome = false,
   backRoute = null,
@@ -59,7 +58,7 @@ const MainContentLayout: FC<Props> = ({
   productCurrentQty,
   productOutStock,
   url,
-}): JSX.Element => {
+}): React.ReactNode => {
   const {
     appSetting: { showHeader, url: appUrl, showFooterElement },
   } = useAppSelector((state) => state);
@@ -88,7 +87,7 @@ const MainContentLayout: FC<Props> = ({
 
   const Button = () => {
     return (
-      <div className='pt-5 space-x-3'>
+      <div className="pt-5 space-x-3">
         <button
           onClick={() => window.location.reload()}
           className={`text-center text-md capitalize text-white px-12 py-2 rounded-full flex items-center`}
@@ -96,7 +95,7 @@ const MainContentLayout: FC<Props> = ({
           style={{ backgroundColor: color }}
         >
           <ReloadIcon />
-          <span className='px-1'>{t('try_again')}</span>
+          <span className="px-1">{t('try_again')}</span>
         </button>
       </div>
     );
@@ -127,7 +126,7 @@ const MainContentLayout: FC<Props> = ({
           children
         ) : (
           <OffLineWidget
-            img={`${NoNetwork.src}`} 
+            img={`${NoNetwork.src}`}
             message={`ooops_no_internet_connection`}
             desc={`check_your_internet_connection_and_try_again`}
             buttons={<Button />}
