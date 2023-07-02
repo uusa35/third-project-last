@@ -19,7 +19,7 @@ import {
   ChevronRightOutlined,
   ChevronLeftOutlined,
 } from '@mui/icons-material';
-import HorizentalLine from './HorizentalLine';
+import HorizentalLine from '@/components/HorizentalLine';
 import AppFooter from '@/components/AppFooter';
 import FastSignInIcon from '@/appIcons/fast_signin.svg';
 import MenuIcon from '@/appIcons/more_menu.svg';
