@@ -55,9 +55,9 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
           <div>
             <p
               suppressHydrationWarning={suppressText}
-              className="text-[#B7B1AE] pb-1 uppercase"
+              className="text-[#B7B1AE] pb-1 uppercase flex justify-between items-center"
             >
-              {t(p1)}
+              <span>{t(p1)}</span>
             </p>
             <p suppressHydrationWarning={suppressText} className="font-bold">
               {t(p2)}
@@ -79,8 +79,8 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
       {isObject(order?.customer.address?.address) && (
         <DetailComponent
           icon={<OfficeIcon />}
-          p1="your_address"
-          p2={order?.customer?.address?.address?.type}
+          p1={order?.orderType === 'delivery' ? 'your_address' : 'branch_address'}
+          p2={order?.orderType === 'delivery' ? order?.customer?.address?.address?.type : order.branch_address}
           p3={handelDisplayAddress()}
         />
       )}
@@ -92,7 +92,7 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
 
       <DetailComponent
         icon={<ClockIcon />}
-        p1={method === 'delivery' ? 'delivery_time' : 'pickup_time'}
+        p1={order.orderType === 'delivery' ? 'delivery_time' : 'pickup_time'}
         p2={order.delivery_date_time.replace(",", " ")}
       />
     </div>

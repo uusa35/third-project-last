@@ -111,10 +111,8 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                     cols={10}
                     className="bg-gray-100 w-full resize-none h-16 capitalize placeholder:text-gray-500 focus:outline-none"
                     placeholder={t('your_feedback')}
-                    onChange={(e) => {
-                      const value = e.target.value.slice(0, 460);
-                      field.onChange(value);
-                    }}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    maxLength={460}
                   />
                   <p className="text-end text-gray-500">
                     {field.value.length}/{460}
