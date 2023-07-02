@@ -28,6 +28,7 @@ import CartIcon from '@/appIcons/more_cart.svg';
 import OrdersIcon from '@/appIcons/more_orders.svg';
 import WishlistIcon from '@/appIcons/more_love.svg';
 import AddressIcon from '@/appIcons/more_address.svg';
+import OurBranches from '@/appIcons/our_branches.svg';
 import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
@@ -214,7 +215,7 @@ const SideMenu: FC<Props> = (): JSX.Element => {
                 scroll={true}
                 href={`/branch`}
               >
-                <AddressIcon stroke={color} />
+                <OurBranches />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
