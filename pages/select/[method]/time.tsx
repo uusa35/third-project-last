@@ -27,6 +27,7 @@ import { setPreferences } from '@/redux/slices/customerSlice';
 import { Router, useRouter } from 'next/router';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
+import 'moment/locale/ar';
 
 // check availability in case no date will return else will just navigate to checkout.
 type Day = {
@@ -76,7 +77,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
     date: ``,
     rawDate: moment().locale('en'),
   });
-  moment.locale(lang);
 
   useEffect(() => {
     if (url) {
@@ -122,7 +122,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
       const isWithinNextMonth =
         day.isSameOrAfter(today, 'day') &&
         day.isBefore(today.clone().add(1, 'month'));
-
       if (isToday) {
         days.push({
           day: `today`,
@@ -204,6 +203,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactElement => {
           date: selectedDay.rawDate?.locale('en').format('YYYY-MM-DD'),
           area_branch: desObject,
           url,
+          lang,
         },
         false
       ).then((r: any) => {

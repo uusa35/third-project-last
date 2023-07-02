@@ -19,16 +19,18 @@ export const cartApi = apiSlice.injectEndpoints({
     }),
     getTimings: builder.query<
       AppQueryResult<[string]>,
-      { type: string; date: string; area_branch: any; url: string }
+      { type: string; date: string; area_branch: any; url: string, lang: string }
     >({
-      query: ({ type, date, area_branch, url }) => ({
+      query: ({ type, date, area_branch, lang, url }) => ({
         url: `getAvailableTime`,
         params: {
           type,
           date,
+          lang
         },
         headers: {
           url,
+          lang,
           ...area_branch,
         },
         validateStatus: (response, result) =>
