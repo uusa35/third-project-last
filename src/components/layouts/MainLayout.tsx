@@ -68,15 +68,17 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
       },
       false
     ).then((r: any) => {
-      if (r.Data) {
-        dispatch(setVendor(r.Data));
+      // console.log({ r });
+      if (r.data && r.data?.Data) {
+        dispatch(setVendor(r.data.Data));
       }
     });
   };
 
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess, tempIdSuccess, url, isAuth]);
+  }, [vendorSuccess, url, isAuth]);
+  // removed tempid success from dependency
 
   const setAppDefaults = async () => {
     if (isNull(userAgent) && url) {
