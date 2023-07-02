@@ -1,3 +1,4 @@
+import Policy from '@/components/Policy';
 import TextTrans from '@/components/TextTrans';
 import ContentLoader from '@/components/skeletons';
 import MainContentLayout from '@/layouts/MainContentLayout';
@@ -17,7 +18,6 @@ type Props = {
 };
 
 const PrivacyPolicy: NextPage<Props> = ({ url, element }): React.ReactElement => {
-  const { locale: { isRTL } } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const privacyPolicy = find(element, (e) => e.key === 'Privacy policy');
 
@@ -34,23 +34,7 @@ const PrivacyPolicy: NextPage<Props> = ({ url, element }): React.ReactElement =>
       currentModule="privacy_policy"
     >
       {privacyPolicy ? (
-        <div className="p-5">
-          <h2 className="font-bold pb-2">
-            <TextTrans 
-              en={privacyPolicy?.title_en} 
-              ar={privacyPolicy?.title_ar} 
-              className="!uppercase text-lg"
-            />
-          </h2>
-          <p className="text-[#544A45]">
-            <TextTrans 
-              en={privacyPolicy?.content_en}
-              ar={privacyPolicy?.content_ar} 
-              className="block break-words"
-              length={isRTL ? privacyPolicy?.content_ar.length : privacyPolicy?.content_en.length}
-            />
-          </p>
-        </div>
+        <Policy policyType={privacyPolicy} />
       ): (
         <ContentLoader type="Policy" sections={1} />
       )}

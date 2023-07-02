@@ -396,7 +396,7 @@ const ProductShow: NextPage<Props> = ({
     mount: { scale: 1 },
     unmount: { scale: 0.9 },
   };
-
+``
   const handleIncrease = () => {
     if (element && !outOfStock) {
       setCurrentyQty(currentQty + 1);
