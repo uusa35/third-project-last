@@ -34,6 +34,8 @@ export type Branch = {
   location: string;
   mobile: string;
   long?: number | string;
+  longitude?: number | string;
+  latitude?: number | string;
   lat?: number | string;
   status: string;
   delivery_type: string;
