@@ -20,8 +20,7 @@ import {
   ChevronLeftOutlined,
 } from '@mui/icons-material';
 import HorizentalLine from './HorizentalLine';
-import AppFooter from './AppFooter';
-
+import AppFooter from '@/components/AppFooter';
 import FastSignInIcon from '@/appIcons/fast_signin.svg';
 import MenuIcon from '@/appIcons/more_menu.svg';
 import CartIcon from '@/appIcons/more_cart.svg';
