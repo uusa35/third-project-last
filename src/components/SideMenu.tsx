@@ -213,9 +213,9 @@ const SideMenu: FC<Props> = (): JSX.Element => {
               <Link
                 className="flex gap-x-3  items-center ps-1"
                 scroll={true}
-                href={`/branch`}
+                href={appLinks.branchIndex.path}
               >
-                <OurBranches stroke={color} fill="none" />
+                <OurBranches fill={color} />
                 <p
                   suppressHydrationWarning={suppressText}
                   className="capitalize"
