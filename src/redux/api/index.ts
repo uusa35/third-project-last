@@ -21,8 +21,8 @@ export const apiSlice = createApi({
         'GET,PUT,POST,DELETE,PATCH,OPTIONS'
       );
       headers.set('Cache-Control', 'no-store');
-      headers.set('lang', getState().locale.lang);
-      headers.set('Lang', getState().locale.lang);
+      // headers.set('lang', getState().locale.lang);
+      // headers.set('Lang', getState().locale.lang);
       if (isLocal) {
         headers.set('url', xDomain);
       } else if (getState().appSetting.url !== null && getState().appSetting.url.length > 2) {
