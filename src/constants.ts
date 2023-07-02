@@ -25,6 +25,7 @@ export const appLinks = {
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number, slug?: string) =>
     `/product/show/${id}?slug=${slug}`,
+  ourBranches: { path: '/vendor/branches' },
   selectArea: { path: '/select/area' },
   selectBranch: { path: '/select/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
@@ -152,3 +153,4 @@ export const displayUserAddress = (address: any) => {
 export const whatsappUrl = `https://api.whatsapp.com/send?phone=`;
 export const googleMapUrl = (lang: string, lat: string) =>
   `http://maps.google.com/maps?z=18&q=${lang},${lat}`;
+
