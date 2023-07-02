@@ -98,11 +98,11 @@ export default function AsideHeader({ url }: Props) {
       </div>
 
       {/* cart , search , lang right icons */}
-      <div className={`flex flex-row justify-start items-start gap-3  z-50`}>
+      <div className={`flex flex-row justify-start items-start gap-1  z-50`}>
         <Link
           scroll={true}
           href={appLinks.cart.path}
-          className={`w-10 h-10 rounded-full flex justify-center items-center bg-white text-black capitalize`}
+          className={` rounded-full flex justify-center items-center text-black capitalize`}
           suppressHydrationWarning={suppressText}
         >
           <div className="relative">
@@ -132,9 +132,10 @@ export default function AsideHeader({ url }: Props) {
           <SearchIcon />
         </button>
         <button onClick={() => handleChangeLang(lang === 'ar' ? 'en' : 'ar')}>
-          {lang === 'ar' ? <AsideEN /> : <AsideAR />}
+          {lang === 'ar' ? <AsideEN/> : <AsideAR />}
         </button>
       </div>
+
     </div>
   );
 }

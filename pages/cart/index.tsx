@@ -271,8 +271,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
       {/* if cart is empty */}
-      <div className={''}>
-        {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
+      {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
           <EmptyCart />
         ) : isSuccess ? (
           <div>
@@ -361,7 +360,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             <ContentLoader type="PaymentSummary" sections={1} />
           </div>
         )}
-      </div>
     </MainContentLayout>
   );
 };
