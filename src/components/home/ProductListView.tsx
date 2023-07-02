@@ -1,7 +1,7 @@
 import { Product } from '@/types/index';
 import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
@@ -27,9 +27,33 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
   const [currentId, setCurrentId] = useState<string | null>(null);
   const handleUpdate = (el: HTMLElement | null) => {
     if (el) {
+      // let active_cat = document.querySelector(`a.active-cat`);
+      // console.log({ active_cat });
+
+      // if (active_cat) {
+      //   active_cat.scrollIntoView({behavior: "smooth",inline:'end'});
+      // }
       setCurrentId(el.id);
     }
   };
+
+  // useEffect(() => {
+  //   // if (currentId) {
+  //   //   let active_cat = document.querySelector(`a.active-cat`);
+
+  //   //   if (active_cat) {
+  //   //     active_cat.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+  //   //     console.log({ currentId }, active_cat);
+  //   //   }
+  //   // }
+
+  //     let active_cat = document.querySelector(`a.active-cat`);
+
+  //     if (active_cat) {
+  //       active_cat.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+  //       console.log({ currentId }, active_cat);
+  //     }
+  // }, [currentId]);
 
   const handleSearchRedirection = (id: string) => {
     dispatch(setCategory(id));
@@ -66,7 +90,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
               <a
                 href={`#${category.cat_id}`}
                 className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
-                  category.cat_id == currentId ? `text-white` : ''
+                  category.cat_id == currentId ? `text-white active-cat` : ''
                 }`}
                 style={{
                   backgroundColor:

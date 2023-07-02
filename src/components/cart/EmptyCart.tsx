@@ -11,18 +11,10 @@ const EmptyCart: FC = () => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   return (
-    <div className="flex flex-col items-center justify-center p-5">
+    <div className="flex flex-col items-center justify-center p-5 absolute top-[20%] w-full">
       <div className="flex justify-center h-auto px-3">
         <EmptyCartImage />
       </div>
-
-      {/* <CustomImage
-        src={EmptyCartImage.src}
-        alt="empty_cart"
-        className="w-2/3 h-auto my-5 px-3"
-        width={imageSizes.xl}
-        height={imageSizes.xl}
-      /> */}
       <div className="capitalize text-center">
         <div className='my-5'>
           <p suppressHydrationWarning={suppressText} className="font-bold pb-1">
