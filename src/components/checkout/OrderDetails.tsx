@@ -21,6 +21,7 @@ import {
 } from '@/constants/*';
 import Link from 'next/link';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
+import moment from 'moment';
 
 type Props = {
   OrderStatus?: boolean;
@@ -175,7 +176,15 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
               ['pickup']: 'pickup_time',
             }[method as string]
           }
-          p2={`${prefrences.date}  ,  ${prefrences.time}`}
+          p2={`${prefrences.date}  ,  ${
+            prefrences.type === 'pickup_now' ||
+            prefrences.type === 'delivery_now'
+              ? moment()
+                  .add(prefrences.time, 'minutes')
+                  .locale('en')
+                  .format('hh:mm A')
+              : prefrences.time
+          }`}
           editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       )}

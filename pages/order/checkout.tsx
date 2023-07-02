@@ -195,9 +195,16 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           ...(prefrences.date && prefrences.time
             ? {
                 Date: prefrences.date,
-                Time: moment(prefrences.time, ['h:mm A'])
-                  .locale('en')
-                  .format('HH:mm:ss'),
+                Time:
+                  prefrences.type === 'pickup_now' ||
+                  prefrences.type === 'delivery_now'
+                    ? moment()
+                        .add(prefrences.time, 'minutes')
+                        .locale('en')
+                        .format('HH:mm:ss')
+                    : moment(prefrences.time, ['h:mm A'])
+                        .locale('en')
+                        .format('HH:mm:ss'),
               }
             : {}),
         },
@@ -241,7 +248,13 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     <p>loading</p>;
   }
 
-  // console.log({ cartLessThanMin });
+  // console.log({
+  //   time: moment(prefrences.time, ['h:mm A']).locale('en').format('HH:mm:ss'),
+  //   t2: moment()
+  //     .add(prefrences.time, 'minutes')
+  //     .locale('en')
+  //     .format('HH:mm:ss'),
+  // });
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="checkout">
