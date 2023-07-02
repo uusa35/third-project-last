@@ -1,17 +1,17 @@
-import React, { FC, Suspense } from "react";
-import { imageSizes, imgUrl } from "@/constants/*";
-import CustomImage from "@/components/CustomImage";
-import { Vendor } from "@/types/index";
+import React, { FC, Suspense } from 'react';
+import { imageSizes, imgUrl } from '@/constants/*';
+import CustomImage from '@/components/CustomImage';
+import { Vendor } from '@/types/index';
 
-import AsideFooter from "../MainAside/Footer";
-import AsideHeader from "../MainAside/Header";
-import AsideContent from "../MainAside/Content";
+import AsideFooter from '../MainAside/Footer';
+import AsideHeader from '../MainAside/Header';
+import AsideContent from '../MainAside/Content';
 
 type Props = {
   element: Vendor;
-  url:string
+  url: string;
 };
-const MainAsideLayout: FC<Props> = ({ element ,url}): JSX.Element => {
+const MainAsideLayout: FC<Props> = ({ element, url }): React.ReactNode => {
   return (
     <Suspense fallback={<div>loading skelton</div>}>
       <div

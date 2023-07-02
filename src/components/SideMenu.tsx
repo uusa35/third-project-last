@@ -33,7 +33,7 @@ import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
 
-const SideMenu: FC<Props> = (): JSX.Element => {
+const SideMenu: FC<Props> = (): React.ReactNode => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthenticated);
