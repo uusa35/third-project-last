@@ -1,57 +1,62 @@
 import React, { FC, ReactNode } from 'react';
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import OfficeIcon from '@/appIcons/office_checkout.svg';
-import RemarksIcon from '@/appIcons/remarks_checkout.svg';
 import ContactsIcon from '@/appIcons/contacts_checkout.svg';
 import ClockIcon from '@/appIcons/time_checkout.svg';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { appLinks, suppressText } from '@/constants/*';
-import Link from 'next/link';
+import { googleMapUrl, suppressText } from '@/constants/*';
 import { Order } from '@/types/index';
-import { filter, isEmpty, isObject, isUndefined, map } from 'lodash';
+import { isObject, isUndefined } from 'lodash';
+import BranchIcon from '@/appIcons/branch_address.svg';
+import DirectionIcon from '@/appIcons/direction.svg';
 
 type Props = {
-  order: Order
+  order: Order;
 };
 
-const GuestOrderStatus:FC<Props> = ({ order }) => {
-  const router = useRouter();
+const GuestOrderStatus: FC<Props> = ({ order }) => {
   const { t } = useTranslation();
-  const color = useAppSelector(themeColor);
   const {
-    locale: { lang, otherLang },
-    searchParams: { method }
+    locale: { isRTL },
   } = useAppSelector((state) => state);
 
   const handelDisplayAddress = () => {
-    if (order?.customer && !isUndefined(order?.customer?.address) && isObject(order?.customer.address?.address)) {
-      const addressValues = !isUndefined(order.customer?.address) && Object.values(order.customer.address?.address)
-        .filter(value => value !== null); 
-  
-      const allAddress = addressValues ? addressValues.join(', ') : ''; 
-  
+    if (
+      order?.customer &&
+      !isUndefined(order?.customer?.address) &&
+      isObject(order?.customer.address?.address)
+    ) {
+      const addressValues =
+        !isUndefined(order.customer?.address) &&
+        Object.values(order.customer.address?.address).filter(
+          (value) => value !== null
+        );
+
+      const allAddress = addressValues ? addressValues.join(', ') : '';
+
       return allAddress;
     }
   };
-  
+
   const DetailComponent = ({
     icon,
     p1,
     p2,
-    p3 = ''
+    p3 = '',
+    isDelivery = true,
   }: {
     icon: ReactNode;
     p1: string;
     p2: string;
     p3?: string;
+    isDelivery?: boolean;
   }) => {
     return (
       <div className="flex justify-between items-center gap-x-2 py-2 text-xs">
         <div className="flex gap-x-3">
-          {icon}
+          <div>{icon}</div>
           <div>
             <p
               suppressHydrationWarning={suppressText}
@@ -70,20 +75,40 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
             </p>
           </div>
         </div>
+        {!isDelivery && (
+          <a
+            target="blank"
+            href={googleMapUrl(
+              order.customer.address.latitude,
+              order.customer.address.longitude
+            )}
+            className="btn min-w-fit h-9 px-2 bg-gray-100 flex justify-center items-center rounded-full text-xs"
+          >
+            <div className={`${isRTL && '-rotate-90'}`}>
+              <DirectionIcon />
+            </div>
+            <p className="min-w-fit px-1">{t('get_direction')}</p>
+          </a>
+        )}
       </div>
     );
   };
 
   return (
     <div>
-      {isObject(order?.customer.address?.address) && (
-        <DetailComponent
-          icon={<OfficeIcon />}
-          p1={order?.orderType === 'delivery' ? 'your_address' : 'branch_address'}
-          p2={order?.orderType === 'delivery' ? order?.customer?.address?.address?.type : order.branch_address}
-          p3={handelDisplayAddress()}
-        />
-      )}
+      {/* {isObject(order?.customer.address?.address) && ( */}
+      <DetailComponent
+        icon={order?.orderType === 'delivery' ? <OfficeIcon /> : <OfficeIcon />}
+        p1={order?.orderType === 'delivery' ? 'your_address' : 'branch_address'}
+        p2={
+          order?.orderType === 'delivery'
+            ? order?.customer?.address?.address?.type
+            : order.branch_address
+        }
+        isDelivery={order.orderType === 'delivery'}
+        p3={handelDisplayAddress()}
+      />
+      {/* )} */}
       <DetailComponent
         icon={<ContactsIcon />}
         p1="contact_info"
@@ -93,9 +118,9 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
       <DetailComponent
         icon={<ClockIcon />}
         p1={order.orderType === 'delivery' ? 'delivery_time' : 'pickup_time'}
-        p2={order.delivery_date_time.replace(",", " ")}
+        p2={order.delivery_date_time.replace(',', ' ')}
       />
     </div>
   );
-}
+};
 export default GuestOrderStatus;

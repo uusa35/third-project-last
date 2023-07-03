@@ -16,9 +16,6 @@ import { useTranslation } from 'react-i18next';
 const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
   ssr: false,
 });
-const AppFooter = dynamic(() => import(`@/components/AppFooter`), {
-  ssr: false,
-});
 const SideMenu = dynamic(() => import(`@/components/SideMenu`), {
   ssr: false,
 });
@@ -34,9 +31,6 @@ type Props = {
   showAppFooter?: boolean;
   hideBack?: boolean;
   showMotion?: boolean;
-  handleSubmit?: (element?: any) => void | undefined | Promise<any>;
-  handleIncreaseProductQty?: () => void;
-  handleDecreaseProductQty?: () => void;
   productCurrentQty?: number | undefined;
   productOutStock?: boolean | undefined;
 };
@@ -49,12 +43,8 @@ const MainContentLayout: FC<Props> = ({
   showBackBtnHeader = false,
   showAppFooter = false,
   showHelpBtn = false,
-
   hideBack = false,
   showMotion = true,
-  handleSubmit,
-  handleIncreaseProductQty,
-  handleDecreaseProductQty,
   productCurrentQty,
   productOutStock,
   url,
@@ -133,9 +123,6 @@ const MainContentLayout: FC<Props> = ({
           />
         )}
       </main>
-      {/* <ScrollToTopButton /> */}
-      {/* {showAppFooter && <AppFooter />} */}
-
       <NextNProgress
         color={color}
         startPosition={0.3}

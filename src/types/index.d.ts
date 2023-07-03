@@ -222,6 +222,7 @@ export interface Order {
   branch_address: string;
   orderCode: string | number;
   order_id: string | number;
+  orderType?: string;
   customer: CustomerInfo;
   items: [
     {

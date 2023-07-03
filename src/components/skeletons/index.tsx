@@ -26,7 +26,7 @@ type Props = {
   sections: number;
 };
 
-const ContentLoader = ({ type, sections }: Props) => {
+const ContentLoader = ({ type, sections }: Props): React.ReactNode => {
   let SkeletonComponent: React.FC;
 
   switch (type) {
