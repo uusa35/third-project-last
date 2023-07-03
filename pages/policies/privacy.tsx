@@ -28,7 +28,7 @@ const PrivacyPolicy: NextPage<Props> = ({ url }): React.ReactNode => {
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
-      triggerVendorStaticPages({ url });
+      triggerVendorStaticPages({ url }, false);
     }
   }, []);
 
