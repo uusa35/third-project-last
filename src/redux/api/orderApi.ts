@@ -27,6 +27,7 @@ export const orderApi = apiSlice.injectEndpoints({
           headers: {
             ...area_branch,
             url,
+            lang: 'en',
           },
           validateStatus: (response, result) =>
             response.status == 200 && result.status,

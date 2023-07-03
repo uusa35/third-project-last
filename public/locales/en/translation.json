@@ -363,6 +363,6 @@
   "wednesday": "wednesday",
   "thursday": "thursday",
   "friday": "friday",
-  "check_your_internet_connection_and_try_again": "check your internet connection and try again",
-  "your_order_has_been_scheduled_successfully": "your order has been scheduled successfully"
+  "the_date_must_be_a_date_after_yesterday":"the date must be a date after yesterday.",
+  "the_time_must_be_a_date_after_or_equal_to_15:15:39":"time must be after or equal to 15:15:39"
 }
