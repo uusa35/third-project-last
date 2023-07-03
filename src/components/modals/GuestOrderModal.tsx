@@ -28,7 +28,7 @@ const GuestOrderModal: FC<Props> = ({
   const { t } = useTranslation();
   const {
     customer,
-    locale: { isRTL, dir },
+    locale: { dir },
     searchParams: { method },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);

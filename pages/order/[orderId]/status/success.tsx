@@ -10,7 +10,6 @@ import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
 import { wrapper } from '@/redux/store';
 import CartProduct from '@/components/widgets/product/CartProduct';
-import Link from 'next/link';
 import PaymentSummary from '@/components/PaymentSummary';
 import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
@@ -20,10 +19,7 @@ import { orderApi, useLazyCheckOrderStatusQuery } from '@/redux/api/orderApi';
 import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  destinationId,
-  destinationHeaderObject,
-} from '@/redux/slices/searchParamsSlice';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { isUndefined, map } from 'lodash';
 import NeedHelpIcon from '@/appIcons/need_help.svg';
 import CancelIcon from '@/appIcons/cancel_order.svg';
@@ -31,7 +27,6 @@ import HelpModal from '@/components/modals/HelpModal';
 import GuestOrderStatus from '@/components/order/GuestOrderStatus';
 import TextTrans from '@/components/TextTrans';
 import { setUrl } from '@/redux/slices/appSettingSlice';
-import OrderSuccessSkeleton from '@/components/skeletons/OrderSuccessSkeleton';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
@@ -48,8 +43,6 @@ const OrderSuccess: NextPage<Props> = ({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const isAuth = useAppSelector(isAuthenticated);
-  const DestinationId = useAppSelector(destinationId);
-  const desObject = useAppSelector(destinationHeaderObject);
   const dispatch = useAppDispatch();
   const {
     customer: { userAgent },
