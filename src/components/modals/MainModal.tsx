@@ -48,7 +48,7 @@ const MainModal: FC<Props> = ({
               <span className="block w-32 h-1 mb-2 bg-zinc-300 rounded-md mx-auto"></span>
             </button>
           </div>
-          <div className="pb-4">{children}</div>
+          <div className={`pb-4 ${isRTL ? 'text-right' : ''}`}>{children}</div>
         </div>
       </Modal>
     </div>
