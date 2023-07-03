@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const ProductCartSkelton:FC = (): React.ReactElement => {
+const ProductCartSkelton: FC = (): React.ReactNode => {
   return (
     <div className="py-3 px-5">
       <div className="flex justify-between">
@@ -22,6 +22,5 @@ const ProductCartSkelton:FC = (): React.ReactElement => {
       </div>
     </div>
   );
-}
+};
 export default ProductCartSkelton;
-

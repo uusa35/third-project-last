@@ -13,45 +13,50 @@ import BranchIcon from '@/appIcons/branch_address.svg';
 import DirectionIcon from '@/appIcons/direction.svg';
 
 type Props = {
-  order: Order
+  order: Order;
 };
 
-const GuestOrderStatus:FC<Props> = ({ order }) => {
+const GuestOrderStatus: FC<Props> = ({ order }) => {
   const { t } = useTranslation();
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);
 
   const handelDisplayAddress = () => {
-    if (order?.customer && !isUndefined(order?.customer?.address) && isObject(order?.customer.address?.address)) {
-      const addressValues = !isUndefined(order.customer?.address) && Object.values(order.customer.address?.address)
-        .filter(value => value !== null); 
-  
-      const allAddress = addressValues ? addressValues.join(', ') : ''; 
-  
+    if (
+      order?.customer &&
+      !isUndefined(order?.customer?.address) &&
+      isObject(order?.customer.address?.address)
+    ) {
+      const addressValues =
+        !isUndefined(order.customer?.address) &&
+        Object.values(order.customer.address?.address).filter(
+          (value) => value !== null
+        );
+
+      const allAddress = addressValues ? addressValues.join(', ') : '';
+
       return allAddress;
     }
   };
-  
+
   const DetailComponent = ({
     icon,
     p1,
     p2,
     p3 = '',
-    isDelivery = true
+    isDelivery = true,
   }: {
     icon: ReactNode;
     p1: string;
     p2: string;
     p3?: string;
-    isDelivery?: boolean
+    isDelivery?: boolean;
   }) => {
     return (
       <div className="flex justify-between items-center gap-x-2 py-2 text-xs">
         <div className="flex gap-x-3">
-          <div>
-            {icon}
-          </div>
+          <div>{icon}</div>
           <div>
             <p
               suppressHydrationWarning={suppressText}
@@ -70,8 +75,7 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
             </p>
           </div>
         </div>
-        {
-          !isDelivery && (
+        {!isDelivery && (
           <a
             target="blank"
             href={googleMapUrl(
@@ -83,10 +87,9 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
             <div className={`${isRTL && '-rotate-90'}`}>
               <DirectionIcon />
             </div>
-            <p className='min-w-fit px-1'>{t('get_direction')}</p>
+            <p className="min-w-fit px-1">{t('get_direction')}</p>
           </a>
         )}
-
       </div>
     );
   };
@@ -94,13 +97,17 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
   return (
     <div>
       {/* {isObject(order?.customer.address?.address) && ( */}
-        <DetailComponent
-          icon={order?.orderType === 'delivery' ?<OfficeIcon /> : <OfficeIcon />}
-          p1={order?.orderType === 'delivery' ? 'your_address' : 'branch_address'}
-          p2={order?.orderType === 'delivery' ? order?.customer?.address?.address?.type : order.branch_address}
-          isDelivery={order.orderType === 'delivery'}
-          p3={handelDisplayAddress()}
-        />
+      <DetailComponent
+        icon={order?.orderType === 'delivery' ? <OfficeIcon /> : <OfficeIcon />}
+        p1={order?.orderType === 'delivery' ? 'your_address' : 'branch_address'}
+        p2={
+          order?.orderType === 'delivery'
+            ? order?.customer?.address?.address?.type
+            : order.branch_address
+        }
+        isDelivery={order.orderType === 'delivery'}
+        p3={handelDisplayAddress()}
+      />
       {/* )} */}
       <DetailComponent
         icon={<ContactsIcon />}
@@ -111,9 +118,9 @@ const GuestOrderStatus:FC<Props> = ({ order }) => {
       <DetailComponent
         icon={<ClockIcon />}
         p1={order.orderType === 'delivery' ? 'delivery_time' : 'pickup_time'}
-        p2={order.delivery_date_time.replace(",", " ")}
+        p2={order.delivery_date_time.replace(',', ' ')}
       />
     </div>
   );
-}
+};
 export default GuestOrderStatus;

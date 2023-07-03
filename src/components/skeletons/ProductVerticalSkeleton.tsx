@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const ProductVerticalSkeleton:FC = (): React.ReactElement => {
+const ProductVerticalSkeleton: FC = (): React.ReactNode => {
   const skeletonContent = (
     <div className="py-2">
       <Skeleton height={140} />
@@ -23,5 +23,5 @@ const ProductVerticalSkeleton:FC = (): React.ReactElement => {
       {skeletonContent}
     </div>
   );
-}
+};
 export default ProductVerticalSkeleton;

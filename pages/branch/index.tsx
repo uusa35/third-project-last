@@ -18,11 +18,14 @@ import {
   PhoneIcon,
 } from '@heroicons/react/24/outline';
 import { LocationCitySharp } from '@mui/icons-material';
+import CallIcon from '@/appIcons/branch_call.svg';
+import LocationIcon from '@/appIcons/branch_location.svg';
 import { find, lowerCase, map } from 'lodash';
 import { NextPage } from 'next';
 import React, { useEffect, useTransition } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setLocale } from 'yup';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = {
   url: string;
@@ -31,6 +34,7 @@ type Props = {
 const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const color = useAppSelector(themeColor);
   const {
     locale: { lang },
   } = useAppSelector((state) => state);
@@ -66,14 +70,14 @@ const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
               </span>
               <div className="flex flex-row gap-4">
                 <a href={`tel:${b.mobile}`}>
-                  <PhoneIcon className="w-5 h-5 text-gray-800" />
+                  <CallIcon className="w-5 h-5" />
                 </a>
                 {b.latitude && b.longitude && (
                   <a
                     href={googleMapUrl(b.longitude, b.latitude)}
                     target="_blank"
                   >
-                    <MapIcon className="w-5 h-5 text-gray-800" />
+                    <LocationIcon className="w-5 h-5" />
                   </a>
                 )}
               </div>
