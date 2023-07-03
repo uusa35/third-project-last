@@ -24,7 +24,7 @@ const GuestOrderModal: FC<Props> = ({
   isOpen,
   closeModal,
   url,
-}): JSX.Element => {
+}): React.ReactNode => {
   const { t } = useTranslation();
   const {
     customer,

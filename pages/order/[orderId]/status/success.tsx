@@ -213,7 +213,7 @@ const OrderSuccess: NextPage<Props> = ({
                 key={index}
                 className="flex justify-between items-center border-t-2 border-gray-200 py-5"
               >
-                <div>
+                <div className="w-3/4">
                   <div className="flex pb-2 items-end">
                     <h5 className="pe-6">
                       <TextTrans en={item.item_en} ar={item.item_ar} />
@@ -222,7 +222,7 @@ const OrderSuccess: NextPage<Props> = ({
                   </div>
                   <div className="flex flex-wrap items-center">
                     {map(item.addon, (a) => (
-                      <div key={a.addon_id} className="pe-3 pb-4">
+                      <div key={a.addon_id} className="pe-3 ">
                         <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
                           <span className="pe-2 text-sm">
                             x{a.addon_quantity}
@@ -230,7 +230,7 @@ const OrderSuccess: NextPage<Props> = ({
                           <TextTrans
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
-                            className="text-sm"
+                            className="text-xs"
                           />
                         </div>
                       </div>
@@ -238,8 +238,8 @@ const OrderSuccess: NextPage<Props> = ({
                   </div>
                   <p>{item.extra_notes}</p>
                 </div>
-                <p className="uppercase">
-                  {item.total} {t('kwd')}
+                <p className="text-md">
+                  {item.total} <span className="text-[10px]">{t('kwd')}</span>
                 </p>
               </div>
             ))}
