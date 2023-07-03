@@ -5,6 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { isEmpty, map } from 'lodash';
 import Link from 'next/link';
 import { Category } from '@/types/queries';
+import { useAppSelector } from '@/redux/hooks';
 
 type Props = {
   isOpen: boolean;
@@ -17,12 +18,16 @@ const MenuModal: FC<Props> = ({
   Categories,
 }): JSX.Element => {
   const { t } = useTranslation();
+  const {
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
+
   return (
     <>
       <MainModal
         isOpen={isOpen}
         closeModal={onRequestClose}
-        contentClass="h-2/3 overflow-y-scroll"
+        contentClass={`h-2/3 overflow-y-auto ${isRTL ? 'text-right' : ''}`}
       >
         <div>
           <div className="flex w-[90%] p-4">
