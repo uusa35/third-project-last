@@ -1,4 +1,3 @@
-import { Product } from '@/types/index';
 import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
 import React, { FC, useEffect, useState } from 'react';
@@ -16,10 +15,12 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { isEmpty } from 'lodash';
 
 type Props = {
-  CategoriesProducts: Product[];
+  CategoriesProducts: Category[];
 };
 
-const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
+const ProductListView: FC<Props> = ({
+  CategoriesProducts,
+}): React.ReactNode => {
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -76,11 +77,11 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
           <ListOutlined />
         </div>
         <ScrollSpy
-          // currentClassName=""
+          currentClassName=""
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
-          items={CategoriesProducts.map((i) => i.cat_id)}
+          items={CategoriesProducts.map((i) => i.cat_id as string)}
           style={{ display: 'flex' }}
           className="flex gap-x-2 overflow-x-scroll scrollbar-hide"
           offset={-200}
@@ -119,7 +120,9 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
               <div className="mt-5 px-4">
                 {/* cat name */}
                 <button
-                  onClick={() => handleSearchRedirection(category.cat_id)}
+                  onClick={() =>
+                    handleSearchRedirection(category.cat_id as string)
+                  }
                 >
                   <TextTrans
                     className={`text-lg mt-5 ${alexandriaFontBold}`}
@@ -134,7 +137,7 @@ const ProductListView: FC<Props> = ({ CategoriesProducts }) => {
                     return (
                       <VerProductWidget
                         element={product}
-                        category_id={category?.cat_id}
+                        category_id={category?.cat_id as string}
                       />
                     );
                   })}

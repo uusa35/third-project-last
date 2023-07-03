@@ -5,11 +5,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { map } from 'lodash';
 import Link from 'next/link';
 import { Category } from '@/types/queries';
-import { Product } from '@/types/index';
+
 type Props = {
   isOpen: boolean;
   onRequestClose: () => void;
-  Categories: Product[];
+  Categories: Category[];
 };
 const MenuModal: FC<Props> = ({
   isOpen,
