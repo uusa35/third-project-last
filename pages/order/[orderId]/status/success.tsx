@@ -111,7 +111,7 @@ const OrderSuccess: NextPage<Props> = ({
           showBackBtnHeader={true}
           currentModule={`${t('order')} #${order.data.order_id}`}
         >
-        {/* {order.orderType === 'pickup_later' || order.orderType === 'delivery_later' ? (
+        {isAuth && order.data.orderType === 'delivery' ? (
           <div className="px-5">
           <div className="flex justify-center py-5">
             <SuccessScheduled />
@@ -125,7 +125,7 @@ const OrderSuccess: NextPage<Props> = ({
             </p>
           </div>
         </div>
-        ): ( */}
+        ): (
           <div className="px-5">
           <div className="flex justify-center py-5">
             <Success />
@@ -143,7 +143,7 @@ const OrderSuccess: NextPage<Props> = ({
             >
               {t('estimated_time')}{' '}
               <span className="text-[#1A1615] font-bold">
-                :{order.data.estimated_time?.from}{' '}
+                :{' '}{new Date(order.data.delivery_date_time).toLocaleDateString()} {order.data.estimated_time?.from}{' '}
                 {order.data.estimated_time?.to &&
                   `- ${order.data.estimated_time?.to}`}
               </span>
@@ -159,7 +159,7 @@ const OrderSuccess: NextPage<Props> = ({
             </p>
           </div>
         </div>
-        {/* )} */}
+         )} 
 
           {/* orderDetails */}
           <div className="p-5 border-b-4">
