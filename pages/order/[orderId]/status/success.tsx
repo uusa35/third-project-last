@@ -5,7 +5,10 @@ import Success from '@/appImages/order_success.svg';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
 import OrderDetails from '@/components/checkout/OrderDetails';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import {
+  useGetCartProductsQuery,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
 import { wrapper } from '@/redux/store';
@@ -54,6 +57,7 @@ const OrderSuccess: NextPage<Props> = ({
       data: AppQueryResult<Order>;
       isLoading: boolean;
     }>();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     triggerGetOrderStatus(
@@ -65,32 +69,24 @@ const OrderSuccess: NextPage<Props> = ({
         userAgent,
       },
       false
+    ).then(() =>
+      triggerGetCartProducts(
+        {
+          userAgent,
+          area_branch: destObj,
+          PromoCode: promocode,
+          url,
+        },
+        false
+      )
     );
   }, [orderId]);
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
-
-  const {
-    data: cartItems,
-    isSuccess,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery<{
-    data: AppQueryResult<ServerCart>;
-    isSuccess: boolean;
-    isLoading: boolean;
-    refetch: () => void;
-  }>(
-    {
-      userAgent,
-      area_branch: destObj,
-      PromoCode: promocode,
-      url,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
 
   return (
     <>
