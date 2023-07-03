@@ -42,7 +42,7 @@ const HelpModal: FC<Props> = ({
               </button>
             </div>
             <h5
-              className="font-semibold capitalize ps-6 md:ps-28 lg:ps-8"
+              className="font-semibold capitalize ps-6"
               suppressHydrationWarning={suppressText}
             >
               {t('need_help?')}
