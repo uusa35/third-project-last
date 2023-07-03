@@ -227,17 +227,16 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           } else {
             router.replace(appLinks.orderFailure(r.data.data.order_id));
           }
-        } else {
-          if (r.error && r.error.data && r.error.data.msg) {
+        } else if (r.error && r.error.msg) {
+          if (r?.error?.msg?.includes('CLOSE')) {
+            setOpenClosedStore(true);
+          } else {
             dispatch(
               showToastMessage({
-                content: r.error.data.msg,
+                content: r.error.msg,
                 type: `error`,
               })
             );
-            if (r?.error?.data?.msg?.includes('CLOSE')) {
-              setOpenClosedStore(true);
-            }
           }
         }
       });

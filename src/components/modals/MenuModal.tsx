@@ -2,14 +2,15 @@ import { FC, useState } from 'react';
 import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import Link from 'next/link';
 import { Category } from '@/types/queries';
-import { Product } from '@/types/index';
+import { useAppSelector } from '@/redux/hooks';
+
 type Props = {
   isOpen: boolean;
   onRequestClose: () => void;
-  Categories: Product[];
+  Categories: Category[];
 };
 const MenuModal: FC<Props> = ({
   isOpen,
@@ -17,12 +18,16 @@ const MenuModal: FC<Props> = ({
   Categories,
 }): JSX.Element => {
   const { t } = useTranslation();
+  const {
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
+
   return (
     <>
       <MainModal
         isOpen={isOpen}
         closeModal={onRequestClose}
-        contentClass="h-2/3 overflow-y-scroll"
+        contentClass={`h-2/3 overflow-y-auto ${isRTL ? 'text-right' : ''}`}
       >
         <div>
           <div className="flex w-[90%] p-4">
@@ -36,16 +41,20 @@ const MenuModal: FC<Props> = ({
             </div>
             <h5 className="font-semibold capitalize">{t('menu')}</h5>
           </div>
-          {map(Categories, (Category) => (
-            <Link
-              onClick={() => onRequestClose()}
-              href={`#${Category?.cat_id}`}
-              key={Category?.cat_id}
-              className="border-t-[1px] border-slate-200 block px-4 py-2 font-semibold capitalize"
-            >
-              <p>{Category.name}</p>
-            </Link>
-          ))}
+          {map(
+            Categories,
+            (Category) =>
+              !isEmpty(Category.items) && (
+                <Link
+                  onClick={() => onRequestClose()}
+                  href={`#${Category?.cat_id}`}
+                  key={Category?.cat_id}
+                  className="border-t-[1px] border-slate-200 block px-4 py-2 font-semibold capitalize"
+                >
+                  <p>{Category.name}</p>
+                </Link>
+              )
+          )}
         </div>
       </MainModal>
     </>

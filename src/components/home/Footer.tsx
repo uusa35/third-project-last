@@ -6,11 +6,16 @@ import TextTrans from '../TextTrans';
 import { SocialIcon } from 'react-social-icons';
 import { Vendor } from '@/types/index';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '@/redux/hooks';
 
 type Props = { element: Vendor };
 
 const Footer: FC<Props> = ({ element }) => {
   const { t } = useTranslation();
+  const {
+    vendor: { name_ar, name_en },
+  } = useAppSelector((state) => state);
+
   return (
     <div>
       <div className="lg:hidden flex flex-col items-center justify-center border-b px-4 py-8 mb-5">
@@ -84,7 +89,10 @@ const Footer: FC<Props> = ({ element }) => {
       </div>
 
       <div className={`w-full px-3 text-center text-xs bg-white`}>
-        <p className=" font-bold">{t('rights_reserved')}</p>
+        <p className=" font-bold">
+          {t('rights_reserved')} <TextTrans ar={name_ar} en={name_en} />{' '}
+          {new Date().getFullYear()} @
+        </p>
         <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
       </div>
     </div>
