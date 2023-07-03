@@ -287,8 +287,8 @@
   "delivery_address": "عنوان التوصيل",
   "order_not_found": "الطلب غير موجود",
   "no_orders_found": "لم يتم العثور على أية طلبات",
-  "You_’re_about_to_change_your_location": "انت علي وشك ان تغير موقعك",
-  "changing_your_location_might_result_in_removing_the_items_from_your_cart": "تغييو موقعك قد يؤدي الي ازاله بعض المنتجات من عربة التسوق الخاصة بك",
+  "You_’re_about_to_change_your_location": "أنت على وشك أن تغير موقعك",
+  "changing_your_location_might_result_in_removing_the_items_from_your_cart": "تغيير موقعك قد يؤدي إلى إزالة بعض المنتجات من عربة التسوق الخاصة بك",
   "rate_is_required": "التقييم مطلوب",
   "note_is_required": "الملاحظات مطلوبة",
   "thanks_for_your_feedback": "شكرًا لتقييمك",
@@ -342,5 +342,8 @@
   "wednesday": "الأربعاء",
   "thursday": "الخميس",
   "friday": "الجمعة",
-  "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة"
+  "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة",
+  "cancel": "إلغاء",
+  "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
+  "sorry_some_products_not_available_in_this_area" : "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع"
 }

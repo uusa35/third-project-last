@@ -363,5 +363,7 @@
   "wednesday": "wednesday",
   "thursday": "thursday",
   "friday": "friday",
-  "sign_in_register_to_add_favourite": "sign in/ register to add favourite"
+  "sign_in_register_to_add_favourite": "sign in/ register to add favourite",
+  "sorry_some_product_not_available_in_this_area": "sorry some product not available in this area",
+  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area."
 }
