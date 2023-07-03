@@ -10,7 +10,6 @@ import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
 import { wrapper } from '@/redux/store';
 import CartProduct from '@/components/widgets/product/CartProduct';
-import Link from 'next/link';
 import PaymentSummary from '@/components/PaymentSummary';
 import CashIcon from '@/appIcons/cash_checkout.svg';
 import CreditIcon from '@/appIcons/credit_checkout.svg';
@@ -20,10 +19,7 @@ import { orderApi, useLazyCheckOrderStatusQuery } from '@/redux/api/orderApi';
 import { Order } from '@/types/index';
 import { apiSlice } from '@/redux/api';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  destinationId,
-  destinationHeaderObject,
-} from '@/redux/slices/searchParamsSlice';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { isUndefined, map } from 'lodash';
 import NeedHelpIcon from '@/appIcons/need_help.svg';
 import CancelIcon from '@/appIcons/cancel_order.svg';
@@ -31,7 +27,6 @@ import HelpModal from '@/components/modals/HelpModal';
 import GuestOrderStatus from '@/components/order/GuestOrderStatus';
 import TextTrans from '@/components/TextTrans';
 import { setUrl } from '@/redux/slices/appSettingSlice';
-import OrderSuccessSkeleton from '@/components/skeletons/OrderSuccessSkeleton';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
@@ -48,8 +43,6 @@ const OrderSuccess: NextPage<Props> = ({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const isAuth = useAppSelector(isAuthenticated);
-  const DestinationId = useAppSelector(destinationId);
-  const desObject = useAppSelector(destinationHeaderObject);
   const dispatch = useAppDispatch();
   const {
     customer: { userAgent },
@@ -99,11 +92,6 @@ const OrderSuccess: NextPage<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  useEffect(() => {
-    refetchCart();
-  }, []);
-  console.log({ isAuth })
-
   return (
     <>
       {!isUndefined(order?.data) ? (
@@ -111,57 +99,57 @@ const OrderSuccess: NextPage<Props> = ({
           showBackBtnHeader={true}
           currentModule={`${t('order')} #${order.data.order_id}`}
         >
-        {isAuth && 
-        (order.data.orderType === 'delivery_later' || 
-        order.data.orderType === 'pickup_later') ? (
-          <div className="px-5">
-          <div className="flex justify-center py-5">
-            <SuccessScheduled />
-          </div>
-          <div className="flex justify-center text-center mb-7">
-            <p
-              suppressHydrationWarning={suppressText}
-              className="font-bold lg:w-3/4"
-            >
-              {t('your_order_has_been_scheduled_successfully')}
-            </p>
-          </div>
-        </div>
-        ): ( 
-          <div className="px-5">
-          <div className="flex justify-center py-5">
-            <Success />
-          </div>
-          <div className="flex flex-col items-center justify-center text-center mb-7">
-            <p
-              suppressHydrationWarning={suppressText}
-              className="font-semibold"
-            >
-              {t('your_order_has_been_scheduled_successfully')}
-            </p>
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 text-sm py-1"
-            >
-              {t('estimated_time')}{' '}
-              <span className="text-[#1A1615] font-bold">
-                :{order.data.estimated_time?.from}{' '}
-                {order.data.estimated_time?.to &&
-                  `- ${order.data.estimated_time?.to}`}
-              </span>
-            </p>
-            <p
-              suppressHydrationWarning={suppressText}
-              className="text-[#544A45] lg:w-3/4 text-sm"
-            >
-              {t('order_id')}{' '}
-              <span className="text-[#1A1615] font-bold">
-                : # {order.data.order_id}
-              </span>
-            </p>
-          </div>
-        </div>
-        )} 
+          {isAuth &&
+          (order.data.orderType === 'delivery_later' ||
+            order.data.orderType === 'pickup_later') ? (
+            <div className="px-5">
+              <div className="flex justify-center py-5">
+                <SuccessScheduled />
+              </div>
+              <div className="flex justify-center text-center mb-7">
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className="font-bold lg:w-3/4"
+                >
+                  {t('your_order_has_been_scheduled_successfully')}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="px-5">
+              <div className="flex justify-center py-5">
+                <Success />
+              </div>
+              <div className="flex flex-col items-center justify-center text-center mb-7">
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className="font-semibold"
+                >
+                  {t('your_order_has_been_scheduled_successfully')}
+                </p>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className="text-[#544A45] lg:w-3/4 text-sm py-1"
+                >
+                  {t('estimated_time')}{' '}
+                  <span className="text-[#1A1615] font-bold">
+                    :{order.data.estimated_time?.from}{' '}
+                    {order.data.estimated_time?.to &&
+                      `- ${order.data.estimated_time?.to}`}
+                  </span>
+                </p>
+                <p
+                  suppressHydrationWarning={suppressText}
+                  className="text-[#544A45] lg:w-3/4 text-sm"
+                >
+                  {t('order_id')}{' '}
+                  <span className="text-[#1A1615] font-bold">
+                    : # {order.data.order_id}
+                  </span>
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* orderDetails */}
           <div className="p-5 border-b-4">
@@ -215,7 +203,7 @@ const OrderSuccess: NextPage<Props> = ({
                 key={index}
                 className="flex justify-between items-center border-t-2 border-gray-200 py-5"
               >
-                <div>
+                <div className="w-3/4">
                   <div className="flex pb-2 items-end">
                     <h5 className="pe-6">
                       <TextTrans en={item.item_en} ar={item.item_ar} />
@@ -224,7 +212,7 @@ const OrderSuccess: NextPage<Props> = ({
                   </div>
                   <div className="flex flex-wrap items-center">
                     {map(item.addon, (a) => (
-                      <div key={a.addon_id} className="pe-3 pb-4">
+                      <div key={a.addon_id} className="pe-3 ">
                         <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
                           <span className="pe-2 text-sm">
                             x{a.addon_quantity}
@@ -232,7 +220,7 @@ const OrderSuccess: NextPage<Props> = ({
                           <TextTrans
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
-                            className="text-sm"
+                            className="text-xs"
                           />
                         </div>
                       </div>
@@ -240,8 +228,8 @@ const OrderSuccess: NextPage<Props> = ({
                   </div>
                   <p>{item.extra_notes}</p>
                 </div>
-                <p className="uppercase">
-                  {item.total} {t('kwd')}
+                <p className="text-md">
+                  {item.total} <span className="text-[10px]">{t('kwd')}</span>
                 </p>
               </div>
             ))}

@@ -24,11 +24,11 @@ const GuestOrderModal: FC<Props> = ({
   isOpen,
   closeModal,
   url,
-}): JSX.Element => {
+}): React.ReactNode => {
   const { t } = useTranslation();
   const {
     customer,
-    locale: { isRTL, dir },
+    locale: { dir },
     searchParams: { method },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
