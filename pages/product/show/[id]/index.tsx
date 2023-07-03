@@ -89,6 +89,7 @@ import {
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import PlusIcon from '@/appIcons/plus.svg';
 import MinusIcon from '@/appIcons/minus.svg';
+import { resetPromo } from '@/redux/slices/cartSlice';
 
 type Props = {
   product: Product;
@@ -667,6 +668,7 @@ const ProductShow: NextPage<Props> = ({
           url,
         }).then((r: any) => {
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
+            dispatch(resetPromo())
             triggerGetCartProducts({
               userAgent,
               area_branch: desObject,

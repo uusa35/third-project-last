@@ -20,6 +20,8 @@ export type ProductPagination<T> = {
 
 export type Category = {
   id: number;
+  cat_id?: number | string;
+  items?: Product[];
   name: string;
   name_ar: string;
   name_en: string;
@@ -107,7 +109,7 @@ export interface VerifyCode {
   phone: string;
   phone_country_code: string;
   code: string;
-  type: 'register' | 'reset'
+  type: 'register' | 'reset';
 }
 
 export interface Register {
@@ -116,14 +118,14 @@ export interface Register {
   name: string;
   email: string;
   password: string;
-  password_confirmation: string
+  password_confirmation: string;
 }
 
 export interface ResetPassword {
   phone: string;
   phone_country_code: string;
   new_password: string;
-  confirm_password?: string
+  confirm_password?: string;
 }
 
 export interface UserOrders {
