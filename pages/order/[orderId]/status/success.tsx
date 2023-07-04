@@ -222,6 +222,7 @@ const OrderSuccess: NextPage<Props> = ({
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
                             className="text-xs"
+                            length={20}
                           />
                         </div>
                       </div>
