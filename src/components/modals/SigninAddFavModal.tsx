@@ -32,9 +32,7 @@ const SigninAddFavModal: FC<Props> = ({
               className="font-bold pt-3 text-center"
               suppressHydrationWarning={suppressText}
             >
-              {`${upperFirst(`${t('sign_in/')}`)}`}
-              {`${upperFirst(`${t('register')}`)}`}
-              <span className="px-1">{t('to_add_favourite')}</span>
+              {`${upperFirst(`${t('sign_in_register_to_add_favourite')}`)}`}
             </h5>
             <div className="space-x-1 pb-8 pt-2 text-center text-sm text-stone-500 w-[80%] mx-auto break-words">
               <span suppressHydrationWarning={suppressText}>
