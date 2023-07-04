@@ -344,6 +344,8 @@
   "friday": "الجمعة",
   "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة",
   "cancel": "إلغاء",
-  "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
-  "sorry_some_products_not_available_in_this_area" : "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع"
+  "sorry_some_product_not_available_in_this_area": "بعض المنتجات غير متوفرة في المنطقة المختارة.",
+  "sorry_some_products_not_available_in_this_area": "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع",
+  "the_date_must_be_a_date_after_yesterday": ".يجب ان يكون التاريخ بعد تاريخ اليوم",
+  "the_time_must_be_a_date_after_or_equal_to_15:15:39": "يجب ان يكون الوقت يساوي او بعد :15:39"
 }

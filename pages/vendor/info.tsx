@@ -17,11 +17,7 @@ import MinChargeIcon from '@/appIcons/min_charge.svg';
 import PayemtOptionsIcon from '@/appIcons/payment_options.svg';
 import ContactUsIcon from '@/appIcons/info_contactus.svg';
 import FeedbackIcon from '@/appIcons/feedback.svg';
-import {
-  appLinks,
-  imageSizes,
-  suppressText
-} from '@/constants/*';
+import { appLinks, imageSizes, suppressText } from '@/constants/*';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import CustomImage from '@/components/CustomImage';
@@ -53,7 +49,8 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
   const color = useAppSelector(themeColor);
   const [showModal, SetShowModal] = useState(false);
   const desObject = useAppSelector(destinationHeaderObject);
-  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] = useLazyGetVendorQuery();
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
 
   useEffect(() => {
     if (url) {
@@ -119,13 +116,13 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
             <div className="flex flex-1 flex-col">
               {/* branches */}
               <Link
-                href={`${appLinks.selectBranch.path}`}
+                href={`${appLinks.branchIndex.path}`}
                 className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6 text-lg"
               >
                 <div
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
-                  <OurBranchesIcon />
+                  <OurBranchesIcon stroke={`black`} />
                   <span className="text-lg px-2">{t('our_branches')}</span>
                 </div>
                 {isRTL ? <ChevronLeftOutlined /> : <ChevronRightOutlined />}
@@ -133,18 +130,19 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
               {/* min_charge */}
               {vendorElement?.Data?.delivery?.minimum_order_price && (
                 <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
-                <div
-                  className={`flex flex-row space-x-3 justify-center items-center`}
-                >
-                  <MinChargeIcon />
-                  <span className="text-lg px-2">
-                    {t('min_order_with_delivery')}
-                  </span>
+                  <div
+                    className={`flex flex-row space-x-3 justify-center items-center`}
+                  >
+                    <MinChargeIcon />
+                    <span className="text-lg px-2">
+                      {t('min_order_with_delivery')}
+                    </span>
+                  </div>
+                  <div className={`text-lg`}>
+                    {vendorElement?.Data?.delivery?.minimum_order_price}{' '}
+                    {t(`kwd`)}
+                  </div>
                 </div>
-                <div className={`text-lg`}>
-                  {vendorElement?.Data?.delivery?.minimum_order_price} {t(`kwd`)}
-                </div>
-              </div>
               )}
               {/* working hours */}
               <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
@@ -154,7 +152,9 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   <AccessTimeIcon />
                   <span className="text-lg px-2">{t('opening_hours')}</span>
                 </div>
-                <div className={`text-lg`}>{vendorElement?.Data?.WorkHours}</div>
+                <div className={`text-lg`}>
+                  {vendorElement?.Data?.WorkHours}
+                </div>
               </div>
               {/* payment */}
               <div className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6">
@@ -170,7 +170,8 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                       <Visa className={`h-auto w-8`} />
                     </div>
                   )}
-                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery === 1 && (
+                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery ===
+                    1 && (
                     <div className="px-3">
                       <CashOnDelivery className={`h-auto w-8`} />
                     </div>
@@ -225,12 +226,12 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   )}
                   {vendorElement?.Data?.phone && (
                     <a
-                    target="blank"
-                    href={`tel:${vendorElement?.Data?.phone}`}
-                    className="px-2"
-                  >
-                    <Call />
-                  </a>
+                      target="blank"
+                      href={`tel:${vendorElement?.Data?.phone}`}
+                      className="px-2"
+                    >
+                      <Call />
+                    </a>
                   )}
                 </div>
               </div>

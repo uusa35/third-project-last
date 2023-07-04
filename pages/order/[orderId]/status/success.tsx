@@ -202,7 +202,11 @@ const OrderSuccess: NextPage<Props> = ({
                 <div className="w-3/4">
                   <div className="flex pb-2 items-end">
                     <h5 className="pe-6">
-                      <TextTrans en={item.item_en} ar={item.item_ar} />
+                      <TextTrans
+                        en={item.item_en}
+                        ar={item.item_ar}
+                        length={25}
+                      />
                     </h5>
                     <span className="text-sm">x{item.quantity}</span>
                   </div>
@@ -217,6 +221,7 @@ const OrderSuccess: NextPage<Props> = ({
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
                             className="text-xs"
+                            length={20}
                           />
                         </div>
                       </div>
