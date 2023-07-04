@@ -428,23 +428,34 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
             }}
           >
             <span suppressHydrationWarning={suppressText}>{t('set_time')}</span>
-            <span
+            <div
               className="px-1 inline-block"
               suppressHydrationWarning={suppressText}
             >
               {isScheduled &&
               timings &&
               !isEmpty(timings?.Data) &&
-              selectedHour.isValid()
-                ? `${selectedDay.day} ${
-                    selectedDay.day !== 'اليوم' && selectedDay.day !== 'today'
-                      ? selectedDay.date
-                      : ''
-                  } - ${selectedHour.locale(lang).format('h:mm a') ?? ``}`
-                : `${t('now_within')} ${
-                    vendorElement?.Data?.delivery?.delivery_time
-                  } ${t('minutes')}`}
-            </span>
+              selectedHour.isValid() ? (
+                <div className={`flex flex-row`}>
+                  <div>
+                    <span className="px-1">{t(selectedDay.day)}</span>
+                    {selectedDay.day !== 'tomorrow' &&
+                    selectedDay.day !== 'today'
+                      ? moment(selectedDay.date).locale(lang).format('DD MMMM')
+                      : null}
+                  </div>
+                  <span className="px-2 inline-block">-</span>
+                  <div className={``}>
+                    {selectedHour.locale(lang).format('h:mm a') ?? ``}
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {t('now_within')}
+                  {vendorElement?.Data?.delivery?.delivery_time} {t('minutes')}
+                </div>
+              )}
+            </div>
           </button>
         </div>
       </MainContentLayout>

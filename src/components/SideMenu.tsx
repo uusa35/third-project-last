@@ -27,7 +27,6 @@ import CartIcon from '@/appIcons/more_cart.svg';
 import OrdersIcon from '@/appIcons/more_orders.svg';
 import WishlistIcon from '@/appIcons/more_love.svg';
 import AddressIcon from '@/appIcons/more_address.svg';
-import OurBranches from '@/appIcons/our_branches.svg';
 import { isAuthenticated, signIn, signOut } from '@/redux/slices/customerSlice';
 
 type Props = {};
@@ -206,20 +205,6 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
                   className="capitalize"
                 >
                   {t('my_addresses')}
-                </p>
-              </Link>
-              <HorizentalLine className="my-3" />
-              <Link
-                className="flex gap-x-3  items-center ps-1"
-                scroll={true}
-                href={appLinks.branchIndex.path}
-              >
-                <OurBranches fill={color} />
-                <p
-                  suppressHydrationWarning={suppressText}
-                  className="capitalize"
-                >
-                  {t('our_branches')}
                 </p>
               </Link>
               <HorizentalLine className="my-3" />

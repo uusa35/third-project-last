@@ -5,7 +5,10 @@ import Success from '@/appImages/order_success.svg';
 import { useTranslation } from 'react-i18next';
 import { suppressText } from '@/constants/*';
 import OrderDetails from '@/components/checkout/OrderDetails';
-import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import {
+  useGetCartProductsQuery,
+  useLazyGetCartProductsQuery,
+} from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { ServerCart } from '@/types/index';
 import { wrapper } from '@/redux/store';
@@ -54,6 +57,7 @@ const OrderSuccess: NextPage<Props> = ({
       data: AppQueryResult<Order>;
       isLoading: boolean;
     }>();
+  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   useEffect(() => {
     triggerGetOrderStatus(
@@ -65,32 +69,24 @@ const OrderSuccess: NextPage<Props> = ({
         userAgent,
       },
       false
+    ).then(() =>
+      triggerGetCartProducts(
+        {
+          userAgent,
+          area_branch: destObj,
+          PromoCode: promocode,
+          url,
+        },
+        false
+      )
     );
   }, [orderId]);
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
   }, []);
-
-  const {
-    data: cartItems,
-    isSuccess,
-    refetch: refetchCart,
-  } = useGetCartProductsQuery<{
-    data: AppQueryResult<ServerCart>;
-    isSuccess: boolean;
-    isLoading: boolean;
-    refetch: () => void;
-  }>(
-    {
-      userAgent,
-      area_branch: destObj,
-      PromoCode: promocode,
-      url,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
 
   return (
     <>
@@ -206,7 +202,11 @@ const OrderSuccess: NextPage<Props> = ({
                 <div className="w-3/4">
                   <div className="flex pb-2 items-end">
                     <h5 className="pe-6">
-                      <TextTrans en={item.item_en} ar={item.item_ar} />
+                      <TextTrans
+                        en={item.item_en}
+                        ar={item.item_ar}
+                        length={25}
+                      />
                     </h5>
                     <span className="text-sm">x{item.quantity}</span>
                   </div>
@@ -221,6 +221,7 @@ const OrderSuccess: NextPage<Props> = ({
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
                             className="text-xs"
+                            length={20}
                           />
                         </div>
                       </div>
