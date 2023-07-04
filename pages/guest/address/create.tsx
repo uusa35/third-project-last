@@ -31,6 +31,7 @@ import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   setCustomerAddress,
   setCustomerAddressType,
+  setNotes,
 } from '@/redux/slices/customerSlice';
 import { kebabCase, lowerCase, parseInt, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
@@ -136,6 +137,7 @@ const AddressCreate: NextPage<Props> = ({
           building_no: body.building_no,
           office_no: body.office_no,
           additional: body.additional,
+          notes: body.notes,
         },
       },
       url,
@@ -148,7 +150,10 @@ const AddressCreate: NextPage<Props> = ({
           })
         );
         dispatch(setCustomerAddress(r.data.Data));
-        router.push(`${appLinks.checkout.path}`);
+        if (body.notes) {
+          dispatch(setNotes(body.notes));
+        }
+        // router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {
@@ -198,11 +203,8 @@ const AddressCreate: NextPage<Props> = ({
             style={{ borderColor: currentAddressType === 'HOUSE' && color }}
           >
             <HomeIcon
-              className={`w-8 h-8 ${
-                currentAddressType === 'HOUSE'
-                  ? `text-[${color}]`
-                  : 'text-zinc-400'
-              }`}
+              className={`w-8 h-8`}
+              color={currentAddressType === 'HOUSE' ? color : `text-stone-400`}
             />
             <p>{t('house')}</p>
           </button>
@@ -212,11 +214,10 @@ const AddressCreate: NextPage<Props> = ({
             style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
           >
             <BuildingOffice2Icon
-              className={`w-8 h-8 ${
-                currentAddressType === 'APARTMENT'
-                  ? `text-[${color}]`
-                  : 'text-zinc-400'
-              }`}
+              className={`w-8 h-8 `}
+              color={
+                currentAddressType === 'APARTMENT' ? color : `text-stone-400`
+              }
             />
             <p>{t('apartment')}</p>
           </button>
@@ -226,11 +227,8 @@ const AddressCreate: NextPage<Props> = ({
             style={{ borderColor: currentAddressType === 'OFFICE' && color }}
           >
             <BriefcaseIcon
-              className={`w-8 h-8 ${
-                currentAddressType === 'OFFICE'
-                  ? `text-[${color}]`
-                  : 'text-zinc-400'
-              }`}
+              className={`w-8 h-8 `}
+              color={currentAddressType === 'OFFICE' ? color : `text-stone-400`}
             />
             <p>{t('office')}</p>
           </button>
