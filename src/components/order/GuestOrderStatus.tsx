@@ -98,7 +98,7 @@ const GuestOrderStatus: FC<Props> = ({ order }) => {
     <div>
       {/* {isObject(order?.customer.address?.address) && ( */}
       <DetailComponent
-        icon={order?.orderType === 'delivery' ? <OfficeIcon /> : <OfficeIcon />}
+        icon={order?.orderType === 'delivery' ? <OfficeIcon /> : <BranchIcon />}
         p1={order?.orderType === 'delivery' ? 'your_address' : 'branch_address'}
         p2={
           order?.orderType === 'delivery'

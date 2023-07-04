@@ -197,14 +197,19 @@ const OrderSuccess: NextPage<Props> = ({
             {map(order.data.items, (item, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center border-t-2 border-gray-200 py-5"
+                className="flex justify-between items-start border-t-2 border-gray-200 py-5"
               >
-                <div className="w-3/4">
-                  <div className="flex pb-2 items-end">
-                    <h5 className="pe-6">
-                      <TextTrans en={item.item_en} ar={item.item_ar} />
-                    </h5>
-                    <span className="text-sm">x{item.quantity}</span>
+                <div className='w-full'>
+                  <div className="flex pb-2 justify-between w-full">
+                    <div className='flex'>
+                      <h5 className="pe-6">
+                        <TextTrans en={item.item_en} ar={item.item_ar} />
+                      </h5>
+                      <span className="text-sm">x{item.quantity}</span>
+                    </div>
+                    <p className="text-sm">
+                    {item.total} {t('kwd')}
+                    </p>
                   </div>
                   <div className="flex flex-wrap items-center">
                     {map(item.addon, (a) => (
@@ -224,9 +229,6 @@ const OrderSuccess: NextPage<Props> = ({
                   </div>
                   <p>{item.extra_notes}</p>
                 </div>
-                <p className="text-md">
-                  {item.total} <span className="text-[10px]">{t('kwd')}</span>
-                </p>
               </div>
             ))}
           </div>
