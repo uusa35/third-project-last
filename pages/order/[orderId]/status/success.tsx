@@ -50,6 +50,7 @@ const OrderSuccess: NextPage<Props> = ({
   const {
     customer: { userAgent },
     cart: { promocode },
+    vendor: { phone },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const [triggerGetOrderStatus, { data: order, isLoading }] =
@@ -199,16 +200,16 @@ const OrderSuccess: NextPage<Props> = ({
                 key={index}
                 className="flex justify-between items-start border-t-2 border-gray-200 py-5"
               >
-                <div className='w-full'>
+                <div className="w-full">
                   <div className="flex pb-2 justify-between w-full">
-                    <div className='flex'>
+                    <div className="flex">
                       <h5 className="pe-6">
                         <TextTrans en={item.item_en} ar={item.item_ar} />
                       </h5>
                       <span className="text-sm">x{item.quantity}</span>
                     </div>
                     <p className="text-sm">
-                    {item.total} {t('kwd')}
+                      {item.total} {t('kwd')}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center">
@@ -243,7 +244,11 @@ const OrderSuccess: NextPage<Props> = ({
               <span>{t('contact_us')}</span>
             </button>
           </div>
-          <HelpModal isOpen={isOpen} onRequestClose={() => setIsOpen(false)} />
+          <HelpModal
+            isOpen={isOpen}
+            onRequestClose={() => setIsOpen(false)}
+            phone={phone}
+          />
         </MainContentLayout>
       ) : (
         <ContentLoader type="OrderSuccess" sections={1} />
