@@ -364,7 +364,7 @@
   "thursday": "thursday",
   "friday": "friday",
   "the_date_must_be_a_date_after_yesterday":"the date must be a date after yesterday.",
-  "the_time_must_be_a_date_after_or_equal_to_15:15:39":"time must be after or equal to 15:15:39",
+  "time_must_be_equal_or_after_time_now":"time must be equal or after time now",
   "sign_in_register_to_add_favourite": "sign in/ register to add favourite",
   "sorry_some_product_not_available_in_this_area": "sorry some product not available in this area",
   "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area."
