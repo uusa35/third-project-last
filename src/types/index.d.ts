@@ -318,6 +318,7 @@ export interface OrderTrack {
   estimated_time: string | null;
   order_time: string | null;
   order_type: 'delivery' | 'pickup';
+  branch_phone?: string;
   customer: {
     name: string;
     email: string;
