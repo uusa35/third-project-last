@@ -79,7 +79,7 @@
   "email_optional": "email (optional)",
   "submit": "submit",
   "leave_a_feedback": "leave a feedback",
-  "your_name_optional": "your name (optional)",
+  "your_name": "your name",
   "phone_number_optional": "phone number (optional)",
   "your_feedback": "your feedback",
   "your_cart_is_empty": "your cart is empty",
@@ -294,7 +294,7 @@
     "max": "must be at less than  {{max}}",
     "matches": "enter a valid format"
   },
-  "Phone_number_must_be_between_8_and_15_number": "Phone number must be between 8 and 15 digits",
+  "phone_number_must_be_between_8_and_15_number": "Phone number must be between 8 and 15 digits",
   "saved_in_wish_list": "saved successfully in your wishlist",
   "deleted_from_wishlist": "removed successfully from your wishlist",
   "no_address": "no address saved yet",
@@ -365,7 +365,8 @@
   "friday": "friday",
   "the_date_must_be_a_date_after_yesterday":"the date must be a date after yesterday.",
   "time_must_be_equal_or_after_time_now":"time must be equal or after time now",
+  "cancel": "cancel",
   "sign_in_register_to_add_favourite": "sign in/ register to add favourite",
   "sorry_some_product_not_available_in_this_area": "sorry some product not available in this area",
-  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area."
+  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area.",
 }

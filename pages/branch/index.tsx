@@ -69,15 +69,20 @@ const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
                 <TextTrans ar={b.name_ar} en={b.name_en} length={60} />
               </span>
               <div className="flex flex-row gap-4">
-                <a href={`tel:${b.mobile}`}>
-                  <CallIcon className="w-5 h-5" />
+                <a
+                  href={`tel:${b.mobile}`}
+                  className={`p-2 bg-gray-100 rounded-full flex justify-center items-center`}
+                  target={`_blank`}
+                >
+                  <CallIcon />
                 </a>
                 {b.latitude && b.longitude && (
                   <a
+                    className={`p-2 bg-gray-100 rounded-full flex justify-center items-center`}
                     href={googleMapUrl(b.longitude, b.latitude)}
                     target="_blank"
                   >
-                    <LocationIcon className="w-5 h-5" />
+                    <LocationIcon />
                   </a>
                 )}
               </div>
@@ -85,10 +90,21 @@ const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
             <div className="text-md text-gray-400">{b.location}</div>
             <div className="flex flex-row ">
               <div className="text-md me-2">
-                <span className="text-green-400">{b.status}</span>
+                <span className="text-green-600">{b.status}</span>
               </div>
-              <div className="text-md">
-                <span>{b.mobile}</span>
+              <div className="flex flex-row justify-center items-center text-md">
+                <div
+                  className={`w-1 h-1 rounded-full ${
+                    b.status === 'OPEN' ? `bg-green-600` : `bg-gray-400`
+                  } `}
+                ></div>
+                <a
+                  href={`tel:${b.mobile}`}
+                  target={`_blank`}
+                  className="ms-2 text-gray-500"
+                >
+                  {b.mobile}
+                </a>
               </div>
             </div>
           </div>

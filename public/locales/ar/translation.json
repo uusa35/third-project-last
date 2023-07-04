@@ -74,7 +74,7 @@
   "call_us": "اتصل بنا",
   "message_us": "راسلنا",
   "leave_a_feedback": "اترك رأيك",
-  "your_name_optional": "اسمك (اختياري)",
+  "your_name": "اسمك",
   "phone_number_optional": "رقم هاتف (اختياري)",
   "your_feedback": "رأيك",
   "categories": "الفئات",
@@ -269,7 +269,7 @@
     "max": "الحقل يجب أن يكون أقل من   {{max}}",
     "matches": "ادخل رقم هاتف صحيح"
   },
-  "Phone_number_must_be_between_8_and_15_number": "رقم الهاتف يجب الا يقل عن 8 ارقام و الا يزيد عن 15 رقما",
+  "phone_number_must_be_between_8_and_15_number": "رقم الهاتف يجب الا يقل عن 8 ارقام و الا يزيد عن 15 رقما",
   "saved_in_wish_list": "تم الحفظ بنجاح في قائمتك المفضلة",
   "deleted_from_wishlist": "تم المسح بنجاح من قائمتك المفضلة",
   "no_address": "لم يتم حفظ عنوان حتى الآن",
@@ -344,8 +344,8 @@
   "friday": "الجمعة",
   "the_date_must_be_a_date_after_yesterday":".يجب ان يكون التاريخ بعد تاريخ اليوم",
   "time_must_be_equal_or_after_time_now":"يجب ان يكون الوقت المحدد صحيح",
-  "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة",
   "cancel": "إلغاء",
-  "sorry_some_product_not_available_in_this_area" : "بعض المنتجات غير متوفرة في المنطقة المختارة.",
-  "sorry_some_products_not_available_in_this_area" : "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع"
+  "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة",
+  "sorry_some_product_not_available_in_this_area": "بعض المنتجات غير متوفرة في المنطقة المختارة.",
+  "sorry_some_products_not_available_in_this_area": "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع",
 }

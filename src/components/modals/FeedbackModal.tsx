@@ -120,11 +120,6 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                 </>
               )}
             />
-            {errors.note && (
-              <p className={`text-base text-red-600 font-semibold py-2 capitalize ${isRTL ? 'text-end' : 'text-start'}`}>
-                {t('note_is_required')}
-              </p>
-            )}
           </div>
         );
     };      
@@ -171,7 +166,7 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                         </button>
                     ))}
                     </div>
-                    <div className="ps-4">
+                    <div className="px-5">
                     {errors?.rate?.message && (
                         <p
                         className={`text-base text-red-600 font-semibold py-2 capitalize  ${
@@ -201,15 +196,13 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                             className={`absolute text-stone-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start ${isRTL && 'ps-4'}`}
                             suppressHydrationWarning={suppressText}
                         >
-                            {t('your_name_optional')}
+                            {t('your_name')}*
                         </label>
                     </div>
                     <div>
                     {errors?.user_name?.message && (
                         <p
-                        className={`text-base text-red-600 font-semibold py-2 capitalize ${
-                            isRTL ? 'text-end' : 'text-start'
-                        }`}
+                        className={`text-base text-red-600 font-semibold py-2 capitalize`}
                         suppressHydrationWarning={suppressText}
                         >
                         {t('name_is_required')}
@@ -240,6 +233,11 @@ const FeedbackModal: FC<Props> = ({ isOpen, onRequestClose, url }):JSX.Element =
                         />
                     </div>
                     <LimitedTextarea control={control} errors={errors} />
+                    {errors.note && (
+                      <p className={`text-base text-red-600 font-semibold py-2 capitalize`}>
+                        {t('note_is_required')}
+                      </p>
+                    )}
                     <div className={`${modalBtnContainer} mt-5`}>
                         <button 
                             className={`${mainBtnClass}`}

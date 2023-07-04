@@ -86,26 +86,26 @@ const ProductListView: FC<Props> = ({
           className="flex gap-x-2 overflow-x-scroll scrollbar-hide"
           offset={-200}
         >
-          {CategoriesProducts.map((category) =>
-            !isEmpty(category.items) ? (
-              <a
-                key={category.cat_id}
-                href={`#${category.cat_id}`}
-                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
-                  category.cat_id == currentId ? `text-white active-cat` : ''
-                }`}
-                style={{
-                  backgroundColor:
-                    category.cat_id == currentId ? color : '#F3F2F2',
-                  transition: category.cat_id == currentId ? 'all 0.5s' : '',
-                }}
-              >
-                {category.name}
-              </a>
-            ) : (
-              <></>
-            )
-          )}
+          {CategoriesProducts.map((category, i) => (
+            <div key={i} className={`mt-1`}>
+              {!isEmpty(category.items) ? (
+                <a
+                  key={category.cat_id}
+                  href={`#${category.cat_id}`}
+                  className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
+                    category.cat_id == currentId ? `text-white active-cat` : ''
+                  }`}
+                  style={{
+                    backgroundColor:
+                      category.cat_id == currentId ? color : '#F3F2F2',
+                    transition: category.cat_id == currentId ? 'all 0.5s' : '',
+                  }}
+                >
+                  {category.name}
+                </a>
+              ) : null}
+            </div>
+          ))}
         </ScrollSpy>
       </header>
 
