@@ -301,8 +301,13 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
               </GoogleMapReact>
             </div>
             {/* orderDetails */}
+
             <div className="p-5 border-b-4">
-              <OrderDetails />
+              {isAuth && UserAddressSuccess && UserAddress.data ? (
+                <OrderDetails UserAddress={UserAddress.data} />
+              ) : (
+                <OrderDetails />
+              )}
             </div>
             {/* items */}
             <div className=" p-5 border-b-4">

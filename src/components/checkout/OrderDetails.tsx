@@ -22,12 +22,14 @@ import {
 import Link from 'next/link';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import moment from 'moment';
+import { UserAddressFields } from '@/types/index';
 
 type Props = {
   OrderStatus?: boolean;
+  UserAddress?: UserAddressFields;
 };
 
-const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
+const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -39,7 +41,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
       name,
       phone,
       notes,
-      address: UserAddress,
+      address: GuestAddress,
       address: { type: address_type },
       prefrences,
     },
@@ -108,7 +110,8 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
 
   return (
     <div>
-      {(method === 'delivery' && UserAddress.id) ||
+      {(method === 'delivery' && GuestAddress.id && !isAuth) ||
+      (method === 'delivery' && UserAddress.id && isAuth) ||
       (method === 'pickup' && destination.id) ? (
         <DetailComponent
           onclick={() =>
@@ -143,10 +146,11 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
           }
           p3={
             method === 'delivery'
-              ? displayUserAddress(UserAddress)
+              ? isAuth
+                ? displayUserAddress(UserAddress.address)
+                : displayUserAddress(GuestAddress)
               : destination.location
           }
-          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       ) : (
         <></>
@@ -160,7 +164,6 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
           icon={<ContactsIcon />}
           p1="contacts_info"
           p2={`${name} , ${phone}`}
-          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       ) : (
         <></>
@@ -185,16 +188,23 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
                   .format('hh:mm A')
               : prefrences.time
           }`}
-          editPath={OrderStatus ? `${appLinks.cart.path}` : '#'}
         />
       )}
 
       {method === 'delivery' && (
         <DetailComponent
-          onclick={() => router.push(appLinks.guestAddress.path)}
+          onclick={() =>
+            isAuth
+              ? router.push(appLinks.userAddresses(id))
+              : router.push(appLinks.guestAddress.path)
+          }
           icon={<RemarksIcon />}
           p1="special_remarks"
-          p2={`${notes ? notes : 'no_notes_added'}`}
+          p2={
+            isAuth
+              ? `${UserAddress?.address?.notes || 'no_notes_added'}`
+              : `${notes || 'no_notes_added'}`
+          }
         />
       )}
     </div>
