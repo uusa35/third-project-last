@@ -317,7 +317,7 @@ export interface OrderTrack {
   order_code: string;
   estimated_time: string | null;
   order_time: string | null;
-  order_type: 'delivery' | 'pickup';
+  order_type: 'delivery' | 'pickup' | 'delivery_now' | 'pickup_now';
   branch_phone?: string;
   customer: {
     name: string;

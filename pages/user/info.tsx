@@ -11,9 +11,13 @@ import {
   mainBtnClass,
   suppressText,
 } from '@/constants/*';
-import { upperFirst } from 'lodash';
+import { first, upperFirst } from 'lodash';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setUrl,
+  showToastMessage,
+} from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRegisterMutation } from '@/redux/api/authApi';
@@ -71,9 +75,19 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
       },
       url,
     }).then((r: any) => {
-      dispatch(setCustomer(r.data.data.user));
-      dispatch(signIn(r.data.data.token));
-      router.push(`${appLinks.addressMap.path}`);
+      if (r.data && r.data.data && r.data.data.user) {
+        dispatch(setCustomer(r.data.data.user));
+        dispatch(signIn(r.data.data.token));
+        // router.push(`${appLinks.addressMap.path}`);
+      } else if (r.error && r.error.msg) {
+        dispatch(
+          showToastMessage({
+            type: 'error',
+            content: first(r.error.msg) ?? `unknown_error`,
+          })
+        );
+      }
+      console.log('r', r);
     });
   };
 
