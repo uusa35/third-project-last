@@ -8,11 +8,9 @@ import { NextPage } from 'next';
 import {
   BanknotesIcon,
   BuildingOfficeIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MapIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
+import CashIcon from '@/appIcons/cash_checkout.svg';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useTranslation } from 'react-i18next';
 import { CottageOutlined, SendOutlined } from '@mui/icons-material';
@@ -70,14 +68,14 @@ const OrderTrack: NextPage<Props> = ({
 
   useEffect(() => {
     triggerTrackOrder({ order_code, url }).then((r) => {
-      if (r.error) {
+      if (r.error && r.error.data) {
         dispatch(
           showToastMessage({
             type: 'error',
             content: toLower(snakeCase(r.error.data?.msg)),
           })
         );
-      } else {
+      } else if (r && r.data && r.data.data) {
         setCurrentOrder(r.data?.data);
         setCurrentOrderStatus(r.data?.data.order_status);
       }
@@ -166,14 +164,16 @@ const OrderTrack: NextPage<Props> = ({
                 t('order_is_shipped')}
               ...
             </h1>
-            <div className="flex flex-1 flex-row mt-2">
-              <p className="text-md text-gray-400 mr-2">
-                {t('estimated_time')} :
-              </p>{' '}
-              <span className="font-bold ms-2">
-                {currentOrder?.estimated_time}
-              </span>
-            </div>
+            {currentOrder.estimated_time && (
+              <div className="flex flex-1 flex-row mt-2">
+                <p className="text-md text-gray-400 mr-2">
+                  {t('estimated_time')} :
+                </p>{' '}
+                <span className="font-bold ms-2">
+                  {currentOrder?.estimated_time}
+                </span>
+              </div>
+            )}
             {/* order id  */}
             <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 gap-2">
               {currentOrder && currentOrderStatus === 'pending' && (
@@ -206,7 +206,8 @@ const OrderTrack: NextPage<Props> = ({
             </div>
           </div>
           {/*  Pick up (Branch)  */}
-          {currentOrder.order_type === 'pickup' && (
+          {(currentOrder.order_type === 'pickup' ||
+            currentOrder.order_type === 'pickup_now') && (
             <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
               <div className="capitlize text-xl mb-4 font-bold">
                 {t('pickup_from')}
@@ -219,6 +220,12 @@ const OrderTrack: NextPage<Props> = ({
                   <p className="flex flex-1 text-gray-400">
                     {t('branch_address')}
                   </p>
+                  {currentOrder.destination.address && (
+                    <p className="flex flex-1 text-black text-sm">
+                      {currentOrder.destination.address}
+                    </p>
+                  )}
+
                   {/* <p>{handleDisplayAddress(currentOrder.address)}</p> */}
                 </div>
                 {currentOrder &&
@@ -248,7 +255,8 @@ const OrderTrack: NextPage<Props> = ({
             </div>
           )}
           {/*  Delivery (Address)  */}
-          {currentOrder && currentOrder?.order_type === 'delivery' && (
+          {((currentOrder && currentOrder?.order_type === 'delivery') ||
+            currentOrder?.order_type === 'delivery_now') && (
             <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
               <p className="capitlize text-lg mb-4 font-bold">
                 {t('delivery_location')}
@@ -272,7 +280,7 @@ const OrderTrack: NextPage<Props> = ({
                           currentOrder.destination.latitude,
                           currentOrder.destination.longitude
                         )}
-                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs hidden"
                       >
                         <div>{t('get_direction')}</div>
                         <div>
@@ -288,12 +296,9 @@ const OrderTrack: NextPage<Props> = ({
               </div>
             </div>
           )}
-
           {/* your order */}
           <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
-            <p className="capitlize text-lg my-4 font-bold">
-              {t('ur_order')}
-            </p>
+            <p className="capitlize text-lg my-4 font-bold">{t('ur_order')}</p>
             {/*  item */}
             {currentOrder &&
               currentOrder.products &&
@@ -306,7 +311,8 @@ const OrderTrack: NextPage<Props> = ({
                     <div className="text-base font-bold">
                       <TextTrans
                         ar={`${p.item_ar} x${p.quantity}`}
-                        en={`${p.item_en} x${p.quantity}`}
+                        en={`${p.item_en} x${p.quantity} lsdkjf dlskjf dslfj dslfj`}
+                        length={30}
                       />
                     </div>
                     {!isEmpty(p.addon) &&
@@ -316,6 +322,7 @@ const OrderTrack: NextPage<Props> = ({
                           className={`text-gray-400`}
                           ar={`${a.name_ar} x${a.quantity}`}
                           en={`${a.name_en} x${a.quantity}`}
+                          length={25}
                         />
                       ))}
                   </div>
@@ -333,11 +340,9 @@ const OrderTrack: NextPage<Props> = ({
             {/*  item */}
             <div className="flex w-full flex-row justify-between items-start">
               <div className="flex flex-col  w-full space-y-2">
-                <div className="flex flex-row justify-start items-center space-x-4">
-                  <BanknotesIcon className="h-6 w-6 me-2" />
-                  <p className="text-base font-bold">
-                    {t('cash_on_delivery')}
-                  </p>
+                <div className="flex flex-row justify-start items-center space-x-3">
+                  <CashIcon />
+                  <p className="text-base font-bold">{t('cash_on_delivery')}</p>
                 </div>
                 {/* subtotal */}
                 <div className="flex flex-row justify-between items-center">

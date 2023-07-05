@@ -51,6 +51,11 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
     }
   };
 
+  const handleSignOut = () => {
+    dispatch(signOut(undefined));
+    return router.push('/');
+  };
+
   return (
     <Suspense fallback={<div>loading skeleton</div>}>
       <Menu
@@ -98,7 +103,7 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
                     </div>
                     <button
                       className="bg-white rounded-xl text-sm font-semibold px-2 py-px"
-                      onClick={() => dispatch(signOut(undefined))}
+                      onClick={() => handleSignOut()}
                     >
                       {t('sign_out')}
                     </button>

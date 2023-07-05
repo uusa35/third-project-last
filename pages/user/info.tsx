@@ -2,7 +2,7 @@ import CustomImage from '@/components/CustomImage';
 import MainHead from '@/components/MainHead';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AccountInfoImg from '@/appImages/account_info.png';
 import {
@@ -11,9 +11,13 @@ import {
   mainBtnClass,
   suppressText,
 } from '@/constants/*';
-import { upperFirst } from 'lodash';
+import { first, upperFirst } from 'lodash';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setCurrentModule, setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  setCurrentModule,
+  setUrl,
+  showToastMessage,
+} from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRegisterMutation } from '@/redux/api/authApi';
@@ -21,8 +25,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { customerInfoSchema } from 'src/validations';
-import { setCustomer, signIn } from '@/redux/slices/customerSlice';
+import {
+  isAuthenticated,
+  setCustomer,
+  signIn,
+} from '@/redux/slices/customerSlice';
 import { NextPage } from 'next';
+import ShowPasswordIcon from '@/appIcons/show_password.svg';
+import HidePasswordIcon from '@/appIcons/hide_password.svg';
 
 type Props = {
   url: string;
@@ -34,8 +44,11 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   const color = useAppSelector(themeColor);
   const {
     customer: { phone, name, email, countryCode, userAgent },
+    locale: { isRTL },
   } = useAppSelector((state) => state);
+  const isAuth = useAppSelector(isAuthenticated);
   const [triggerRegister] = useRegisterMutation();
+  const [passwordVisible, setPasswordVisisble] = useState<boolean>(false);
 
   const {
     register,
@@ -71,9 +84,18 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
       },
       url,
     }).then((r: any) => {
-      dispatch(setCustomer(r.data.data.user));
-      dispatch(signIn(r.data.data.token));
-      router.push(`${appLinks.addressMap.path}`);
+      if (r.data && r.data.data && r.data.data.user) {
+        dispatch(setCustomer(r.data.data.user));
+        dispatch(signIn(r.data.data.token));
+        router.push(`${appLinks.addressMap.path}`);
+      } else if (r.error && r.error.msg) {
+        dispatch(
+          showToastMessage({
+            type: 'error',
+            content: first(r.error.msg) ?? `unknown_error`,
+          })
+        );
+      }
     });
   };
 
@@ -167,9 +189,10 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                     {t('your_email_optional')}
                   </label>
                 </div>
+
                 <div className="relative pb-4 mt-5">
                   <input
-                    type="text"
+                    type={passwordVisible ? 'text' : 'password'}
                     id="password"
                     {...register('password')}
                     className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[2px] appearance-none focus:outline-none focus:ring-0  peer"
@@ -187,7 +210,20 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                   >
                     {t('your_password')}
                   </label>
+                  <div
+                    className={`absolute bottom-7 cursor-pointer ${
+                      isRTL ? 'left-2' : 'right-2'
+                    }`}
+                    onClick={() => setPasswordVisisble(!passwordVisible)}
+                  >
+                    {passwordVisible ? (
+                      <ShowPasswordIcon />
+                    ) : (
+                      <HidePasswordIcon />
+                    )}
+                  </div>
                 </div>
+                
                 {errors?.password?.message && (
                   <div
                     className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}
