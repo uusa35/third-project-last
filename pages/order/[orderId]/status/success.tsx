@@ -94,6 +94,7 @@ const OrderSuccess: NextPage<Props> = ({
       {!isUndefined(order?.data) ? (
         <MainContentLayout
           showBackBtnHeader={true}
+          backHome={true}
           currentModule={`${t('order')} #${order.data.order_id}`}
         >
           {isAuth &&
