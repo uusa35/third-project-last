@@ -28,16 +28,21 @@ const ProductListView: FC<Props> = ({
   const dispatch = useAppDispatch();
   const router = useRouter();
   const color = useAppSelector(themeColor);
-  const [currentId, setCurrentId] = useState<string | null>(null);
- 
+  const [currentId, setCurrentId] = useState<string | number | null>(null);
+
   const handleUpdate = (el: HTMLElement | null) => {
-    if (el) {
-      setCurrentId(el.id);
+    if (el && el.id) {
+      setCurrentId(el.id.toString());
     }
   };
 
-  const handleScroll = (id: any) => {
-    document?.getElementById(id)?.scrollIntoView({ inline: 'center' });
+  const handleScroll = (id: string | number) => {
+    if (!isNull(id)) {
+      document
+        ?.getElementById(`category_${id}`)
+        ?.scrollIntoView({ inline: 'center' });
+      setCurrentId(id);
+    }
   };
 
   const handleSearchRedirection = (id: string) => {
@@ -61,7 +66,7 @@ const ProductListView: FC<Props> = ({
           <ListOutlined />
         </div>
         <ScrollSpy
-          currentClassName=''
+          currentClassName=""
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
@@ -79,7 +84,7 @@ const ProductListView: FC<Props> = ({
               <div key={i} className={`mt-1`}>
                 {category.items && !isEmpty(category.items) ? (
                   <a
-                    onClick={() => handleScroll(`category_${category.cat_id}`)}
+                    onClick={() => handleScroll(category.cat_id)}
                     id={`category_${category.cat_id}`}
                     key={category.cat_id}
                     href={`#${category.cat_id}`}
