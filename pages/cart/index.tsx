@@ -58,13 +58,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const isAuth = useAppSelector(isAuthenticated);
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
-
-  useEffect(() => {
-    if (url) {
-      dispatch(setUrl(url));
-    }
-  }, []);
-
   const {
     data: cartItems,
     isSuccess,
@@ -82,7 +75,13 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       url,
     },
     { refetchOnMountOrArgChange: true }
-  );
+    );
+  
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   // reset promo
   // useEffect(() => {
@@ -272,94 +271,89 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     <MainContentLayout showBackBtnHeader={true} currentModule="review_cart">
       {/* if cart is empty */}
       {isSuccess && isEmpty(cartItems?.data?.Cart) ? (
-          <EmptyCart />
-        ) : isSuccess ? (
-          <div>
-            {/* delivery fees always come with 0 but in dashboard it is not 0 */}
-            <SaleNotification
-              delivery_fees={
-                cartItems?.data?.delivery_fee
-                  ? parseFloat(cartItems?.data?.delivery_fee)
-                  : parseFloat(cartItems?.data?.delivery_fees)
-              }
-              min_for_free_delivery={parseFloat(
-                cartItems?.data?.free_delivery_data ?? ''
-              )}
-              total={
-                cartItems?.data?.sub_total
-                  ? parseFloat(cartItems?.data?.sub_total?.toString() ?? '')
-                  : parseFloat(cartItems?.data?.subTotal?.toString() ?? '')
-              }
-            />
-            <div className="p-5">
-              {cartItems?.data?.Cart.map((product) => (
-                <CartProduct
-                  HandelDecIncRmv={HandelDecIncRmv}
-                  product={product}
-                />
-              ))}
-
-              {/* promocode */}
-              <PromoCode
-                url={url}
-                handelApplyPromoCode={handelApplyPromoCode}
+        <EmptyCart />
+      ) : isSuccess ? (
+        <div>
+          {/* delivery fees always come with 0 but in dashboard it is not 0 */}
+          <SaleNotification
+            delivery_fees={
+              cartItems?.data?.delivery_fee
+                ? parseFloat(cartItems?.data?.delivery_fee)
+                : parseFloat(cartItems?.data?.delivery_fees)
+            }
+            min_for_free_delivery={parseFloat(
+              cartItems?.data?.free_delivery_data ?? ''
+            )}
+            total={
+              cartItems?.data?.sub_total
+                ? parseFloat(cartItems?.data?.sub_total?.toString() ?? '')
+                : parseFloat(cartItems?.data?.subTotal?.toString() ?? '')
+            }
+          />
+          <div className="p-5">
+            {cartItems?.data?.Cart.map((product) => (
+              <CartProduct
+                HandelDecIncRmv={HandelDecIncRmv}
+                product={product}
               />
+            ))}
 
-              {/* payment summary */}
-              <div className="py-5">
-                <p
-                  suppressHydrationWarning={suppressText}
-                  className={`${alexandriaFontMeduim} mb-1`}
-                >
-                  {t('order_review')}
-                </p>
-                <PaymentSummary
-                  sub_total={
-                    cartItems?.data?.subTotal || cartItems?.data?.sub_total || 0
-                  }
-                  total={cartItems?.data?.total || 0}
-                  total_cart_after_tax={
-                    cartItems?.data?.total_cart_after_tax || 0
-                  }
-                  promo_code_discount={
-                    cartItems?.data?.promo_code_discount || 0
-                  }
-                  delivery_fees={
-                    cartItems?.data?.delivery_fees ||
-                    cartItems?.data?.delivery_fee ||
-                    0
-                  }
-                  free_delivery={cartItems?.data?.free_delivery || false}
-                  tax={cartItems?.data?.tax || 0}
-                />
-              </div>
+            {/* promocode */}
+            <PromoCode url={url} handelApplyPromoCode={handelApplyPromoCode} />
+
+            {/* payment summary */}
+            <div className="py-5">
+              <p
+                suppressHydrationWarning={suppressText}
+                className={`${alexandriaFontMeduim} mb-1`}
+              >
+                {t('order_review')}
+              </p>
+              <PaymentSummary
+                sub_total={
+                  cartItems?.data?.subTotal || cartItems?.data?.sub_total || 0
+                }
+                total={cartItems?.data?.total || 0}
+                total_cart_after_tax={
+                  cartItems?.data?.total_cart_after_tax || 0
+                }
+                promo_code_discount={cartItems?.data?.promo_code_discount || 0}
+                delivery_fees={
+                  cartItems?.data?.delivery_fees ||
+                  cartItems?.data?.delivery_fee ||
+                  0
+                }
+                free_delivery={cartItems?.data?.free_delivery || false}
+                tax={cartItems?.data?.tax || 0}
+              />
             </div>
-
-            <CheckoutFixedBtn
-              cartLessThanMin={
-                cartItems?.data?.sub_total
-                  ? parseFloat(
-                      cartItems?.data?.minimum_order_price?.toString() || ''
-                    ) > parseFloat(cartItems?.data?.sub_total?.toString() || '')
-                  : parseFloat(
-                      cartItems?.data?.minimum_order_price?.toString() || ''
-                    ) > parseFloat(cartItems?.data?.subTotal?.toString())
-              }
-              url={url}
-              cart={true}
-              handelContinueInCart={() => handelContinue()}
-            />
-
-            {/* select modal */}
-            <ChangeMoodModal url={url} />
           </div>
-        ) : (
-          <div>
-            <ContentLoader type="ProductCart" sections={2} />
-            <ContentLoader type="Promocode" sections={1} />
-            <ContentLoader type="PaymentSummary" sections={1} />
-          </div>
-        )}
+
+          <CheckoutFixedBtn
+            cartLessThanMin={
+              cartItems?.data?.sub_total
+                ? parseFloat(
+                    cartItems?.data?.minimum_order_price?.toString() || ''
+                  ) > parseFloat(cartItems?.data?.sub_total?.toString() || '')
+                : parseFloat(
+                    cartItems?.data?.minimum_order_price?.toString() || ''
+                  ) > parseFloat(cartItems?.data?.subTotal?.toString())
+            }
+            url={url}
+            cart={true}
+            handelContinueInCart={() => handelContinue()}
+          />
+
+          {/* select modal */}
+          <ChangeMoodModal url={url} />
+        </div>
+      ) : (
+        <div>
+          <ContentLoader type="ProductCart" sections={2} />
+          <ContentLoader type="Promocode" sections={1} />
+          <ContentLoader type="PaymentSummary" sections={1} />
+        </div>
+      )}
     </MainContentLayout>
   );
 };

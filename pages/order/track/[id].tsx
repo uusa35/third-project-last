@@ -342,7 +342,9 @@ const OrderTrack: NextPage<Props> = ({
               <div className="flex flex-col  w-full space-y-2">
                 <div className="flex flex-row justify-start items-center space-x-3">
                   <CashIcon />
-                  <p className="text-base font-bold">{t('cash_on_delivery')}</p>
+                  <p className="text-base font-bold rtl:ps-1">
+                    {t('cash_on_delivery')}
+                  </p>
                 </div>
                 {/* subtotal */}
                 <div className="flex flex-row justify-between items-center">

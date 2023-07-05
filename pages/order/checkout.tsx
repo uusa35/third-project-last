@@ -64,6 +64,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     },
     searchParams: { method, destination },
     cart: { enable_promocode, promocode },
+    vendor: { Payment_Methods },
   } = useAppSelector((state) => state);
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -347,7 +348,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
               </p>
               <div>
                 {map(paymentMethods, (m, i) => {
-                  return (
+                  return Payment_Methods[m.id] ? (
                     <div
                       key={m.id}
                       onClick={() => {
@@ -371,7 +372,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                         {t(m.name)}
                       </p>
                     </div>
-                  );
+                  ) : null;
                 })}
               </div>
             </div>
