@@ -231,7 +231,7 @@ const OrderSuccess: NextPage<Props> = ({
                       </div>
                     ))}
                   </div>
-                  <p className={`truncate text-sm`}>{item.extra_notes}</p>
+                  <p className={`truncate text-sm p-2`}>{item.extra_notes}</p>
                 </div>
               </div>
             ))}
