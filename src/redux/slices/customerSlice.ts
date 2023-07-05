@@ -110,7 +110,6 @@ export const customerSlice = createSlice({
         prefrences: action.payload,
       };
     },
-
     resetPreferences: (
       state: typeof initialState,
       action: PayloadAction<void>

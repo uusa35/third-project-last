@@ -26,14 +26,11 @@ const HorProductWidget: FC<Props> = ({
   //   branch: { id: branchId },
   //   area: { id: areaId },
   // } = useAppSelector((state) => state);
-  
+
   return (
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
-        href={`${appLinks.productShow(
-          element.id,
-          element.name
-        )}`}
+        href={`${appLinks.productShow(element.id, element.name)}`}
         className={`h-auto shadow-7xl h-full  block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
         data-cy="product"
       >
@@ -85,14 +82,14 @@ const HorProductWidget: FC<Props> = ({
                     style={{ color }}
                     suppressHydrationWarning={suppressText}
                   >
-                    {element.price} {t('kwd')}
+                    {element.price} {t('kd')}
                   </p>
                   <p
                     className=" uppercase"
                     // style={{ color }}
                     suppressHydrationWarning={suppressText}
                   >
-                    {element.new_price} {t('kwd')}
+                    {element.new_price} {t('kd')}
                   </p>
                 </div>
               ) : (
@@ -107,7 +104,7 @@ const HorProductWidget: FC<Props> = ({
                     parseFloat(element.price).toFixed(3)
                   )}
                   {parseFloat(element.price).toFixed(3) !== '0.000' && (
-                    <span className={`uppercase px-1`}>{t('kwd')}</span>
+                    <span className={`uppercase px-1`}>{t('kd')}</span>
                   )}
                 </p>
               )}
