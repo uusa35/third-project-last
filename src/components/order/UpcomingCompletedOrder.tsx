@@ -72,7 +72,7 @@ const UpcomingCompletedOrder: FC<Props> = ({
           className={`text-sm ${alexandriaFontSemiBold}`}
           suppressHydrationWarning={suppressText}
         >
-          {t('total')} : {order.total} {t('kwd')}
+          {t('total')} : {order.total} {t('kd')}
         </p>
       </div>
 
