@@ -153,7 +153,7 @@ const AddressCreate: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        // router.push(`${appLinks.checkout.path}`);
+        router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {
