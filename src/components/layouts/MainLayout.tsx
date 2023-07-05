@@ -41,7 +41,6 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
     locale,
     searchParams: { destination, method },
     customer: { userAgent },
-    cart: { promocode },
   } = useAppSelector((state) => state);
   const isAuth = useAppSelector(isAuthenticated);
   const dispatch = useAppDispatch();
@@ -52,7 +51,6 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
     useLazyGetVendorQuery();
   const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
     useLazyCreateTempIdQuery();
-  const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
 
   // vendor..................................
   useEffect(() => {
@@ -87,15 +85,6 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
       await triggerCreateTempId({ url }).then((r: any) => {
         if (r && r.data && r.data.Data && r.data.Data.Id) {
           dispatch(setUserAgent(r.data.Data.Id));
-          triggerGetCartProducts(
-            {
-              userAgent: r.data.Data.Id,
-              area_branch: desObject,
-              PromoCode: promocode,
-              url,
-            },
-            false
-          );
         }
       });
     }
