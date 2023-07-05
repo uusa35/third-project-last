@@ -150,7 +150,7 @@ const orderReceipt: NextPage<Props> = ({
                       suppressHydrationWarning={suppressText}
                     >
                       {parseFloat(product.price?.toString()).toFixed(3)}{' '}
-                      {t('kwd')}
+                      {t('kd')}
                     </p>
                   </div>
                 </div>
