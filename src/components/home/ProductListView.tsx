@@ -1,6 +1,6 @@
 import { Category } from '@/types/queries';
 import { ListOutlined } from '@mui/icons-material';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useRef } from 'react';
 import TextTrans from '../TextTrans';
 import ScrollSpy from 'react-scrollspy';
 import VerProductWidget from '../widgets/product/VerProductWidget';
@@ -12,7 +12,7 @@ import { setCategory } from '@/redux/slices/searchParamsSlice';
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { isEmpty } from 'lodash';
+import { filter, isEmpty, isNull, map } from 'lodash';
 
 type Props = {
   CategoriesProducts: Category[];
@@ -21,46 +21,30 @@ type Props = {
 const ProductListView: FC<Props> = ({
   CategoriesProducts,
 }): React.ReactNode => {
+  const {
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
   const [openCategoryModal, setOpenCategoryModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const color = useAppSelector(themeColor);
   const [currentId, setCurrentId] = useState<string | null>(null);
+ 
   const handleUpdate = (el: HTMLElement | null) => {
     if (el) {
-      // let active_cat = document.querySelector(`a.active-cat`);
-      // console.log({ active_cat });
-
-      // if (active_cat) {
-      //   active_cat.scrollIntoView({behavior: "smooth",inline:'end'});
-      // }
       setCurrentId(el.id);
     }
   };
 
-  // useEffect(() => {
-  //   // if (currentId) {
-  //   //   let active_cat = document.querySelector(`a.active-cat`);
-
-  //   //   if (active_cat) {
-  //   //     active_cat.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-  //   //     console.log({ currentId }, active_cat);
-  //   //   }
-  //   // }
-
-  //     let active_cat = document.querySelector(`a.active-cat`);
-
-  //     if (active_cat) {
-  //       active_cat.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-  //       console.log({ currentId }, active_cat);
-  //     }
-  // }, [currentId]);
+  const handleScroll = (id: any) => {
+    document?.getElementById(id)?.scrollIntoView({ inline: 'center' });
+  };
 
   const handleSearchRedirection = (id: string) => {
     dispatch(setCategory(id));
     router.push(`${appLinks.productSearch.path}`);
   };
-  // console.log(CategoriesProducts.map((i) => i.cat_id));
+  // console.log({ CategoriesProducts });
   return (
     <div>
       {/* sticky header */}
@@ -77,35 +61,45 @@ const ProductListView: FC<Props> = ({
           <ListOutlined />
         </div>
         <ScrollSpy
-          currentClassName=""
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
           items={CategoriesProducts.map((i) => i.cat_id as string)}
           style={{ display: 'flex' }}
-          className="flex gap-x-2 overflow-x-scroll scrollbar-hide"
+          className="flex gap-x-2 overflow-x-scroll scroll scroll-smooth whitespace-nowrap scrollbar-hide"
           offset={-200}
         >
-          {CategoriesProducts.map((category, i) => (
-            <div key={i} className={`mt-1`}>
-              {!isEmpty(category.items) ? (
-                <a
-                  key={category.cat_id}
-                  href={`#${category.cat_id}`}
-                  className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
-                    category.cat_id == currentId ? `text-white active-cat` : ''
-                  }`}
-                  style={{
-                    backgroundColor:
-                      category.cat_id == currentId ? color : '#F3F2F2',
-                    transition: category.cat_id == currentId ? 'all 0.5s' : '',
-                  }}
-                >
-                  {category.name}
-                </a>
-              ) : null}
-            </div>
-          ))}
+          {map(
+            filter(
+              CategoriesProducts,
+              (c: Category) => c.items && c.items?.length > 0
+            ),
+            (category: Category, i) => (
+              <div key={i} className={`mt-1`}>
+                {category.items && !isEmpty(category.items) ? (
+                  <a
+                    onClick={() => handleScroll(`category_${category.cat_id}`)}
+                    id={`category_${category.cat_id}`}
+                    key={category.cat_id}
+                    href={`#${category.cat_id}`}
+                    className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap ${
+                      category.cat_id == currentId
+                        ? `text-white active-cat`
+                        : ''
+                    }`}
+                    style={{
+                      backgroundColor:
+                        category.cat_id == currentId ? color : '#F3F2F2',
+                      transition:
+                        category.cat_id == currentId ? 'all 0.5s' : '',
+                    }}
+                  >
+                    {category.name}
+                  </a>
+                ) : null}
+              </div>
+            )
+          )}
         </ScrollSpy>
       </header>
 
