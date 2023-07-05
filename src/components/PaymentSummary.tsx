@@ -49,7 +49,7 @@ const PaymentSummary: FC<Props> = ({
               {sub_total}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              {t('kwd')}
+              {t('kd')}
             </p>
           </div>
         </div>
@@ -72,7 +72,7 @@ const PaymentSummary: FC<Props> = ({
                   className={`uppercase text-red-600`}
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('kwd')}
+                  {t('kd')}
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ const PaymentSummary: FC<Props> = ({
                 className={`uppercase`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('kwd')}
+                {t('kd')}
               </p>
             </div>
           </div>
@@ -135,7 +135,7 @@ const PaymentSummary: FC<Props> = ({
               {/* {promo_code_discount ? total_cart_after_tax : total} */}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              {t('kwd')}
+              {t('kd')}
             </p>
           </div>
         </div>

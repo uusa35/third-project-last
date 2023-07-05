@@ -668,7 +668,7 @@ const ProductShow: NextPage<Props> = ({
           url,
         }).then((r: any) => {
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
-            dispatch(resetPromo())
+            dispatch(resetPromo());
             triggerGetCartProducts({
               userAgent,
               area_branch: desObject,
@@ -900,7 +900,7 @@ const ProductShow: NextPage<Props> = ({
                           style={{ borderColor: color, color }}>
                       <span>{minPrice}</span>
                       <span>-</span>
-                      <span>{maxPrice} {t('kwd')}</span>
+                      <span>{maxPrice} {t('kd')}</span>
                     </div>
                   )} */}
                 </div>
@@ -1264,7 +1264,7 @@ const ProductShow: NextPage<Props> = ({
                             3
                           ) !== '0.000' && (
                             <span className={`text-white uppercase px-2`}>
-                              {t('kwd')}
+                              {t('kd')}
                             </span>
                           )}
                         </span>
