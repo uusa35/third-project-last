@@ -61,6 +61,7 @@ const ProductListView: FC<Props> = ({
           <ListOutlined />
         </div>
         <ScrollSpy
+          currentClassName=''
           onUpdate={handleUpdate}
           // rootEl="div"
           componentTag="div"
