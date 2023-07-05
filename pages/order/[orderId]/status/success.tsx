@@ -130,7 +130,7 @@ const OrderSuccess: NextPage<Props> = ({
                 >
                   {t('estimated_time')}{' '}
                   <span className="text-[#1A1615] font-bold">
-                    :{order.data.estimated_time?.from}{' '}
+                    :{' '}{new Date(order.data.delivery_date_time).toLocaleDateString()} {order.data.estimated_time?.from}{' '}
                     {order.data.estimated_time?.to &&
                       `- ${order.data.estimated_time?.to}`}
                   </span>
@@ -173,7 +173,7 @@ const OrderSuccess: NextPage<Props> = ({
               <div className="flex items-center gap-x-2 text-sm">
                 <KnetIcon />
                 <p suppressHydrationWarning={suppressText}>
-                  {order.data.payment_method}
+                  {t(order.data.payment_method)}
                 </p>
               </div>
             )}
@@ -181,7 +181,7 @@ const OrderSuccess: NextPage<Props> = ({
               <div className="flex items-center gap-x-2 text-sm">
                 <CreditIcon />
                 <p suppressHydrationWarning={suppressText}>
-                  {order.data.payment_method}
+                  {t(order.data.payment_method)}
                 </p>
               </div>
             )}

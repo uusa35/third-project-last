@@ -142,7 +142,7 @@ const OrderFailure: NextPage<Props> = ({
                 key={index}
                 className="flex justify-between items-center border-t-2 border-gray-200 py-5"
               >
-                <div>
+                <div className="w-full">
                   <div className="flex pb-2 justify-between">
                     <h5 className="pe-6">
                       <TextTrans en={item.item_en} ar={item.item_ar} />
