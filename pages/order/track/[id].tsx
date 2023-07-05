@@ -68,14 +68,14 @@ const OrderTrack: NextPage<Props> = ({
 
   useEffect(() => {
     triggerTrackOrder({ order_code, url }).then((r) => {
-      if (r.error) {
+      if (r.error && r.error.data) {
         dispatch(
           showToastMessage({
             type: 'error',
             content: toLower(snakeCase(r.error.data?.msg)),
           })
         );
-      } else {
+      } else if (r && r.data && r.data.data) {
         setCurrentOrder(r.data?.data);
         setCurrentOrderStatus(r.data?.data.order_status);
       }
@@ -174,7 +174,6 @@ const OrderTrack: NextPage<Props> = ({
                 </span>
               </div>
             )}
-
             {/* order id  */}
             <div className="flex flex-1 w-full flex-row justify-between items-center h-1 my-6 gap-2">
               {currentOrder && currentOrderStatus === 'pending' && (
@@ -297,7 +296,6 @@ const OrderTrack: NextPage<Props> = ({
               </div>
             </div>
           )}
-
           {/* your order */}
           <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
             <p className="capitlize text-lg my-4 font-bold">{t('ur_order')}</p>
@@ -313,7 +311,8 @@ const OrderTrack: NextPage<Props> = ({
                     <div className="text-base font-bold">
                       <TextTrans
                         ar={`${p.item_ar} x${p.quantity}`}
-                        en={`${p.item_en} x${p.quantity}`}
+                        en={`${p.item_en} x${p.quantity} lsdkjf dlskjf dslfj dslfj`}
+                        length={30}
                       />
                     </div>
                     {!isEmpty(p.addon) &&
@@ -323,6 +322,7 @@ const OrderTrack: NextPage<Props> = ({
                           className={`text-gray-400`}
                           ar={`${a.name_ar} x${a.quantity}`}
                           en={`${a.name_en} x${a.quantity}`}
+                          length={25}
                         />
                       ))}
                   </div>

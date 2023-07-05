@@ -150,7 +150,6 @@ const AddressIndex: NextPage<Props> = ({
                             onClick={() => showHideEditBtn(address)}
                           />
                         </div>
-
                         {selectedAddress === address && (
                           <div className={`pe-5 absolute top-full transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${isRTL ? '-left-1/2 translate-x-[40%]' : ' left-1/2 -translate-x-[100%]'}`}>
                             <button
