@@ -31,13 +31,12 @@ const ProductListView: FC<Props> = ({
   const [currentId, setCurrentId] = useState<string | number | null>(null);
 
   const handleUpdate = (el: HTMLElement | null) => {
-    // if (el) {
-    //   setCurrentId(el.id);
-    // }
+    if (el && el.id) {
+      setCurrentId(el.id.toString());
+    }
   };
 
   const handleScroll = (id: string | number) => {
-    console.log('id', id);
     if (!isNull(id)) {
       document
         ?.getElementById(`category_${id}`)
@@ -96,9 +95,9 @@ const ProductListView: FC<Props> = ({
                     }`}
                     style={{
                       backgroundColor:
-                        category.cat_id === currentId ? color : '#F3F2F2',
+                        category.cat_id == currentId ? color : '#F3F2F2',
                       transition:
-                        category.cat_id === currentId ? 'all 0.5s' : '',
+                        category.cat_id == currentId ? 'all 0.5s' : '',
                     }}
                   >
                     {category.name}
