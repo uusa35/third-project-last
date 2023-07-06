@@ -308,7 +308,7 @@ const AddressCreate: NextPage<Props> = ({
           {/*  city / area   */}
           <div
             className="w-full"
-            onClick={() => router.push(appLinks.selectArea.path)}
+            onClick={() => router.push(appLinks.selectArea(`user`))}
           >
             <label
               suppressHydrationWarning={suppressText}
@@ -327,7 +327,7 @@ const AddressCreate: NextPage<Props> = ({
                 id="city_and_area"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
-                onFocus={() => router.push(appLinks.selectArea.path)}
+                onFocus={() => router.push(appLinks.selectArea(`user`))}
               />
               <div
                 className={`${

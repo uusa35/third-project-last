@@ -77,6 +77,18 @@ export const addressSchema = (method: string, t: any) =>
         }
         return schema.nullable(true);
       }),
+      area: yup.string().when('address_type', (address_type, schema) => {
+        if (method === `delivery`) {
+          return schema.required(t(`validation.required`));
+        }
+        return schema.nullable(true);
+      }),
+      area_id: yup.string().when('address_type', (address_type, schema) => {
+        if (method === `delivery`) {
+          return schema.required(t(`validation.required`));
+        }
+        return schema.nullable(true);
+      }),
       avenue: yup.string().max(50).nullable(true),
       paci: yup.string().max(50).nullable(true),
       additional: yup.string().nullable(true),

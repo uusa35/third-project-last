@@ -49,7 +49,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                     </div>
                     <Link 
                         href={
-                            method === 'delivery'? appLinks.selectArea.path  
+                            method === 'delivery'? appLinks.selectArea(``)  
                             : appLinks.selectBranch.path
                         }
                         className={`${mainBtnClass} text-center`}

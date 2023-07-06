@@ -101,8 +101,8 @@ const AddressCreate: NextPage<Props> = ({
       floor_no: customer.address.floor_no ?? ``,
       building_no: customer.address.building_no ?? ``,
       office_no: customer.address.office_no ?? ``,
-      city: customer.address.city ?? destination?.name,
-      area: customer.address.area ?? destination?.name,
+      area: destination?.name,
+      area_id: destination?.id,
       avenue: customer.address.avenue,
       paci: customer.address.paci,
       additional: customer.address.additional,
@@ -121,6 +121,7 @@ const AddressCreate: NextPage<Props> = ({
   }, [currentAddressType]);
 
   const handelSaveAddress = async (body: any) => {
+    console.log('body', body);
     await triggerCreateAddress({
       body: {
         address_type: upperCase(body.address_type),
@@ -136,6 +137,8 @@ const AddressCreate: NextPage<Props> = ({
           floor_no: body.floor_no,
           building_no: body.building_no,
           office_no: body.office_no,
+          area: body.area,
+          area_id: body.area_id,
           additional: body.additional,
           notes: body.notes,
         },
@@ -153,7 +156,7 @@ const AddressCreate: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        router.push(`${appLinks.checkout.path}`);
+        // router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {
@@ -169,25 +172,27 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    if (destination.method === 'pickup') {
-      // await checkTimeAvailability();
-    } else {
-      await handelSaveAddress(body);
-    }
+    console.log({ body });
+    // if (destination.method === 'pickup') {
+    //   // await checkTimeAvailability();
+    // } else {
+    //   await handelSaveAddress(body);
+    // }
   };
 
   useEffect(() => {
-    if (errors.customer_id) {
-      router.push(appLinks.login.path).then(() => {
-        dispatch(
-          showToastMessage({
-            type: 'error',
-            content: 'customer_id_is_required',
-          })
-        );
-      });
-    }
+    // if (errors.customer_id) {
+    //   router.push(appLinks.login.path).then(() => {
+    //     dispatch(
+    //       showToastMessage({
+    //         type: 'error',
+    //         content: 'customer_id_is_required',
+    //       })
+    //     );
+    //   });
+    // }
   }, [errors]);
+  console.log({ errors });
 
   return (
     <MainContentLayout
@@ -282,7 +287,7 @@ const AddressCreate: NextPage<Props> = ({
           {/*  city / area   */}
           <div
             className="w-full"
-            onClick={() => router.push(appLinks.selectArea.path)}
+            onClick={() => router.push(`${appLinks.selectArea(`guest`)}`)}
           >
             <label
               suppressHydrationWarning={suppressText}
@@ -295,13 +300,24 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 type="text"
                 suppressHydrationWarning={suppressText}
-                {...register('city')}
+                {...register('area')}
                 name="city_and_area"
                 disabled
                 id="city_and_area"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
-                onFocus={() => router.push(appLinks.selectArea.path)}
+                onFocus={() => router.push(appLinks.selectArea(`guest`))}
+              />
+              <input
+                type="text"
+                suppressHydrationWarning={suppressText}
+                {...register('area_id')}
+                name="city_and_area"
+                disabled
+                id="city_and_area"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white hidden"
+                placeholder={`${t('area_id')}`}
+                onFocus={() => router.push(appLinks.selectArea(`guest`))}
               />
               <div
                 className={`${
