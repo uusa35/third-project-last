@@ -11,7 +11,7 @@ import Backbtn from '@/appIcons/backbtn.svg';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { West, East } from '@mui/icons-material';
+import { West, East, Close } from '@mui/icons-material';
 import { LifebuoyIcon } from '@heroicons/react/24/outline';
 import HelpModal from './modals/HelpModal';
 import { toggleShowHelpModal } from '@/redux/slices/modalsSlice';
@@ -98,7 +98,15 @@ const AppHeader: FC<Props> = ({
           onClick={() => handleBack()}
           className={`flex justify-start items-center `}
         >
-          {router.locale === 'en' ? <West /> : <East />}
+          {router.pathname.includes('success') ? (
+            <>
+            <Close />
+            </>
+          ): (
+            <>
+            {router.locale === 'en' ? <West /> : <East />}
+            </>
+          )}
         </button>
         <div className={`flex flex-1 justify-center items-center  `}>
           <span

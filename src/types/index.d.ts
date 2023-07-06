@@ -113,6 +113,7 @@ export type appSetting = {
   showAreaModal: boolean;
   showPickDateModal: boolean;
   showChangePasswordModal: boolean;
+  lastHomeModalShownTime: number | null;
   previousUrl: {
     asPath: string;
     pathName: string;
