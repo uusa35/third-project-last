@@ -2,7 +2,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import React, { Suspense, startTransition, useEffect } from 'react';
 import FailureIcon from '@/appImages/failed.svg';
 import { useTranslation } from 'react-i18next';
-import { suppressText } from '@/constants/*';
+import { appLinks, mainBtnClass, submitBtnClass, suppressText } from '@/constants/*';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { Order, ProductCart, ServerCart } from '@/types/index';
@@ -19,6 +19,9 @@ import { isUndefined, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import ContentLoader from '@/components/skeletons';
 import DownloadIcon from '@/appIcons/download.svg';
+import Link from 'next/link';
+import Reload from '@/appIcons/reload.svg';
+import { themeColor } from '@/redux/slices/vendorSlice';
 
 type Props = { url: string; orderId: string };
 const OrderFailure: NextPage<Props> = ({
@@ -31,6 +34,7 @@ const OrderFailure: NextPage<Props> = ({
     customer: { userAgent },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
+  const color = useAppSelector(themeColor);
 
   useEffect(() => {
     if (url) {
@@ -152,7 +156,7 @@ const OrderFailure: NextPage<Props> = ({
                   <div className="flex flex-wrap items-center">
                     {map(item.addon, (a) => (
                       <div key={a.addon_id} className="pe-3 pb-4">
-                        <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
+                        <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1 mb-2">
                           <span className="pe-2 text-sm">
                             x{a.addon_quantity}
                           </span>
@@ -189,10 +193,8 @@ const OrderFailure: NextPage<Props> = ({
           </div>
 
           <div>
-            <div className="h-28"></div>
             {/* sticky btn */}
-            <div className="fixed bottom-0 w-full lg:w-2/4 xl:w-1/3  border-t bg-white text-white  p-5 cursor-pointer">
-              {/* checkout btn */}
+            <div className="border-t bg-white text-white  p-5 cursor-pointer">
               <div className="flex items-center gap-x-3 justify-center rounded-full w-full py-2 px-4 bg-[#12B76A]">
                 <CallusIcon />
                 <a
@@ -204,6 +206,14 @@ const OrderFailure: NextPage<Props> = ({
                   {t('need_help_call_us')}
                 </a>
               </div>
+              <Link 
+                href={`${appLinks.checkout.path}`}
+                className={`font-light ${mainBtnClass} flex justify-center items-center px-5 !py-2 mt-3`}
+                style={{ backgroundColor: color }}
+              >
+                <Reload />
+                <span className="px-1">{t('try_again')}</span>
+              </Link>
             </div>
           </div>
         </MainContentLayout>

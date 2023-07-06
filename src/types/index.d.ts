@@ -223,7 +223,8 @@ export interface Order {
   branch_address: string;
   orderCode: string | number;
   order_id: string | number;
-  orderType?: string;
+  orderType: string;
+  newOrderType: string;
   customer: CustomerInfo;
   items: [
     {

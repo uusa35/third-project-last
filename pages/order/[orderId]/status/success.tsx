@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import SuccessScheduled from '@/appImages/Scheduled_Successfully.svg';
 import Success from '@/appImages/order_success.svg';
 import { useTranslation } from 'react-i18next';
-import { suppressText } from '@/constants/*';
+import { appLinks, suppressText } from '@/constants/*';
 import OrderDetails from '@/components/checkout/OrderDetails';
 import {
   useGetCartProductsQuery,
@@ -33,6 +33,8 @@ import { setUrl } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
+import HomeIcon from '@/appIcons/home_success.svg';
+import Link from 'next/link';
 
 type Props = {
   url: string;
@@ -98,8 +100,8 @@ const OrderSuccess: NextPage<Props> = ({
           currentModule={`${t('order')} #${order.data.order_id}`}
         >
           {isAuth &&
-          (order.data.orderType === 'delivery_later' ||
-            order.data.orderType === 'pickup_later') ? (
+          (order.data.newOrderType === 'delivery_later' ||
+            order.data.newOrderType === 'pickup_later') ? (
             <div className="px-5">
               <div className="flex justify-center py-5">
                 <SuccessScheduled />
@@ -218,7 +220,7 @@ const OrderSuccess: NextPage<Props> = ({
                   <div className="flex flex-wrap items-center">
                     {map(item.addon, (a) => (
                       <div key={a.addon_id} className="pe-3 ">
-                        <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1">
+                        <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1 mb-2">
                           <span className="pe-2 text-sm">
                             x{a.addon_quantity}
                           </span>
@@ -238,6 +240,14 @@ const OrderSuccess: NextPage<Props> = ({
             ))}
           </div>
           <div className="p-5">
+            <Link 
+              href={`${appLinks.home.path}`} 
+              suppressHydrationWarning={suppressText}
+              className="flex items-end pb-5"
+            >
+              <HomeIcon />
+              <span className="ps-3">{t('back_to_store')}</span>
+            </Link>
             <button
               className="flex items-center pb-5"
               onClick={() => setIsOpen(true)}
