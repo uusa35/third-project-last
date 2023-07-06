@@ -75,8 +75,8 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       url,
     },
     { refetchOnMountOrArgChange: true }
-    );
-  
+  );
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
@@ -261,7 +261,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       dispatch(setAreaBranchModalStatus(true));
     } else if (method === 'delivery' && !isAuth && !address.id) {
       // should check on address of user too but nothing in state so check in checkout
-      router.push(appLinks.guestAddress.path);
+      // router.push(appLinks.guestAddress.path);
+      // guest mode here
+      router.push(appLinks.selectArea('guest'));
     } else {
       router.push(appLinks.checkout.path);
     }

@@ -55,7 +55,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
         <div className="flex flex-row h-auto py-6 px-4 justify-start items-center">
           <MapPinIcon className={`w-6 h-6 text-red-600 `} />
           <Link
-            href={appLinks.selectArea.path}
+            href={appLinks.selectArea(``)}
             className="flex flex-1 flex-col px-4 space-y-2"
           >
             <p>{destination_type && t(`${destination_type}`)}</p>

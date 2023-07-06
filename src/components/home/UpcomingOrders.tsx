@@ -102,9 +102,9 @@ const UpComingOrders: FC = () => {
                 </p>
                 <Slider {...settings}>
                   {data?.data.map((order) => (
-                    <div className="px-2" dir={dir}>
+                    <div className="px-2 " dir={dir}>
                       <div
-                        className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full`}
+                        className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full h-auto md:h-[150px]`}
                       >
                         <div className="flex justify-between gap-x-2 text-[#544A45] text-xs border-b border-dashed border-[#E8E5E3] pb-3 mb-3">
                           <p

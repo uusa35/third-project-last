@@ -51,6 +51,7 @@ type Props = {
 };
 
 const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
+  const { query }: any = useRouter();
   const {
     locale: { lang, isRTL },
     searchParams: { method, destination },
@@ -162,7 +163,21 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           dispatch(resetPreferences(undefined));
         }
       })
-      .then(() => router.back());
+      .then((r: any) => {
+        if (query.mode && query.mode[0]) {
+          const currentMode = query.mode[0];
+          switch (currentMode) {
+            case 'guest':
+              return router.push(appLinks.guestAddress.path);
+            case 'home':
+              return router.push(appLinks.home.path);
+            default:
+              return router.back();
+          }
+        } else {
+          router.back();
+        }
+      });
   };
 
   useEffect(() => {
