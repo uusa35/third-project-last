@@ -20,7 +20,7 @@ export type ProductPagination<T> = {
 
 export type Category = {
   id: number;
-  cat_id?: number | string;
+  cat_id: number | string;
   items?: Product[];
   name: string;
   name_ar: string;
