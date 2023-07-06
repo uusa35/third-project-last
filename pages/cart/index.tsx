@@ -13,6 +13,7 @@ import {
   filter,
   isEmpty,
   isNull,
+  isUndefined,
   kebabCase,
   lowerCase,
 } from 'lodash';
@@ -265,7 +266,30 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       // guest mode here
       router.push(appLinks.selectArea('guest'));
     } else {
-      router.push(appLinks.checkout.path);
+      console.log('address', address.address.area_id);
+      console.log('destId', destID);
+      console.log('method', method);
+      if (method === 'delivery') {
+        if (
+          !destID ||
+          isUndefined(address.address.area_id) ||
+          !address.address.id
+        ) {
+          if (isAuth) {
+            // go here
+            console.log('else auth');
+          } else {
+            console.log('else 1');
+            // router.push(appLinks.selectArea('guest'));
+          }
+        } else {
+          console.log('else 2');
+          // router.push(appLinks.checkout.path);
+        }
+      } else {
+        console.log('else 3');
+        // router.push(appLinks.checkout.path);
+      }
     }
   };
 

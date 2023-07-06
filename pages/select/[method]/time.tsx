@@ -125,19 +125,19 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
       if (isToday) {
         days.push({
           day: `today`,
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       } else if (isTomorrow) {
         days.push({
           day: `tomorrow`,
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
         days.push({
           day: day.format('dddd'),
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       }

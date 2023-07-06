@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { wrapper } from '@/redux/store';
-import { Vendor } from '@/types/index';
+import { UserAddressFields, Vendor } from '@/types/index';
 import {
   appLinks,
   imageSizes,
@@ -28,7 +28,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
-import { useCheckPhoneMutation, useLoginMutation, useResetPasswordMutation } from '@/redux/api/authApi';
+import {
+  useCheckPhoneMutation,
+  useLoginMutation,
+  useResetPasswordMutation,
+} from '@/redux/api/authApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { setCustomer, signIn } from '@/redux/slices/customerSlice';
 import { checkPhone, loginSchema } from 'src/validations';
@@ -37,6 +41,8 @@ import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import * as yup from 'yup';
 import ShowPasswordIcon from '@/appIcons/show_password.svg';
 import HidePasswordIcon from '@/appIcons/hide_password.svg';
+import { AppQueryResult } from '@/types/queries';
+import { useLazyGetAddressesQuery } from '@/redux/api/addressApi';
 
 type Props = {
   element: Vendor;
@@ -52,7 +58,10 @@ const UserPassword: NextPage<Props> = ({
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const color = useAppSelector(themeColor);
-  const { customer, locale: { isRTL } } = useAppSelector((state) => state);
+  const {
+    customer,
+    locale: { isRTL },
+  } = useAppSelector((state) => state);
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState<{
     [key: string]: boolean;
@@ -61,6 +70,14 @@ const UserPassword: NextPage<Props> = ({
   const filteredCountries = getCountries().filter(
     (country) => !excludedCountries.includes(country)
   );
+  const [triggerLogin] = useLoginMutation();
+  const [triggerResetPassword] = useResetPasswordMutation();
+  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+    useLazyGetAddressesQuery<{
+      data: AppQueryResult<UserAddressFields[]>;
+      isLoading: boolean;
+    }>();
+
   const togglePasswordVisibility = (id: string) => {
     setPasswordVisibility((prevState) => ({
       ...prevState,
@@ -87,9 +104,7 @@ const UserPassword: NextPage<Props> = ({
       dispatch(setUrl(url));
     }
   }, []);
-  
-  const [triggerLogin] = useLoginMutation();
-  const [triggerResetPassword] = useResetPasswordMutation();
+
   const onSubmit = async (body: any) => {
     if (isResetPassword) {
       await triggerResetPassword({
@@ -97,11 +112,11 @@ const UserPassword: NextPage<Props> = ({
           phone: customer.phone,
           phone_country_code: customer.countryCode,
           new_password: body.new_password,
-          confirm_password: body.confirmation_password
+          confirm_password: body.confirmation_password,
         },
-        url
+        url,
       }).then(async (r) => {
-        if(r && r.data) {
+        if (r && r.data) {
           await triggerLogin({
             body: {
               phone: customer.phone,
@@ -111,7 +126,6 @@ const UserPassword: NextPage<Props> = ({
             },
             url,
           }).then((r: any) => {
-            console.log({ ResetPass: r })
             if (r.error) {
               dispatch(
                 showToastMessage({
@@ -120,23 +134,26 @@ const UserPassword: NextPage<Props> = ({
                 })
               );
             } else {
-              dispatch(showToastMessage({
-                content: `password_changed_successfully`,
-                type: 'success'
-              }))
+              dispatch(
+                showToastMessage({
+                  content: `password_changed_successfully`,
+                  type: 'success',
+                })
+              );
               dispatch(setCustomer(r.data.data.user));
               dispatch(signIn(r.data.data.token));
               router.push('/');
             }
           });
+        } else {
+          dispatch(
+            showToastMessage({
+              content: r?.message,
+              type: 'error',
+            })
+          );
         }
-        else {
-          dispatch(showToastMessage({
-            content: r?.message,
-            type: 'error'
-          }))
-        }
-      })
+      });
     } else {
       await triggerLogin({
         body: {
@@ -155,9 +172,19 @@ const UserPassword: NextPage<Props> = ({
             })
           );
         } else {
+          console.log('user', r.data.data.user);
           dispatch(setCustomer(r.data.data.user));
+          triggerGetAddresses(
+            { url, token: r.data.data.user.token ?? customer.token },
+            false
+          ).then((r: any) => {
+            if (r && r.data) { 
+              dispatch(setAddresses(r.data.data.user))
+            }
+            console.log('the r of address', r);
+          });
           dispatch(signIn(r.data.data.token));
-          router.push('/');
+          // router.push('/');
         }
       });
     }
@@ -165,8 +192,6 @@ const UserPassword: NextPage<Props> = ({
   const handleForgetPassword = () => {
     setIsResetPassword(true);
   };
-
-
 
   return (
     <MainContentLayout
@@ -218,7 +243,9 @@ const UserPassword: NextPage<Props> = ({
                   placeholder=" "
                 />
                 <div
-                  className={`absolute bottom-7 cursor-pointer ${isRTL ? 'left-2' : 'right-2'}`}
+                  className={`absolute bottom-7 cursor-pointer ${
+                    isRTL ? 'left-2' : 'right-2'
+                  }`}
                   onClick={() => togglePasswordVisibility('password')}
                 >
                   {passwordVisibility['password'] ? (
@@ -239,7 +266,12 @@ const UserPassword: NextPage<Props> = ({
                   )}
                 </div>
               )}
-              <button className="capitalize text-gray-500" onClick={handleForgetPassword}>{t('forget_password?')}</button>
+              <button
+                className="capitalize text-gray-500"
+                onClick={handleForgetPassword}
+              >
+                {t('forget_password?')}
+              </button>
             </>
           )}
           {isResetPassword && (
@@ -261,7 +293,9 @@ const UserPassword: NextPage<Props> = ({
                   placeholder=" "
                 />
                 <div
-                  className={`absolute bottom-7 cursor-pointer ${isRTL ? 'left-2' : 'right-2'}`}
+                  className={`absolute bottom-7 cursor-pointer ${
+                    isRTL ? 'left-2' : 'right-2'
+                  }`}
                   onClick={() => togglePasswordVisibility('new_password')}
                 >
                   {passwordVisibility['new_password'] ? (
@@ -301,7 +335,9 @@ const UserPassword: NextPage<Props> = ({
                   placeholder=" "
                 />
                 <div
-                  className={`absolute bottom-7 cursor-pointer ${isRTL ? 'left-2' : 'right-2'}`}
+                  className={`absolute bottom-7 cursor-pointer ${
+                    isRTL ? 'left-2' : 'right-2'
+                  }`}
                   onClick={() =>
                     togglePasswordVisibility('confirmation_password')
                   }
@@ -316,8 +352,9 @@ const UserPassword: NextPage<Props> = ({
               {errors?.confirmation_password?.message && (
                 <div className="text-sm text-red-600 w-full text-start pt-2 ps-2">
                   <p suppressHydrationWarning={suppressText}>
-                    {errors?.confirmation_password?.message?.includes("Ref") ? 
-                    t('confirm_password_doesnt_match_new_password') : t('confirm_password_is_required')}
+                    {errors?.confirmation_password?.message?.includes('Ref')
+                      ? t('confirm_password_doesnt_match_new_password')
+                      : t('confirm_password_is_required')}
                   </p>
                 </div>
               )}

@@ -51,11 +51,12 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<UserAddressFields[]>,
       {
         url: string;
+        token?: string;
       }
     >({
-      query: ({ url }) => ({
+      query: ({ url, token }) => ({
         url: `user/address`,
-        headers: { url },
+        headers: { ...(token && { 'Authorization ': `Bearer ${token}` }), url },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
