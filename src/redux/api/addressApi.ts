@@ -103,7 +103,7 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<UserAddressFields[]>,
       {
         params: {
-          address_id: number;
+          address_id: string;
         };
         url: string;
       }

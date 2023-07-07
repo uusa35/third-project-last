@@ -34,9 +34,13 @@ import {
   useResetPasswordMutation,
 } from '@/redux/api/authApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { setCustomer, signIn } from '@/redux/slices/customerSlice';
+import {
+  setCustomer,
+  setCustomerAddress,
+  signIn,
+} from '@/redux/slices/customerSlice';
 import { checkPhone, loginSchema } from 'src/validations';
-import { map, upperCase, upperFirst } from 'lodash';
+import { first, map, upperCase, upperFirst } from 'lodash';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import * as yup from 'yup';
 import ShowPasswordIcon from '@/appIcons/show_password.svg';
@@ -172,19 +176,19 @@ const UserPassword: NextPage<Props> = ({
             })
           );
         } else {
-          console.log('user', r.data.data.user);
+          console.log('user', r.data.data);
           dispatch(setCustomer(r.data.data.user));
+          dispatch(signIn(r.data.data.token));
           triggerGetAddresses(
-            { url, token: r.data.data.user.token ?? customer.token },
+            { url, token: r.data.data.token ?? customer.token },
             false
           ).then((r: any) => {
-            if (r && r.data) { 
-              dispatch(setAddresses(r.data.data.user))
+            if (r && r.data && r.data.data) {
+              console.log('r', first(r.data.data));
+              dispatch(setCustomerAddress(first(r.data.data)));
             }
-            console.log('the r of address', r);
           });
-          dispatch(signIn(r.data.data.token));
-          // router.push('/');
+          router.push('/');
         }
       });
     }
