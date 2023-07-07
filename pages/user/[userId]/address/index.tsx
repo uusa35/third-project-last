@@ -63,13 +63,20 @@ const AddressIndex: NextPage<Props> = ({
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const {
-    customer: { id, countryCode, name, phone },
+    customer: {
+      id,
+      countryCode,
+      name,
+      phone,
+      token: { api_token },
+    },
     locale: { isRTL },
   } = useAppSelector((state) => state);
-  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+  const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
+      isSuccess: boolean;
     }>();
   const [triggerDeleteAddress] = useDeleteAddressMutation();
   const [nextType, setNextType] = useState<string | null>(null);
@@ -78,7 +85,7 @@ const AddressIndex: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url }, false).then((r: any) => {
+    triggerGetAddresses({ url, api_token }, false).then((r: any) => {
       const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
       if (r && r.data && r.data.data) {
         const remaingType = first(
@@ -132,7 +139,7 @@ const AddressIndex: NextPage<Props> = ({
           })
         );
         // console.log({ deleteAddressRes: r });
-        triggerGetAddresses({ url }, false);
+        triggerGetAddresses({ url, token }, false);
       } else {
         dispatch(
           showToastMessage({

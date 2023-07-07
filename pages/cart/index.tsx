@@ -6,7 +6,7 @@ import {
   useLazyCheckPromoCodeQuery,
 } from '@/redux/api/cartApi';
 import { wrapper } from '@/redux/store';
-import { ProductCart, ServerCart } from '@/types/index';
+import { ProductCart, ServerCart, UserAddressFields } from '@/types/index';
 import { AppQueryResult } from '@/types/queries';
 import {
   StringIterator,
@@ -16,6 +16,7 @@ import {
   isUndefined,
   kebabCase,
   lowerCase,
+  map,
 } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { alexandriaFontMeduim, appLinks, suppressText } from '@/constants/*';
@@ -41,6 +42,7 @@ import { isAuthenticated } from '@/redux/slices/customerSlice';
 import { NextPage } from 'next';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
+import { useLazyGetAddressesQuery } from '@/redux/api/addressApi';
 
 type Props = { url: string };
 
@@ -49,15 +51,28 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const {
-    searchParams: { method },
+    searchParams: { method, destination },
     cart: { enable_promocode, promocode },
-    customer: { id: customer_id, prefrences, userAgent, address },
+    customer: {
+      id: customer_id,
+      prefrences,
+      userAgent,
+      address,
+      token: { api_token },
+    },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
   const color = useAppSelector(themeColor);
   const isAuth = useAppSelector(isAuthenticated);
   const [triggerAddToCart] = useAddToCartMutation();
+  const [
+    triggerGetAddresses,
+    { data: addresses, isSuccess: addressesSuccess },
+  ] = useLazyGetAddressesQuery<{
+    data: AppQueryResult<UserAddressFields[]>;
+    isSuccess: boolean;
+  }>();
   const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
   const {
     data: cartItems,
@@ -254,7 +269,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   };
 
-  const handelContinue = () => {
+  const handelContinue = async () => {
     if (isNull(customer_id) && !isAuth) {
       router.push(appLinks.login.path);
     } else if (isNull(destID) || prefrences.type === '') {
@@ -263,28 +278,38 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     } else if (method === 'delivery' && !isAuth && !address.id) {
       // should check on address of user too but nothing in state so check in checkout
       // router.push(appLinks.guestAddress.path);
-      // guest mode here
-      router.push(appLinks.selectArea('guest'));
+      // guest mode here ----> Esra should continue this scenario
+      console.log('guest');
+      // router.push(appLinks.selectArea('guest'));
     } else {
-      console.log('address', address.address.area_id);
-      console.log('destId', destID);
-      console.log('method', method);
       if (method === 'delivery') {
-        if (
-          !destID ||
-          isUndefined(address.address.area_id) ||
-          !address.address.id
-        ) {
-          if (isAuth) {
-            // go here
-            console.log('else auth');
-          } else {
-            console.log('else 1');
-            // router.push(appLinks.selectArea('guest'));
-          }
+        if (isAuth) {
+          // go here (selecting address if exist)
+          await triggerGetAddresses({ url, api_token }, false).then(
+            (r: any) => {
+              if (r.data && r.data.data && r.data.data.length >= 1) {
+                const areaIds = map(r.data.data, 'address.area_id');
+                const sameAreaId = filter(
+                  areaIds,
+                  (t) => t == destination.id.toString()
+                );
+                if (!isEmpty(sameAreaId)) {
+                  // same area id
+                } else if (!isEmpty(areaIds)) {
+                  // has addresses but not same destnation
+                  console.log('has address');
+                } else {
+                  // does not have any address
+                  console.log('no address');
+                }
+              } else {
+                // auth user has no address.
+              }
+            }
+          );
         } else {
-          console.log('else 2');
-          // router.push(appLinks.checkout.path);
+          console.log('else 1');
+          // router.push(appLinks.selectArea('guest'));
         }
       } else {
         console.log('else 3');

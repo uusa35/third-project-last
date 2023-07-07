@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import Link from 'next/link';
 import {
+  addressApi,
   useDeleteAddressMutation,
   useGetAddressesQuery,
   useLazyGetAddressesQuery,
@@ -29,16 +30,26 @@ import {
 import { useEffect, useState } from 'react';
 import { Address, AppQueryResult } from '@/types/queries';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
-import { isEmpty, isObject, isUndefined, map } from 'lodash';
-import { setCustomerAddress } from '@/redux/slices/customerSlice';
+import {
+  difference,
+  first,
+  isEmpty,
+  isNull,
+  isObject,
+  isUndefined,
+  map,
+  toLower,
+} from 'lodash';
+import { setCustomer, setCustomerAddress } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
+import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 
 type Props = {
   element: Vendor;
   url: string;
 };
 
-const SelectAddress: NextPage<Props> = ({
+const AddressSelectionIndex: NextPage<Props> = ({
   element,
   url,
 }): React.ReactElement => {
@@ -48,24 +59,43 @@ const SelectAddress: NextPage<Props> = ({
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const {
-    customer: { id, countryCode, name, phone },
+    customer: {
+      id,
+      countryCode,
+      name,
+      phone,
+      token: { api_token },
+      address: { id: addressId },
+    },
     locale: { isRTL },
   } = useAppSelector((state) => state);
-  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+  const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
+      isSuccess: boolean;
     }>();
+  const [triggerDeleteAddress] = useDeleteAddressMutation();
+  const [nextType, setNextType] = useState<string | null>(null);
 
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url }, false);
+    triggerGetAddresses({ url, api_token }, false).then((r: any) => {
+      const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
+      if (r && r.data && r.data.data) {
+        const remaingType = first(
+          difference(allTypes, map(r.data.data, 'type'))
+        );
+        if (remaingType) {
+          setNextType(remaingType);
+        }
+      }
+    });
   }, []);
 
   const handelDisplayAddress = (address: any) => {
-    // console.log('address', address);
     if (address && !isUndefined(address) && isObject(address)) {
       const addressValues =
         !isUndefined(address) &&
@@ -77,36 +107,59 @@ const SelectAddress: NextPage<Props> = ({
     }
   };
 
+  const handleSelectAddress = (address: Address) => {
+    dispatch(setCustomerAddress(address));
+    // redirection here
+  };
+
   if (!isSuccess) return <></>;
 
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
-      <div className="relative h-[100vh]">
-        {isSuccess && addresses?.data && !isEmpty(addresses?.data) ? (
+      <div className="relative h-[100vh] mt-4 ">
+        {addresses?.data && !isEmpty(addresses?.data) ? (
           <div>
+            <div className={`mx-4 mb-4`}>
+              <h1 className="text-md md:text-lg font-extrabold">
+                {t('select_address')}
+              </h1>
+            </div>
             {map(addresses?.data, (address: Address) => (
-              <div
-                className="flex flex-col w-auto justify-start items-start mx-4 space-y-4"
+              <button
+                onClick={() => handleSelectAddress(address)}
+                className="flex flex-col w-auto justify-start items-start mx-4 space-y-4 rounded-lg mb-4 border"
+                style={{ borderColor: color }}
                 key={address.id}
               >
                 <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 overflow-hidden w-full text-sm">
                   <div
-                    className={`flex flex-1 flex-row justify-between items-start`}
+                    className={`flex flex-1 flex-row justify-between items-start p-2`}
                   >
                     <div>
-                      <h5 className="font-semibold pb-2">{address.type}</h5>
-                      <div className="text-zinc-600">
+                      <div
+                        className={`flex w-full flex-row justify-between items-center pb-2`}
+                      >
+                        <div>
+                          <h5 className="font-semibold pb-2">{address.type}</h5>
+                        </div>
+                        <div>
+                          {address.id == addressId ? (
+                            <RadioButtonChecked style={{ color }} />
+                          ) : (
+                            <RadioButtonUnchecked style={{ color }} />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="text-zinc-400 text-left">
                         <p>{handelDisplayAddress(address.address)}</p>
                         <p>{name}</p>
-                        <p>
-                          {countryCode}
-                          {phone}
-                        </p>
+                        <p>{address.address.phone}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         ) : (
@@ -118,23 +171,26 @@ const SelectAddress: NextPage<Props> = ({
             </p>
           </div>
         )}
-        <div className="relative -bottom-10 p-2 w-full">
-          <Link
-            href={`${appLinks.createAuthAddress(id)}`}
-            className={`${mainBtnClass} flex flex-row justify-center items-center`}
-            style={{ backgroundColor: color }}
-            suppressHydrationWarning={suppressText}
-          >
-            <PlusSmallIcon className="w-6 h-6" />
-            <p className="w-fit text-md text-center mx-2">{t('add_address')}</p>
-          </Link>
-        </div>
+        {!isNull(nextType) && (
+          <div className="relative -bottom-10 p-2 w-full">
+            <Link
+              href={`${appLinks.createAuthAddress(id, toLower(nextType))}`}
+              className={`${mainBtnClass} flex flex-row justify-center items-center bg-gray-200`}
+              suppressHydrationWarning={suppressText}
+            >
+              <PlusSmallIcon className="w-6 h-6 text-black" />
+              <p className="w-fit text-md text-center mx-2 text-black">
+                {t('add_new_address')}
+              </p>
+            </Link>
+          </div>
+        )}
       </div>
     </MainContentLayout>
   );
 };
 
-export default SelectAddress;
+export default AddressSelectionIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
