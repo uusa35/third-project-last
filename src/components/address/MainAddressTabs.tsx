@@ -54,9 +54,10 @@ const MainAddressTabs: FC<Props> = ({ currentAddressType, userId, url }) => {
     { id: null, type: 'OFFICE', icon: <BriefcaseIcon />, edit: false },
   ]);
 
-  const [triggerGetAddresses, { data: addresses, isSuccess }] =
+  const [triggerGetAddresses, { data: addresses, isSuccess, isLoading }] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
+      isSuccess: boolean;
       isLoading: boolean;
     }>();
 

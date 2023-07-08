@@ -221,6 +221,7 @@ const AddressEdit: NextPage<Props> = ({
             type: `success`,
           })
         );
+        console.log('r.data ==> create', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         reset({
           ...r.data.Data.address,

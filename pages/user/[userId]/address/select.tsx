@@ -82,7 +82,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url, api_token }, false).then((r: any) => {
+    triggerGetAddresses({ url }, false).then((r: any) => {
       const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
       if (r && r.data && r.data.data) {
         const remaingType = first(
