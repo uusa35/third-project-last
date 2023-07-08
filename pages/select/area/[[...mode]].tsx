@@ -139,7 +139,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     }
   };
 
-  console.log('addressType', addressType);
   const handleChangeArea = async (
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
@@ -179,7 +178,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           const currentMode = query.mode[0];
           switch (currentMode) {
             case 'guest':
-              router.push(appLinks.guestAddress.path).then(() =>
+              return router.push(appLinks.guestAddress.path).then(() =>
                 dispatch(
                   setCustomerAddressArea({
                     area: destination.name,

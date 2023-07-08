@@ -177,8 +177,8 @@ const AddressEdit: NextPage<Props> = ({
   }, [addressId]);
 
   // console.log('currentAddress', currentAddress);
-  console.log({ errors });
-  console.log('method', method);
+  // console.log({ errors });
+  // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
   // console.log('address ====>', address?.Data);
@@ -221,7 +221,6 @@ const AddressEdit: NextPage<Props> = ({
             type: `success`,
           })
         );
-
         dispatch(setCustomerAddress(r.data.Data));
         reset({
           ...r.data.Data.address,
@@ -264,7 +263,7 @@ const AddressEdit: NextPage<Props> = ({
         <MainAddressTabs
           userId={userId}
           url={url}
-          currentAddressType={toUpper(type)}
+          currentAddressType={currentAddressType}
         />
 
         {/*  form  */}
@@ -272,8 +271,6 @@ const AddressEdit: NextPage<Props> = ({
           onSubmit={handleSubmit(onSubmit)}
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
-          {/* <input type="hidden" {...register('customer_id')} /> */}
-
           {/*  phone  */}
           <div className="w-full ">
             <label

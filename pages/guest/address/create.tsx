@@ -1,7 +1,5 @@
-import MainLayout from '@/layouts/MainLayout';
 import { NextPage } from 'next';
 import { useTranslation } from 'react-i18next';
-import Image from 'next/image';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
@@ -10,7 +8,6 @@ import { UserAddressFields, Vendor } from '@/types/index';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  EllipsisVerticalIcon,
   HomeIcon,
   BuildingOffice2Icon,
   BriefcaseIcon,
@@ -21,8 +18,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
   useLazyGetAddressesByIdQuery,
-  useLazyGetAddressesQuery,
-  useUpdateAddressMutation,
 } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -33,22 +28,10 @@ import {
   setCustomerAddressType,
   setNotes,
 } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase, parseInt, upperCase } from 'lodash';
+import { kebabCase, lowerCase, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-
 import { AppQueryResult } from '@/types/queries';
-// import HomeIcon from '@/appIcons/home.svg';
-import {
-  CottageOutlined,
-  BusinessOutlined,
-  WorkOutlineTwoTone,
-} from '@mui/icons-material';
-import ApartmentIcon from '@/appIcons/apartment.svg';
-import OfficeIcon from '@/appIcons/office.svg';
-import HomeActive from '@/appIcons/home_active.svg';
-import ApartmentActive from '@/appIcons/apartment_active.svg';
-import OfficeActive from '@/appIcons/office_active.svg';
 
 type Props = {
   element: Vendor;
@@ -89,21 +72,21 @@ const AddressCreate: NextPage<Props> = ({
   } = useForm<any>({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
-      method,
+      method: 'delivery',
       address_type: currentAddressType,
       longitude: ``,
       latitude: ``,
       customer_id: customer.id?.toString(),
-      phone: ``,
-      name: ``,
+      phone: customer.phone,
+      name: customer.name,
       block: ``,
       street: ``,
       house_no: ``,
       floor_no: ``,
       building_no: ``,
       office_no: ``,
-      area_id: ``,
-      area: ``,
+      area_id: customer?.address?.area_id,
+      area: customer?.address?.area,
       city: ``,
       paci: '',
       other_phone: '',
@@ -122,7 +105,6 @@ const AddressCreate: NextPage<Props> = ({
   }, [currentAddressType]);
 
   const handelSaveAddress = async (body: any) => {
-    console.log('body', body);
     await triggerCreateAddress({
       body: {
         address_type: upperCase(body.address_type),
@@ -138,9 +120,10 @@ const AddressCreate: NextPage<Props> = ({
           floor_no: body.floor_no,
           building_no: body.building_no,
           office_no: body.office_no,
+          phone: body.phone,
           area: body.area,
           area_id: body.area_id,
-          additional: body.additional,
+          other_phone: body.other_phone,
           notes: body.notes,
         },
       },
@@ -173,12 +156,9 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    console.log({ body });
-    if (destination.method === 'pickup') {
-      // await checkTimeAvailability();
-    } else {
-      await handelSaveAddress(body);
-    }
+    // if (destination.method === 'delivery') {
+    await handelSaveAddress(body);
+    // }
   };
 
   useEffect(() => {
@@ -301,9 +281,9 @@ const AddressCreate: NextPage<Props> = ({
                 type="text"
                 suppressHydrationWarning={suppressText}
                 {...register('area')}
-                name="city_and_area"
+                name="area"
                 disabled
-                id="city_and_area"
+                id="area"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
                 onFocus={() => router.push(appLinks.selectArea(`guest`))}
@@ -312,9 +292,9 @@ const AddressCreate: NextPage<Props> = ({
                 type="text"
                 suppressHydrationWarning={suppressText}
                 {...register('area_id')}
-                name="city_and_area"
+                name="area_id"
                 disabled
-                id="city_and_area"
+                id="area_id"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white hidden"
                 placeholder={`${t('area_id')}`}
                 onFocus={() => router.push(appLinks.selectArea(`guest`))}
@@ -337,12 +317,12 @@ const AddressCreate: NextPage<Props> = ({
                 )}
               </div>
             </div>
-            {errors?.city?.message && (
+            {errors?.area?.message && errors?.area_id?.message && (
               <span
                 className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('city_is_required')}
+                {t('area_is_required')}
               </span>
             )}
             {errors?.method?.message && (

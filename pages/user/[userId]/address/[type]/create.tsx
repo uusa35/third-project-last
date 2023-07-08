@@ -182,11 +182,9 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    if (destination.method === 'pickup') {
-      // await checkTimeAvailability();
-    } else {
-      await handleSaveAddress(body);
-    }
+    // if (destination.method === 'delivery') {
+    await handleSaveAddress(body);
+    // }
   };
 
   return (
@@ -206,8 +204,6 @@ const AddressCreate: NextPage<Props> = ({
           onSubmit={handleSubmit(onSubmit)}
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
-          {/* <input type="hidden" {...register('customer_id')} /> */}
-
           {/*  phone  */}
           <div className="w-full ">
             <label

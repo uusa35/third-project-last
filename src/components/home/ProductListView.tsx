@@ -30,7 +30,7 @@ const ProductListView: FC<Props> = ({ productCategories }): React.ReactNode => {
   const [firstElement, setFirstElement] = useState<boolean>(true);
 
   const handleUpdate = async (el: any) => {
-    if (el.id) {
+    if (el && el.id) {
       setCurrentId(el.id.toString());
     }
   };
