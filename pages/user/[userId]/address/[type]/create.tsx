@@ -76,15 +76,20 @@ const AddressCreate: NextPage<Props> = ({
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
-      phone: ``,
-      name: ``,
+      phone: '',
+      name: '',
       block: '',
       street: '',
       house_no: '',
       floor_no: '',
       building_no: '',
       office_no: '',
-      area: method === 'delivery' ? destination.name : '',
+      area:
+        method === 'delivery'
+          ? isRTL
+            ? destination.name_ar
+            : destination.name_en
+          : '',
       area_id: method === 'delivery' ? destination.id : '',
       avenue: '',
       paci: '',
@@ -111,7 +116,11 @@ const AddressCreate: NextPage<Props> = ({
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
-      setValue('area', router.query.area);
+      if (router.query.area_id === destination.id) {
+        setValue('area', isRTL ? destination.name_ar : destination.name_en);
+      } else {
+        setValue('area', router.query.area);
+      }
     }
   }, [type]);
 
@@ -191,9 +200,9 @@ const AddressCreate: NextPage<Props> = ({
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
+          edit={false}
           currentAddressType={toUpper(type)}
           userId={userId}
-          url={url}
         />
         {/*  form  */}
         <form

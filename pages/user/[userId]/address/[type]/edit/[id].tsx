@@ -66,8 +66,8 @@ const AddressEdit: NextPage<Props> = ({
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const refForm = useRef<any>();
-  const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
-    useCreateAddressMutation();
+  const [triggerUpdateAddress, { isLoading: AddAddressLoading }] =
+    useUpdateAddressMutation();
   const [
     triggerGetAddressById,
     { data: address, isSuccess: addressByIdSuccess },
@@ -144,8 +144,14 @@ const AddressEdit: NextPage<Props> = ({
         .then(() => {
           if (router.query.area_id) {
             setValue('area_id', router.query.area_id);
-            setValue('area', router.query.area);
-            setValue('city', router.query.city);
+            if (router.query.area_id === destination.id) {
+              setValue(
+                'area',
+                isRTL ? destination.name_ar : destination.name_en
+              );
+            } else {
+              setValue('area', router.query.area);
+            }
           }
         });
     }
@@ -162,8 +168,9 @@ const AddressEdit: NextPage<Props> = ({
   // console.log('address', address?.Data.address.area_id);
 
   const handleSaveAddress = async (body: any) => {
-    await triggerCreateOrUpdateAddress({
+    await triggerUpdateAddress({
       body: {
+        address_id: addressId,
         address_type: upperCase(body.address_type),
         longitude: body.longitude,
         latitude: body.latitude,
@@ -181,7 +188,6 @@ const AddressEdit: NextPage<Props> = ({
           apartment_no: body.apartment_no,
           office_no: body.office_no,
           other_phone: body.other_phone,
-          city: body.area,
           area: body.area,
           area_id: body.area_id,
           notes: body.notes,
@@ -207,9 +213,9 @@ const AddressEdit: NextPage<Props> = ({
           dispatch(setNotes(body.notes));
         }
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          // router.push(`${appLinks.checkout.path}`);
+          router.push(`${appLinks.checkout.path}`);
         } else {
-          // router.push(`${appLinks.home.path}`);
+          router.push(`${appLinks.home.path}`);
         }
       } else {
         if (r.error && r.error.data?.msg) {
@@ -237,7 +243,8 @@ const AddressEdit: NextPage<Props> = ({
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
           userId={userId}
-          url={url}
+          addressId={addressId}
+          edit={true}
           currentAddressType={toUpper(type)}
         />
 

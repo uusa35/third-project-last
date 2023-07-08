@@ -283,26 +283,38 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       if (method === 'delivery') {
         if (isAuth) {
           // go here (selecting address if exist)
+          // cart
           await triggerGetAddresses({ url }, false).then((r: any) => {
             if (r.data && r.data.data && r.data.data.length >= 1) {
+              console.log('r data', r.data.data);
               const areaIds = map(r.data.data, 'address.area_id');
               const sameAreaId = filter(
                 areaIds,
                 (t) => t == destination.id.toString()
               );
-              if (!isEmpty(sameAreaId)) {
-                // done address_area_id === destination.area_id
-                console.log('address has the same area id', first(sameAreaId)); // fetch address setaddres auto to state !!
-                // dispatch(setCustomerAddress(sameAreaId));
-              } else if (!isEmpty(areaIds)) {
-                // adress_area_id !== destination.area_id
-                // has addresses but not same destnation
-                console.log('has address', areaIds);
+              const currentAddressWithTheSameAreaId = first(
+                filter(
+                  r.data.data,
+                  (a: any) => a.address.area_id === destination.id.toString()
+                )
+              );
+
+              if (!isEmpty(currentAddressWithTheSameAreaId)) {
+                dispatch(setCustomerAddress(currentAddressWithTheSameAreaId));
               }
+              // if (!isEmpty(sameAreaId)) {
+              // address_area_id === destination.area_id
+              // console.log('address has the same area id', first(sameAreaId)); // fetch address setaddres auto to state !!
+              // return router.push(appLinks.selectAddress(customer_id));
+              // } else if (!isEmpty(areaIds)) {
+              // adress_area_id !== destination.area_id but has addresses
+              // return router.push(appLinks.selectAddress(customer_id));
+              // }
+              return router.push(appLinks.selectAddress(customer_id));
             } else {
-              // guest
-              console.log('no auth');
-              // auth user has no address.
+              // return router.push(appLinks.createAuthAddress(customer_id,'house'));
+              // no address at all
+              return router.push(appLinks.createAuthAddress(customer_id));
             }
           });
         } else {
