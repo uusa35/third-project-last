@@ -191,9 +191,9 @@ const AddressCreate: NextPage<Props> = ({
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
+          edit={false}
           currentAddressType={toUpper(type)}
           userId={userId}
-          url={url}
         />
         {/*  form  */}
         <form

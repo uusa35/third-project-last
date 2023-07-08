@@ -171,20 +171,19 @@ const AddressSelectionIndex: NextPage<Props> = ({
             </p>
           </div>
         )}
-        {!isNull(nextType) && (
-          <div className="relative -bottom-10 p-2 w-full">
-            <Link
-              href={`${appLinks.createAuthAddress(id, toLower(nextType))}`}
-              className={`${mainBtnClass} flex flex-row justify-center items-center bg-gray-200`}
-              suppressHydrationWarning={suppressText}
-            >
-              <PlusSmallIcon className="w-6 h-6 text-black" />
-              <p className="w-fit text-md text-center mx-2 text-black">
-                {t('add_new_address')}
-              </p>
-            </Link>
-          </div>
-        )}
+
+        <div className="relative -bottom-10 p-2 w-full">
+          <Link
+            href={`${appLinks.createAuthAddress(id)}`}
+            className={`${mainBtnClass} flex flex-row justify-center items-center bg-gray-200`}
+            suppressHydrationWarning={suppressText}
+          >
+            <PlusSmallIcon className="w-6 h-6 text-black" />
+            <p className="w-fit text-md text-center mx-2 text-black">
+              {t('add_new_address')}
+            </p>
+          </Link>
+        </div>
       </div>
     </MainContentLayout>
   );
