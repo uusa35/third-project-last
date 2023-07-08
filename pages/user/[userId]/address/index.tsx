@@ -79,6 +79,7 @@ const AddressIndex: NextPage<Props> = ({
   const [nextType, setNextType] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('from inside address index useEffect');
     if (url) {
       dispatch(setUrl(url));
     }
@@ -191,7 +192,7 @@ const AddressIndex: NextPage<Props> = ({
                         </div>
                         {selectedAddress === address && (
                           <div
-                            className={`pe-5 absolute top-full transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
+                            className={`pe-5 absolute top-0 transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
                               isRTL
                                 ? '-left-1/2 translate-x-[40%]'
                                 : ' left-1/2 -translate-x-[100%]'

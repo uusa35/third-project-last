@@ -72,7 +72,7 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method: 'delivery',
-      address_type: ``,
+      address_type: toUpper(type),
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
@@ -112,7 +112,6 @@ const AddressCreate: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    // setCurrentAddressType(toUpper(type));
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
@@ -125,14 +124,13 @@ const AddressCreate: NextPage<Props> = ({
   }, [type]);
 
   // console.log('type', type);
-  console.log({ errors });
+  // console.log({ errors });
   // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
   // console.log('customer', customer.address);
 
   const handleSaveAddress = async (body: any) => {
-    console.log('body', body);
     await triggerCreateOrUpdateAddress({
       body: {
         address_type: upperCase(body.address_type),
@@ -173,7 +171,8 @@ const AddressCreate: NextPage<Props> = ({
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
           router.push(`${appLinks.checkout.path}`);
         } else {
-          router.push(`${appLinks.home.path}`);
+          router.back();
+          // router.push(`${appLinks.home.path}`);
         }
       } else {
         if (r.error && r.error.data?.msg) {

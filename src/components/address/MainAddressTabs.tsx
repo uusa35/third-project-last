@@ -78,7 +78,6 @@ const MainAddressTabs: FC<Props> = ({
       .then((r) => dispatch(setCustomerAddressType(type)));
   };
 
-  console.log('allTypes', allTypes);
   return (
     <div className="flex mx-3 flex-row justify-center items-start mb-4">
       {map(allTypes, (a, i) => (

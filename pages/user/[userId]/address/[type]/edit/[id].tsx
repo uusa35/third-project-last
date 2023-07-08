@@ -29,10 +29,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase, toUpper, upperCase } from 'lodash';
+import {
+  filter,
+  first,
+  kebabCase,
+  lowerCase,
+  toUpper,
+  upperCase,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { AppQueryResult } from '@/types/queries';
+import { Address, AppQueryResult } from '@/types/queries';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import MainAddressTabs from '@/components/address/MainAddressTabs';
@@ -86,10 +93,10 @@ const AddressEdit: NextPage<Props> = ({
     getValues,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(addressSchema(method, t)),
+    resolver: yupResolver(addressSchema('delivery', t)),
     defaultValues: {
       method: 'delivery',
-      address_type: ``,
+      address_type: toUpper(type),
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
@@ -130,15 +137,21 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
-      triggerGetAddressById({ params: { address_id: addressId }, url }, false)
+      triggerGetAddresses({ url }, false)
         .then((r: any) => {
-          if (r.data && r.data.Data) {
-            reset({
-              ...r.data.Data.address,
-              address_type: r.data.Data.type,
-              customer_id: r.data.Data.customer_id,
-              method: 'delivery',
-            });
+          if (r.data && r.data.data) {
+            const currentAddress: Address = first(
+              filter(r.data.data, (a) => a.id.toString() === addressId)
+            );
+
+            if (currentAddress) {
+              reset({
+                ...currentAddress.address,
+                address_type: currentAddress.type,
+                customer_id: currentAddress.customer_id,
+                method: 'delivery',
+              });
+            }
           }
         })
         .then(() => {
@@ -159,7 +172,6 @@ const AddressEdit: NextPage<Props> = ({
 
   // console.log('currentAddress', currentAddress);
   // console.log({ errors });
-  // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
   // console.log('address ====>', address?.Data);
@@ -172,8 +184,6 @@ const AddressEdit: NextPage<Props> = ({
       body: {
         address_id: addressId,
         address_type: upperCase(body.address_type),
-        longitude: body.longitude,
-        latitude: body.latitude,
         customer_id: userId.toString(),
         address: {
           phone: body.phone,
