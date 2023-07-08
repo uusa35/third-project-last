@@ -109,7 +109,7 @@ const AddressCreate: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    setCurrentAddressType(toUpper(type));
+    // setCurrentAddressType(toUpper(type));
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
@@ -159,7 +159,6 @@ const AddressCreate: NextPage<Props> = ({
             type: `success`,
           })
         );
-        console.log('r.data ==> create', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         if (body.notes) {
           dispatch(setNotes(body.notes));
@@ -194,7 +193,7 @@ const AddressCreate: NextPage<Props> = ({
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
-          currentAddressType={currentAddressType}
+          currentAddressType={toUpper(type)}
           userId={userId}
           url={url}
         />

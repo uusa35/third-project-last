@@ -28,32 +28,11 @@ import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
-import {
-  resetCustomerAddress,
-  setCustomerAddress,
-  setCustomerAddressType,
-  setNotes,
-} from '@/redux/slices/customerSlice';
-import {
-  concat,
-  filter,
-  first,
-  isNull,
-  kebabCase,
-  lowerCase,
-  merge,
-  parseInt,
-  toUpper,
-  upperCase,
-} from 'lodash';
+import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
+import { kebabCase, lowerCase, toUpper, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { AppQueryResult } from '@/types/queries';
-import ApartmentIcon from '@/appIcons/apartment.svg';
-import OfficeIcon from '@/appIcons/office.svg';
-import HomeActive from '@/appIcons/home_active.svg';
-import ApartmentActive from '@/appIcons/apartment_active.svg';
-import OfficeActive from '@/appIcons/office_active.svg';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import MainAddressTabs from '@/components/address/MainAddressTabs';
@@ -149,7 +128,6 @@ const AddressEdit: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    setCurrentAddressType(toUpper(type));
     setValue('address_type', toUpper(type));
   }, [type]);
 
@@ -266,7 +244,7 @@ const AddressEdit: NextPage<Props> = ({
         <MainAddressTabs
           userId={userId}
           url={url}
-          currentAddressType={currentAddressType}
+          currentAddressType={toUpper(type)}
         />
 
         {/*  form  */}
