@@ -267,6 +267,32 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   };
 
+  // check on address in case of auth
+
+  const handleAuthAddress = async () => {
+    await triggerGetAddresses({ url }, false).then((r: any) => {
+      if (r.data && r.data.data && r.data.data.length >= 1) {
+        const areaIds = map(r.data.data, 'address.area_id');
+        const sameAreaId = filter(
+          areaIds,
+          (t) => t == destination.id.toString()
+        );
+        if (!isEmpty(sameAreaId)) {
+          // done address_area_id === destination.area_id
+          console.log('address has the same area id', first(sameAreaId)); // fetch address setaddres auto to state !!
+          // dispatch(setCustomerAddress(sameAreaId));
+        } else if (!isEmpty(areaIds)) {
+          // adress_area_id !== destination.area_id
+          // has addresses but not same destnation
+          console.log('has address', areaIds);
+        }
+      } else {
+        // auth user has no address.
+        router.push(appLinks.createAuthAddress(customer_id, 'delivery'));
+      }
+    });
+  };
+
   const handelContinue = async () => {
     if (isNull(customer_id) && !isAuth) {
       router.push(appLinks.login.path);
@@ -277,42 +303,13 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       // should check on address of user too but nothing in state so check in checkout
       // router.push(appLinks.guestAddress.path);
       // guest mode here ----> Esra should continue this scenario
-      console.log('guest');
+      router.push(appLinks.guestAddress.path);
       // router.push(appLinks.selectArea('guest'));
+    } else if (method === 'delivery' && isAuth && !address.id) {
+      // go here (selecting address if exist)
+      handleAuthAddress();
     } else {
-      if (method === 'delivery') {
-        if (isAuth) {
-          // go here (selecting address if exist)
-          await triggerGetAddresses({ url }, false).then((r: any) => {
-            if (r.data && r.data.data && r.data.data.length >= 1) {
-              const areaIds = map(r.data.data, 'address.area_id');
-              const sameAreaId = filter(
-                areaIds,
-                (t) => t == destination.id.toString()
-              );
-              if (!isEmpty(sameAreaId)) {
-                // done address_area_id === destination.area_id
-                console.log('address has the same area id', first(sameAreaId)); // fetch address setaddres auto to state !!
-                // dispatch(setCustomerAddress(sameAreaId));
-              } else if (!isEmpty(areaIds)) {
-                // adress_area_id !== destination.area_id
-                // has addresses but not same destnation
-                console.log('has address', areaIds);
-              }
-            } else {
-              // guest
-              console.log('no auth');
-              // auth user has no address.
-            }
-          });
-        } else {
-          console.log('else 1');
-          // router.push(appLinks.selectArea('guest'));
-        }
-      } else {
-        console.log('else 3');
-        // router.push(appLinks.checkout.path);
-      }
+      router.push(appLinks.checkout.path);
     }
   };
 
