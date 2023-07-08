@@ -144,8 +144,14 @@ const AddressEdit: NextPage<Props> = ({
         .then(() => {
           if (router.query.area_id) {
             setValue('area_id', router.query.area_id);
-            setValue('area', router.query.area);
-            setValue('city', router.query.city);
+            if (router.query.area_id === destination.id) {
+              setValue(
+                'area',
+                isRTL ? destination.name_ar : destination.name_en
+              );
+            } else {
+              setValue('area', router.query.area);
+            }
           }
         });
     }
@@ -182,7 +188,6 @@ const AddressEdit: NextPage<Props> = ({
           apartment_no: body.apartment_no,
           office_no: body.office_no,
           other_phone: body.other_phone,
-          city: body.area,
           area: body.area,
           area_id: body.area_id,
           notes: body.notes,

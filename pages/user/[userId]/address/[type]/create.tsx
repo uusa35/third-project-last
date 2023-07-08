@@ -84,7 +84,12 @@ const AddressCreate: NextPage<Props> = ({
       floor_no: '',
       building_no: '',
       office_no: '',
-      area: method === 'delivery' ? destination.name : '',
+      area:
+        method === 'delivery'
+          ? isRTL
+            ? destination.name_ar
+            : destination.name_en
+          : '',
       area_id: method === 'delivery' ? destination.id : '',
       avenue: '',
       paci: '',
@@ -111,7 +116,11 @@ const AddressCreate: NextPage<Props> = ({
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
-      setValue('area', router.query.area);
+      if (router.query.area_id === destination.id) {
+        setValue('area', isRTL ? destination.name_ar : destination.name_en);
+      } else {
+        setValue('area', router.query.area);
+      }
     }
   }, [type]);
 
