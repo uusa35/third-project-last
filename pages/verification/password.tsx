@@ -76,10 +76,11 @@ const UserPassword: NextPage<Props> = ({
   );
   const [triggerLogin] = useLoginMutation();
   const [triggerResetPassword] = useResetPasswordMutation();
-  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+  const [triggerGetAddresses, { data: addresses, isLoading  isSuccess }] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
+      isSuccess: boolean;
     }>();
 
   const togglePasswordVisibility = (id: string) => {
@@ -180,7 +181,7 @@ const UserPassword: NextPage<Props> = ({
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));
           triggerGetAddresses(
-            { url, token: r.data.data.token ?? customer.token },
+            { url, api_token: r.data.data.token ?? customer.token },
             false
           ).then((r: any) => {
             if (r && r.data && r.data.data) {
