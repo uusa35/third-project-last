@@ -20,7 +20,7 @@ export type ProductPagination<T> = {
 
 export type Category = {
   id: number;
-  cat_id?: number | string;
+  cat_id: number | string;
   items?: Product[];
   name: string;
   name_ar: string;
@@ -72,6 +72,17 @@ export interface Address {
   longitude?: number | string;
   latitude?: number | string;
   customer_id?: number | string;
+  address: {
+    area: string;
+    area_id: string;
+    notes?: string;
+    street?: string;
+    house_no?: string;
+    city?: string;
+    office_no?: string;
+    building_no?: string;
+    [key: string]: any;
+  }
   [key: string]: any;
 }
 

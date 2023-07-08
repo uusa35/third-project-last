@@ -12,8 +12,9 @@ export const appLinks = {
   home: { path: '/home' },
   login: { path: '/login' },
   userLogin: { path: '/verification/password' },
-  createAuthAddress: (userId: number) => `/user/${userId}/address/create/`,
-  userAddresses: (userId: number) => `/user/${userId}/address/`,
+  createAuthAddress: (userId: string, type: string, params?: string) => `/user/${userId}/address/${type}/create${params !== undefined ? `?${params}` : ``}`,
+  editAuthAddress: (userId: string, addressId: string, type: string, params?: string) => `/user/${userId}/address/${type}/edit/${addressId}${params !== undefined ? `?${params}` : ``}`,
+  userAddresses: (userId: string) => `/user/${userId}/address/`,
   guestAddress: { path: `/guest/address/create` },
   addressMap: { path: '/address/map' },
   cart: { path: '/cart' },
@@ -25,7 +26,7 @@ export const appLinks = {
   categoryProducts: (categoryId: number) => `product/${categoryId}`,
   productShow: (id: number, slug?: string) =>
     `/product/show/${id}?slug=${slug}`,
-  selectArea: { path: '/select/area' },
+  selectArea: (mode: string) => `/select/area${mode && `/${mode}`}`,
   selectBranch: { path: '/select/branch' },
   branchIndex: { path: '/branch' },
   selectTime: (method: 'pickup | delivery') => `/select/${method}/time`,
@@ -92,7 +93,6 @@ export const shadeColor = (color: string, percent: number) => {
   var R = parseInt(color.substring(1, 3), 16);
   var G = parseInt(color.substring(3, 5), 16);
   var B = parseInt(color.substring(5, 7), 16);
-
   R = parseInt((R * (100 + percent)) / 100);
   G = parseInt((G * (100 + percent)) / 100);
   B = parseInt((B * (100 + percent)) / 100);

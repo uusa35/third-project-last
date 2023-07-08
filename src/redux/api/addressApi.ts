@@ -51,11 +51,17 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<UserAddressFields[]>,
       {
         url: string;
+        api_token?: string | undefined;
       }
     >({
-      query: ({ url }) => ({
+      // headers.set('Authorization', `Bearer ${getState().customer.token}`);
+      query: ({ url, api_token }) => ({
         url: `user/address`,
-        headers: { url },
+        method: 'GET',
+        headers: {
+          url,
+          ...(api_token && { 'Authorization': `Bearer ${api_token}` }),
+        },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
@@ -102,7 +108,7 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<UserAddressFields[]>,
       {
         params: {
-          address_id: number;
+          address_id: string;
         };
         url: string;
       }

@@ -125,19 +125,19 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
       if (isToday) {
         days.push({
           day: `today`,
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       } else if (isTomorrow) {
         days.push({
           day: `tomorrow`,
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
         days.push({
           day: day.format('dddd'),
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       }
@@ -381,6 +381,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
           )}
           {isScheduled && selectedHour && (
             <div>
+              <h1 className="text-md lg:text-lg font-extrbold my-4">
+                {t('select_time')}
+              </h1>
               {timings &&
                 timingsSuccess &&
                 isArray(timings.Data) &&

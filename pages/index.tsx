@@ -3,7 +3,7 @@ import MainContentLayout from '@/layouts/MainContentLayout';
 import { setLocale } from '@/redux/slices/localeSlice';
 import { wrapper } from '@/redux/store';
 import { apiSlice } from '@/redux/api';
-import { AppQueryResult } from '@/types/queries';
+import { AppQueryResult, Category } from '@/types/queries';
 import { HomePromoCode, Vendor } from '@/types/index';
 import {
   useGetHomePromocodeQuery,
@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
-import { isEmpty, isNull, map } from 'lodash';
+import { filter, isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/components/widgets/CategoryWidget';
 import { alexandriaFontBold, suppressText } from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
@@ -208,7 +208,10 @@ const Home: NextPage<Props> = ({
                   CategoriesProducts &&
                   !isEmpty(CategoriesProducts.Data) && (
                     <ProductListView
-                      CategoriesProducts={CategoriesProducts.Data}
+                      productCategories={filter(
+                        CategoriesProducts.Data,
+                        (c: Category) => c.items && c.items.length > 0
+                      )}
                     />
                   )
                 )}

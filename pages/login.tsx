@@ -54,6 +54,8 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     { id: 4, icon: <TrackOrderIcon />, text: 'tracking_orders' },
   ];
   const excludedCountries = ['IL'];
+  const [triggerCheckPhone] = useCheckPhoneMutation();
+  const [triggerLogin] = useLoginMutation();
   const filteredCountries = getCountries().filter(
     (country) => !excludedCountries.includes(country)
   );
@@ -79,8 +81,6 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     dispatch(signOut);
   };
 
-  const [triggerCheckPhone] = useCheckPhoneMutation();
-  const [triggerLogin] = useLoginMutation();
   const onSubmit = async (body: any) => {
     const parsedPhoneNumber = parsePhoneNumber(`+${body.phone}`);
     const userPhone = parsedPhoneNumber
@@ -107,6 +107,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       );
     });
   };
+  
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="your_number">
       {/*  no address case */}

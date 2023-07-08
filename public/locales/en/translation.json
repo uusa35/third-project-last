@@ -340,6 +340,7 @@
   "building_no_is_required": "building number is required.",
   "office_no_is_required": "office number is required.",
   "city_is_required": "city is required",
+  "area_is_required": "area is required",
   "street_is_required": "street is required",
   "house_no_is_required": "house no is required",
   "floor_no_is_required": "floor no is required",
@@ -368,5 +369,6 @@
   "cancel": "cancel",
   "sign_in_register_to_add_favourite": "sign in/ register to add favourite",
   "sorry_some_product_not_available_in_this_area": "sorry some product not available in this area",
-  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area."
+  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area.",
+  "add_new_address": "add new address"
 }

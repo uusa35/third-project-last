@@ -107,8 +107,8 @@ export default function CartProduct({
                       </Fragment>
                     ))}
                   {!isEmpty(product.RadioBtnsAddons) &&
-                    map(product.RadioBtnsAddons, (r: RadioBtns) => (
-                      <Fragment key={r.addons.attributeID}>
+                    map(product.RadioBtnsAddons, (r: RadioBtns, i) => (
+                      <Fragment key={i}>
                         <TextTrans
                           key={r.addons.attributeID}
                           className={`bg-[#F3F2F2] text-[#544A45] px-1 text-xxs capitalize rounded-lg`}

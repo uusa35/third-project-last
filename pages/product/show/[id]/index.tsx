@@ -772,7 +772,7 @@ const ProductShow: NextPage<Props> = ({
                     ar={element?.Data?.name_ar}
                     en={element?.Data?.name_en}
                     style={{
-                      maxWidth: '30ch',
+                      maxWidth: '25ch',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',

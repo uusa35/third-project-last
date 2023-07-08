@@ -29,16 +29,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
+  resetCustomerAddress,
   setCustomerAddress,
   setCustomerAddressType,
   setNotes,
 } from '@/redux/slices/customerSlice';
 import {
+  concat,
   filter,
   first,
   isNull,
   kebabCase,
   lowerCase,
+  merge,
   parseInt,
   toUpper,
   upperCase,
@@ -53,17 +56,22 @@ import ApartmentActive from '@/appIcons/apartment_active.svg';
 import OfficeActive from '@/appIcons/office_active.svg';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import MainAddressTabs from '@/components/address/MainAddressTabs';
 
 type Props = {
   element: Vendor;
   url: string;
   userId: string;
+  addressId: string;
+  type: string;
 };
 
-const AddressCreate: NextPage<Props> = ({
+const AddressEdit: NextPage<Props> = ({
   element,
   url,
   userId,
+  addressId,
+  type,
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -80,10 +88,14 @@ const AddressCreate: NextPage<Props> = ({
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const [currentAddressType, setCurrentAddressType] = useState<
     'HOUSE' | 'APARTMENT' | 'OFFICE'
-  >(customer?.address?.type ?? 'HOUSE');
+  >('HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
+  const [
+    triggerGetAddressById,
+    { data: address, isSuccess: addressByIdSuccess },
+  ] = useLazyGetAddressesByIdQuery();
   const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
@@ -95,66 +107,84 @@ const AddressCreate: NextPage<Props> = ({
     setValue,
     control,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
-      method,
-      address_type: currentAddress?.address?.type ?? 'HOUSE',
+      method: 'delivery',
+      address_type: ``,
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
-      phone: customer.phone,
-      name: customer.name,
-      block: currentAddress?.address.block,
-      street: currentAddress?.address.street,
-      house_no: currentAddress?.address.house_no,
-      floor_no: currentAddress?.address.floor_no,
-      building_no: currentAddress?.address.building_no,
-      office_no: currentAddress?.address.office_no,
-      city: currentAddress?.address.city ?? destination?.name,
-      area: currentAddress?.address.area ?? destination?.name,
-      avenue: currentAddress?.address.avenue,
-      paci: currentAddress?.address.paci,
-      additional: currentAddress?.address.additional,
-      notes: currentAddress?.address.notes,
+      phone: '',
+      name: '',
+      block: '',
+      street: '',
+      house_no: '',
+      floor_no: '',
+      building_no: '',
+      appartment_no: '',
+      office_no: '',
+      area: '',
+      area_id: '',
+      avenue: '',
+      paci: '',
+      other_phone: '',
+      notes: '',
     },
   });
+
   const { data: cartItems } = useGetCartProductsQuery({
     userAgent: customer.userAgent,
     area_branch: desObject,
     url,
     PromoCode: promocode,
   });
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
-      triggerGetAddresses({ url }).then((r: any) => {
-        if (r.data) {
-          setCurrentAddresses(r.data.data);
-          const current = first(
-            filter(r.data.data, (a) => a.type === currentAddressType)
-          );
-          if (current?.address) {
-            setCurrentAddress(current);
-          }
-        }
-      });
     }
   }, []);
 
-  useMemo(() => {
-    setValue('address_type', currentAddressType);
-    dispatch(setCustomerAddressType(currentAddressType));
-    if (currentAddresses) {
-      const address = first(
-        filter(currentAddresses, (a) => a.type === toUpper(currentAddressType))
-      );
-      if (address) {
-        setCurrentAddress(address);
-      }
+  useEffect(() => {
+    setCurrentAddressType(toUpper(type));
+    setValue('address_type', toUpper(type));
+  }, [type]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      triggerGetAddressById({ params: { address_id: addressId }, url }, false)
+        .then((r: any) => {
+          if (r.data && r.data.Data) {
+            reset({
+              ...r.data.Data.address,
+              address_type: r.data.Data.type,
+              customer_id: r.data.Data.customer_id,
+              method: 'delivery',
+            });
+          }
+        })
+        .then(() => {
+          if (router.query.area_id) {
+            setValue('area_id', router.query.area_id);
+            setValue('area', router.query.area);
+            setValue('city', router.query.city);
+          }
+        });
     }
-  }, [currentAddressType]);
+  }, [addressId]);
+
+  // console.log('currentAddress', currentAddress);
+  // console.log({ errors });
+  // console.log('method', method);
+  // console.log('destination', destination);
+  // console.log('data ====>', getValues());
+  // console.log('address ====>', address?.Data);
+  // console.log('customer', customer.address.area_id);
+  // console.log('addresses', currentAddresses);
+  // console.log('address', address?.Data.address.area_id);
 
   const handleSaveAddress = async (body: any) => {
     await triggerCreateOrUpdateAddress({
@@ -164,6 +194,8 @@ const AddressCreate: NextPage<Props> = ({
         latitude: body.latitude,
         customer_id: userId.toString(),
         address: {
+          phone: body.phone,
+          name: body.name,
           block: body.block,
           street: body.street,
           house_no: body.house_no,
@@ -171,8 +203,12 @@ const AddressCreate: NextPage<Props> = ({
           paci: body.paci,
           floor_no: body.floor_no,
           building_no: body.building_no,
+          apartment_no: body.apartment_no,
           office_no: body.office_no,
-          additional: body.additional,
+          other_phone: body.other_phone,
+          city: body.area,
+          area: body.area,
+          area_id: body.area_id,
           notes: body.notes,
         },
       },
@@ -185,15 +221,20 @@ const AddressCreate: NextPage<Props> = ({
             type: `success`,
           })
         );
-        // dispatch(setCustomerAddress(r.data.Data));
-        setCurrentAddress(r.data.Data);
+        dispatch(setCustomerAddress(r.data.Data));
+        reset({
+          ...r.data.Data.address,
+          address_type: r.data.Data.type,
+          customer_id: r.data.Data.customer_id,
+          method,
+        });
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          router.push(`${appLinks.checkout.path}`);
+          // router.push(`${appLinks.checkout.path}`);
         } else {
-          router.push(`${appLinks.home.path}`);
+          // router.push(`${appLinks.home.path}`);
         }
       } else {
         if (r.error && r.error.data?.msg) {
@@ -209,11 +250,7 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    if (destination.method === 'pickup') {
-      // await checkTimeAvailability();
-    } else {
-      await handleSaveAddress(body);
-    }
+    await handleSaveAddress(body);
   };
 
   return (
@@ -223,51 +260,17 @@ const AddressCreate: NextPage<Props> = ({
       currentModule="address_details"
     >
       <div className="flex flex-1 flex-col h-full mt-8">
-        <div className="flex mx-3 flex-row justify-center items-start mb-4">
-          <button
-            onClick={() => setCurrentAddressType('HOUSE')}
-            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize `}
-            style={{ borderColor: currentAddressType === 'HOUSE' && color }}
-          >
-            <HomeIcon
-              className={`w-8 h-8 `}
-              color={currentAddressType === 'HOUSE' ? color : `text-stone-400`}
-            />
-            <p>{t('house')}</p>
-          </button>
-          <button
-            onClick={() => setCurrentAddressType('APARTMENT')}
-            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
-            style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
-          >
-            <BuildingOffice2Icon
-              className={`w-8 h-8 `}
-              color={
-                currentAddressType === 'APARTMENT' ? color : `text-stone-400`
-              }
-            />
-            <p>{t('apartment')}</p>
-          </button>
-          <button
-            onClick={() => setCurrentAddressType('OFFICE')}
-            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
-            style={{ borderColor: currentAddressType === 'OFFICE' && color }}
-          >
-            <BriefcaseIcon
-              className={`w-8 h-8 `}
-              color={currentAddressType === 'OFFICE' ? color : `text-stone-400`}
-            />
-            <p>{t('office')}</p>
-          </button>
-        </div>
+        <MainAddressTabs
+          userId={userId}
+          url={url}
+          currentAddressType={currentAddressType}
+        />
 
         {/*  form  */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
-          {/* <input type="hidden" {...register('customer_id')} /> */}
-
           {/*  phone  */}
           <div className="w-full ">
             <label
@@ -285,6 +288,14 @@ const AddressCreate: NextPage<Props> = ({
                 placeholder={`${t('phone_no')}`}
               />
             </div>
+            {errors?.phone && (
+              <span
+                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('phone_is_required')}
+              </span>
+            )}
           </div>
 
           {/*  full_name  */}
@@ -304,11 +315,20 @@ const AddressCreate: NextPage<Props> = ({
                 placeholder={`${t('full_name')}`}
               />
             </div>
+            {errors?.name && (
+              <span
+                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('name_is_required')}
+              </span>
+            )}
           </div>
+
           {/*  city / area   */}
           <div
             className="w-full"
-            onClick={() => router.push(appLinks.selectArea.path)}
+            onClick={() => router.push(appLinks.selectArea(`user_edit`))}
           >
             <label
               suppressHydrationWarning={suppressText}
@@ -321,13 +341,24 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 type="text"
                 suppressHydrationWarning={suppressText}
-                {...register('city')}
-                name="city_and_area"
+                {...register('area')}
+                name="area"
                 disabled
-                id="city_and_area"
+                id="area"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
-                onFocus={() => router.push(appLinks.selectArea.path)}
+                onFocus={() => router.push(appLinks.selectArea(`user_edit`))}
+              />
+              <input
+                type="text"
+                suppressHydrationWarning={suppressText}
+                {...register('area_id')}
+                name="area_id"
+                disabled
+                id="area_id"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white hidden"
+                placeholder={`${t('city_and_area')}`}
+                onFocus={() => router.push(appLinks.selectArea(`user_edit`))}
               />
               <div
                 className={`${
@@ -347,20 +378,12 @@ const AddressCreate: NextPage<Props> = ({
                 )}
               </div>
             </div>
-            {errors?.city?.message && (
+            {(errors?.area?.message || errors?.area_id?.message) && (
               <span
                 className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('city_is_required')}
-              </span>
-            )}
-            {errors?.method?.message && (
-              <span
-                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
-                suppressHydrationWarning={suppressText}
-              >
-                {t('city_is_required')}
+                {t('area_is_required')}
               </span>
             )}
           </div>
@@ -613,17 +636,17 @@ const AddressCreate: NextPage<Props> = ({
   );
 };
 
-export default AddressCreate;
+export default AddressEdit;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, locale, query }) => {
       const url = req.headers.host;
-      // if (query.userId) {
-      //   return {
-      //     notFound: true,
-      //   };
-      // }
+      if (!query.userId || !query.id || !query.type) {
+        return {
+          notFound: true,
+        };
+      }
       const { data: element, isError } = await store.dispatch(
         vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
       );
@@ -637,6 +660,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           element: element.Data,
           userId: query.userId,
+          addressId: query.id,
+          type: query.type,
           url,
         },
       };

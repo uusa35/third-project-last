@@ -18,12 +18,17 @@ type Props = {
   desc?: string;
   buttons?: React.ReactNode;
 };
-const OffLineWidget: FC<Props> = ({ message, img = null, desc='', buttons }): JSX.Element => {
+const OffLineWidget: FC<Props> = ({
+  message,
+  img = null,
+  desc = '',
+  buttons,
+}): JSX.Element => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   return (
     <Suspense>
-      <div className='min-h-screen flex items-center'>
+      <div className="min-h-screen flex items-center">
         <div
           className={`flex w-full flex-col justify-center items-center mt-10 px-4`}
         >
@@ -53,7 +58,12 @@ const OffLineWidget: FC<Props> = ({ message, img = null, desc='', buttons }): JS
             {/* {message} */}
             {t(message)}
           </p>
-          <p className='text-[#544A45] text-center lowercase'>{t(desc)}</p>
+          <p
+            className="text-[#544A45] text-center lowercase"
+            suppressHydrationWarning={suppressText}
+          >
+            {t(desc)}
+          </p>
           {/* <Link
             scroll={true}
             href={'/'}
