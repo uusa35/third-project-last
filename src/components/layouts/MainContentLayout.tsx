@@ -51,11 +51,13 @@ const MainContentLayout: FC<Props> = ({
 }): React.ReactNode => {
   const {
     appSetting: { showHeader, url: appUrl, showFooterElement },
+    customer: { address },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  console.log(address);
 
   useEffect(() => {
     const handleStatusChange = () => {

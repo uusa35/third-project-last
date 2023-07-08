@@ -8,7 +8,7 @@ import { AddressTypes, UserAddressFields, Vendor } from '@/types/index';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
   useLazyGetAddressesQuery,
@@ -52,8 +52,6 @@ const AddressCreate: NextPage<Props> = ({
   const desObject = useAppSelector(destinationHeaderObject);
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
-  const [currentAddressType, setCurrentAddressType] =
-    useState<AddressTypes>('HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -109,7 +107,7 @@ const AddressCreate: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    setCurrentAddressType(toUpper(type));
+    // setCurrentAddressType(toUpper(type));
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
@@ -159,7 +157,6 @@ const AddressCreate: NextPage<Props> = ({
             type: `success`,
           })
         );
-        console.log('r.data ==> create', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         if (body.notes) {
           dispatch(setNotes(body.notes));
@@ -194,7 +191,7 @@ const AddressCreate: NextPage<Props> = ({
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
-          currentAddressType={currentAddressType}
+          currentAddressType={toUpper(type)}
           userId={userId}
           url={url}
         />
@@ -332,7 +329,7 @@ const AddressCreate: NextPage<Props> = ({
           </div>
 
           {/*  house_no  */}
-          {currentAddressType === 'HOUSE' && (
+          {toUpper(type) === 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -362,7 +359,7 @@ const AddressCreate: NextPage<Props> = ({
           )}
 
           {/*  building_no  */}
-          {currentAddressType !== 'HOUSE' && (
+          {toUpper(type) !== 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -393,7 +390,7 @@ const AddressCreate: NextPage<Props> = ({
 
           {/*  floor_no  */}
           {/*  apartment_no  */}
-          {currentAddressType === 'APARTMENT' && (
+          {toUpper(type) === 'APARTMENT' && (
             <>
               {/*  floor_no  */}
               <div className="w-full ">
@@ -453,7 +450,7 @@ const AddressCreate: NextPage<Props> = ({
             </>
           )}
 
-          {currentAddressType === 'OFFICE' && (
+          {toUpper(type) === 'OFFICE' && (
             <>
               {/*  office_no  */}
               <div className="w-full ">

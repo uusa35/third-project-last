@@ -28,32 +28,11 @@ import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
-import {
-  resetCustomerAddress,
-  setCustomerAddress,
-  setCustomerAddressType,
-  setNotes,
-} from '@/redux/slices/customerSlice';
-import {
-  concat,
-  filter,
-  first,
-  isNull,
-  kebabCase,
-  lowerCase,
-  merge,
-  parseInt,
-  toUpper,
-  upperCase,
-} from 'lodash';
+import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
+import { kebabCase, lowerCase, toUpper, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { AppQueryResult } from '@/types/queries';
-import ApartmentIcon from '@/appIcons/apartment.svg';
-import OfficeIcon from '@/appIcons/office.svg';
-import HomeActive from '@/appIcons/home_active.svg';
-import ApartmentActive from '@/appIcons/apartment_active.svg';
-import OfficeActive from '@/appIcons/office_active.svg';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import MainAddressTabs from '@/components/address/MainAddressTabs';
@@ -86,9 +65,6 @@ const AddressEdit: NextPage<Props> = ({
   const desObject = useAppSelector(destinationHeaderObject);
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
-  const [currentAddressType, setCurrentAddressType] = useState<
-    'HOUSE' | 'APARTMENT' | 'OFFICE'
-  >('HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -149,7 +125,6 @@ const AddressEdit: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    setCurrentAddressType(toUpper(type));
     setValue('address_type', toUpper(type));
   }, [type]);
 
@@ -221,7 +196,6 @@ const AddressEdit: NextPage<Props> = ({
             type: `success`,
           })
         );
-        console.log('r.data ==> create', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         reset({
           ...r.data.Data.address,
@@ -264,7 +238,7 @@ const AddressEdit: NextPage<Props> = ({
         <MainAddressTabs
           userId={userId}
           url={url}
-          currentAddressType={currentAddressType}
+          currentAddressType={toUpper(type)}
         />
 
         {/*  form  */}
@@ -418,7 +392,7 @@ const AddressEdit: NextPage<Props> = ({
           </div>
 
           {/*  house_no  */}
-          {currentAddressType === 'HOUSE' && (
+          {toUpper(type) === 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -448,7 +422,7 @@ const AddressEdit: NextPage<Props> = ({
           )}
 
           {/*  building_no  */}
-          {currentAddressType !== 'HOUSE' && (
+          {toUpper(type) !== 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -479,7 +453,7 @@ const AddressEdit: NextPage<Props> = ({
 
           {/*  floor_no  */}
           {/*  apartment_no  */}
-          {currentAddressType === 'APARTMENT' && (
+          {toUpper(type) === 'APARTMENT' && (
             <>
               {/*  floor_no  */}
               <div className="w-full ">
@@ -539,7 +513,7 @@ const AddressEdit: NextPage<Props> = ({
             </>
           )}
 
-          {currentAddressType === 'OFFICE' && (
+          {toUpper(type) === 'OFFICE' && (
             <>
               {/*  office_no  */}
               <div className="w-full ">

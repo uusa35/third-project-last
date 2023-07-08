@@ -83,17 +83,21 @@ const AddressIndex: NextPage<Props> = ({
       dispatch(setUrl(url));
     }
     triggerGetAddresses({ url }, false).then((r: any) => {
-      const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
       if (r && r.data && r.data.data) {
-        const remaingType = first(
-          difference(allTypes, map(r.data.data, 'type'))
-        );
-        if (remaingType) {
-          setNextType(remaingType);
-        }
+        checkAddressesList(r && r.data && r.data.data);
       }
     });
   }, []);
+
+  const checkAddressesList = (addresses: UserAddressFields[]) => {
+    const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
+    if (!isEmpty(addresses)) {
+      const remaingType = first(difference(allTypes, map(addresses, 'type')));
+      if (remaingType) {
+        setNextType(remaingType);
+      }
+    }
+  };
 
   const handelDisplayAddress = (address: any) => {
     if (address && !isUndefined(address) && isObject(address)) {
@@ -101,7 +105,6 @@ const AddressIndex: NextPage<Props> = ({
         !isUndefined(address) &&
         Object.values(address).filter((value) => value !== null);
       const allAddress = addressValues ? addressValues.join(', ') : '';
-
       return allAddress;
     }
   };
@@ -134,9 +137,13 @@ const AddressIndex: NextPage<Props> = ({
             type: `success`,
           })
         );
-        triggerGetAddresses({ url }, false).then(() =>
-          dispatch(resetCustomerAddress(undefined))
-        );
+        triggerGetAddresses({ url }, false)
+          .then((r: any) => {
+            if (r && r.data && r.data.data) {
+              checkAddressesList(r && r.data && r.data.data);
+            }
+          })
+          .then(() => dispatch(resetCustomerAddress(undefined)));
       } else {
         dispatch(
           showToastMessage({
