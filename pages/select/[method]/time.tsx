@@ -381,6 +381,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
           )}
           {isScheduled && selectedHour && (
             <div>
+              <h1 className="text-md lg:text-lg font-extrbold my-4">
+                {t('select_time')}
+              </h1>
               {timings &&
                 timingsSuccess &&
                 isArray(timings.Data) &&
