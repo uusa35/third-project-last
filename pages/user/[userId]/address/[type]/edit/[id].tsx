@@ -155,9 +155,11 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
+      console.log('inside');
       triggerGetAddressById({ params: { address_id: addressId }, url }, false)
         .then((r: any) => {
           if (r.data && r.data.Data) {
+            console.log('rda ======>', r.data.Data);
             reset({
               ...r.data.Data.address,
               address_type: r.data.Data.type,
