@@ -134,7 +134,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         setShowChangeLocModal(true);
       }
     } else {
-      // not changed
       router.back();
     }
   };
@@ -151,7 +150,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       })
     );
     dispatch(setAreaBranchModalStatus(true));
-    triggerGetVendor(
+    await triggerGetVendor(
       {
         lang,
         url,

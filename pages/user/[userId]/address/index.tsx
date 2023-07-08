@@ -105,7 +105,6 @@ const AddressIndex: NextPage<Props> = ({
         !isUndefined(address) &&
         Object.values(address).filter((value) => value !== null);
       const allAddress = addressValues ? addressValues.join(', ') : '';
-
       return allAddress;
     }
   };
