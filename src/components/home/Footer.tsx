@@ -34,7 +34,7 @@ const Footer: FC<Props> = ({ element }) => {
           <TextTrans
             ar={element.name_ar}
             en={element.name_en}
-            className="capitalize text-2xl block w-full font-bold"
+            className="capitalize text-xl block w-full font-bold"
           />
         </Link>
 
@@ -91,7 +91,7 @@ const Footer: FC<Props> = ({ element }) => {
       <div className={`w-full px-3 text-center text-xs bg-white`}>
         <p className=" font-bold">
           {t('rights_reserved')} <TextTrans ar={name_ar} en={name_en} />{' '}
-          {new Date().getFullYear()} @
+          {new Date().getFullYear()} ©
         </p>
         <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
       </div>
