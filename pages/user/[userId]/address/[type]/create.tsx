@@ -159,6 +159,7 @@ const AddressCreate: NextPage<Props> = ({
             type: `success`,
           })
         );
+        console.log('r.data ==> create', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         if (body.notes) {
           dispatch(setNotes(body.notes));
@@ -182,9 +183,7 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    // if (destination.method === 'delivery') {
     await handleSaveAddress(body);
-    // }
   };
 
   return (

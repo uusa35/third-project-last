@@ -45,7 +45,10 @@ import {
   pickBy,
   toLower,
 } from 'lodash';
-import { setCustomerAddress } from '@/redux/slices/customerSlice';
+import {
+  resetCustomerAddress,
+  setCustomerAddress,
+} from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -63,13 +66,7 @@ const AddressIndex: NextPage<Props> = ({
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const {
-    customer: {
-      id,
-      countryCode,
-      name,
-      phone,
-      token: { api_token },
-    },
+    customer: { id, countryCode, name, phone },
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
@@ -85,7 +82,7 @@ const AddressIndex: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url, api_token }, false).then((r: any) => {
+    triggerGetAddresses({ url }, false).then((r: any) => {
       const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
       if (r && r.data && r.data.data) {
         const remaingType = first(
@@ -103,7 +100,6 @@ const AddressIndex: NextPage<Props> = ({
       const addressValues =
         !isUndefined(address) &&
         Object.values(address).filter((value) => value !== null);
-
       const allAddress = addressValues ? addressValues.join(', ') : '';
 
       return allAddress;
@@ -118,7 +114,7 @@ const AddressIndex: NextPage<Props> = ({
     }
   };
 
-  const handleEdit = (address: any) => {
+  const handleEdit = async (address: any) => {
     return router
       .push(appLinks.editAuthAddress(id, address.id, lowerCase(address.type)))
       .then(() => dispatch(setCustomerAddress(address)));
@@ -138,8 +134,9 @@ const AddressIndex: NextPage<Props> = ({
             type: `success`,
           })
         );
-        // console.log({ deleteAddressRes: r });
-        triggerGetAddresses({ url, token }, false);
+        triggerGetAddresses({ url }, false).then(() =>
+          dispatch(resetCustomerAddress(undefined))
+        );
       } else {
         dispatch(
           showToastMessage({

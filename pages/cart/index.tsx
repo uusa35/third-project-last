@@ -11,6 +11,7 @@ import { AppQueryResult } from '@/types/queries';
 import {
   StringIterator,
   filter,
+  first,
   isEmpty,
   isNull,
   isUndefined,
@@ -38,7 +39,10 @@ import { resetPromo, setPromocode } from '@/redux/slices/cartSlice';
 import GuestOrderModal from '@/components/modals/GuestOrderModal';
 import { useRouter } from 'next/router';
 import EmptyCart from '@/components/cart/EmptyCart';
-import { isAuthenticated } from '@/redux/slices/customerSlice';
+import {
+  isAuthenticated,
+  setCustomerAddress,
+} from '@/redux/slices/customerSlice';
 import { NextPage } from 'next';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
@@ -53,13 +57,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const {
     searchParams: { method, destination },
     cart: { enable_promocode, promocode },
-    customer: {
-      id: customer_id,
-      prefrences,
-      userAgent,
-      address,
-      token: { api_token },
-    },
+    customer: { id: customer_id, prefrences, userAgent, address, token },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
@@ -285,28 +283,28 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       if (method === 'delivery') {
         if (isAuth) {
           // go here (selecting address if exist)
-          await triggerGetAddresses({ url, api_token }, false).then(
-            (r: any) => {
-              if (r.data && r.data.data && r.data.data.length >= 1) {
-                const areaIds = map(r.data.data, 'address.area_id');
-                const sameAreaId = filter(
-                  areaIds,
-                  (t) => t == destination.id.toString()
-                );
-                if (!isEmpty(sameAreaId)) {
-                  // same area id
-                } else if (!isEmpty(areaIds)) {
-                  // has addresses but not same destnation
-                  console.log('has address');
-                } else {
-                  // does not have any address
-                  console.log('no address');
-                }
-              } else {
-                // auth user has no address.
+          await triggerGetAddresses({ url }, false).then((r: any) => {
+            if (r.data && r.data.data && r.data.data.length >= 1) {
+              const areaIds = map(r.data.data, 'address.area_id');
+              const sameAreaId = filter(
+                areaIds,
+                (t) => t == destination.id.toString()
+              );
+              if (!isEmpty(sameAreaId)) {
+                // done address_area_id === destination.area_id
+                console.log('address has the same area id', first(sameAreaId)); // fetch address setaddres auto to state !!
+                // dispatch(setCustomerAddress(sameAreaId));
+              } else if (!isEmpty(areaIds)) {
+                // adress_area_id !== destination.area_id
+                // has addresses but not same destnation
+                console.log('has address', areaIds);
               }
+            } else {
+              // guest
+              console.log('no auth');
+              // auth user has no address.
             }
-          );
+          });
         } else {
           console.log('else 1');
           // router.push(appLinks.selectArea('guest'));
