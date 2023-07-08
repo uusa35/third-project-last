@@ -65,9 +65,6 @@ const AddressEdit: NextPage<Props> = ({
   const desObject = useAppSelector(destinationHeaderObject);
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
-  const [currentAddressType, setCurrentAddressType] = useState<
-    'HOUSE' | 'APARTMENT' | 'OFFICE'
-  >('HOUSE');
   const refForm = useRef<any>();
   const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
     useCreateAddressMutation();
@@ -133,11 +130,9 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
-      console.log('inside');
       triggerGetAddressById({ params: { address_id: addressId }, url }, false)
         .then((r: any) => {
           if (r.data && r.data.Data) {
-            console.log('rda ======>', r.data.Data);
             reset({
               ...r.data.Data.address,
               address_type: r.data.Data.type,
@@ -201,7 +196,6 @@ const AddressEdit: NextPage<Props> = ({
             type: `success`,
           })
         );
-        console.log('r.data ==> create', r.data.Data);
         dispatch(setCustomerAddress(r.data.Data));
         reset({
           ...r.data.Data.address,
@@ -398,7 +392,7 @@ const AddressEdit: NextPage<Props> = ({
           </div>
 
           {/*  house_no  */}
-          {currentAddressType === 'HOUSE' && (
+          {toUpper(type) === 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -428,7 +422,7 @@ const AddressEdit: NextPage<Props> = ({
           )}
 
           {/*  building_no  */}
-          {currentAddressType !== 'HOUSE' && (
+          {toUpper(type) !== 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -459,7 +453,7 @@ const AddressEdit: NextPage<Props> = ({
 
           {/*  floor_no  */}
           {/*  apartment_no  */}
-          {currentAddressType === 'APARTMENT' && (
+          {toUpper(type) === 'APARTMENT' && (
             <>
               {/*  floor_no  */}
               <div className="w-full ">
@@ -519,7 +513,7 @@ const AddressEdit: NextPage<Props> = ({
             </>
           )}
 
-          {currentAddressType === 'OFFICE' && (
+          {toUpper(type) === 'OFFICE' && (
             <>
               {/*  office_no  */}
               <div className="w-full ">
