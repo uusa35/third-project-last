@@ -104,6 +104,7 @@ const OrderFailure: NextPage<Props> = ({
               >
                 {t('failure_msg')}
               </p>
+              <p className="text-[#544A45] lg:w-3/4 py-2 text-xs">{t('we_advise_that_saving_the_receipt')}</p>
             </div>
 
             <div className="flex justify-between items-center">

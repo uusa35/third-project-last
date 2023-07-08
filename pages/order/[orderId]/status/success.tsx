@@ -133,7 +133,11 @@ const OrderSuccess: NextPage<Props> = ({
                 >
                   {t('estimated_time')}{' '}
                   <span className="text-[#1A1615] font-bold">
-                    :{' '}{new Date(order.data.delivery_date_time).toLocaleDateString()} {order.data.estimated_time?.from}{' '}
+                    :{' '}
+                    {(order.data.newOrderType === 'delivery_later' ||
+                      order.data.newOrderType === 'pickup_later') &&
+                      new Date(order.data.delivery_date_time).toLocaleDateString()} 
+                      {order.data.estimated_time?.from}{' '}
                     {order.data.estimated_time?.to &&
                       `- ${order.data.estimated_time?.to}`}
                   </span>
@@ -142,9 +146,9 @@ const OrderSuccess: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   className="text-[#544A45] lg:w-3/4 text-sm"
                 >
-                  {t('order_id')}{' '}
-                  <span className="text-[#1A1615] font-bold">
-                    : # {order.data.order_id}
+                  {t('order_id')}:{' '}
+                  <span>
+                    #{order.data.order_id}
                   </span>
                 </p>
               </div>
