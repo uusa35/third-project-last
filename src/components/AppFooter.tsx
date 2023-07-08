@@ -19,7 +19,7 @@ const AppFooter: FC<Props> = ({}): React.ReactNode => {
         {t('rights_reserved')} <TextTrans ar={name_ar} en={name_en} />{' '}
         {new Date().getFullYear()} ©
       </p>
-      <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
+      <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}®</p>
       <p className=" py-1 text-zinc-500 text-[8px]">v {appVersion}</p>
     </footer>
   );

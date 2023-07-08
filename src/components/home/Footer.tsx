@@ -93,7 +93,7 @@ const Footer: FC<Props> = ({ element }) => {
           {t('rights_reserved')} <TextTrans ar={name_ar} en={name_en} />{' '}
           {new Date().getFullYear()} ©
         </p>
-        <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}</p>
+        <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}®</p>
       </div>
     </div>
   );
