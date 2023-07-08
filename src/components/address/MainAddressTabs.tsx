@@ -29,11 +29,17 @@ import { appLinks } from '@/constants/*';
 import { setCustomerAddressType } from '@/redux/slices/customerSlice';
 
 type Props = {
-  currentAddressType: AddressTypes;
+  currentAddressType: string;
   userId: string;
-  url: string;
+  edit: boolean;
+  addressId?: string;
 };
-const MainAddressTabs: FC<Props> = ({ currentAddressType, userId, url }) => {
+const MainAddressTabs: FC<Props> = ({
+  currentAddressType,
+  userId,
+  addressId,
+  edit,
+}) => {
   const { t } = useTranslation();
   const router = useRouter();
   const color = useAppSelector(themeColor);
@@ -49,51 +55,16 @@ const MainAddressTabs: FC<Props> = ({ currentAddressType, userId, url }) => {
       edit: boolean;
     }[]
   >([
-    { id: null, type: 'HOUSE', icon: <HomeIcon />, edit: false },
-    { id: null, type: 'APARTMENT', icon: <BuildingOffice2Icon />, edit: false },
-    { id: null, type: 'OFFICE', icon: <BriefcaseIcon />, edit: false },
+    { id: null, type: 'HOUSE', icon: <HomeIcon />, edit },
+    { id: null, type: 'APARTMENT', icon: <BuildingOffice2Icon />, edit },
+    { id: null, type: 'OFFICE', icon: <BriefcaseIcon />, edit },
   ]);
-
   const [triggerGetAddresses, { data: addresses, isSuccess, isLoading }] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isSuccess: boolean;
       isLoading: boolean;
     }>();
-
-  useMemo(() => {
-    triggerGetAddresses({ url }, false).then((r: any) => {
-      if (r && r.data && r.data.data) {
-        const types: [AddressTypes] | any = difference(
-          map(allTypes, 'type'),
-          map(r.data.data, 'type')
-        );
-        if (types && types.length > 0) {
-          setRemainingTypes(types);
-        }
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
-      const updated = map(allTypes, (a) => {
-        if (isNull(remainingTypes) || remainingTypes.length <= 3) {
-          const currentAddress: any = first(
-            filter(addresses.data, (c) => c.type === a.type)
-          );
-          return {
-            ...a,
-            id: currentAddress ? currentAddress.id : null,
-            edit: true,
-          };
-        } else {
-          return a;
-        }
-      });
-      setAllTypes(updated);
-    }
-  }, [remainingTypes]);
 
   const handleCreateAddress = (type: AddressTypes) => {
     return router
@@ -107,17 +78,14 @@ const MainAddressTabs: FC<Props> = ({ currentAddressType, userId, url }) => {
       .then((r) => dispatch(setCustomerAddressType(type)));
   };
 
-  if (!isSuccess) return null;
-  // console.log('reamining', remainingTypes);
-  // console.log('allTypes', allTypes);
   return (
     <div className="flex mx-3 flex-row justify-center items-start mb-4">
       {map(allTypes, (a, i) => (
         <button
           key={i}
           onClick={() =>
-            a.edit && !isNull(a.id)
-              ? handleEditAddress(a.type, a.id)
+            a.edit && addressId
+              ? handleEditAddress(a.type, addressId)
               : handleCreateAddress(a.type)
           }
           className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize ${
@@ -129,7 +97,7 @@ const MainAddressTabs: FC<Props> = ({ currentAddressType, userId, url }) => {
             className={`w-8 h-8 `}
             color={currentAddressType === a.type ? color : `text-stone-400`}
           />
-          <p>{t(a.type)}</p>
+          <p>{t(lowerCase(a.type))}</p>
         </button>
       ))}
     </div>

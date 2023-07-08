@@ -202,6 +202,14 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                   `area_id=${destination.id}&area=${destination.name}`
                 )
               );
+            case 'user_select':
+              return router.push(
+                appLinks.createAuthAddress(
+                  id,
+                  lowerCase(addressType),
+                  `area_id=${destination.id}&area=${destination.name}`
+                )
+              );
             case 'home':
               return router.push(appLinks.home.path);
             default:

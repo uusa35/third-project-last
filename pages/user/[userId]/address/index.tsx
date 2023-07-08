@@ -79,25 +79,27 @@ const AddressIndex: NextPage<Props> = ({
   const [nextType, setNextType] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('from inside address index useEffect');
     if (url) {
       dispatch(setUrl(url));
     }
     triggerGetAddresses({ url }, false).then((r: any) => {
       if (r && r.data && r.data.data) {
-        checkAddressesList(r && r.data && r.data.data);
+        console.log('r.data', r.data.data);
+        // checkAddressesList(r && r.data && r.data.data);
       }
     });
   }, []);
 
-  const checkAddressesList = (addresses: UserAddressFields[]) => {
-    const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
-    if (!isEmpty(addresses)) {
-      const remaingType = first(difference(allTypes, map(addresses, 'type')));
-      if (remaingType) {
-        setNextType(remaingType);
-      }
-    }
-  };
+  // const checkAddressesList = (addresses: UserAddressFields[]) => {
+  //   const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
+  //   if (!isEmpty(addresses)) {
+  //     const remaingType = first(difference(allTypes, map(addresses, 'type')));
+  //     if (remaingType) {
+  //       setNextType(remaingType);
+  //     }
+  //   }
+  // };
 
   const handelDisplayAddress = (address: any) => {
     if (address && !isUndefined(address) && isObject(address)) {
@@ -139,9 +141,9 @@ const AddressIndex: NextPage<Props> = ({
         );
         triggerGetAddresses({ url }, false)
           .then((r: any) => {
-            if (r && r.data && r.data.data) {
-              checkAddressesList(r && r.data && r.data.data);
-            }
+            // if (r && r.data && r.data.data) {
+            // checkAddressesList(r && r.data && r.data.data);
+            // }
           })
           .then(() => dispatch(resetCustomerAddress(undefined)));
       } else {
@@ -190,7 +192,7 @@ const AddressIndex: NextPage<Props> = ({
                         </div>
                         {selectedAddress === address && (
                           <div
-                            className={`pe-5 absolute top-full transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
+                            className={`pe-5 absolute top-0 transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
                               isRTL
                                 ? '-left-1/2 translate-x-[40%]'
                                 : ' left-1/2 -translate-x-[100%]'
@@ -226,21 +228,19 @@ const AddressIndex: NextPage<Props> = ({
             </p>
           </div>
         )}
-        {!isNull(nextType) && (
-          <div className="relative -bottom-10 p-2 w-full">
-            <Link
-              href={`${appLinks.createAuthAddress(id, toLower(nextType))}`}
-              className={`${mainBtnClass} flex flex-row justify-center items-center`}
-              style={{ backgroundColor: color }}
-              suppressHydrationWarning={suppressText}
-            >
-              <PlusSmallIcon className="w-6 h-6" />
-              <p className="w-fit text-md text-center mx-2">
-                {t('add_address')}
-              </p>
-            </Link>
-          </div>
-        )}
+        {/* {!isNull(nextType) && ( */}
+        <div className="relative -bottom-10 p-2 w-full">
+          <Link
+            href={`${appLinks.createAuthAddress(id, toLower('HOUSE'))}`}
+            className={`${mainBtnClass} flex flex-row justify-center items-center`}
+            style={{ backgroundColor: color }}
+            suppressHydrationWarning={suppressText}
+          >
+            <PlusSmallIcon className="w-6 h-6" />
+            <p className="w-fit text-md text-center mx-2">{t('add_address')}</p>
+          </Link>
+        </div>
+        {/* )} */}
       </div>
     </MainContentLayout>
   );

@@ -70,7 +70,7 @@ export const addressApi = apiSlice.injectEndpoints({
       AppQueryResult<Address>,
       {
         body: {
-          address_id: number;
+          address_id: string;
           address_type: string;
           address: any;
         };
@@ -78,7 +78,7 @@ export const addressApi = apiSlice.injectEndpoints({
       }
     >({
       query: ({ body, url }) => ({
-        url: `updateUserAddress`,
+        url: `user/address/update`,
         method: `POST`,
         headers: { url },
         body,

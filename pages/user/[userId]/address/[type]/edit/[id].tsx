@@ -29,10 +29,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase, toUpper, upperCase } from 'lodash';
+import {
+  filter,
+  first,
+  kebabCase,
+  lowerCase,
+  toUpper,
+  upperCase,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { AppQueryResult } from '@/types/queries';
+import { Address, AppQueryResult } from '@/types/queries';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import MainAddressTabs from '@/components/address/MainAddressTabs';
@@ -66,8 +73,8 @@ const AddressEdit: NextPage<Props> = ({
   const [currentAddress, setCurrentAddress] = useState<any>(null);
   const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const refForm = useRef<any>();
-  const [triggerCreateOrUpdateAddress, { isLoading: AddAddressLoading }] =
-    useCreateAddressMutation();
+  const [triggerUpdateAddress, { isLoading: AddAddressLoading }] =
+    useUpdateAddressMutation();
   const [
     triggerGetAddressById,
     { data: address, isSuccess: addressByIdSuccess },
@@ -86,10 +93,10 @@ const AddressEdit: NextPage<Props> = ({
     getValues,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(addressSchema(method, t)),
+    resolver: yupResolver(addressSchema('delivery', t)),
     defaultValues: {
       method: 'delivery',
-      address_type: ``,
+      address_type: toUpper(type),
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
@@ -130,22 +137,34 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
-      triggerGetAddressById({ params: { address_id: addressId }, url }, false)
+      triggerGetAddresses({ url }, false)
         .then((r: any) => {
-          if (r.data && r.data.Data) {
-            reset({
-              ...r.data.Data.address,
-              address_type: r.data.Data.type,
-              customer_id: r.data.Data.customer_id,
-              method: 'delivery',
-            });
+          if (r.data && r.data.data) {
+            const currentAddress: Address = first(
+              filter(r.data.data, (a) => a.id.toString() === addressId)
+            );
+
+            if (currentAddress) {
+              reset({
+                ...currentAddress.address,
+                address_type: currentAddress.type,
+                customer_id: currentAddress.customer_id,
+                method: 'delivery',
+              });
+            }
           }
         })
         .then(() => {
           if (router.query.area_id) {
             setValue('area_id', router.query.area_id);
-            setValue('area', router.query.area);
-            setValue('city', router.query.city);
+            if (router.query.area_id === destination.id) {
+              setValue(
+                'area',
+                isRTL ? destination.name_ar : destination.name_en
+              );
+            } else {
+              setValue('area', router.query.area);
+            }
           }
         });
     }
@@ -153,7 +172,6 @@ const AddressEdit: NextPage<Props> = ({
 
   // console.log('currentAddress', currentAddress);
   // console.log({ errors });
-  // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
   // console.log('address ====>', address?.Data);
@@ -162,11 +180,10 @@ const AddressEdit: NextPage<Props> = ({
   // console.log('address', address?.Data.address.area_id);
 
   const handleSaveAddress = async (body: any) => {
-    await triggerCreateOrUpdateAddress({
+    await triggerUpdateAddress({
       body: {
+        address_id: addressId,
         address_type: upperCase(body.address_type),
-        longitude: body.longitude,
-        latitude: body.latitude,
         customer_id: userId.toString(),
         address: {
           phone: body.phone,
@@ -181,7 +198,6 @@ const AddressEdit: NextPage<Props> = ({
           apartment_no: body.apartment_no,
           office_no: body.office_no,
           other_phone: body.other_phone,
-          city: body.area,
           area: body.area,
           area_id: body.area_id,
           notes: body.notes,
@@ -207,9 +223,9 @@ const AddressEdit: NextPage<Props> = ({
           dispatch(setNotes(body.notes));
         }
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          // router.push(`${appLinks.checkout.path}`);
+          router.push(`${appLinks.checkout.path}`);
         } else {
-          // router.push(`${appLinks.home.path}`);
+          router.push(`${appLinks.home.path}`);
         }
       } else {
         if (r.error && r.error.data?.msg) {
@@ -237,7 +253,8 @@ const AddressEdit: NextPage<Props> = ({
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
           userId={userId}
-          url={url}
+          addressId={addressId}
+          edit={true}
           currentAddressType={toUpper(type)}
         />
 

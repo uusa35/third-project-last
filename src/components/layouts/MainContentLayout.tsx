@@ -57,7 +57,6 @@ const MainContentLayout: FC<Props> = ({
   const [isOnline, setIsOnline] = useState(true);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  console.log(address);
 
   useEffect(() => {
     const handleStatusChange = () => {

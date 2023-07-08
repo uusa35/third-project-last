@@ -72,19 +72,24 @@ const AddressCreate: NextPage<Props> = ({
     resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method: 'delivery',
-      address_type: ``,
+      address_type: toUpper(type),
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
-      phone: ``,
-      name: ``,
+      phone: '',
+      name: '',
       block: '',
       street: '',
       house_no: '',
       floor_no: '',
       building_no: '',
       office_no: '',
-      area: method === 'delivery' ? destination.name : '',
+      area:
+        method === 'delivery'
+          ? isRTL
+            ? destination.name_ar
+            : destination.name_en
+          : '',
       area_id: method === 'delivery' ? destination.id : '',
       avenue: '',
       paci: '',
@@ -107,23 +112,25 @@ const AddressCreate: NextPage<Props> = ({
   }, []);
 
   useEffect(() => {
-    // setCurrentAddressType(toUpper(type));
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
-      setValue('area', router.query.area);
+      if (router.query.area_id === destination.id) {
+        setValue('area', isRTL ? destination.name_ar : destination.name_en);
+      } else {
+        setValue('area', router.query.area);
+      }
     }
   }, [type]);
 
   // console.log('type', type);
-  console.log({ errors });
+  // console.log({ errors });
   // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
   // console.log('customer', customer.address);
 
   const handleSaveAddress = async (body: any) => {
-    console.log('body', body);
     await triggerCreateOrUpdateAddress({
       body: {
         address_type: upperCase(body.address_type),
@@ -164,7 +171,8 @@ const AddressCreate: NextPage<Props> = ({
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
           router.push(`${appLinks.checkout.path}`);
         } else {
-          router.push(`${appLinks.home.path}`);
+          router.back();
+          // router.push(`${appLinks.home.path}`);
         }
       } else {
         if (r.error && r.error.data?.msg) {
@@ -191,9 +199,9 @@ const AddressCreate: NextPage<Props> = ({
     >
       <div className="flex flex-1 flex-col h-full mt-8">
         <MainAddressTabs
+          edit={false}
           currentAddressType={toUpper(type)}
           userId={userId}
-          url={url}
         />
         {/*  form  */}
         <form
