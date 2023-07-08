@@ -178,14 +178,13 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           const currentMode = query.mode[0];
           switch (currentMode) {
             case 'guest':
-              return router.push(appLinks.guestAddress.path).then(() =>
-                dispatch(
-                  setCustomerAddressArea({
-                    area: destination.name,
-                    area_id: destination.id,
-                  })
-                )
-              );
+              dispatch(
+                setCustomerAddressArea({
+                  area: destination.name,
+                  area_id: destination.id,
+                })
+              )
+              return router.push(appLinks.guestAddress.path);
             case 'user_create':
               return router.push(
                 appLinks.createAuthAddress(
