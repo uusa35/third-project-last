@@ -311,7 +311,7 @@ const OrderTrack: NextPage<Props> = ({
                     <div className="text-base font-bold">
                       <TextTrans
                         ar={`${p.item_ar} x${p.quantity}`}
-                        en={`${p.item_en} x${p.quantity} lsdkjf dlskjf dslfj dslfj`}
+                        en={`${p.item_en} x${p.quantity}`}
                         length={30}
                       />
                     </div>
@@ -353,14 +353,25 @@ const OrderTrack: NextPage<Props> = ({
                     {currentOrder?.subtotal} {t('kd')}
                   </div>
                 </div>
-
                 {/* delivery_fees */}
-                <div className="flex flex-row justify-between items-center">
-                  <div className="">{t('delivery_fees')}</div>
-                  <div className="">
-                    {currentOrder?.delivery_fees} {t('kd')}
+                {currentOrder?.delivery_fees && (
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="">{t('delivery_fees')}</div>
+                    <div className="">
+                      {currentOrder?.delivery_fees} {t('kd')}
+                    </div>
                   </div>
-                </div>
+                )}
+                {/* discount */}
+                {currentOrder?.discount && (
+                  <div className="flex flex-row justify-between items-center">
+                    <div className="">{t('discount')}</div>
+                    <div className="">
+                      {currentOrder?.discount} {t('kd')}
+                    </div>
+                  </div>
+                )}
+
                 {/* total */}
                 <div className="flex flex-row justify-between items-center">
                   <div className="text-lg font-bold">{t('total')}</div>

@@ -73,6 +73,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
     SetShowModal(true);
   };
 
+  if (!vendorSuccess) return <></>;
   return (
     <Suspense>
       <MainHead
@@ -134,7 +135,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                     className={`flex flex-row space-x-3 justify-center items-center`}
                   >
                     <MinChargeIcon />
-                    <span className="text-lg px-2">
+                    <span className="text-md lg:text-lg px-2">
                       {t('min_order_with_delivery')}
                     </span>
                   </div>
@@ -150,7 +151,9 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <AccessTimeIcon />
-                  <span className="text-lg px-2">{t('opening_hours')}</span>
+                  <span className="text-md lg:text-lg px-2">
+                    {t('opening_hours')}
+                  </span>
                 </div>
                 <div className={`text-lg`}>
                   {vendorElement?.Data?.WorkHours}
@@ -162,7 +165,9 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <PayemtOptionsIcon />
-                  <span className="text-lg px-2">{t('payment_options')}</span>
+                  <span className="text-md lg:text-lg px-2">
+                    {t('payment_options')}
+                  </span>
                 </div>
                 <div className="flex justify-center">
                   {vendorElement?.Data?.Payment_Methods.visa === 1 && (
@@ -189,7 +194,9 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <ContactUsIcon />
-                  <span className="text-lg px-2">{t('contact_us')}</span>
+                  <span className="text-md lg:text-lg px-2">
+                    {t('contact_us')}
+                  </span>
                 </div>
                 <div className="flex justify-center items-end">
                   {vendorElement?.Data?.facebook && (

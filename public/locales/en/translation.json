@@ -340,6 +340,7 @@
   "building_no_is_required": "building number is required.",
   "office_no_is_required": "office number is required.",
   "city_is_required": "city is required",
+  "area_is_required": "area is required",
   "street_is_required": "street is required",
   "house_no_is_required": "house no is required",
   "floor_no_is_required": "floor no is required",
@@ -372,5 +373,6 @@
   "knet": "knet",
   "visa": "visa",
   "back_to_store": "back to store",
-  "we_advise_that_saving_the_receipt": "we advise that saving the receipt"
+  "we_advise_that_saving_the_receipt": "we advise that saving the receipt",
+  "add_new_address": "add new address"
 }

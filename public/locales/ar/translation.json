@@ -312,6 +312,7 @@
   "the_password_you_entered_is_incorrect": "كلمة المرور التي قمت بإدخالها غير صحيحة",
   "building_no_is_required": "رقم المبنى مطلوب",
   "city_is_required": "المدينة مطلوبة",
+  "area_is_required": "المنطقة مطلوبة",
   "street_is_required": "الشارع مطلوب",
   "house_no_is_required": "رقم المنزل مطلوب",
   "floor_no_is_required": "رقم الطابق مطلوب",
@@ -342,8 +343,8 @@
   "wednesday": "الأربعاء",
   "thursday": "الخميس",
   "friday": "الجمعة",
-  "the_date_must_be_a_date_after_yesterday":".يجب ان يكون التاريخ بعد تاريخ اليوم",
-  "time_must_be_equal_or_after_time_now":"يجب ان يكون الوقت المحدد صحيح",
+  "the_date_must_be_a_date_after_yesterday": ".يجب ان يكون التاريخ بعد تاريخ اليوم",
+  "time_must_be_equal_or_after_time_now": "يجب ان يكون الوقت المحدد صحيح",
   "cancel": "إلغاء",
   "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة",
   "sorry_some_product_not_available_in_this_area": "بعض المنتجات غير متوفرة في المنطقة المختارة.",
@@ -356,5 +357,6 @@
   "knet": "كي نت",
   "visa": "فيزا",
   "back_to_store": "العودة إلى المتجر",
-  "we_advise_that_saving_the_receipt": "ننصح بحفظ الإيصال"
+  "we_advise_that_saving_the_receipt": "ننصح بحفظ الإيصال",
+  "add_new_address": "اضافة عنوان جديد"
 }

@@ -17,6 +17,8 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
+      phone: yup.string().min(0).max(999999999999),
+      name: yup.string().required(),
       // block: yup
       //   .string()
       //   .max(100)

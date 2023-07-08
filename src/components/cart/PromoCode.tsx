@@ -15,10 +15,7 @@ type Props = {
   handelApplyPromoCode: (value: string | undefined) => void;
 };
 
-const PromoCode:FC<Props> = ({
-  url,
-  handelApplyPromoCode = () => {},
-}) => {
+const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
   const { t } = useTranslation();
   const {
     cart: { promocode, enable_promocode },
@@ -47,9 +44,7 @@ const PromoCode:FC<Props> = ({
   // remove this part later line 81
   return (
     <div>
-      <p className={`mt-5 ${alexandriaFontMeduim}`}>
-        {t('promotions')}
-      </p>
+      <p className={`mt-5 ${alexandriaFontMeduim}`}>{t('promotions')}</p>
       <div className="flex items-center  gap-x-3 text-sm bg-[#F5F5F5] text-[#877D78] py-2 px-3 rounded-md my-2">
         <div className={`flex items-center gap-x-1 w-full ${alexandriaFont}`}>
           <PromotionIcon />
@@ -73,9 +68,10 @@ const PromoCode:FC<Props> = ({
       <div className={`flex flex-wrap gap-3 pb-4 border-b ${alexandriaFont}`}>
         {promoCodesSuccess && promoCodes && !isEmpty(promoCodes.data) && (
           <>
-            {promoCodes.data.map((prmocode_item) => {
+            {promoCodes.data.map((prmocode_item, i) => {
               return (
                 <div
+                  key={i}
                   onClick={() => {
                     setPromoCodeVal(prmocode_item);
                   }}
@@ -99,5 +95,5 @@ const PromoCode:FC<Props> = ({
       </div>
     </div>
   );
-}
+};
 export default PromoCode;

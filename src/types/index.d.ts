@@ -461,3 +461,5 @@ export interface StaticPage {
   content_en: string;
   content_ar: string;
 }
+
+export type AddressTypes = 'HOUSE' | 'OFFICE' | 'APARTMENT';

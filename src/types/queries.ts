@@ -72,6 +72,17 @@ export interface Address {
   longitude?: number | string;
   latitude?: number | string;
   customer_id?: number | string;
+  address: {
+    area: string;
+    area_id: string;
+    notes?: string;
+    street?: string;
+    house_no?: string;
+    city?: string;
+    office_no?: string;
+    building_no?: string;
+    [key: string]: any;
+  }
   [key: string]: any;
 }
 
