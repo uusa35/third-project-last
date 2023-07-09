@@ -43,6 +43,8 @@ import {
 import { setCustomer, setCustomerAddress } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
+import { destinationId } from '@/redux/slices/searchParamsSlice';
+import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 
 type Props = {
   element: Vendor;
@@ -57,7 +59,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const destID = useAppSelector(destinationId);
   const {
     customer: {
       id,
@@ -97,7 +99,15 @@ const AddressSelectionIndex: NextPage<Props> = ({
 
   const handleSelectAddress = (address: Address) => {
     dispatch(setCustomerAddress(address));
-    // redirection here
+
+    if (address.area_id === destID) {
+      // set customer assress
+      // destid === addressid
+      dispatch(setCustomerAddress(address));
+    } else {
+      // destid !== addressid
+      router.push(appLinks.selectArea('select_address'));
+    }
   };
 
   if (!isSuccess) return <></>;
