@@ -162,14 +162,12 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       router.push(appLinks.login.path);
     } else if (isNull(destID) || prefrences.type === '') {
       dispatch(setAreaBranchModalStatus(true));
-    } else if (method === 'delivery' && !isAuth && !addressID) {
-      router.push(appLinks.guestAddress.path);
     } else if (
       method === 'delivery' &&
-      isAuth &&
       (!addressID || (addressID && addressID !== destID.toString()))
     ) {
-      router.push(appLinks.selectAddress(customer_id));
+      if (isAuth) router.push(appLinks.selectAddress(customer_id));
+      else router.push(appLinks.guestAddress.path);
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({
