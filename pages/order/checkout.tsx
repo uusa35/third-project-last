@@ -144,17 +144,17 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   }, [isSuccess]);
 
   // get user address
-  const { data: UserAddress, isSuccess: UserAddressSuccess } =
-    useGetAddressesByTypeQuery<{
-      data: AppQueryResult<Address>;
-      isSuccess: boolean;
-    }>(
-      {
-        type,
-        url,
-      },
-      { refetchOnMountOrArgChange: true, skip: !isAuth }
-    );
+  // const { data: UserAddress, isSuccess: UserAddressSuccess } =
+  //   useGetAddressesByTypeQuery<{
+  //     data: AppQueryResult<Address>;
+  //     isSuccess: boolean;
+  //   }>(
+  //     {
+  //       type,
+  //       url,
+  //     },
+  //     { refetchOnMountOrArgChange: true, skip: !isAuth }
+  //   );
 
   // create order
   const handleCreateOrder = async () => {
@@ -167,9 +167,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     } else if (
       method === 'delivery' &&
       isAuth &&
-      (!UserAddressSuccess || !UserAddress.data || !UserAddress.data.id)
+      (!addressID || (addressID && addressID !== destID.toString()))
     ) {
-      router.push(appLinks.createAuthAddress(customer_id));
+      router.push(appLinks.selectAddress(customer_id));
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({
@@ -304,11 +304,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
             {/* orderDetails */}
 
             <div className="p-5 border-b-4">
-              {isAuth && UserAddressSuccess && UserAddress.data ? (
-                <OrderDetails UserAddress={UserAddress.data} />
-              ) : (
-                <OrderDetails />
-              )}
+              <OrderDetails />
             </div>
             {/* items */}
             <div className=" p-5 border-b-4">

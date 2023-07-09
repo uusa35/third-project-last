@@ -1,5 +1,6 @@
 import NoFoundImage from '@/appImages/not_found.png';
 import { filter, map, toString } from 'lodash';
+import i18n from './i18n/config';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const appVersion = `0.0.2`;
 // export const xDomain = `next2-q.testbedbynd.com`;
@@ -12,8 +13,19 @@ export const appLinks = {
   home: { path: '/home' },
   login: { path: '/login' },
   userLogin: { path: '/verification/password' },
-  createAuthAddress: (userId: string, type?: string, params?: string) => `/user/${userId}/address/${type ?? 'house'}/create${params !== undefined ? `?${params}` : ``}`,
-  editAuthAddress: (userId: string, addressId: string, type: string, params?: string) => `/user/${userId}/address/${type}/edit/${addressId}${params !== undefined ? `?${params}` : ``}`,
+  createAuthAddress: (userId: string, type?: string, params?: string) =>
+    `/user/${userId}/address/${type ?? 'house'}/create${
+      params !== undefined ? `?${params}` : ``
+    }`,
+  editAuthAddress: (
+    userId: string,
+    addressId: string,
+    type: string,
+    params?: string
+  ) =>
+    `/user/${userId}/address/${type}/edit/${addressId}${
+      params !== undefined ? `?${params}` : ``
+    }`,
   userAddresses: (userId: string) => `/user/${userId}/address/`,
   selectAddress: (userId: string) => `/user/${userId}/address/select`,
   guestAddress: { path: `/guest/address/create` },
@@ -140,7 +152,14 @@ export const displayUserAddress = (address: any) => {
   formattedAddress = filter(
     map(
       address,
-      (value, key) => value !== null && key !== `id` && `${key} : ${value}  `
+      (value, key) =>
+        value !== null &&
+        key !== `id` &&
+        key !== `area_id` &&
+        key !== `city` &&
+        key !== `phone` &&
+        key !== `name` &&
+        `${key} : ${value}  `
     ),
     (a) => a
   );
@@ -153,4 +172,3 @@ export const displayUserAddress = (address: any) => {
 export const whatsappUrl = `https://api.whatsapp.com/send?phone=`;
 export const googleMapUrl = (lang: string, lat: string) =>
   `http://maps.google.com/maps?z=18&q=${lang},${lat}`;
-

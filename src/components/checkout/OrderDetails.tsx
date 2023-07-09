@@ -26,10 +26,9 @@ import { UserAddressFields } from '@/types/index';
 
 type Props = {
   OrderStatus?: boolean;
-  UserAddress?: UserAddressFields;
 };
 
-const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
+const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
   const router = useRouter();
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -41,7 +40,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
       name,
       phone,
       notes,
-      address: GuestAddress,
+      address: CustomerAddress,
       address: { type: address_type },
       prefrences,
     },
@@ -110,8 +109,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
 
   return (
     <div>
-      {(method === 'delivery' && GuestAddress.id && !isAuth) ||
-      (method === 'delivery' && UserAddress.id && isAuth) ||
+      {(method === 'delivery' && CustomerAddress.id) ||
       (method === 'pickup' && destination.id) ? (
         <DetailComponent
           onclick={() =>
@@ -147,8 +145,8 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
           p3={
             method === 'delivery'
               ? isAuth
-                ? displayUserAddress(UserAddress.address)
-                : displayUserAddress(GuestAddress)
+                ? displayUserAddress(CustomerAddress)
+                : displayUserAddress(CustomerAddress)
               : destination.location
           }
         />
@@ -202,8 +200,8 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
           p1="special_remarks"
           p2={
             isAuth
-              ? `${UserAddress?.address?.notes || 'no_notes_added'}`
-              : `${GuestAddress.notes || 'no_notes_added'}`
+              ? `${CustomerAddress.notes || 'no_notes_added'}`
+              : `${CustomerAddress.notes || 'no_notes_added'}`
           }
         />
       )}
