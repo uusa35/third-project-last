@@ -173,7 +173,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       })
       .then((r: any) => {
         if (query.mode && query.mode[0]) {
-          console.log('query', query.mode[0]);
           const currentMode = query.mode[0];
           switch (currentMode) {
             case 'guest':

@@ -79,13 +79,11 @@ const AddressIndex: NextPage<Props> = ({
   const [nextType, setNextType] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('from inside address index useEffect');
     if (url) {
       dispatch(setUrl(url));
     }
     triggerGetAddresses({ url }, false).then((r: any) => {
       if (r && r.data && r.data.data) {
-        console.log('r.data', r.data.data);
         // checkAddressesList(r && r.data && r.data.data);
       }
     });
@@ -158,7 +156,6 @@ const AddressIndex: NextPage<Props> = ({
   };
 
   if (!isSuccess) return <></>;
-  console.log('address', addresses);
 
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
