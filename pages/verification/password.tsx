@@ -76,7 +76,7 @@ const UserPassword: NextPage<Props> = ({
   );
   const [triggerLogin] = useLoginMutation();
   const [triggerResetPassword] = useResetPasswordMutation();
-  const [triggerGetAddresses, { data: addresses, isLoading  isSuccess }] =
+  const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
     useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;

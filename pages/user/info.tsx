@@ -188,7 +188,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
 
                 <div className="relative pb-4 mt-5">
                   <input
-                    type={`${passwordVisible ? 'text' : 'password'}`}
+                    type={passwordVisible ? 'text' : 'password'}
                     id="password"
                     {...register('password')}
                     className="block px-2.5 pb-2.5 pt-5 w-full text-black bg-gray-50 border-b-[2px] appearance-none focus:outline-none focus:ring-0  peer"

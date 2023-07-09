@@ -203,7 +203,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
           p2={
             isAuth
               ? `${UserAddress?.address?.notes || 'no_notes_added'}`
-              : `${notes || 'no_notes_added'}`
+              : `${GuestAddress.notes || 'no_notes_added'}`
           }
         />
       )}

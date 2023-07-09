@@ -84,7 +84,6 @@ const AddressIndex: NextPage<Props> = ({
     }
     triggerGetAddresses({ url }, false).then((r: any) => {
       if (r && r.data && r.data.data) {
-        console.log('r.data', r.data.data);
         // checkAddressesList(r && r.data && r.data.data);
       }
     });
@@ -157,7 +156,6 @@ const AddressIndex: NextPage<Props> = ({
   };
 
   if (!isSuccess) return <></>;
-  console.log('address', addresses);
 
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
@@ -191,7 +189,7 @@ const AddressIndex: NextPage<Props> = ({
                         </div>
                         {selectedAddress === address && (
                           <div
-                            className={`pe-5 absolute top-full transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
+                            className={`pe-5 absolute top-0 transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
                               isRTL
                                 ? '-left-1/2 translate-x-[40%]'
                                 : ' left-1/2 -translate-x-[100%]'
