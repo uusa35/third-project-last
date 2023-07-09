@@ -20,7 +20,7 @@ import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
 import { filter, isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/components/widgets/CategoryWidget';
-import { alexandriaFontBold, suppressText } from '@/constants/*';
+import { alexandriaFontBold, isLocal, suppressText } from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
@@ -32,7 +32,7 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
-import { setUrl } from '@/redux/slices/appSettingSlice';
+import { setLastHomeModalShownTime, setUrl } from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
 import { NextPage } from 'next';
@@ -52,12 +52,15 @@ const Home: NextPage<Props> = ({
   const {
     locale: { lang },
     searchParams: { destination, method },
+    appSetting: { lastHomeModalShownTime }
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
   const router = useRouter();
   const [openPromoModal, setOpenPromoModal] = useState(true);
+  const currentTime = Date.now();
+  const shouldDisplayModal = currentTime > lastHomeModalShownTime + (isLocal ? 60 * 1000 : 24 * 60 * 60 * 1000);
 
   useEffect(() => {
     if (!isNull(url)) {
@@ -225,10 +228,8 @@ const Home: NextPage<Props> = ({
                 !isEmpty(homePromocodeData?.data) && (
                   <HomeModal
                     data={homePromocodeData?.data}
-                    isOpen={openPromoModal}
-                    onRequestClose={() => {
-                      setOpenPromoModal(false);
-                    }}
+                    isOpen={shouldDisplayModal}
+                    onRequestClose={() => dispatch(setLastHomeModalShownTime(currentTime))}
                   />
                 )}
             </>

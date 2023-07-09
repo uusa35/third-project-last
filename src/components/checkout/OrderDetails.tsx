@@ -117,7 +117,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false, UserAddress = {} }) => {
           onclick={() =>
             method === 'delivery'
               ? isAuth
-                ? router.push(appLinks.userAddresses(id))
+                ? router.push(appLinks.selectAddress(id))
                 : router.push(appLinks.guestAddress.path)
               : router.push(appLinks.selectBranch.path)
           }

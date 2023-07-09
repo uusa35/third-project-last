@@ -24,6 +24,7 @@ const initialState: appSetting = {
     type: `default`,
   },
   currentModule: `home`,
+  lastHomeModalShownTime: null,
 };
 
 export const appSettingSlice = createSlice({
@@ -227,6 +228,9 @@ export const appSettingSlice = createSlice({
         previousUrl: { ...state.previousUrl, prevRouterLocale: action.payload },
       };
     },
+    setLastHomeModalShownTime: (state, action: PayloadAction<number>) => {
+      state.lastHomeModalShownTime = action.payload;
+    },
   },
 
 });
@@ -257,4 +261,5 @@ export const {
   resetShowFooterElement,
   setPreviousUrl,
   changePreviousUrlLocale,
+  setLastHomeModalShownTime,
 } = appSettingSlice.actions;
