@@ -69,7 +69,7 @@ const AddressCreate: NextPage<Props> = ({
     getValues,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(addressSchema(method, t)),
+    resolver: yupResolver(addressSchema('method', t)),
     defaultValues: {
       method: 'delivery',
       address_type: toUpper(type),
@@ -89,8 +89,8 @@ const AddressCreate: NextPage<Props> = ({
           ? isRTL
             ? destination.name_ar
             : destination.name_en
-          : '',
-      area_id: method === 'delivery' ? destination.id : '',
+          : null,
+      area_id: method === 'delivery' ? destination.id : null,
       avenue: '',
       paci: '',
       other_phone: '',
@@ -169,9 +169,9 @@ const AddressCreate: NextPage<Props> = ({
           dispatch(setNotes(body.notes));
         }
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          router.push(`${appLinks.checkout.path}`);
+          // router.push(`${appLinks.checkout.path}`);
         } else {
-          router.back();
+          // router.back();
           // router.push(`${appLinks.home.path}`);
         }
       } else {
