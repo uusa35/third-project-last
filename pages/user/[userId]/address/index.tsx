@@ -89,16 +89,6 @@ const AddressIndex: NextPage<Props> = ({
     });
   }, []);
 
-  // const checkAddressesList = (addresses: UserAddressFields[]) => {
-  //   const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
-  //   if (!isEmpty(addresses)) {
-  //     const remaingType = first(difference(allTypes, map(addresses, 'type')));
-  //     if (remaingType) {
-  //       setNextType(remaingType);
-  //     }
-  //   }
-  // };
-
   const handelDisplayAddress = (address: any) => {
     if (address && !isUndefined(address) && isObject(address)) {
       const addressValues =

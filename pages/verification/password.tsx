@@ -148,10 +148,15 @@ const UserPassword: NextPage<Props> = ({
               );
               dispatch(setCustomer(r.data.data.user));
               dispatch(signIn(r.data.data.token));
-              if (r.data && r.data.user && r.data.user.address) {
+              if (
+                r.data &&
+                r.data.data &&
+                r.data.data.user &&
+                r.data.data.user.address
+              ) {
                 const address = first(
                   filter(
-                    r.data.data.user.address,
+                    r.data.data.data.user.address,
                     (a) => a.address.area_id == destination.id.toString()
                   )
                 );
@@ -191,7 +196,12 @@ const UserPassword: NextPage<Props> = ({
         } else {
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));
-          if (r.data && r.data.user && r.data.user.address) {
+          if (
+            r.data &&
+            r.data.data &&
+            r.data.data.user &&
+            r.data.data.user.address
+          ) {
             const address = first(
               filter(
                 r.data.data.user.address,

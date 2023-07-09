@@ -101,8 +101,8 @@ const UpComingOrders: FC = () => {
                   {t('your_upcoming_order')}
                 </p>
                 <Slider {...settings}>
-                  {data?.data.map((order) => (
-                    <div className="px-2 " dir={dir}>
+                  {data?.data.map((order, i) => (
+                    <div className="px-2 " dir={dir} key={i}>
                       <div
                         className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full h-auto md:h-[150px]`}
                       >
