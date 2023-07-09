@@ -39,6 +39,7 @@ import {
   isUndefined,
   map,
   toLower,
+  upperFirst,
 } from 'lodash';
 import { setCustomer, setCustomerAddress } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
@@ -98,14 +99,19 @@ const AddressSelectionIndex: NextPage<Props> = ({
   };
 
   const handleSelectAddress = (address: Address) => {
-    dispatch(setCustomerAddress(address));
-
-    if (address.area_id === destID) {
+    console.log({ address });
+    if (address.address.area_id === destID.toString()) {
       // set customer assress
       // destid === addressid
       dispatch(setCustomerAddress(address));
     } else {
       // destid !== addressid
+      dispatch(
+        showToastMessage({
+          content: 'select_area_to_mach_your_selected_address',
+          type: `info`,
+        })
+      );
       router.push(appLinks.selectArea('select_address'));
     }
   };
@@ -181,6 +187,16 @@ const AddressSelectionIndex: NextPage<Props> = ({
               {t('add_new_address')}
             </p>
           </Link>
+
+          <button
+            disabled={!addressId}
+            onClick={() => router.push(appLinks.checkout.path)}
+            className={`${mainBtnClass} mt-4`}
+            style={{ backgroundColor: color }}
+            suppressHydrationWarning={suppressText}
+          >
+            {`${upperFirst(`${t('continue')}`)}`}
+          </button>
         </div>
       </div>
     </MainContentLayout>
