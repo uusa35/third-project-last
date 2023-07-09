@@ -65,7 +65,7 @@ const UserPassword: NextPage<Props> = ({
   const {
     customer,
     locale: { isRTL },
-    searchParams: { destination }
+    searchParams: { destination },
   } = useAppSelector((state) => state);
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState<{
@@ -148,6 +148,22 @@ const UserPassword: NextPage<Props> = ({
               );
               dispatch(setCustomer(r.data.data.user));
               dispatch(signIn(r.data.data.token));
+              if (
+                r.data &&
+                r.data.data &&
+                r.data.data.user &&
+                r.data.data.user.address
+              ) {
+                const address = first(
+                  filter(
+                    r.data.data.data.user.address,
+                    (a) => a.address.area_id == destination.id.toString()
+                  )
+                );
+                if (address) {
+                  dispatch(setCustomerAddress(address));
+                }
+              }
               router.push('/');
             }
           });
@@ -178,26 +194,25 @@ const UserPassword: NextPage<Props> = ({
             })
           );
         } else {
-          console.log('user', r.data.data);
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));
-          triggerGetAddresses(
-            { url, api_token: r.data.data.token ?? customer.token },
-            false
-          ).then((r: any) => {
-            if (r && r.data && r.data.data && r.data.data.length >= 1 && !isNull(destination)) {
-              const address = filter(
-                r.data.data,
+          if (
+            r.data &&
+            r.data.data &&
+            r.data.data.user &&
+            r.data.data.user.address
+          ) {
+            const address = first(
+              filter(
+                r.data.data.user.address,
                 (a) => a.address.area_id == destination.id.toString()
-              );
-              if(address.length === 1) {
-                dispatch(setCustomerAddress(address));
-              }
-              if(address.length > 1) {
-                dispatch(setCustomerAddress(first(address)));
-              }
+              )
+            );
+            if (address) {
+              dispatch(setCustomerAddress(address));
             }
-          });
+          }
+
           router.push('/');
         }
       });

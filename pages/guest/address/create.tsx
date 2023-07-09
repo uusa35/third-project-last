@@ -85,28 +85,30 @@ const AddressCreate: NextPage<Props> = ({
       longitude: ``,
       latitude: ``,
       customer_id: customer.id?.toString(),
-      phone: '',
-      name: '',
-      block: ``,
-      street: ``,
-      house_no: ``,
-      floor_no: ``,
-      building_no: ``,
-      appartment_no: '',
-      office_no: '',
-      area_id: customer?.address?.area_id,
-      area: customer?.address?.area,
-      avenue: '',
-      city: ``,
-      paci: '',
-      other_phone: '',
-      notes: '',
+      phone: customer?.address?.phone,
+      name: customer?.address?.name,
+      block: customer?.address?.block,
+      street: customer?.address?.street,
+      house_no: customer?.address?.house_no,
+      floor_no: customer?.address?.floor_no,
+      building_no: customer?.address?.building_no,
+      appartment_no: customer?.address?.appartment_no,
+      office_no: customer?.address?.office_no,
+      area_id: destination?.id,
+      area: isRTL ? destination?.name_ar : name.en,
+      avenue: customer?.address?.avenue,
+      city: customer?.address?.city,
+      paci: customer?.address?.paci,
+      other_phone: customer?.address?.other_phone,
+      notes: customer?.address?.notes,
     },
   });
 
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
+      setValue('area_id', destination.id);
+      setValue('area', isRTL ? destination?.name_ar : destination.name_en);
     }
   }, []);
 
