@@ -272,32 +272,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   const handleAuthAddress = async () => {
     await triggerGetAddresses({ url }, false).then((r: any) => {
       if (r.data && r.data.data && r.data.data.length >= 1) {
-        // if user has addresses
-        const sameAreaIdAddresses = filter(
-          r.data.data,
-          (add) => add.address.area_id == destination.id.toString()
-        );
-        // console.log('user addresses', sameAreaIdAddresses);
-        // if user addresses contains address with the same selected area
-        if (!isEmpty(sameAreaIdAddresses)) {
-          // if user has address in state which it's area = destination
-          // address_area_id === destination.area_id
-          if (
-            sameAreaIdAddresses[0].id === address.id &&
-            address.area_id === destID
-          ) {
-            router.push(appLinks.checkout.path);
-          } else {
-            // no address in state
-            dispatch(setCustomerAddress(sameAreaIdAddresses[0]));
-            router.push(appLinks.selectAddress(customer_id));
-          }
-        } else {
-          // adress_area_id !== destination.area_id
-          // has addresses but not same destnation
-          router.push(appLinks.selectAddress(customer_id));
-          console.log('has address', sameAreaIdAddresses);
-        }
+        router.push(appLinks.selectAddress(customer_id));
       } else {
         // auth user has no address.
         router.push(appLinks.createAuthAddress(customer_id, 'delivery'));
@@ -311,11 +286,10 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     } else if (isNull(destID) || prefrences.type === '') {
       // open select modal
       dispatch(setAreaBranchModalStatus(true));
-    } else if (method === 'delivery' && !isAuth && !address.id) {
-      router.push(appLinks.guestAddress.path);
-    } else if (method === 'delivery' && isAuth && !address.id) {
-      // go here (selecting address if exist)
+    } else if (method === 'delivery' && isAuth) {
       handleAuthAddress();
+    } else if (method === 'delivery' && !isAuth) {
+      router.push(appLinks.guestAddress.path);
     } else {
       router.push(appLinks.checkout.path);
     }

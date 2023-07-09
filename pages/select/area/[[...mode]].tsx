@@ -43,6 +43,8 @@ import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
 import {
+  isAuthenticated,
+  resetCustomerAddress,
   resetPreferences,
   setCustomerAddressArea,
   setPreferences,
@@ -69,6 +71,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
   const destID = useAppSelector(destinationId);
+  const isAuth = useAppSelector(isAuthenticated);
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -142,6 +145,10 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
     destination: Area | Branch,
     type: 'pickup' | 'delivery'
   ) => {
+    // in case of user reset user address cause u changed dest id
+    if (isAuth) {
+      dispatch(resetCustomerAddress(undefined));
+    }
     dispatch(setDestination({ destination, type }));
     dispatch(
       showToastMessage({
@@ -181,7 +188,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                   area: destination.name,
                   area_id: destination.id,
                 })
-              )
+              );
               return router.push(appLinks.guestAddress.path);
             case 'user_create':
               return router.push(
