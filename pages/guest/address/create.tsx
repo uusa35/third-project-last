@@ -32,6 +32,11 @@ import { kebabCase, lowerCase, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { AppQueryResult } from '@/types/queries';
+import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import {
+  destinationHeaderObject,
+  destinationId,
+} from '@/redux/slices/searchParamsSlice';
 
 type Props = {
   element: Vendor;
@@ -50,7 +55,9 @@ const AddressCreate: NextPage<Props> = ({
     locale: { isRTL },
     customer,
     searchParams: { method, destination },
+    cart: { promocode },
   } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
   const [currentAddressType, setCurrentAddressType] = useState<
     'HOUSE' | 'OFFICE' | 'APARTMENT'
   >(customer?.address?.type ? customer?.address?.type : 'HOUSE');
@@ -62,6 +69,7 @@ const AddressCreate: NextPage<Props> = ({
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
     }>();
+  const [triggerGetCart] = useLazyGetCartProductsQuery();
   const {
     register,
     handleSubmit,
@@ -92,7 +100,7 @@ const AddressCreate: NextPage<Props> = ({
       city: ``,
       paci: '',
       other_phone: '',
-      notes: ''
+      notes: '',
     },
   });
 
@@ -146,6 +154,21 @@ const AddressCreate: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
+        triggerGetCart(
+          {
+            userAgent: customer.userAgent,
+            area_branch: destObj,
+            PromoCode: promocode,
+            url,
+          },
+          false
+        ).then((r: any) => {
+          if (r.data && r.data.data && r.data.data.Cart.length == 0) {
+            router.push(`${appLinks.home.path}`);
+          } else {
+            router.push(`${appLinks.checkout.path}`);
+          }
+        });
         // router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
