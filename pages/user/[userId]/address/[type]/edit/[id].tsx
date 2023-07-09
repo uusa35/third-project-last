@@ -171,7 +171,7 @@ const AddressEdit: NextPage<Props> = ({
   }, [addressId]);
 
   // console.log('currentAddress', currentAddress);
-  // console.log({ errors });
+  console.log({ errors });
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
   // console.log('address ====>', address?.Data);
