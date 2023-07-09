@@ -147,7 +147,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                   />
                   <label
                     htmlFor="name"
-                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
+                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-y-75 ltr:scale-x-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
                     suppressHydrationWarning={suppressText}
                   >
                     {t('fill_name')}
@@ -179,7 +179,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                   />
                   <label
                     htmlFor="email"
-                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
+                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-y-75 ltr:scale-x-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
                     suppressHydrationWarning={suppressText}
                   >
                     {t('your_email_optional')}
@@ -201,7 +201,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                   />
                   <label
                     htmlFor="password"
-                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
+                    className="absolute text-gray-500 duration-300 transform -translate-y-4 scale-y-75 ltr:scale-x-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-gray-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start rtl:ps-4"
                     suppressHydrationWarning={suppressText}
                   >
                     {t('your_password')}

@@ -40,7 +40,7 @@ import {
   signIn,
 } from '@/redux/slices/customerSlice';
 import { checkPhone, loginSchema } from 'src/validations';
-import { first, map, upperCase, upperFirst } from 'lodash';
+import { filter, first, isNull, map, upperCase, upperFirst } from 'lodash';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import * as yup from 'yup';
 import ShowPasswordIcon from '@/appIcons/show_password.svg';
@@ -65,6 +65,7 @@ const UserPassword: NextPage<Props> = ({
   const {
     customer,
     locale: { isRTL },
+    searchParams: { destination }
   } = useAppSelector((state) => state);
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState<{
@@ -184,9 +185,17 @@ const UserPassword: NextPage<Props> = ({
             { url, api_token: r.data.data.token ?? customer.token },
             false
           ).then((r: any) => {
-            if (r && r.data && r.data.data) {
-              console.log('r', first(r.data.data));
-              dispatch(setCustomerAddress(first(r.data.data)));
+            if (r && r.data && r.data.data && r.data.data.length >= 1 && !isNull(destination)) {
+              const address = filter(
+                r.data.data,
+                (a) => a.address.area_id == destination.id.toString()
+              );
+              if(address.length === 1) {
+                dispatch(setCustomerAddress(address));
+              }
+              if(address.length > 1) {
+                dispatch(setCustomerAddress(first(address)));
+              }
             }
           });
           router.push('/');
