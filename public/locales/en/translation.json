@@ -64,7 +64,7 @@
   "other": "other",
   "continue": "continue",
   "a_cancellation_of": "a cancellation of",
-  "kd": "kd",
+  "kd": "KD",
   "has_been_issued_back_to_your_original_payment_method.": "has been issued back to your original payment method.",
   "this_may_take_3_business_days_to_reflect.": "this may take 3 business days to reflect.",
   "confirm_cancellation": "confirm cancellation",
@@ -340,6 +340,7 @@
   "building_no_is_required": "building number is required.",
   "office_no_is_required": "office number is required.",
   "city_is_required": "city is required",
+  "area_is_required": "area is required",
   "street_is_required": "street is required",
   "house_no_is_required": "house no is required",
   "floor_no_is_required": "floor no is required",
@@ -363,10 +364,11 @@
   "wednesday": "wednesday",
   "thursday": "thursday",
   "friday": "friday",
-  "the_date_must_be_a_date_after_yesterday":"the date must be a date after yesterday.",
-  "time_must_be_equal_or_after_time_now":"time must be equal or after time now",
+  "the_date_must_be_a_date_after_yesterday": "the date must be a date after yesterday.",
+  "time_must_be_equal_or_after_time_now": "time must be equal or after time now",
   "cancel": "cancel",
   "sign_in_register_to_add_favourite": "sign in/ register to add favourite",
   "sorry_some_product_not_available_in_this_area": "sorry some product not available in this area",
-  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area."
+  "sorry_some_products_not_available_in_this_area": "sorry ! some product not available in this area.",
+  "add_new_address": "add new address"
 }

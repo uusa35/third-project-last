@@ -17,6 +17,8 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
+      phone: yup.string().min(0).max(999999999999),
+      name: yup.string().required(),
       // block: yup
       //   .string()
       //   .max(100)
@@ -72,7 +74,20 @@ export const addressSchema = (method: string, t: any) =>
           return schema.nullable(true);
         }),
       office_no: yup.string().when('address_type', (address_type, schema) => {
+        console.log('type', address_type);
         if (address_type === 'OFFICE' && method === `delivery`) {
+          return schema.required(t(`validation.required`));
+        }
+        return schema.nullable(true);
+      }),
+      area: yup.string().when('address_type', (address_type, schema) => {
+        if (method === `delivery`) {
+          return schema.required(t(`validation.required`));
+        }
+        return schema.nullable(true);
+      }),
+      area_id: yup.string().when('address_type', (address_type, schema) => {
+        if (method === `delivery`) {
           return schema.required(t(`validation.required`));
         }
         return schema.nullable(true);

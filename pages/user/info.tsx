@@ -13,11 +13,7 @@ import {
 } from '@/constants/*';
 import { first, upperFirst } from 'lodash';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import {
-  setCurrentModule,
-  setUrl,
-  showToastMessage,
-} from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRegisterMutation } from '@/redux/api/authApi';

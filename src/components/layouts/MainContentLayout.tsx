@@ -51,6 +51,7 @@ const MainContentLayout: FC<Props> = ({
 }): React.ReactNode => {
   const {
     appSetting: { showHeader, url: appUrl, showFooterElement },
+    customer: { address },
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const [isOnline, setIsOnline] = useState(true);
@@ -77,10 +78,10 @@ const MainContentLayout: FC<Props> = ({
 
   const Button = () => {
     return (
-      <div className="pt-5 space-x-3">
+      <div className="pt-5 space-x-3 ">
         <button
           onClick={() => window.location.reload()}
-          className={`text-center text-md capitalize text-white px-12 py-2 rounded-full flex items-center`}
+          className={`text-center sm:text-sm md:text-md capitalize text-white px-12 py-2 rounded-full flex items-center`}
           suppressHydrationWarning={suppressText}
           style={{ backgroundColor: color }}
         >

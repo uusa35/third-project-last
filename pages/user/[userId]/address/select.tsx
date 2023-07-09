@@ -32,31 +32,24 @@ import { Address, AppQueryResult } from '@/types/queries';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   difference,
-  filter,
   first,
   isEmpty,
   isNull,
   isObject,
   isUndefined,
-  keyBy,
-  keys,
-  lowerCase,
   map,
-  pickBy,
   toLower,
 } from 'lodash';
-import {
-  resetCustomerAddress,
-  setCustomerAddress,
-} from '@/redux/slices/customerSlice';
+import { setCustomer, setCustomerAddress } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
+import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
 
 type Props = {
   element: Vendor;
   url: string;
 };
 
-const AddressIndex: NextPage<Props> = ({
+const AddressSelectionIndex: NextPage<Props> = ({
   element,
   url,
 }): React.ReactElement => {
@@ -66,7 +59,14 @@ const AddressIndex: NextPage<Props> = ({
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const {
-    customer: { id, countryCode, name, phone },
+    customer: {
+      id,
+      countryCode,
+      name,
+      phone,
+      token: { api_token },
+      address: { id: addressId },
+    },
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
@@ -79,144 +79,87 @@ const AddressIndex: NextPage<Props> = ({
   const [nextType, setNextType] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('from inside address index useEffect');
     if (url) {
       dispatch(setUrl(url));
     }
     triggerGetAddresses({ url }, false).then((r: any) => {
+      const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
       if (r && r.data && r.data.data) {
-        console.log('r.data', r.data.data);
-        // checkAddressesList(r && r.data && r.data.data);
+        const remaingType = first(
+          difference(allTypes, map(r.data.data, 'type'))
+        );
+        if (remaingType) {
+          setNextType(remaingType);
+        }
       }
     });
   }, []);
-
-  // const checkAddressesList = (addresses: UserAddressFields[]) => {
-  //   const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
-  //   if (!isEmpty(addresses)) {
-  //     const remaingType = first(difference(allTypes, map(addresses, 'type')));
-  //     if (remaingType) {
-  //       setNextType(remaingType);
-  //     }
-  //   }
-  // };
 
   const handelDisplayAddress = (address: any) => {
     if (address && !isUndefined(address) && isObject(address)) {
       const addressValues =
         !isUndefined(address) &&
         Object.values(address).filter((value) => value !== null);
+
       const allAddress = addressValues ? addressValues.join(', ') : '';
+
       return allAddress;
     }
   };
 
-  const showHideEditBtn = (address: any) => {
-    if (selectedAddress === address) {
-      setSelectedAddress(null);
-    } else {
-      setSelectedAddress(address);
-    }
-  };
-
-  const handleEdit = async (address: any) => {
-    return router
-      .push(appLinks.editAuthAddress(id, address.id, lowerCase(address.type)))
-      .then(() => dispatch(setCustomerAddress(address)));
-  };
-
-  const handleDelete = async (address: any) => {
-    await triggerDeleteAddress({
-      params: {
-        address_id: address.id,
-      },
-      url,
-    }).then((r) => {
-      if (r?.data?.status) {
-        dispatch(
-          showToastMessage({
-            content: `address_deleted_successfully`,
-            type: `success`,
-          })
-        );
-        triggerGetAddresses({ url }, false)
-          .then((r: any) => {
-            // if (r && r.data && r.data.data) {
-            // checkAddressesList(r && r.data && r.data.data);
-            // }
-          })
-          .then(() => dispatch(resetCustomerAddress(undefined)));
-      } else {
-        dispatch(
-          showToastMessage({
-            content: r.error.data.msg,
-            type: `error`,
-          })
-        );
-      }
-    });
+  const handleSelectAddress = (address: Address) => {
+    dispatch(setCustomerAddress(address));
+    // redirection here
   };
 
   if (!isSuccess) return <></>;
-  console.log('address', addresses);
 
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
-      <div className="relative h-[100vh]">
-        {isSuccess && addresses?.data && !isEmpty(addresses?.data) ? (
+      <div className="relative h-[100vh] mt-4 ">
+        {addresses?.data && !isEmpty(addresses?.data) ? (
           <div>
+            <div className={`mx-4 mb-4`}>
+              <h1 className="text-md md:text-lg font-extrabold">
+                {t('select_address')}
+              </h1>
+            </div>
             {map(addresses?.data, (address: Address) => (
-              <div
-                className="flex flex-col w-auto justify-start items-start mx-4 space-y-4"
+              <button
+                onClick={() => handleSelectAddress(address)}
+                className="flex flex-col w-auto justify-start items-start mx-4 space-y-4 rounded-lg mb-4 border"
+                style={{ borderColor: color }}
                 key={address.id}
               >
                 <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 overflow-hidden w-full text-sm">
                   <div
-                    className={`flex flex-1 flex-row justify-between items-start`}
+                    className={`flex flex-1 flex-row justify-between items-start p-2`}
                   >
                     <div>
-                      <h5 className="font-semibold pb-2">{address.type}</h5>
-                      <div className="text-zinc-600">
+                      <div
+                        className={`flex w-full flex-row justify-between items-center pb-2`}
+                      >
+                        <div>
+                          <h5 className="font-semibold pb-2">{address.type}</h5>
+                        </div>
+                        <div>
+                          {address.id == addressId ? (
+                            <RadioButtonChecked style={{ color }} />
+                          ) : (
+                            <RadioButtonUnchecked style={{ color }} />
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="text-zinc-400 text-left">
                         <p>{handelDisplayAddress(address.address)}</p>
                         <p>{name}</p>
                         <p>{address.address.phone}</p>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="relative">
-                        <div>
-                          <EllipsisVerticalIcon
-                            className="h-8"
-                            onClick={() => showHideEditBtn(address)}
-                          />
-                        </div>
-                        {selectedAddress === address && (
-                          <div
-                            className={`pe-5 absolute top-0 transform  bg-white rounded-lg py-2 px-4 shadow-md capitalize ${
-                              isRTL
-                                ? '-left-1/2 translate-x-[40%]'
-                                : ' left-1/2 -translate-x-[100%]'
-                            }`}
-                          >
-                            <button
-                              onClick={() => handleEdit(address)}
-                              className={`capitalize pb-2 px-2 border-b-[1px] border-stone-300 w-100  text-start`}
-                            >
-                              {t('edit')}
-                            </button>
-                            <button
-                              onClick={() => handleDelete(address)}
-                              className={`capitalize py-2 mb-2 px-2 text-red-600  text-start`}
-                            >
-                              {t('remove')}
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         ) : (
@@ -228,25 +171,25 @@ const AddressIndex: NextPage<Props> = ({
             </p>
           </div>
         )}
-        {/* {!isNull(nextType) && ( */}
+
         <div className="relative -bottom-10 p-2 w-full">
           <Link
-            href={`${appLinks.createAuthAddress(id, toLower('HOUSE'))}`}
-            className={`${mainBtnClass} flex flex-row justify-center items-center`}
-            style={{ backgroundColor: color }}
+            href={`${appLinks.createAuthAddress(id)}`}
+            className={`${mainBtnClass} flex flex-row justify-center items-center bg-gray-200`}
             suppressHydrationWarning={suppressText}
           >
-            <PlusSmallIcon className="w-6 h-6" />
-            <p className="w-fit text-md text-center mx-2">{t('add_address')}</p>
+            <PlusSmallIcon className="w-6 h-6 text-black" />
+            <p className="w-fit text-md text-center mx-2 text-black">
+              {t('add_new_address')}
+            </p>
           </Link>
         </div>
-        {/* )} */}
       </div>
     </MainContentLayout>
   );
 };
 
-export default AddressIndex;
+export default AddressSelectionIndex;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

@@ -158,7 +158,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             {activeTabIndex === 'delivery' && (
               <>
                 <Link
-                  href={appLinks.selectArea.path}
+                  href={appLinks.selectArea(``)}
                   className={`w-full flex justify-between items-center p-5 border-b-[1px] border-gray-200 capitalize`}
                   dir={dir}
                 >

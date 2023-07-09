@@ -217,7 +217,7 @@ const SelectBranch: NextPage<Props> = ({
               <TextTrans
                 ar={b.location}
                 en={b.location}
-                className="text-stone-400 font-thin"
+                className="text-stone-400 font-thin text-left"
                 length={45}
               />
             </div>

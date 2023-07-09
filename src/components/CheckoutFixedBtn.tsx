@@ -128,7 +128,7 @@ export default function CheckoutFixedBtn({
                   {cartItems?.data?.total
                     ? cartItems?.data?.total
                     : cartItems?.data?.total_cart_after_tax}{' '}
-                  {t('kwd')}
+                  {t('kd')}
                 </p>
               </div>
             </div>

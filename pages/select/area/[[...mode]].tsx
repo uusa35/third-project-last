@@ -20,7 +20,7 @@ import { useLazyGetLocationsQuery } from '@/redux/api/locationApi';
 import { useLazyGetBranchesQuery } from '@/redux/api/branchApi';
 import { AppQueryResult, Area, Branch, Location } from '@/types/queries';
 import { useCallback, useEffect, useState } from 'react';
-import { debounce, isEmpty, isNull, map } from 'lodash';
+import { debounce, isEmpty, isNull, lowerCase, map } from 'lodash';
 import TextTrans from '@/components/TextTrans';
 import {
   Accordion,
@@ -42,7 +42,11 @@ import ContentLoader from '@/components/skeletons';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
 import { useGetCartProductsQuery } from '@/redux/api/cartApi';
-import { resetPreferences, setPreferences } from '@/redux/slices/customerSlice';
+import {
+  resetPreferences,
+  setCustomerAddressArea,
+  setPreferences,
+} from '@/redux/slices/customerSlice';
 import moment from 'moment';
 
 type Props = {
@@ -51,10 +55,16 @@ type Props = {
 };
 
 const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
+  const { query }: any = useRouter();
   const {
     locale: { lang, isRTL },
     searchParams: { method, destination },
-    customer: { userAgent, prefrences },
+    customer: {
+      userAgent,
+      prefrences,
+      id,
+      address: { id: addressId, type: addressType },
+    },
     cart: { enable_promocode, promocode },
   } = useAppSelector((state) => state);
   const destObj = useAppSelector(destinationHeaderObject);
@@ -124,7 +134,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         setShowChangeLocModal(true);
       }
     } else {
-      // not changed
       router.back();
     }
   };
@@ -141,7 +150,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
       })
     );
     dispatch(setAreaBranchModalStatus(true));
-    triggerGetVendor(
+    await triggerGetVendor(
       {
         lang,
         url,
@@ -162,7 +171,54 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           dispatch(resetPreferences(undefined));
         }
       })
-      .then(() => router.back());
+      .then((r: any) => {
+        if (query.mode && query.mode[0]) {
+          console.log('query', query.mode[0]);
+          const currentMode = query.mode[0];
+          switch (currentMode) {
+            case 'guest':
+              return router.push(appLinks.guestAddress.path).then(() =>
+                dispatch(
+                  setCustomerAddressArea({
+                    area: destination.name,
+                    area_id: destination.id,
+                  })
+                )
+              );
+            case 'user_create':
+              return router.push(
+                appLinks.createAuthAddress(
+                  id,
+                  lowerCase(addressType),
+                  `area_id=${destination.id}&area=${destination.name}`
+                )
+              );
+            case 'user_edit':
+              return router.push(
+                appLinks.editAuthAddress(
+                  id,
+                  addressId,
+                  lowerCase(addressType),
+                  `area_id=${destination.id}&area=${destination.name}`
+                )
+              );
+            case 'user_select':
+              return router.push(
+                appLinks.createAuthAddress(
+                  id,
+                  lowerCase(addressType),
+                  `area_id=${destination.id}&area=${destination.name}`
+                )
+              );
+            case 'home':
+              return router.push(appLinks.home.path);
+            default:
+              return router.back();
+          }
+        } else {
+          router.back();
+        }
+      });
   };
 
   useEffect(() => {
@@ -234,7 +290,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
         <div className={`mx-4`}>
           {map(allLocations, (item: Location, i) => {
             return (
-              <>
+              <div key={i}>
                 {item.Areas?.length > 0 && (
                   <Accordion
                     key={i}
@@ -286,7 +342,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                     </AccordionBody>
                   </Accordion>
                 )}
-              </>
+              </div>
             );
           })}
         </div>

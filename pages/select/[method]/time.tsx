@@ -125,19 +125,19 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
       if (isToday) {
         days.push({
           day: `today`,
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       } else if (isTomorrow) {
         days.push({
           day: `tomorrow`,
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       } else if (isWithinNextMonth && day.date() <= daysInCurrentMonth) {
         days.push({
           day: day.format('dddd'),
-          date: day.format('DD MMM Y'),
+          date: day.format('DD MMM'),
           rawDate: day.locale('en'),
         });
       }
@@ -306,24 +306,26 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
         currentModule="select_time"
       >
         <div className="p-5 w-full overflow-x-hidden">
-          <label className="flex items-center w-full pt-2 pb-4 border-b-2 border-gray-100">
-            <input
-              id="now"
-              name="time"
-              type="radio"
-              value="now"
-              checked={!isScheduled}
-              onChange={(e) => handleRadioChange(e.target.value)}
-              className="h-4 w-4 me-1"
-              style={{ accentColor: color }}
-              suppressHydrationWarning={suppressText}
-            />
-            <span className={`font-bold mx-4`}>
-              {`${t('now_within')} ${
-                vendorElement?.Data?.delivery?.delivery_time
-              } ${t('minutes')}`}
-            </span>
-          </label>
+          {!isUndefined(vendorElement?.Data?.delivery?.delivery_time) && (
+            <label className="flex items-center w-full pt-2 pb-4 border-b-2 border-gray-100">
+              <input
+                id="now"
+                name="time"
+                type="radio"
+                value="now"
+                checked={!isScheduled}
+                onChange={(e) => handleRadioChange(e.target.value)}
+                className="h-4 w-4 me-1"
+                style={{ accentColor: color }}
+                suppressHydrationWarning={suppressText}
+              />
+              <span className={`font-bold mx-4`}>
+                {`${t('now_within')} ${
+                  vendorElement?.Data?.delivery?.delivery_time
+                } ${t('minutes')}`}
+              </span>
+            </label>
+          )}
           <label className="flex items-center w-full py-4">
             <input
               type="radio"
@@ -379,6 +381,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
           )}
           {isScheduled && selectedHour && (
             <div>
+              <h1 className="text-md lg:text-lg font-extrbold my-4">
+                {t('select_time')}
+              </h1>
               {timings &&
                 timingsSuccess &&
                 isArray(timings.Data) &&

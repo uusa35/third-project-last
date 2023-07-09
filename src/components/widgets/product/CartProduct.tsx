@@ -107,8 +107,8 @@ export default function CartProduct({
                       </Fragment>
                     ))}
                   {!isEmpty(product.RadioBtnsAddons) &&
-                    map(product.RadioBtnsAddons, (r: RadioBtns) => (
-                      <Fragment key={r.addons.attributeID}>
+                    map(product.RadioBtnsAddons, (r: RadioBtns, i) => (
+                      <Fragment key={i}>
                         <TextTrans
                           key={r.addons.attributeID}
                           className={`bg-[#F3F2F2] text-[#544A45] px-1 text-xxs capitalize rounded-lg`}
@@ -156,7 +156,9 @@ export default function CartProduct({
               >
                 -
               </div>
-              <label className="flex items-center px-1">{product.Quantity}</label>
+              <label className="flex items-center px-1">
+                {product.Quantity}
+              </label>
               <div
                 onClick={() => HandelDecIncRmv(product, 'inc')}
                 className="rounded-full text-white cursor-pointer w-5 h-5 flex items-center justify-center text-lg"
@@ -177,7 +179,7 @@ export default function CartProduct({
                 // style={{ color }}
                 suppressHydrationWarning={suppressText}
               >
-                {parseFloat(product.Price.toString()).toFixed(3)} {t('kwd')}
+                {parseFloat(product.Price.toString()).toFixed(3)} {t('kd')}
               </p>
               <p
                 className={`uppercase`}
@@ -185,7 +187,7 @@ export default function CartProduct({
                 suppressHydrationWarning={suppressText}
               >
                 {parseFloat(product?.SalePrice?.toString()).toFixed(3)}{' '}
-                {t('kwd')}
+                {t('kd')}
               </p>
             </div>
           ) : (
@@ -194,7 +196,7 @@ export default function CartProduct({
               //   style={{ color }}
               suppressHydrationWarning={suppressText}
             >
-              {parseFloat(product.Price?.toString()).toFixed(3)} {t('kwd')}
+              {parseFloat(product.Price?.toString()).toFixed(3)} {t('kd')}
             </p>
           )}
         </div>

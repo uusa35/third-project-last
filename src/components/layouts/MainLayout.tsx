@@ -26,6 +26,7 @@ import { isAuthenticated, setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
+import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
 
 type Props = {
   children: ReactNode | undefined;
@@ -48,7 +49,6 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
   const desID = useAppSelector(destinationId);
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
-
   const [triggerCreateTempId, { isSuccess: tempIdSuccess }] =
     useLazyCreateTempIdQuery();
 
@@ -84,7 +84,7 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
     if (isNull(userAgent) && url) {
       await triggerCreateTempId({ url }).then((r: any) => {
         if (r && r.data && r.data.Data && r.data.Data.Id) {
-          dispatch(setUserAgent(r.data.Data?.Id));
+          dispatch(setUserAgent(r.data.Data.Id));
         }
       });
     }

@@ -54,8 +54,9 @@ const SigninAddFavModal: FC<Props> = ({
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
             >
-              {`${upperFirst(`${t('sign_in/')}`)}`}
-              {`${upperFirst(`${t('register_an_account')}`)}`}
+              {`${upperFirst(`${t('sign_in/')}`)} / ${upperFirst(
+                `${t('register_an_account')}`
+              )}`}
             </button>
             <button
               className={`${mainBtnClass} !bg-gray-200 !text-black mt-3`}

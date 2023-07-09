@@ -49,7 +49,7 @@ const PaymentSummary: FC<Props> = ({
               {sub_total}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              {t('kwd')}
+              {t('kd')}
             </p>
           </div>
         </div>
@@ -57,22 +57,19 @@ const PaymentSummary: FC<Props> = ({
         {/* {enable_promocode && ( */}
         {promo_code_discount ? (
           <>
-            <div className="flex justify-between mb-2">
+            <div className="flex justify-between mb-2 text-[#E30015]">
               <p suppressHydrationWarning={suppressText}>
                 {t('coupon_value')}{' '}
               </p>
               <div className={`flex flex-row`}>
-                <p
-                  suppressHydrationWarning={suppressText}
-                  className={`px-2 text-red-600`}
-                >
+                <p suppressHydrationWarning={suppressText} className={`px-2 `}>
                   {promo_code_discount}
                 </p>
                 <p
-                  className={`uppercase text-red-600`}
+                  className={`uppercase `}
                   suppressHydrationWarning={suppressText}
                 >
-                  {t('kwd')}
+                  {t('kd')}
                 </p>
               </div>
             </div>
@@ -116,7 +113,7 @@ const PaymentSummary: FC<Props> = ({
                 className={`uppercase`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('kwd')}
+                {t('kd')}
               </p>
             </div>
           </div>
@@ -135,7 +132,7 @@ const PaymentSummary: FC<Props> = ({
               {/* {promo_code_discount ? total_cart_after_tax : total} */}
             </p>
             <p className={`uppercase`} suppressHydrationWarning={suppressText}>
-              {t('kwd')}
+              {t('kd')}
             </p>
           </div>
         </div>

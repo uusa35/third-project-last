@@ -1,5 +1,7 @@
+import MainLayout from '@/layouts/MainLayout';
 import { NextPage } from 'next';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
 import { vendorApi } from '@/redux/api/vendorApi';
@@ -8,6 +10,7 @@ import { UserAddressFields, Vendor } from '@/types/index';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
+  EllipsisVerticalIcon,
   HomeIcon,
   BuildingOffice2Icon,
   BriefcaseIcon,
@@ -18,29 +21,43 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
   useLazyGetAddressesByIdQuery,
+  useLazyGetAddressesQuery,
+  useUpdateAddressMutation,
 } from '@/redux/api/addressApi';
 import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
+import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
 import {
-  setCustomerAddress,
-  setCustomerAddressType,
-  setNotes,
-} from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase, upperCase } from 'lodash';
+  filter,
+  first,
+  kebabCase,
+  lowerCase,
+  toUpper,
+  upperCase,
+} from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
-import { AppQueryResult } from '@/types/queries';
+import { Address, AppQueryResult } from '@/types/queries';
+import { useGetCartProductsQuery } from '@/redux/api/cartApi';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+import MainAddressTabs from '@/components/address/MainAddressTabs';
 
 type Props = {
   element: Vendor;
   url: string;
+  userId: string;
+  addressId: string;
+  type: string;
 };
 
-const AddressCreate: NextPage<Props> = ({
+const AddressEdit: NextPage<Props> = ({
   element,
   url,
+  userId,
+  addressId,
+  type,
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -50,15 +67,20 @@ const AddressCreate: NextPage<Props> = ({
     locale: { isRTL },
     customer,
     searchParams: { method, destination },
+    cart: { promocode },
   } = useAppSelector((state) => state);
-  const [currentAddressType, setCurrentAddressType] = useState<
-    'HOUSE' | 'OFFICE' | 'APARTMENT'
-  >(customer?.address?.type ? customer?.address?.type : 'HOUSE');
+  const desObject = useAppSelector(destinationHeaderObject);
+  const [currentAddress, setCurrentAddress] = useState<any>(null);
+  const [currentAddresses, setCurrentAddresses] = useState<any>(null);
   const refForm = useRef<any>();
-  const [triggerCreateAddress, { isLoading: createAddressLoading }] =
-    useCreateAddressMutation();
-  const [triggerGetAddressesById, { data: addresses, isLoading }, isSuccess] =
-    useLazyGetAddressesByIdQuery<{
+  const [triggerUpdateAddress, { isLoading: AddAddressLoading }] =
+    useUpdateAddressMutation();
+  const [
+    triggerGetAddressById,
+    { data: address, isSuccess: addressByIdSuccess },
+  ] = useLazyGetAddressesByIdQuery();
+  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+    useLazyGetAddressesQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
     }>();
@@ -68,29 +90,39 @@ const AddressCreate: NextPage<Props> = ({
     setValue,
     control,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(addressSchema(method, t)),
+    resolver: yupResolver(addressSchema('delivery', t)),
     defaultValues: {
       method: 'delivery',
-      address_type: currentAddressType,
+      address_type: toUpper(type),
       longitude: ``,
       latitude: ``,
-      customer_id: customer.id?.toString(),
-      phone: customer.phone,
-      name: customer.name,
-      block: ``,
-      street: ``,
-      house_no: ``,
-      floor_no: ``,
-      building_no: ``,
-      office_no: ``,
-      area_id: customer?.address?.area_id,
-      area: customer?.address?.area,
-      city: ``,
+      customer_id: userId.toString(),
+      phone: '',
+      name: '',
+      block: '',
+      street: '',
+      house_no: '',
+      floor_no: '',
+      building_no: '',
+      appartment_no: '',
+      office_no: '',
+      area: '',
+      area_id: '',
+      avenue: '',
       paci: '',
       other_phone: '',
+      notes: '',
     },
+  });
+
+  const { data: cartItems } = useGetCartProductsQuery({
+    userAgent: customer.userAgent,
+    area_branch: desObject,
+    url,
+    PromoCode: promocode,
   });
 
   useEffect(() => {
@@ -99,19 +131,63 @@ const AddressCreate: NextPage<Props> = ({
     }
   }, []);
 
-  useMemo(() => {
-    setValue('address_type', upperCase(currentAddressType));
-    dispatch(setCustomerAddressType(upperCase(currentAddressType)));
-  }, [currentAddressType]);
+  useEffect(() => {
+    setValue('address_type', toUpper(type));
+  }, [type]);
 
-  const handelSaveAddress = async (body: any) => {
-    await triggerCreateAddress({
+  useEffect(() => {
+    if (router.isReady) {
+      triggerGetAddresses({ url }, false)
+        .then((r: any) => {
+          if (r.data && r.data.data) {
+            const currentAddress: Address = first(
+              filter(r.data.data, (a) => a.id.toString() === addressId)
+            );
+
+            if (currentAddress) {
+              reset({
+                ...currentAddress.address,
+                address_type: currentAddress.type,
+                customer_id: currentAddress.customer_id,
+                method: 'delivery',
+              });
+            }
+          }
+        })
+        .then(() => {
+          if (router.query.area_id) {
+            setValue('area_id', router.query.area_id);
+            if (router.query.area_id === destination.id) {
+              setValue(
+                'area',
+                isRTL ? destination.name_ar : destination.name_en
+              );
+            } else {
+              setValue('area', router.query.area);
+            }
+          }
+        });
+    }
+  }, [addressId]);
+
+  // console.log('currentAddress', currentAddress);
+  // console.log({ errors });
+  // console.log('destination', destination);
+  // console.log('data ====>', getValues());
+  // console.log('address ====>', address?.Data);
+  // console.log('customer', customer.address.area_id);
+  // console.log('addresses', currentAddresses);
+  // console.log('address', address?.Data.address.area_id);
+
+  const handleSaveAddress = async (body: any) => {
+    await triggerUpdateAddress({
       body: {
+        address_id: addressId,
         address_type: upperCase(body.address_type),
-        longitude: body.longitude,
-        latitude: body.latitude,
-        customer_id: body.customer_id,
+        customer_id: userId.toString(),
         address: {
+          phone: body.phone,
+          name: body.name,
           block: body.block,
           street: body.street,
           house_no: body.house_no,
@@ -119,11 +195,11 @@ const AddressCreate: NextPage<Props> = ({
           paci: body.paci,
           floor_no: body.floor_no,
           building_no: body.building_no,
+          apartment_no: body.apartment_no,
           office_no: body.office_no,
-          phone: body.phone,
+          other_phone: body.other_phone,
           area: body.area,
           area_id: body.area_id,
-          other_phone: body.other_phone,
           notes: body.notes,
         },
       },
@@ -137,16 +213,25 @@ const AddressCreate: NextPage<Props> = ({
           })
         );
         dispatch(setCustomerAddress(r.data.Data));
+        reset({
+          ...r.data.Data.address,
+          address_type: r.data.Data.type,
+          customer_id: r.data.Data.customer_id,
+          method,
+        });
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        // router.push(`${appLinks.checkout.path}`);
-        // checkTimeAvailability();
+        if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
+          router.push(`${appLinks.checkout.path}`);
+        } else {
+          router.push(`${appLinks.home.path}`);
+        }
       } else {
         if (r.error && r.error.data?.msg) {
           dispatch(
             showToastMessage({
-              content: lowerCase(kebabCase(r.error?.data?.msg[`address`][0])),
+              content: lowerCase(kebabCase(r.error.data.msg[`address`][0])),
               type: `error`,
             })
           );
@@ -156,23 +241,8 @@ const AddressCreate: NextPage<Props> = ({
   };
 
   const onSubmit = async (body: any) => {
-    // if (destination.method === 'delivery') {
-    await handelSaveAddress(body);
-    // }
+    await handleSaveAddress(body);
   };
-
-  useEffect(() => {
-    if (errors.customer_id) {
-      router.push(appLinks.login.path).then(() => {
-        dispatch(
-          showToastMessage({
-            type: 'error',
-            content: 'customer_id_is_required',
-          })
-        );
-      });
-    }
-  }, [errors]);
 
   return (
     <MainContentLayout
@@ -181,51 +251,18 @@ const AddressCreate: NextPage<Props> = ({
       currentModule="address_details"
     >
       <div className="flex flex-1 flex-col h-full mt-8">
-        <div className="flex mx-3 flex-row justify-center items-start mb-4">
-          <button
-            onClick={() => setCurrentAddressType('HOUSE')}
-            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
-            style={{ borderColor: currentAddressType === 'HOUSE' && color }}
-          >
-            <HomeIcon
-              className={`w-8 h-8`}
-              color={currentAddressType === 'HOUSE' ? color : `text-stone-400`}
-            />
-            <p>{t('house')}</p>
-          </button>
-          <button
-            onClick={() => setCurrentAddressType('APARTMENT')}
-            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize mx-3`}
-            style={{ borderColor: currentAddressType === 'APARTMENT' && color }}
-          >
-            <BuildingOffice2Icon
-              className={`w-8 h-8 `}
-              color={
-                currentAddressType === 'APARTMENT' ? color : `text-stone-400`
-              }
-            />
-            <p>{t('apartment')}</p>
-          </button>
-          <button
-            onClick={() => setCurrentAddressType('OFFICE')}
-            className={`flex flex-1 flex-col border justify-center items-center p-3 rounded-md capitalize`}
-            style={{ borderColor: currentAddressType === 'OFFICE' && color }}
-          >
-            <BriefcaseIcon
-              className={`w-8 h-8 `}
-              color={currentAddressType === 'OFFICE' ? color : `text-stone-400`}
-            />
-            <p>{t('office')}</p>
-          </button>
-        </div>
+        <MainAddressTabs
+          userId={userId}
+          addressId={addressId}
+          edit={true}
+          currentAddressType={toUpper(type)}
+        />
 
         {/*  form  */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className={`flex flex-1 flex-col justify-start items-start m-3 space-y-4`}
         >
-          <input type="hidden" {...register('customer_id')} />
-
           {/*  phone  */}
           <div className="w-full ">
             <label
@@ -243,6 +280,14 @@ const AddressCreate: NextPage<Props> = ({
                 placeholder={`${t('phone_no')}`}
               />
             </div>
+            {errors?.phone && (
+              <span
+                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('phone_is_required')}
+              </span>
+            )}
           </div>
 
           {/*  full_name  */}
@@ -262,12 +307,20 @@ const AddressCreate: NextPage<Props> = ({
                 placeholder={`${t('full_name')}`}
               />
             </div>
+            {errors?.name && (
+              <span
+                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('name_is_required')}
+              </span>
+            )}
           </div>
 
           {/*  city / area   */}
           <div
             className="w-full"
-            onClick={() => router.push(`${appLinks.selectArea(`guest`)}`)}
+            onClick={() => router.push(appLinks.selectArea(`user_edit`))}
           >
             <label
               suppressHydrationWarning={suppressText}
@@ -286,7 +339,7 @@ const AddressCreate: NextPage<Props> = ({
                 id="area"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
-                onFocus={() => router.push(appLinks.selectArea(`guest`))}
+                onFocus={() => router.push(appLinks.selectArea(`user_edit`))}
               />
               <input
                 type="text"
@@ -296,8 +349,8 @@ const AddressCreate: NextPage<Props> = ({
                 disabled
                 id="area_id"
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white hidden"
-                placeholder={`${t('area_id')}`}
-                onFocus={() => router.push(appLinks.selectArea(`guest`))}
+                placeholder={`${t('city_and_area')}`}
+                onFocus={() => router.push(appLinks.selectArea(`user_edit`))}
               />
               <div
                 className={`${
@@ -317,20 +370,12 @@ const AddressCreate: NextPage<Props> = ({
                 )}
               </div>
             </div>
-            {errors?.area?.message && errors?.area_id?.message && (
+            {(errors?.area?.message || errors?.area_id?.message) && (
               <span
                 className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('area_is_required')}
-              </span>
-            )}
-            {errors?.method?.message && (
-              <span
-                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
-                suppressHydrationWarning={suppressText}
-              >
-                {t('city_is_required')}
               </span>
             )}
           </div>
@@ -347,6 +392,7 @@ const AddressCreate: NextPage<Props> = ({
             <div className="relative rounded-md shadow-sm">
               <input
                 {...register('street')}
+                defaultValue={currentAddress?.address?.street}
                 suppressHydrationWarning={suppressText}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('street')}`}
@@ -363,7 +409,7 @@ const AddressCreate: NextPage<Props> = ({
           </div>
 
           {/*  house_no  */}
-          {currentAddressType === 'HOUSE' && (
+          {toUpper(type) === 'HOUSE' && (
             <div className="w-full ">
               <label
                 suppressHydrationWarning={suppressText}
@@ -376,6 +422,7 @@ const AddressCreate: NextPage<Props> = ({
                 <input
                   {...register('house_no')}
                   suppressHydrationWarning={suppressText}
+                  defaultValue={currentAddress?.address?.house_no}
                   className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                   placeholder={`${t('house_no')}`}
                 />
@@ -391,9 +438,39 @@ const AddressCreate: NextPage<Props> = ({
             </div>
           )}
 
-          {/*  apartment  */}
+          {/*  building_no  */}
+          {toUpper(type) !== 'HOUSE' && (
+            <div className="w-full ">
+              <label
+                suppressHydrationWarning={suppressText}
+                htmlFor="building_no"
+                className="block text-sm font-medium text-gray-900"
+              >
+                {t('building_no')}*
+              </label>
+              <div className="relative rounded-md shadow-sm">
+                <input
+                  {...register('building_no')}
+                  suppressHydrationWarning={suppressText}
+                  defaultValue={currentAddress?.address?.building_no}
+                  className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                  placeholder={`${t('building_no')}`}
+                />
+              </div>
+              {errors?.building_no?.message && (
+                <span
+                  className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                  suppressHydrationWarning={suppressText}
+                >
+                  {t('building_no_is_required')}
+                </span>
+              )}
+            </div>
+          )}
 
-          {currentAddressType === 'APARTMENT' && (
+          {/*  floor_no  */}
+          {/*  apartment_no  */}
+          {toUpper(type) === 'APARTMENT' && (
             <>
               {/*  floor_no  */}
               <div className="w-full ">
@@ -408,6 +485,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('floor_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.floor_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('floor_no')}`}
                   />
@@ -435,6 +513,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('apartment_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.apartment_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('apartment_no')}`}
                   />
@@ -451,34 +530,8 @@ const AddressCreate: NextPage<Props> = ({
             </>
           )}
 
-          {currentAddressType === 'OFFICE' && (
+          {toUpper(type) === 'OFFICE' && (
             <>
-              {/*  building_no  */}
-              <div className="w-full ">
-                <label
-                  suppressHydrationWarning={suppressText}
-                  htmlFor="building_no"
-                  className="block text-sm font-medium text-gray-900"
-                >
-                  {t('building_no')}*
-                </label>
-                <div className="relative rounded-md shadow-sm">
-                  <input
-                    {...register('building_no')}
-                    suppressHydrationWarning={suppressText}
-                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
-                    placeholder={`${t('building_no')}`}
-                  />
-                </div>
-                {errors?.building_no?.message && (
-                  <span
-                    className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
-                    suppressHydrationWarning={suppressText}
-                  >
-                    {t('building_no_is_required')}
-                  </span>
-                )}
-              </div>
               {/*  office_no  */}
               <div className="w-full ">
                 <label
@@ -492,6 +545,7 @@ const AddressCreate: NextPage<Props> = ({
                   <input
                     {...register('office_no')}
                     suppressHydrationWarning={suppressText}
+                    defaultValue={currentAddress?.address?.office_no}
                     className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                     placeholder={`${t('office_no')}`}
                   />
@@ -522,6 +576,7 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 {...register('notes')}
                 suppressHydrationWarning={suppressText}
+                defaultValue={currentAddress?.address?.notes}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('notice')}`}
               />
@@ -531,7 +586,7 @@ const AddressCreate: NextPage<Props> = ({
                 className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
                 suppressHydrationWarning={suppressText}
               >
-                {t('notes_is_required')}
+                {t('notes')}
               </span>
             )}
           </div>
@@ -550,6 +605,7 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 {...register('other_phone')}
                 suppressHydrationWarning={suppressText}
+                defaultValue={currentAddress?.address?.other_phone}
                 className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
                 placeholder={`${t('other_phone_no')}`}
               />
@@ -572,12 +628,17 @@ const AddressCreate: NextPage<Props> = ({
   );
 };
 
-export default AddressCreate;
+export default AddressEdit;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req, locale }) => {
+    async ({ req, locale, query }) => {
       const url = req.headers.host;
+      if (!query.userId || !query.id || !query.type) {
+        return {
+          notFound: true,
+        };
+      }
       const { data: element, isError } = await store.dispatch(
         vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
       );
@@ -590,6 +651,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           element: element.Data,
+          userId: query.userId,
+          addressId: query.id,
+          type: query.type,
           url,
         },
       };
