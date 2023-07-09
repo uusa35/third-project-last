@@ -75,24 +75,12 @@ const AddressSelectionIndex: NextPage<Props> = ({
       isLoading: boolean;
       isSuccess: boolean;
     }>();
-  const [triggerDeleteAddress] = useDeleteAddressMutation();
-  const [nextType, setNextType] = useState<string | null>(null);
 
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url }, false).then((r: any) => {
-      const allTypes = ['HOUSE', 'OFFICE', 'APARTMENT'];
-      if (r && r.data && r.data.data) {
-        const remaingType = first(
-          difference(allTypes, map(r.data.data, 'type'))
-        );
-        if (remaingType) {
-          setNextType(remaingType);
-        }
-      }
-    });
+    triggerGetAddresses({ url }, false);
   }, []);
 
   const handelDisplayAddress = (address: any) => {

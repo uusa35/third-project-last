@@ -118,9 +118,9 @@ const AddressIndex: NextPage<Props> = ({
   };
 
   const handleEdit = async (address: any) => {
-    return router
-      .push(appLinks.editAuthAddress(id, address.id, lowerCase(address.type)))
-      .then(() => dispatch(setCustomerAddress(address)));
+    return router.push(
+      appLinks.editAuthAddress(id, address.id, lowerCase(address.type))
+    );
   };
 
   const handleDelete = async (address: any) => {
@@ -137,13 +137,9 @@ const AddressIndex: NextPage<Props> = ({
             type: `success`,
           })
         );
-        triggerGetAddresses({ url }, false)
-          .then((r: any) => {
-            // if (r && r.data && r.data.data) {
-            // checkAddressesList(r && r.data && r.data.data);
-            // }
-          })
-          .then(() => dispatch(resetCustomerAddress(undefined)));
+        triggerGetAddresses({ url }, false).then(() =>
+          dispatch(resetCustomerAddress(undefined))
+        );
       } else {
         dispatch(
           showToastMessage({
