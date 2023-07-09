@@ -66,7 +66,6 @@ const AddressSelectionIndex: NextPage<Props> = ({
       countryCode,
       name,
       phone,
-      token: { api_token },
       address: { id: addressId },
     },
     locale: { isRTL },
