@@ -277,14 +277,17 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
           areaIds,
           (t) => t == destination.id.toString()
         );
-        // if (!isEmpty(sameAreaId)) {
+        if (!isEmpty(sameAreaId)) {
         // done address_area_id === destination.area_id
         // dispatch(setCustomerAddress(sameAreaId));
-        // } else if (!isEmpty(areaIds)) {
+        //  route to user addresses
+        console.log('address_area_id === destination.area_id', sameAreaId);
+        } else if (!isEmpty(areaIds)) {
         // adress_area_id !== destination.area_id
         // has addresses but not same destnation
-        // console.log('has address', areaIds);
-        // }
+        //  route to user addresses
+        console.log('has address', areaIds);
+        }
       } else {
         // auth user has no address.
         router.push(appLinks.createAuthAddress(customer_id, 'delivery'));
