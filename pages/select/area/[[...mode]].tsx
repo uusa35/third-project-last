@@ -183,12 +183,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
           const currentMode = query.mode[0];
           switch (currentMode) {
             case 'guest':
-              dispatch(
-                setCustomerAddressArea({
-                  area: destination.name,
-                  area_id: destination.id,
-                })
-              );
               return router.push(appLinks.guestAddress.path);
             case 'user_create':
               return router.push(
@@ -203,14 +197,6 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                 appLinks.editAuthAddress(
                   id,
                   addressId,
-                  lowerCase(addressType),
-                  `area_id=${destination.id}&area=${destination.name}`
-                )
-              );
-            case 'user_select':
-              return router.push(
-                appLinks.createAuthAddress(
-                  id,
                   lowerCase(addressType),
                   `area_id=${destination.id}&area=${destination.name}`
                 )
