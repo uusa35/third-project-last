@@ -113,6 +113,7 @@ export type appSetting = {
   showAreaModal: boolean;
   showPickDateModal: boolean;
   showChangePasswordModal: boolean;
+  lastHomeModalShownTime: number | null;
   previousUrl: {
     asPath: string;
     pathName: string;
@@ -222,7 +223,8 @@ export interface Order {
   branch_address: string;
   orderCode: string | number;
   order_id: string | number;
-  orderType?: string;
+  orderType: string;
+  newOrderType: string;
   customer: CustomerInfo;
   items: [
     {

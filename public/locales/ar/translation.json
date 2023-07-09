@@ -1,6 +1,6 @@
 {
   "powered_by_queue": "بدعم من كيو",
-  "return_policy": "سياسة الاسترجاع",
+  "return_policy": "سياسة العائدات",
   "shipping_policy": "سياسة الشحن",
   "privacy_policy": "سياسة الخصوصية",
   "more": "المزيد",
@@ -349,5 +349,14 @@
   "sign_in_register_to_add_favourite": "قم بتسجيل الدخول لتتمكن من الإضافة إلى المفضلة",
   "sorry_some_product_not_available_in_this_area": "بعض المنتجات غير متوفرة في المنطقة المختارة.",
   "sorry_some_products_not_available_in_this_area": "هذا المنتج غير متاح في المنطقة أو الفرع الذي تم اختيار. يرجى تغير المنطقة او الفرع",
+  "order_receipt": "فاتورة الطلب",
+  "date_time": "التاريخ والوقت",
+  "order_type": "نوع الطلب",
+  "order_summary": "ملخص الطلب",
+  "need_help_call_us": "تحتاج مساعدة ؟ اتصل بنا",
+  "knet": "كي نت",
+  "visa": "فيزا",
+  "back_to_store": "العودة إلى المتجر",
+  "we_advise_that_saving_the_receipt": "ننصح بحفظ الإيصال",
   "add_new_address": "اضافة عنوان جديد"
 }
