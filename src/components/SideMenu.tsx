@@ -55,7 +55,7 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
   const handleSignOut = async () => {
     dispatch(signOut(undefined));
     await deleteToken();
-    // return router.push('/');
+    return router.push('/');
   };
 
   return (
