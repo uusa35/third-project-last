@@ -60,7 +60,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       userAgent,
       id: customer_id,
       notes,
-      address:CustomerAddress,
+      address: CustomerAddress,
       address: { id: addressID, longitude, latitude, type },
     },
     searchParams: { method, destination },
@@ -165,7 +165,8 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       dispatch(setAreaBranchModalStatus(true));
     } else if (
       method === 'delivery' &&
-      (!addressID || (addressID && CustomerAddress.area_id !== destID.toString()))
+      (!addressID ||
+        (addressID && CustomerAddress.area_id !== destID.toString()))
     ) {
       if (isAuth) router.push(appLinks.selectAddress(customer_id));
       else router.push(appLinks.guestAddress.path);
@@ -182,10 +183,11 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           // ...(isAuth ? {} : { user_id: customer_id }),
           user_id: customer_id,
           ...(method === `delivery`
-            ? isAuth
-              ? { address_id: UserAddress.data.id }
-              : { address_id: addressID }
-            : {}),
+            ? { address_id: addressID }
+            : // isAuth
+              //   ? { address_id: addressID }
+              //   : { address_id: addressID }
+              {}),
           order_type: prefrences.type,
           // order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
           ...(isAuth ? {} : { UserAgent: userAgent }),
