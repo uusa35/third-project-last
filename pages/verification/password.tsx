@@ -10,6 +10,7 @@ import {
   appLinks,
   imageSizes,
   mainBtnClass,
+  setToken,
   suppressText,
 } from '@/constants/*';
 import PasswordImg from '@/appIcons/password.png';
@@ -148,6 +149,7 @@ const UserPassword: NextPage<Props> = ({
               );
               dispatch(setCustomer(r.data.data.user));
               dispatch(signIn(r.data.data.token));
+              setToken(r.data.data.token);
               if (
                 r.data &&
                 r.data.data &&
@@ -164,7 +166,7 @@ const UserPassword: NextPage<Props> = ({
                   dispatch(setCustomerAddress(address));
                 }
               }
-              router.push('/');
+              // router.push('/');
             }
           });
         } else {
@@ -196,6 +198,7 @@ const UserPassword: NextPage<Props> = ({
         } else {
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));
+          setToken(r.data.data.token);
           if (
             r.data &&
             r.data.data &&
@@ -390,7 +393,7 @@ const UserPassword: NextPage<Props> = ({
             </>
           )}
           <button
-            className={`${mainBtnClass} flex flex-row justify-center items-center my-4`}
+            className={`${mainBtnClass} flex flex-row justify-center items-center my-2`}
             style={{ backgroundColor: color }}
             suppressHydrationWarning={suppressText}
             type="submit"
@@ -398,6 +401,18 @@ const UserPassword: NextPage<Props> = ({
             {isResetPassword ? t('save') : t('continue')}
           </button>
         </form>
+        {isResetPassword && (
+          <div className="w-full px-4">
+            <button
+              className={`${mainBtnClass} flex flex-row  justify-center items-center  bg-gray-300`}
+              // style={{ backgroundColor: color }}
+              suppressHydrationWarning={suppressText}
+              onClick={() => setIsResetPassword(false)}
+            >
+              <span className="text-black">{t('cancel')}</span>
+            </button>
+          </div>
+        )}
       </div>
     </MainContentLayout>
   );

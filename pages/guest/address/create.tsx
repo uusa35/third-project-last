@@ -172,7 +172,6 @@ const AddressCreate: NextPage<Props> = ({
             router.push(`${appLinks.checkout.path}`);
           }
         });
-        // router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {
