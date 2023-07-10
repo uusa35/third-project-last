@@ -11,11 +11,16 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   ) {
     return;
   }
-
+  const token = req.cookies.get('token');
+  if (token && req.nextUrl.pathname.includes('login')) {
+    return NextResponse.redirect(new URL('/home', req.url))
+  } else if ((!token || token === undefined) && !req.nextUrl.pathname.includes('login')) {
+    return NextResponse.redirect(new URL('/home', req.url))
+  }
   return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: [],
+  matcher: ['/login', '/user/order/:path*', '/user/:path/address/:path*'],
 };

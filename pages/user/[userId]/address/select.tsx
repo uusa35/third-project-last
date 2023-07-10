@@ -32,6 +32,7 @@ import { Address, AppQueryResult } from '@/types/queries';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   difference,
+  filter,
   first,
   isEmpty,
   isNull,
@@ -82,7 +83,17 @@ const AddressSelectionIndex: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
-    triggerGetAddresses({ url }, false);
+    triggerGetAddresses({ url }, false).then((r: any) => {
+      const addressWithSameAreaId = first(
+        filter(
+          r.data.data,
+          (a) => a.address.area_id && a.address.area_id === destID.toString()
+        )
+      );
+      if (addressWithSameAreaId) {
+        dispatch(setCustomerAddress(addressWithSameAreaId));
+      }
+    });
   }, []);
 
   const handelDisplayAddress = (address: any) => {
@@ -98,7 +109,6 @@ const AddressSelectionIndex: NextPage<Props> = ({
   };
 
   const handleSelectAddress = (address: Address) => {
-    console.log({ address });
     if (address.address.area_id === destID.toString()) {
       // set customer assress
       // destid === addressid
@@ -119,7 +129,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
 
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="my_addresses">
-      <div className="relative h-[100vh] mt-4 ">
+      <div className="relative h-[100vh] mx-4 my-4">
         {addresses?.data && !isEmpty(addresses?.data) ? (
           <div>
             <div className={`mx-4 mb-4`}>
@@ -130,15 +140,15 @@ const AddressSelectionIndex: NextPage<Props> = ({
             {map(addresses?.data, (address: Address) => (
               <button
                 onClick={() => handleSelectAddress(address)}
-                className="flex flex-col w-auto justify-start items-start mx-4 space-y-4 rounded-lg mb-4 border"
+                className="flex flex-col w-full justify-start items-start space-y-4 rounded-lg mb-4 border"
                 style={{ borderColor: color }}
                 key={address.id}
               >
-                <div className="flex flex-1 flex-col w-auto border-b rounded-md p-3 overflow-hidden w-full text-sm">
+                <div className="flex  flex-col w-full border-b rounded-md p-3 overflow-hidden w-full text-sm">
                   <div
-                    className={`flex flex-1 flex-row justify-between items-start p-2`}
+                    className={`flex  flex-row w-full justify-between items-start p-2`}
                   >
-                    <div>
+                    <div className="w-full">
                       <div
                         className={`flex w-full flex-row justify-between items-center pb-2`}
                       >

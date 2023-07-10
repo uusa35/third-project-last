@@ -10,6 +10,7 @@ import {
   alexandriaFontBold,
   alexandriaFontMeduim,
   appLinks,
+  deleteToken,
   suppressText,
 } from '@/constants/*';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
@@ -51,9 +52,10 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
     }
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     dispatch(signOut(undefined));
-    return router.push('/');
+    await deleteToken();
+    // return router.push('/');
   };
 
   return (

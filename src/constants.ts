@@ -14,8 +14,7 @@ export const appLinks = {
   login: { path: '/login' },
   userLogin: { path: '/verification/password' },
   createAuthAddress: (userId: string, type?: string, params?: string) =>
-    `/user/${userId}/address/${type ?? 'house'}/create${
-      params !== undefined ? `?${params}` : ``
+    `/user/${userId}/address/${type ?? 'house'}/create${params !== undefined ? `?${params}` : ``
     }`,
   editAuthAddress: (
     userId: string,
@@ -23,8 +22,7 @@ export const appLinks = {
     type: string,
     params?: string
   ) =>
-    `/user/${userId}/address/${type}/edit/${addressId}${
-      params !== undefined ? `?${params}` : ``
+    `/user/${userId}/address/${type}/edit/${addressId}${params !== undefined ? `?${params}` : ``
     }`,
   userAddresses: (userId: string) => `/user/${userId}/address/`,
   selectAddress: (userId: string) => `/user/${userId}/address/select`,
@@ -144,6 +142,31 @@ export const setLang = (lang: any) =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ lang }),
+  });
+
+export const setToken = (token: any) =>
+  fetch(`/api/set/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token }),
+  });
+
+export const deleteToken = () =>
+  fetch(`/api/delete/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+export const getToken = () =>
+  fetch(`/api/get/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
 export const displayUserAddress = (address: any) => {

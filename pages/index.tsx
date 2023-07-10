@@ -32,7 +32,10 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
-import { setLastHomeModalShownTime, setUrl } from '@/redux/slices/appSettingSlice';
+import {
+  setLastHomeModalShownTime,
+  setUrl,
+} from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
 import { NextPage } from 'next';
@@ -52,7 +55,7 @@ const Home: NextPage<Props> = ({
   const {
     locale: { lang },
     searchParams: { destination, method },
-    appSetting: { lastHomeModalShownTime }
+    appSetting: { lastHomeModalShownTime },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const DestinationId = useAppSelector(destinationId);
@@ -60,7 +63,9 @@ const Home: NextPage<Props> = ({
   const router = useRouter();
   const [openPromoModal, setOpenPromoModal] = useState(true);
   const currentTime = Date.now();
-  const shouldDisplayModal = currentTime > lastHomeModalShownTime + (isLocal ? 60 * 1000 : 24 * 60 * 60 * 1000);
+  const shouldDisplayModal =
+    currentTime >
+    lastHomeModalShownTime + (isLocal ? 60 * 1000 : 24 * 60 * 60 * 1000);
 
   useEffect(() => {
     if (!isNull(url)) {
@@ -74,7 +79,7 @@ const Home: NextPage<Props> = ({
   ] = useLazyGetCategoriesQuery();
   const [
     triggerGetProducts,
-    { data: CategoriesProducts, isSuccess: CategoriesProductsSuccess },
+    { data: categoriesProducts, isSuccess: categoriesProductsSuccess },
   ] = useLazyGetProductsQuery();
   const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
     useLazyGetVendorQuery();
@@ -177,9 +182,9 @@ const Home: NextPage<Props> = ({
           !categoriesSuccess ||
           !categories ||
           !categories.Data ||
-          !CategoriesProductsSuccess ||
-          !CategoriesProducts ||
-          !CategoriesProducts.Data ? (
+          !categoriesProductsSuccess ||
+          !categoriesProducts ||
+          !categoriesProducts.Data ? (
             <div>
               <ContentLoader type="ProductHorizontal" sections={8} />
             </div>
@@ -208,11 +213,11 @@ const Home: NextPage<Props> = ({
                     </div>
                   </>
                 ) : (
-                  CategoriesProducts &&
-                  !isEmpty(CategoriesProducts.Data) && (
+                  categoriesProducts &&
+                  !isEmpty(categoriesProducts.Data) && (
                     <ProductListView
                       productCategories={filter(
-                        CategoriesProducts.Data,
+                        categoriesProducts.Data,
                         (c: Category) => c.items && c.items.length > 0
                       )}
                     />
@@ -229,7 +234,9 @@ const Home: NextPage<Props> = ({
                   <HomeModal
                     data={homePromocodeData?.data}
                     isOpen={shouldDisplayModal}
-                    onRequestClose={() => dispatch(setLastHomeModalShownTime(currentTime))}
+                    onRequestClose={() =>
+                      dispatch(setLastHomeModalShownTime(currentTime))
+                    }
                   />
                 )}
             </>

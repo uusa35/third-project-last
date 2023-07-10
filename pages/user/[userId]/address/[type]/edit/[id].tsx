@@ -137,6 +137,9 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
+      triggerGetAddressById({ address_id: addressId, url }).then((r: any) => {
+        console.log('the r', r);
+      });
       triggerGetAddresses({ url }, false)
         .then((r: any) => {
           if (r.data && r.data.data) {
@@ -222,11 +225,7 @@ const AddressEdit: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          router.push(`${appLinks.checkout.path}`);
-        } else {
-          router.push(`${appLinks.home.path}`);
-        }
+        router.back();
       } else {
         if (r.error && r.error.data?.msg) {
           dispatch(

@@ -64,10 +64,11 @@ const AddressCreate: NextPage<Props> = ({
   const refForm = useRef<any>();
   const [triggerCreateAddress, { isLoading: createAddressLoading }] =
     useCreateAddressMutation();
-  const [triggerGetAddressesById, { data: addresses, isLoading }, isSuccess] =
+  const [triggerGetAddressesById, { data: addresses, isLoading, isSuccess }] =
     useLazyGetAddressesByIdQuery<{
       data: AppQueryResult<UserAddressFields[]>;
       isLoading: boolean;
+      isSuccess: boolean;
     }>();
   const [triggerGetCart] = useLazyGetCartProductsQuery();
   const {
@@ -171,7 +172,6 @@ const AddressCreate: NextPage<Props> = ({
             router.push(`${appLinks.checkout.path}`);
           }
         });
-        // router.push(`${appLinks.checkout.path}`);
         // checkTimeAvailability();
       } else {
         if (r.error && r.error.data?.msg) {

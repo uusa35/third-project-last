@@ -145,7 +145,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   }, [isSuccess]);
 
   // get user address
-  // const { data: UserAddress, isSuccess: UserAddressSuccess } =
+  // const { data: userAddress, isSuccess: userAddressSuccess } =
   //   useGetAddressesByTypeQuery<{
   //     data: AppQueryResult<Address>;
   //     isSuccess: boolean;

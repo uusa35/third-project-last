@@ -152,7 +152,7 @@ export const customerSlice = createSlice({
       (state, action) => {
         state.prefrences = initialState.prefrences;
       }
-    );
+    )
   },
 });
 
