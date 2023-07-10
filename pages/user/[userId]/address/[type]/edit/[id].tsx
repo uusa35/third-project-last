@@ -137,24 +137,15 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
-      triggerGetAddressById({ address_id: addressId, url }).then((r: any) => {
-        console.log('the r', r);
-      });
-      triggerGetAddresses({ url }, false)
+      triggerGetAddressById({ address_id: addressId, url }, false)
         .then((r: any) => {
           if (r.data && r.data.data) {
-            const currentAddress: Address = first(
-              filter(r.data.data, (a) => a.id.toString() === addressId)
-            );
-
-            if (currentAddress) {
-              reset({
-                ...currentAddress.address,
-                address_type: currentAddress.type,
-                customer_id: currentAddress.customer_id,
-                method: 'delivery',
-              });
-            }
+            reset({
+              ...r.data.data.address.address,
+              address_type: toUpper(type),
+              customer_id: r.data.data.customer_id,
+              method: 'delivery',
+            });
           }
         })
         .then(() => {
@@ -171,7 +162,7 @@ const AddressEdit: NextPage<Props> = ({
           }
         });
     }
-  }, [addressId]);
+  }, [addressId, type]);
 
   // console.log('currentAddress', currentAddress);
   console.log({ errors });
