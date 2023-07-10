@@ -144,7 +144,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
   }, [isSuccess]);
 
   // get user address
-  // const { data: UserAddress, isSuccess: UserAddressSuccess } =
+  // const { data: userAddress, isSuccess: userAddressSuccess } =
   //   useGetAddressesByTypeQuery<{
   //     data: AppQueryResult<Address>;
   //     isSuccess: boolean;
@@ -182,7 +182,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           user_id: customer_id,
           ...(method === `delivery`
             ? isAuth
-              ? { address_id: UserAddress.data.id }
+              ? { address_id: userAddress.data.id }
               : { address_id: addressID }
             : {}),
           order_type: prefrences.type,
