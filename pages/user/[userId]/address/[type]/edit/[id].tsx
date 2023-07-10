@@ -137,6 +137,9 @@ const AddressEdit: NextPage<Props> = ({
 
   useEffect(() => {
     if (router.isReady) {
+      triggerGetAddressById({ address_id: addressId, url }).then((r: any) => {
+        console.log('the r', r);
+      });
       triggerGetAddresses({ url }, false)
         .then((r: any) => {
           if (r.data && r.data.data) {

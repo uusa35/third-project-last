@@ -22,7 +22,7 @@ export const addressApi = apiSlice.injectEndpoints({
         method: `POST`,
         headers: { url },
         body,
-        validateStatus: (response, result) =>
+        validateStatus: (response: { status: number; }, result: { status: any; }) =>
           response.status === 200 && result.status,
       }),
     }),
@@ -107,16 +107,14 @@ export const addressApi = apiSlice.injectEndpoints({
     getAddressesById: builder.query<
       AppQueryResult<UserAddressFields[]>,
       {
-        params: {
-          address_id: string;
-        };
+        address_id: string;
         url: string;
       }
     >({
-      query: ({ params, url }) => ({
+      query: ({ address_id , url }) => ({
         url: `user/showUserAddress`,
         headers: { url },
-        params: { ...params },
+        params : { address_id },
         validateStatus: (response, result) =>
           response.status == 200 && result.status,
       }),
