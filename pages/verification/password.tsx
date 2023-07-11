@@ -159,14 +159,14 @@ const UserPassword: NextPage<Props> = ({
                 const address = first(
                   filter(
                     r.data.data.data.user.address,
-                    (a) => a.address.area_id == destination.id.toString()
+                    (a) => a.address.area_id == destination?.id.toString()
                   )
                 );
                 if (address) {
                   dispatch(setCustomerAddress(address));
                 }
               }
-              // router.push('/');
+              router.push('/');
             }
           });
         } else {
@@ -208,14 +208,13 @@ const UserPassword: NextPage<Props> = ({
             const address = first(
               filter(
                 r.data.data.user.address,
-                (a) => a.address.area_id == destination.id.toString()
+                (a) => a.address.area_id == destination?.id.toString()
               )
             );
             if (address) {
               dispatch(setCustomerAddress(address));
             }
           }
-
           router.push('/');
         }
       });
