@@ -168,13 +168,11 @@ const AddressCreate: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        router.back();
-        // if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-        // router.push(`${appLinks.checkout.path}`);
-        // } else {
-        // router.back();
-        // router.push(`${appLinks.home.path}`);
-        // }
+        if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
+          router.push(`${appLinks.checkout.path}`);
+        } else {
+          router.back();
+        }
       } else {
         if (r.error && r.error.data?.msg) {
           dispatch(
