@@ -166,7 +166,7 @@ const UserPassword: NextPage<Props> = ({
                   dispatch(setCustomerAddress(address));
                 }
               }
-              // router.push('/');
+              router.push('/');
             }
           });
         } else {
