@@ -95,7 +95,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       url,
     }).then(async (r: any) => {
       if (r.error) {
-        router.push(appLinks.otpVerification.path);
+        router.push(appLinks.otpVerification('register'));
       } else {
         router.push(appLinks.userLogin.path);
       }
@@ -107,7 +107,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       );
     });
   };
-  
+
   return (
     <MainContentLayout url={url} showBackBtnHeader currentModule="your_number">
       {/*  no address case */}

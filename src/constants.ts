@@ -46,7 +46,7 @@ export const appLinks = {
   wishlist: { path: '/wishlist' },
   vendorDetails: { path: '/vendor/info' },
   mobileVerification: { path: '/verification/mobile' },
-  otpVerification: { path: '/verification/otp' },
+  otpVerification: (type: string) => `/verification/${type}/otp`,
   orderReceipt: (orderId: string) => `/receipt/${orderId}`,
   orderTrack: (orderId: string) => `/order/track/${orderId}`,
   orderFailure: (orderId: string) => `/order/${orderId}/status/failure`,

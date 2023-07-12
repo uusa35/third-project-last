@@ -110,6 +110,9 @@ const UserPassword: NextPage<Props> = ({
     if (url) {
       dispatch(setUrl(url));
     }
+    if (router.query && router.query.reset && router.query.reset === '1') {
+      setIsResetPassword(true);
+    }
   }, []);
 
   const onSubmit = async (body: any) => {
@@ -221,7 +224,8 @@ const UserPassword: NextPage<Props> = ({
     }
   };
   const handleForgetPassword = () => {
-    setIsResetPassword(true);
+    // setIsResetPassword(true);
+    router.push(appLinks.otpVerification('reset'));
   };
 
   return (

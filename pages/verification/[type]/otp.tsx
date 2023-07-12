@@ -28,9 +28,13 @@ import { NextPage } from 'next';
 
 type Props = {
   url: string;
+  type: 'register' | 'reset';
 };
 
-const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
+const OtpVerifications: NextPage<Props> = ({
+  url,
+  type,
+}): React.ReactElement => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();
@@ -77,12 +81,17 @@ const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
         phone,
         phone_country_code: countryCode,
         code: otp,
-        type: 'register',
+        type,
       },
       url,
     }).then((r: any) => {
+      console.log('r', r);
       if (r.data && r.data.status) {
-        router.push(`${appLinks.accountInfo.path}`);
+        if (type === 'register') {
+          router.push(`${appLinks.accountInfo.path}`);
+        } else if (type === 'reset') {
+          router.push(`${appLinks.userLogin}?reset=1`);
+        }
       } else {
         dispatch(
           showToastMessage({
@@ -111,7 +120,7 @@ const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
           body: {
             phone,
             phone_country_code: countryCode,
-            UserAgent: userAgent
+            UserAgent: userAgent,
           },
           url,
         }).then((r: any) => {
@@ -236,8 +245,8 @@ const OtpVerifications: NextPage<Props> = ({ url }): React.ReactElement => {
 export default OtpVerifications;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req }) => {
-      if (!req.headers.host) {
+    async ({ req, query }) => {
+      if (!req.headers.host || !query.type) {
         return {
           notFound: true,
         };
@@ -245,6 +254,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       return {
         props: {
           url: req.headers.host,
+          type: query.type,
         },
       };
     }
