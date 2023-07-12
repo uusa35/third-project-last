@@ -139,11 +139,11 @@ const AddressEdit: NextPage<Props> = ({
     if (router.isReady) {
       triggerGetAddressById({ address_id: addressId, url }, false)
         .then((r: any) => {
-          if (r.data && r.data.data) {
+          if (r.data && r.data.Data) {
             reset({
-              ...r.data.data.address.address,
+              ...r.data.Data.address,
               address_type: toUpper(type),
-              customer_id: r.data.data.customer_id,
+              customer_id: r.data.Data.customer_id,
               method: 'delivery',
             });
           }
@@ -163,15 +163,6 @@ const AddressEdit: NextPage<Props> = ({
         });
     }
   }, [addressId, type]);
-
-  // console.log('currentAddress', currentAddress);
-  console.log({ errors });
-  // console.log('destination', destination);
-  // console.log('data ====>', getValues());
-  // console.log('address ====>', address?.Data);
-  // console.log('customer', customer.address.area_id);
-  // console.log('addresses', currentAddresses);
-  // console.log('address', address?.Data.address.area_id);
 
   const handleSaveAddress = async (body: any) => {
     await triggerUpdateAddress({
