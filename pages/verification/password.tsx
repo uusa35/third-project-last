@@ -159,7 +159,7 @@ const UserPassword: NextPage<Props> = ({
                 const address = first(
                   filter(
                     r.data.data.data.user.address,
-                    (a) => a.address.area_id == destination?.id.toString()
+                    (a) => a.address?.area_id == destination?.id.toString()
                   )
                 );
                 if (address) {
@@ -208,7 +208,7 @@ const UserPassword: NextPage<Props> = ({
             const address = first(
               filter(
                 r.data.data.user.address,
-                (a) => a.address.area_id == destination?.id.toString()
+                (a) => a.address?.area_id == destination?.id.toString()
               )
             );
             if (address) {

@@ -159,7 +159,7 @@ const DeliveryPickup: FC<Props> = ({ url }) => {
                     ar={destination.name_ar}
                     en={destination.name_en}
                   />
-                  {customerAddress.id !== 0 && (
+                  {customerAddress.id && (
                     <>
                       ,{' '}
                       {truncate(displayUserAddress(customerAddress), {
