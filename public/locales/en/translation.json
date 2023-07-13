@@ -375,5 +375,6 @@
   "back_to_store": "back to store",
   "we_advise_that_saving_the_receipt": "we advise that saving the receipt",
   "add_new_address": "add new address",
-  "select_area_to_mach_your_selected_address":"select area to mach your selected address"
+  "select_area_to_mach_your_selected_address": "select area to mach your selected address",
+  "invalid_otp": "invalid otp %{test}%"
 }
