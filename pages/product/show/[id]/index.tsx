@@ -876,7 +876,7 @@ const ProductShow: NextPage<Props> = ({
                             : element?.Data?.description_en.length
                           : 99
                       }
-                      className="text-[#877D78] text-sm lg:text-base"
+                      className="text-[#877D78] text-sm lg:text-base break-all"
                     />
                     {((element?.Data?.description_ar.length >= 99 && isRTL) ||
                       (element?.Data?.description_en.length >= 99 &&
