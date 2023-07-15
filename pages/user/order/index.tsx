@@ -58,11 +58,11 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
   const [triggerTrackOrder, { data: order, isSuccess: orderSuccess }] =
     useLazyTrackOrderQuery();
 
-    useEffect(() => {
-      if (url) {
-        dispatch(setUrl(url));
-      }
-    }, []);
+  useEffect(() => {
+    if (url) {
+      dispatch(setUrl(url));
+    }
+  }, []);
 
   const handleChange = async (search: string) => {
     if (search && search?.length >= 3) {
@@ -87,7 +87,7 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
 
   return (
     <Suspense>
-      <MainHead title={t('orders')} description={`${t('orders')}`} />
+      <MainHead title={t('orders')} url={url} description={`${t('orders')}`} />
       <MainContentLayout url={url} showBackBtnHeader currentModule="my_orders">
         {isSuccess ? (
           <>
