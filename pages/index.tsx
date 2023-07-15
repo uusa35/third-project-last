@@ -137,17 +137,15 @@ const Home: NextPage<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  // store is closed modal====> api
-
-  // order status
-  // close modal when to show it
-  // line 149 in index home mdify category
+  console.log('element', element);
+  console.log('url', url);
 
   return (
     <Suspense>
       {/* SEO Head DEV*/}
       <MainHead
         title={currentLocale === 'ar' ? element.name_ar : element.name_en}
+        url={url}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}

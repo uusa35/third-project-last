@@ -740,10 +740,14 @@ const ProductShow: NextPage<Props> = ({
     }
   };
 
+  // console.log('resolvedUrl', `${url}${resolvedUrl}`);
+  // console.log('image', `${product?.cover?.toString()}`);
+
   return (
     <Suspense>
       <MainHead
         title={`${currentLocale === 'ar' ? product.name_ar : product.name_en}`}
+        url={`${url}${resolvedUrl}`}
         description={`${
           currentLocale === 'ar'
             ? product.description_ar

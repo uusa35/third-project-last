@@ -99,6 +99,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
     <Fragment>
       <MainHead
         title={t('account_info')}
+        url={url}
         description={`${t('account_info')}`}
       />
       <MainContentLayout

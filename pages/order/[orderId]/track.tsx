@@ -13,12 +13,12 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setUrl } from '@/redux/slices/appSettingSlice';
 
 type Props = {
-  url: string
-}
+  url: string;
+};
 
 const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
   const { t } = useTranslation();
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (url) {
@@ -30,9 +30,14 @@ const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
     <Suspense>
       <MainHead
         title={t('track_order')}
+        url={url}
         description={`${t('track_order')}`}
       />
-      <MainContentLayout url={url} showBackBtnHeader currentModule="track_order">
+      <MainContentLayout
+        url={url}
+        showBackBtnHeader
+        currentModule="track_order"
+      >
         <div className="flex flex-col items-center justify-center h-[90vh] space-y-2 px-5">
           <CustomImage
             src={NoOrder}
@@ -40,7 +45,10 @@ const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
             width={150}
             height={150}
           />
-          <h3 className="text-lg font-bold" suppressHydrationWarning={suppressText}>
+          <h3
+            className="text-lg font-bold"
+            suppressHydrationWarning={suppressText}
+          >
             {t('no_order_with_this_id')}
           </h3>
           <p className="text-zinc-500" suppressHydrationWarning={suppressText}>
@@ -49,8 +57,8 @@ const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
         </div>
       </MainContentLayout>
     </Suspense>
-  )
-}
+  );
+};
 
 export default UserOrders;
 export const getServerSideProps = wrapper.getServerSideProps(
