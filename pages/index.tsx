@@ -265,10 +265,15 @@ export const getServerSideProps = wrapper.getServerSideProps(
         isError,
       }: { data: AppQueryResult<Vendor>; isError: boolean } =
         await store.dispatch(
-          vendorApi.endpoints.getVendor.initiate({
-            lang: locale,
-            url,
-          })
+          vendorApi.endpoints.getVendor.initiate(
+            {
+              lang: locale,
+              url,
+            },
+            {
+              forceRefetch: true,
+            }
+          )
         );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data || !element) {
