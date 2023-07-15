@@ -63,7 +63,7 @@ const PaymentSummary: FC<Props> = ({
               </p>
               <div className={`flex flex-row`}>
                 <p suppressHydrationWarning={suppressText} className={`px-2 `}>
-                  {promo_code_discount}
+                  -{promo_code_discount}
                 </p>
                 <p
                   className={`uppercase `}

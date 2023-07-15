@@ -18,6 +18,7 @@ import {
   kebabCase,
   lowerCase,
   map,
+  snakeCase,
 } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { alexandriaFontMeduim, appLinks, suppressText } from '@/constants/*';
@@ -47,6 +48,7 @@ import { NextPage } from 'next';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { useLazyGetAddressesQuery } from '@/redux/api/addressApi';
+import { toast } from 'react-toastify';
 
 type Props = { url: string };
 
@@ -104,16 +106,71 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
 
   // inc and dec and rmove
   const HandelDecIncRmv = (item: ProductCart, process: string) => {
+    let newCart = cartItems.data.Cart;
     if (process === 'inc') {
-      handelIncRequest(item);
+      newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
+        ...item,
+        Quantity: item.Quantity + 1,
+      });
+      // handelIncRequest(item);
     } else if (process === 'dec') {
       // if val === 1 then remove the item
       if (item.Quantity === 1) {
-        handelRemoveRequest(item);
+        newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id);
+        // handelRemoveRequest(item);
       } else {
-        handelDecRequest(item);
+        newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
+          ...item,
+          Quantity: item.Quantity - 1,
+        });
+        // handelDecRequest(item);
       }
     }
+
+    handleUpdateCart(newCart);
+  };
+
+  // update cart req
+  const handleUpdateCart = (cart: ProductCart[]) => {
+    triggerAddToCart({
+      process_type: method,
+      destination: destObj,
+      body: {
+        UserAgent: userAgent,
+        Cart:
+          isSuccess && cartItems.data && cartItems.data.Cart && !isEmpty(cart)
+            ? cart
+            : [], // empty Cart Case !!!
+      },
+      url,
+    }).then((r: any) => {
+      if (r.data && r.data?.status) {
+        dispatch(
+          showToastMessage({
+            content: `cart_updated_successfully`,
+            type: `success`,
+          })
+        );
+        if (enable_promocode) {
+          dispatch(resetPromo());
+        }
+      } else if (r.error && r.error.data && r.error.data.msg) {
+        if (r.error.data.statusNum === '300' && r.error.data.product)
+          toast(
+            `${t(snakeCase(lowerCase(r.error.data.msg)), {
+              amount: r.error.data.product[0]?.amount,
+            })}`,
+            { type: 'error' }
+          );
+        else
+          dispatch(
+            showToastMessage({
+              content: lowerCase(kebabCase(r.error.data.msg)),
+              type: `error`,
+            })
+          );
+      }
+    });
   };
 
   const handelIncRequest = (item: ProductCart) => {
