@@ -359,5 +359,6 @@
   "back_to_store": "العودة إلى المتجر",
   "we_advise_that_saving_the_receipt": "ننصح بحفظ الإيصال",
   "add_new_address": "اضافة عنوان جديد",
-  "select_area_to_mach_your_selected_address":"اختر المنطقه التي تتوافق مع العنوان المحدد"
+  "select_area_to_mach_your_selected_address":"اختر المنطقه التي تتوافق مع العنوان المحدد",
+  "invalid_otp" : "رقم التحقق غير صحيح"
 }

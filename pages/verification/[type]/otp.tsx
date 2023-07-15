@@ -93,6 +93,7 @@ const OtpVerifications: NextPage<Props> = ({
           router.push(`${appLinks.userLogin}?reset=1`);
         }
       } else {
+        console.log('here');
         dispatch(
           showToastMessage({
             content: 'invalid_otp',
