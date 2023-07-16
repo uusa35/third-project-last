@@ -741,7 +741,8 @@ const ProductShow: NextPage<Props> = ({
   };
 
   // console.log('resolvedUrl', `${url}${resolvedUrl}`);
-  // console.log('image', `${product?.cover?.toString()}`);
+  console.log('image', `${product?.cover?.toString()}`);
+  console.log('element', product);
 
   return (
     <Suspense>
