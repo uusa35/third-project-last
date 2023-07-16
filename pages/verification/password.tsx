@@ -41,7 +41,16 @@ import {
   signIn,
 } from '@/redux/slices/customerSlice';
 import { checkPhone, loginSchema } from 'src/validations';
-import { filter, first, isNull, map, upperCase, upperFirst } from 'lodash';
+import {
+  filter,
+  first,
+  isNull,
+  isUndefined,
+  map,
+  omit,
+  upperCase,
+  upperFirst,
+} from 'lodash';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import * as yup from 'yup';
 import ShowPasswordIcon from '@/appIcons/show_password.svg';
@@ -150,7 +159,7 @@ const UserPassword: NextPage<Props> = ({
                   type: 'success',
                 })
               );
-              dispatch(setCustomer(r.data.data.user));
+              dispatch(setCustomer(omit(r.data.data.user, 'address')));
               dispatch(signIn(r.data.data.token));
               setToken(r.data.data.token);
               if (
@@ -162,7 +171,7 @@ const UserPassword: NextPage<Props> = ({
                 const address = first(
                   filter(
                     r.data.data.data.user.address,
-                    (a) => a.address?.area_id == destination?.id.toString()
+                    (a) => a.address?.area_id === destination?.id.toString()
                   )
                 );
                 if (address) {
@@ -199,7 +208,7 @@ const UserPassword: NextPage<Props> = ({
             })
           );
         } else {
-          dispatch(setCustomer(r.data.data.user));
+          dispatch(setCustomer(omit(r.data.data.user, 'address')));
           dispatch(signIn(r.data.data.token));
           setToken(r.data.data.token);
           if (
@@ -211,10 +220,10 @@ const UserPassword: NextPage<Props> = ({
             const address = first(
               filter(
                 r.data.data.user.address,
-                (a) => a.address?.area_id == destination?.id.toString()
+                (a) => a.address?.area_id === destination?.id.toString()
               )
             );
-            if (address) {
+            if (address && !isUndefined(address)) {
               dispatch(setCustomerAddress(address));
             }
           }
