@@ -208,6 +208,7 @@ const UserPassword: NextPage<Props> = ({
             })
           );
         } else {
+          console.log('first', omit(r.data.data.user, 'address'));
           dispatch(setCustomer(omit(r.data.data.user, 'address')));
           dispatch(signIn(r.data.data.token));
           setToken(r.data.data.token);
@@ -227,7 +228,7 @@ const UserPassword: NextPage<Props> = ({
               dispatch(setCustomerAddress(address));
             }
           }
-          router.push('/');
+          // router.push('/');
         }
       });
     }
