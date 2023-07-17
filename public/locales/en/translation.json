@@ -378,5 +378,6 @@
   "select_area_to_mach_your_selected_address":"select area to mach your selected address",
   "only":"only",
   "some_out_of_stock_item":"only {{amount}} item/s are available in stock",
-  "invalid_otp": "invalid otp"
+  "invalid_otp": "invalid otp",
+  "the_date_must_be_a_date_after_yesterday.":"the date must be a date after yesterday."
 }
