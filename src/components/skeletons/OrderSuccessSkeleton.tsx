@@ -19,10 +19,10 @@ const OrderSuccessSkeleton: FC = (): React.ReactNode => {
   ));
   return (
     <div
-      className={`flex flex-col justify-start items-start w-full lg:w-2/4 xl:w-1/3 relative`}
+      className={`flex flex-col justify-start items-start w-full relative`}
     >
       <div className="px-5 w-full">
-        <div className="flex flex-col justify-center items-center py-5">
+        <div className="flex flex-col justify-center items-center py-5 w-full">
           <Skeleton width={80} height={80} circle className="mb-5" />
           <Skeleton width={250} height={20} />
           <Skeleton width={300} height={20} className="my-3" />

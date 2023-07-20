@@ -136,8 +136,10 @@ const OrderSuccess: NextPage<Props> = ({
                     :{' '}
                     {(order.data.newOrderType === 'delivery_later' ||
                       order.data.newOrderType === 'pickup_later') &&
-                      new Date(order.data.delivery_date_time).toLocaleDateString()} 
-                      {order.data.estimated_time?.from}{' '}
+                      new Date(
+                        order.data.delivery_date_time
+                      ).toLocaleDateString()}
+                    {order.data.estimated_time?.from}{' '}
                     {order.data.estimated_time?.to &&
                       `- ${order.data.estimated_time?.to}`}
                   </span>
@@ -146,10 +148,7 @@ const OrderSuccess: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   className="text-[#544A45] lg:w-3/4 text-sm"
                 >
-                  {t('order_id')}:{' '}
-                  <span>
-                    #{order.data.order_id}
-                  </span>
+                  {t('order_id')}: <span>#{order.data.order_id}</span>
                 </p>
               </div>
             </div>
@@ -244,8 +243,8 @@ const OrderSuccess: NextPage<Props> = ({
             ))}
           </div>
           <div className="p-5">
-            <Link 
-              href={`${appLinks.home.path}`} 
+            <Link
+              href={`${appLinks.home.path}`}
               suppressHydrationWarning={suppressText}
               className="flex items-end pb-5"
             >
@@ -268,7 +267,9 @@ const OrderSuccess: NextPage<Props> = ({
           />
         </MainContentLayout>
       ) : (
-        <ContentLoader type="OrderSuccess" sections={1} />
+        <MainContentLayout>
+          <ContentLoader type="OrderSuccess" sections={1} />
+        </MainContentLayout>
       )}
     </>
   );
