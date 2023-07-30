@@ -80,6 +80,7 @@ const orderReceipt: NextPage<Props> = ({
     <Suspense>
       <MainHead
         title={t('order_receipt')}
+        url={url}
         description={`${t('order_receipt')}`}
       />
       <MainContentLayout

@@ -298,6 +298,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
     <Suspense>
       <MainHead
         title={t('scheduled_order')}
+        url={url}
         description={`${t('scheduled_order')}`}
       />
       <MainContentLayout

@@ -73,11 +73,12 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
     SetShowModal(true);
   };
 
-  if (!vendorSuccess) return <></>;
+  if (!vendorSuccess && !vendorElement?.Data) return <></>;
   return (
     <Suspense>
       <MainHead
         title={element.name}
+        url={url}
         description={element.desc}
         mainImage={`${element.logo}`}
         icon={`${element.logo}`}
@@ -175,17 +176,16 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                       <Visa className={`h-auto w-8`} />
                     </div>
                   )}
-                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery ===
-                    1 && (
+                  {vendorElement?.Data?.Payment_Methods?.cash_on_delivery ? (
                     <div className="px-3">
                       <CashOnDelivery className={`h-auto w-8`} />
                     </div>
-                  )}
-                  {vendorElement?.Data?.Payment_Methods.knet === 1 && (
+                  ) : null}
+                  {vendorElement?.Data?.Payment_Methods?.knet ? (
                     <div className=" ">
                       <Knet className={`h-auto w-8`} />
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
               {/* contactus */}
@@ -289,7 +289,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
     async ({ req, locale }) => {
       const url = req.headers.host;
       const { data: element, isError } = await store.dispatch(
-        vendorApi.endpoints.getVendor.initiate({ lang: locale, url })
+        vendorApi.endpoints.getVendor.initiate(
+          { lang: locale, url },
+          {
+            forceRefetch: true,
+          }
+        )
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data || !url) {

@@ -740,10 +740,15 @@ const ProductShow: NextPage<Props> = ({
     }
   };
 
+  // console.log('resolvedUrl', `${url}${resolvedUrl}`);
+  console.log('image', `${product?.cover?.toString()}`);
+  console.log('element', product);
+
   return (
     <Suspense>
       <MainHead
         title={`${currentLocale === 'ar' ? product.name_ar : product.name_en}`}
+        url={`${url}${resolvedUrl}`}
         description={`${
           currentLocale === 'ar'
             ? product.description_ar
@@ -1307,11 +1312,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
         data: AppQueryResult<Product>;
         isError: boolean;
       } = await store.dispatch(
-        productApi.endpoints.getProduct.initiate({
-          id,
-          lang: locale,
-          url: req.headers.host,
-        })
+        productApi.endpoints.getProduct.initiate(
+          {
+            id,
+            lang: locale,
+            url: req.headers.host,
+          },
+          {
+            forceRefetch: true,
+          }
+        )
       );
       await Promise.all(store.dispatch(apiSlice.util.getRunningQueriesThunk()));
       if (isError || !element.Data) {

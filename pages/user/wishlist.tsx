@@ -81,7 +81,11 @@ const Wishlist: NextPage<Props> = ({ url }): React.ReactElement => {
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule={'whishlist'}>
-      <MainHead title={t('wishlist')} description={`${t('whishlist')}`} />
+      <MainHead
+        title={t('wishlist')}
+        url={url}
+        description={`${t('whishlist')}`}
+      />
       {isLoading ? (
         <div>
           {/* <Skeleton height={50} /> */}

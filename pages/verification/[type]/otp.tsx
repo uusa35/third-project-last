@@ -140,6 +140,7 @@ const OtpVerifications: NextPage<Props> = ({
     <Fragment>
       <MainHead
         title={t('otp_verification')}
+        url={url}
         description={`${t('otp_verification')}`}
       />
       <MainContentLayout
