@@ -137,9 +137,6 @@ const Home: NextPage<Props> = ({
     { refetchOnMountOrArgChange: true }
   );
 
-  console.log('element', element);
-  console.log('url', url);
-
   return (
     <Suspense>
       {/* SEO Head DEV*/}

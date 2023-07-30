@@ -73,7 +73,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
     SetShowModal(true);
   };
 
-  if (!vendorSuccess) return <></>;
+  if (!vendorSuccess && !vendorElement?.Data) return <></>;
   return (
     <Suspense>
       <MainHead
@@ -176,17 +176,16 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                       <Visa className={`h-auto w-8`} />
                     </div>
                   )}
-                  {vendorElement?.Data?.Payment_Methods.cash_on_delivery ===
-                    1 && (
+                  {vendorElement?.Data?.Payment_Methods?.cash_on_delivery ? (
                     <div className="px-3">
                       <CashOnDelivery className={`h-auto w-8`} />
                     </div>
-                  )}
-                  {vendorElement?.Data?.Payment_Methods.knet === 1 && (
+                  ) : null}
+                  {vendorElement?.Data?.Payment_Methods?.knet ? (
                     <div className=" ">
                       <Knet className={`h-auto w-8`} />
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
               {/* contactus */}
