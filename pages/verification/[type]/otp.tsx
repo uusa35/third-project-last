@@ -12,6 +12,7 @@ import {
   appLinks,
   imageSizes,
   mainBtnClass,
+  setToken,
   suppressText,
   toEn,
 } from '@/constants/*';
@@ -127,6 +128,7 @@ const OtpVerifications: NextPage<Props> = ({
         }).then((r: any) => {
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));
+          setToken(r.data.data.token);
         });
       }
     });
