@@ -94,6 +94,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       },
       url,
     }).then(async (r: any) => {
+      
       if (r.error) {
         router.push(appLinks.otpVerification('register'));
       } else {
@@ -193,7 +194,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
             suppressHydrationWarning={suppressText}
             type="submit"
           >
-            {t('send')} {upperCase(`${t('otp')}`)}
+            {t('sign_in')}
           </button>
         </form>
         <button
