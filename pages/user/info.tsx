@@ -9,6 +9,7 @@ import {
   appLinks,
   imageSizes,
   mainBtnClass,
+  setToken,
   suppressText,
 } from '@/constants/*';
 import { first, upperFirst } from 'lodash';
@@ -83,6 +84,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
       if (r.data && r.data.data && r.data.data.user) {
         dispatch(setCustomer(r.data.data.user));
         dispatch(signIn(r.data.data.token));
+        setToken(r.data.data.token);
         router.push(`${appLinks.addressMap.path}`);
       } else if (r.error && r.error.msg) {
         dispatch(
