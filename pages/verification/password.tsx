@@ -33,6 +33,7 @@ import {
   useCheckPhoneMutation,
   useLoginMutation,
   useResetPasswordMutation,
+  useSendotpMutation,
 } from '@/redux/api/authApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import {
@@ -98,6 +99,7 @@ const UserPassword: NextPage<Props> = ({
   //     isSuccess: boolean;
   //   }>();
   const [triggerGetCart] = useLazyGetCartProductsQuery();
+  const [triggerSendOtp] = useSendotpMutation();
 
   const togglePasswordVisibility = (id: string) => {
     setPasswordVisibility((prevState) => ({
@@ -273,8 +275,12 @@ const UserPassword: NextPage<Props> = ({
     }
   };
   const handleForgetPassword = () => {
-    // setIsResetPassword(true);
-    router.push(appLinks.otpVerification('reset'));
+    triggerSendOtp({ phone: customer.phone, url }).then((r: any) => {
+      // setIsResetPassword(true);
+      if (r.data.status) {
+        router.push(appLinks.otpVerification('reset'));
+      }
+    });
   };
 
   return (
