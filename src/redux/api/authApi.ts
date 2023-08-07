@@ -1,5 +1,11 @@
 import { apiSlice } from './index';
-import { AppQueryResult, PhoneCheck, Register, ResetPassword, VerifyCode } from '@/types/queries';
+import {
+  AppQueryResult,
+  PhoneCheck,
+  Register,
+  ResetPassword,
+  VerifyCode,
+} from '@/types/queries';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -21,16 +27,32 @@ export const authApi = apiSlice.injectEndpoints({
         validateStatus: (response, result) => result.status,
       }),
     }),
+    sendotp: builder.mutation<
+      AppQueryResult<ResetPassword>,
+      {
+        
+          phone: string;
+        url: string;
+      }
+    >({
+      query: ({ phone, url }) => ({
+        url: `v2/user/reset/send-otp`,
+        method: `POST`,
+        headers: { url },
+        body:{phone},
+        validateStatus: (response, result) => result,
+      }),
+    }),
     verifyCode: builder.mutation<
       AppQueryResult<VerifyCode>,
       {
         body: {
           phone: string;
           phone_country_code: string;
-          code: string,
-          type: 'register' | 'reset'
+          code: string;
+          type: 'register' | 'reset';
         };
-        url: string
+        url: string;
       }
     >({
       query: ({ body, url }) => ({
@@ -51,7 +73,7 @@ export const authApi = apiSlice.injectEndpoints({
           email: string;
           password: string;
           password_confirmation: string;
-          UserAgent: string
+          UserAgent: string;
         };
         url: string;
       }
@@ -70,8 +92,8 @@ export const authApi = apiSlice.injectEndpoints({
         body: {
           phone: string;
           phone_country_code: string;
-          UserAgent: string,
-          password: string
+          UserAgent: string;
+          password: string;
         };
         url: string;
       }
@@ -110,7 +132,8 @@ export const authApi = apiSlice.injectEndpoints({
 export const {
   useCheckPhoneMutation,
   useVerifyCodeMutation,
+  useSendotpMutation,
   useRegisterMutation,
   useLoginMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
 } = authApi;

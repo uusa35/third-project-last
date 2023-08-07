@@ -98,6 +98,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     if (url) {
       dispatch(setUrl(url));
     }
+    dispatch(setAreaBranchModalStatus(false));
   }, []);
 
   // map marker

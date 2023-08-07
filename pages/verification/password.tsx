@@ -33,6 +33,7 @@ import {
   useCheckPhoneMutation,
   useLoginMutation,
   useResetPasswordMutation,
+  useSendotpMutation,
 } from '@/redux/api/authApi';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import {
@@ -55,8 +56,10 @@ import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import * as yup from 'yup';
 import ShowPasswordIcon from '@/appIcons/show_password.svg';
 import HidePasswordIcon from '@/appIcons/hide_password.svg';
-import { AppQueryResult } from '@/types/queries';
-import { useLazyGetAddressesQuery } from '@/redux/api/addressApi';
+import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
+// import { AppQueryResult } from '@/types/queries';
+// import { useLazyGetAddressesQuery } from '@/redux/api/addressApi';
 
 type Props = {
   element: Vendor;
@@ -70,29 +73,33 @@ const UserPassword: NextPage<Props> = ({
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
   const color = useAppSelector(themeColor);
   const {
     customer,
     locale: { isRTL },
     searchParams: { destination },
   } = useAppSelector((state) => state);
+  const destObj = useAppSelector(destinationHeaderObject);
+
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState<{
     [key: string]: boolean;
   }>({});
   const excludedCountries = ['IL'];
-  const filteredCountries = getCountries().filter(
-    (country) => !excludedCountries.includes(country)
-  );
+  // const filteredCountries = getCountries().filter(
+  //   (country) => !excludedCountries.includes(country)
+  // );
   const [triggerLogin] = useLoginMutation();
   const [triggerResetPassword] = useResetPasswordMutation();
-  const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
-    useLazyGetAddressesQuery<{
-      data: AppQueryResult<UserAddressFields[]>;
-      isLoading: boolean;
-      isSuccess: boolean;
-    }>();
+  // const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
+  //   useLazyGetAddressesQuery<{
+  //     data: AppQueryResult<UserAddressFields[]>;
+  //     isLoading: boolean;
+  //     isSuccess: boolean;
+  //   }>();
+  const [triggerGetCart] = useLazyGetCartProductsQuery();
+  const [triggerSendOtp] = useSendotpMutation();
 
   const togglePasswordVisibility = (id: string) => {
     setPasswordVisibility((prevState) => ({
@@ -178,7 +185,24 @@ const UserPassword: NextPage<Props> = ({
                   dispatch(setCustomerAddress(address));
                 }
               }
-              router.push('/');
+
+              triggerGetCart(
+                {
+                  userAgent: customer.userAgent,
+                  area_branch: destObj,
+                  PromoCode: '',
+                  url,
+                },
+                false
+              ).then((r: any) => {
+                if (r.data && r.data.data && r.data.data.Cart) {
+                  if (r.data.data.Cart.length > 0) {
+                    router.push(`${appLinks.checkout.path}`);
+                  } else {
+                    router.push('/');
+                  }
+                }
+              });
             }
           });
         } else {
@@ -228,14 +252,35 @@ const UserPassword: NextPage<Props> = ({
               dispatch(setCustomerAddress(address));
             }
           }
-          router.push('/');
+          //  check if cart empty go home if not go to checkout
+          triggerGetCart(
+            {
+              userAgent: customer.userAgent,
+              area_branch: destObj,
+              PromoCode: '',
+              url,
+            },
+            false
+          ).then((r: any) => {
+            if (r.data && r.data.data && r.data.data.Cart) {
+              if (r.data.data.Cart.length > 0) {
+                router.push(`${appLinks.checkout.path}`);
+              } else {
+                router.push('/');
+              }
+            }
+          });
         }
       });
     }
   };
   const handleForgetPassword = () => {
-    // setIsResetPassword(true);
-    router.push(appLinks.otpVerification('reset'));
+    triggerSendOtp({ phone: customer.phone, url }).then((r: any) => {
+      // setIsResetPassword(true);
+      if (r.data.status) {
+        router.push(appLinks.otpVerification('reset'));
+      }
+    });
   };
 
   return (

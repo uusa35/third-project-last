@@ -259,7 +259,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                 className={` ${scrollClass} ${
                   !isUndefined(searchKey) && currentProducts.length <= 5
                     ? `h-min`
-                    : `h-[100vh]`
+                    : ``
                 }  overflow-y-scroll
           `}
               >

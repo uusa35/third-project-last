@@ -205,7 +205,7 @@
   "this_area": "this area",
   "select_address": "select address",
   "search_for_cities_and_areas": "search for cities and areas",
-  "quantity_of_out_of_stock": "quantity of out of stock",
+  "quantity_of_out_of_stock": "quantity out of stock",
   "promo_code_is_invalid": "promo code is invalid",
   "promo_code_validation": "promo code activated and applied on your cart.",
   "contact_us": "contact us",
@@ -253,7 +253,7 @@
   "address_details": "address details",
   "add_a_minimum_of": "add a minimum of",
   "to_place_your_order": "to place your order",
-  "out_stock": "out stock",
+  "out_stock": "out of stock",
   "must_select_min_and_max": "must choose min {{min}} qty or {{max}} qty.",
   "field_must_select_at_least_one": "you must select at least one choice.",
   "confirm": "confirm",
@@ -375,6 +375,9 @@
   "back_to_store": "back to store",
   "we_advise_that_saving_the_receipt": "we advise that saving the receipt",
   "add_new_address": "add new address",
-  "select_area_to_mach_your_selected_address": "select area to mach your selected address",
-  "invalid_otp": "invalid otp"
+  "select_area_to_mach_your_selected_address":"select area to mach your selected address",
+  "only":"only",
+  "some_out_of_stock_item":"only {{amount}} item/s are available in stock",
+  "invalid_otp": "invalid otp",
+  "the_date_must_be_a_date_after_yesterday.":"the date must be a date after yesterday."
 }

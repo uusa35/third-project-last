@@ -115,7 +115,7 @@ const AddressCreate: NextPage<Props> = ({
     setValue('address_type', toUpper(type));
     if (router.query.area_id) {
       setValue('area_id', router.query.area_id);
-      if (router.query.area_id === destination.id) {
+      if (router.query.area_id === destination?.id) {
         setValue('area', isRTL ? destination.name_ar : destination.name_en);
       } else {
         setValue('area', router.query.area);

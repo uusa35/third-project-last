@@ -12,6 +12,7 @@ import {
   appLinks,
   imageSizes,
   mainBtnClass,
+  setToken,
   suppressText,
   toEn,
 } from '@/constants/*';
@@ -85,15 +86,14 @@ const OtpVerifications: NextPage<Props> = ({
       },
       url,
     }).then((r: any) => {
-      console.log('r', r);
       if (r.data && r.data.status) {
         if (type === 'register') {
           router.push(`${appLinks.accountInfo.path}`);
         } else if (type === 'reset') {
-          router.push(`${appLinks.userLogin}?reset=1`);
+          // console.log('r', r, type);
+          router.push(`${appLinks.userLogin.path}?reset=1`);
         }
       } else {
-        console.log('here');
         dispatch(
           showToastMessage({
             content: 'invalid_otp',
@@ -127,6 +127,7 @@ const OtpVerifications: NextPage<Props> = ({
         }).then((r: any) => {
           dispatch(setCustomer(r.data.data.user));
           dispatch(signIn(r.data.data.token));
+          setToken(r.data.data.token);
         });
       }
     });
