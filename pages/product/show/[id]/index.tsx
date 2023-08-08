@@ -44,6 +44,7 @@ import {
   sum,
   sumBy,
   groupBy,
+  snakeCase,
 } from 'lodash';
 import {
   addMeter,
@@ -90,6 +91,7 @@ import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import PlusIcon from '@/appIcons/plus.svg';
 import MinusIcon from '@/appIcons/minus.svg';
 import { resetPromo } from '@/redux/slices/cartSlice';
+import { toast } from 'react-toastify';
 
 type Props = {
   product: Product;
@@ -709,13 +711,26 @@ const ProductShow: NextPage<Props> = ({
           } else {
             if (r?.error && r?.error?.data) {
               if (
-                r &&
-                r.error &&
-                r.error.data &&
+                // r &&
+                // r.error &&
+                // r.error.data &&
                 typeof r.error.data.msg === 'string' &&
                 r.error.data.msg.includes('not available')
               ) {
                 setIsOpenNotAvailable(true);
+              } else if (
+                // r &&
+                // r.error &&
+                // r.error.data &&
+                r.error.data.product &&
+                r.error.data.product[0].amount
+              ) {
+                toast(
+                  `${t(snakeCase(lowerCase(r.error.data.msg)), {
+                    amount: r.error.data.product[0]?.amount,
+                  })}`,
+                  { type: 'error' }
+                );
               } else {
                 dispatch(
                   showToastMessage({

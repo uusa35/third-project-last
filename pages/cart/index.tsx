@@ -93,6 +93,23 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     { refetchOnMountOrArgChange: true }
   );
 
+  // when remove out of stock items
+  useEffect(() => {
+    if (
+      isSuccess &&
+      cartItems &&
+      cartItems.data &&
+      cartItems.msg === 'removed some out of stock item'
+    ) {
+      dispatch(
+        showToastMessage({
+          content: 'removed some out of stock item',
+          type: 'info',
+        })
+      );
+    }
+  }, [cartItems, isSuccess]);
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));
@@ -173,120 +190,120 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     });
   };
 
-  const handelIncRequest = (item: ProductCart) => {
-    triggerAddToCart({
-      process_type: method,
-      destination: destObj,
-      body: {
-        UserAgent: userAgent,
+  // const handelIncRequest = (item: ProductCart) => {
+  //   triggerAddToCart({
+  //     process_type: method,
+  //     destination: destObj,
+  //     body: {
+  //       UserAgent: userAgent,
 
-        Cart:
-          isSuccess && cartItems.data && cartItems.data.Cart
-            ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
-                ...item,
-                Quantity: item.Quantity + 1,
-              })
-            : cartItems.data.Cart,
-      },
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data?.status) {
-        dispatch(
-          showToastMessage({
-            content: `cart_updated_successfully`,
-            type: `success`,
-          })
-        );
-        dispatch(resetPromo());
-      } else {
-        if (r.error && r.error.data && r.error.data.msg) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg)),
-              type: `error`,
-            })
-          );
-        }
-      }
-    });
-  };
+  //       Cart:
+  //         isSuccess && cartItems.data && cartItems.data.Cart
+  //           ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
+  //               ...item,
+  //               Quantity: item.Quantity + 1,
+  //             })
+  //           : cartItems.data.Cart,
+  //     },
+  //     url,
+  //   }).then((r: any) => {
+  //     if (r.data && r.data?.status) {
+  //       dispatch(
+  //         showToastMessage({
+  //           content: `cart_updated_successfully`,
+  //           type: `success`,
+  //         })
+  //       );
+  //       dispatch(resetPromo());
+  //     } else {
+  //       if (r.error && r.error.data && r.error.data.msg) {
+  //         dispatch(
+  //           showToastMessage({
+  //             content: lowerCase(kebabCase(r.error.data.msg)),
+  //             type: `error`,
+  //           })
+  //         );
+  //       }
+  //     }
+  //   });
+  // };
 
-  const handelDecRequest = (item: ProductCart) => {
-    triggerAddToCart({
-      process_type: method,
-      destination: destObj,
-      body: {
-        UserAgent: userAgent,
-        Cart:
-          isSuccess && cartItems.data && cartItems.data.Cart
-            ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
-                ...item,
-                Quantity: item.Quantity - 1,
-              })
-            : cartItems.data.Cart,
-      },
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data?.status) {
-        dispatch(
-          showToastMessage({
-            content: `cart_updated_successfully`,
-            type: `success`,
-          })
-        );
-        dispatch(resetPromo());
-      } else {
-        if (r.error && r.error.data && r.error.data.msg) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg)),
-              type: `error`,
-            })
-          );
-        }
-      }
-    });
-  };
+  // const handelDecRequest = (item: ProductCart) => {
+  //   triggerAddToCart({
+  //     process_type: method,
+  //     destination: destObj,
+  //     body: {
+  //       UserAgent: userAgent,
+  //       Cart:
+  //         isSuccess && cartItems.data && cartItems.data.Cart
+  //           ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
+  //               ...item,
+  //               Quantity: item.Quantity - 1,
+  //             })
+  //           : cartItems.data.Cart,
+  //     },
+  //     url,
+  //   }).then((r: any) => {
+  //     if (r.data && r.data?.status) {
+  //       dispatch(
+  //         showToastMessage({
+  //           content: `cart_updated_successfully`,
+  //           type: `success`,
+  //         })
+  //       );
+  //       dispatch(resetPromo());
+  //     } else {
+  //       if (r.error && r.error.data && r.error.data.msg) {
+  //         dispatch(
+  //           showToastMessage({
+  //             content: lowerCase(kebabCase(r.error.data.msg)),
+  //             type: `error`,
+  //           })
+  //         );
+  //       }
+  //     }
+  //   });
+  // };
 
-  const handelRemoveRequest = (item: ProductCart) => {
-    const currentItems = filter(cartItems.data.Cart, (i) => i.id !== item.id);
-    triggerAddToCart({
-      process_type: method,
-      destination: destObj,
-      body: {
-        UserAgent: userAgent,
-        Cart:
-          isSuccess &&
-          cartItems.data &&
-          cartItems.data.Cart &&
-          !isEmpty(currentItems)
-            ? currentItems
-            : [], // empty Cart Case !!!
-      },
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data?.status) {
-        dispatch(
-          showToastMessage({
-            content: `cart_updated_successfully`,
-            type: `success`,
-          })
-        );
-        if (enable_promocode) {
-          dispatch(resetPromo());
-        }
-      } else {
-        if (r.error && r.error.data && r.error.data.msg) {
-          dispatch(
-            showToastMessage({
-              content: lowerCase(kebabCase(r.error.data.msg)),
-              type: `error`,
-            })
-          );
-        }
-      }
-    });
-  };
+  // const handelRemoveRequest = (item: ProductCart) => {
+  //   const currentItems = filter(cartItems.data.Cart, (i) => i.id !== item.id);
+  //   triggerAddToCart({
+  //     process_type: method,
+  //     destination: destObj,
+  //     body: {
+  //       UserAgent: userAgent,
+  //       Cart:
+  //         isSuccess &&
+  //         cartItems.data &&
+  //         cartItems.data.Cart &&
+  //         !isEmpty(currentItems)
+  //           ? currentItems
+  //           : [], // empty Cart Case !!!
+  //     },
+  //     url,
+  //   }).then((r: any) => {
+  //     if (r.data && r.data?.status) {
+  //       dispatch(
+  //         showToastMessage({
+  //           content: `cart_updated_successfully`,
+  //           type: `success`,
+  //         })
+  //       );
+  //       if (enable_promocode) {
+  //         dispatch(resetPromo());
+  //       }
+  //     } else {
+  //       if (r.error && r.error.data && r.error.data.msg) {
+  //         dispatch(
+  //           showToastMessage({
+  //             content: lowerCase(kebabCase(r.error.data.msg)),
+  //             type: `error`,
+  //           })
+  //         );
+  //       }
+  //     }
+  //   });
+  // };
 
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
