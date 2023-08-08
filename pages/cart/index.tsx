@@ -94,21 +94,21 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   );
 
   // when remove out of stock items
-  useEffect(() => {
-    if (
-      isSuccess &&
-      cartItems &&
-      cartItems.data &&
-      cartItems.msg === 'removed some out of stock item'
-    ) {
-      dispatch(
-        showToastMessage({
-          content: 'removed some out of stock item',
-          type: 'info',
-        })
-      );
-    }
-  }, [cartItems, isSuccess]);
+  // useEffect(() => {
+  //   if (
+  //     isSuccess &&
+  //     cartItems &&
+  //     cartItems.data &&
+  //     cartItems.msg === 'removed some out of stock item'
+  //   ) {
+  //     dispatch(
+  //       showToastMessage({
+  //         content: 'removed some out of stock item',
+  //         type: 'info',
+  //       })
+  //     );
+  //   }
+  // }, [cartItems, isSuccess]);
 
   useEffect(() => {
     if (url) {

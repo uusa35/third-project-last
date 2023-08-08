@@ -100,6 +100,7 @@ export default function AsideHeader({ url }: Props) {
       );
     }
   }, [cartItems, isSuccess]);
+
   return (
     <div
       className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white px-4 mt-5

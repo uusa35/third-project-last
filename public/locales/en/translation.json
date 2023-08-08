@@ -377,7 +377,7 @@
   "add_new_address": "add new address",
   "select_area_to_mach_your_selected_address":"select area to mach your selected address",
   "only":"only",
-  "some_out_of_stock_item":"only {{amount}} item/s are available in stock",
+  "some_out_of_stock_item":"only {{amount}} item/s available in stock",
   "invalid_otp": "invalid otp",
   "the_date_must_be_a_date_after_yesterday.":"the date must be a date after yesterday.",
   "removed_some_out_of_stock_item":"removed some out of stock item/s"
