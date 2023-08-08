@@ -3,8 +3,8 @@ import { filter, map, toString } from 'lodash';
 import i18n from './i18n/config';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const appVersion = `0.0.2`;
-// export const xDomain = `next2-q.testbedbynd.com`;
-export const xDomain = `next-q.testbedbynd.com`;
+export const xDomain = `next2-q.testbedbynd.com`;
+// export const xDomain = `next-q.testbedbynd.com`;
 //https://pages.testbedbynd.com/
 //https://pages-dash.testbedbynd.com/
 export const apiUrl = `${baseUrl}api/`;

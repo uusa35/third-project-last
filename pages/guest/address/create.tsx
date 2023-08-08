@@ -121,7 +121,14 @@ const AddressCreate: NextPage<Props> = ({
   const handelSaveAddress = async (body: any) => {
     await triggerCreateAddress({
       body: {
-        address_type: upperCase(body.address_type),
+        address_type:
+          upperCase(body.address_type) === 'HOUSE'
+            ? 1
+            : upperCase(body.address_type) === 'APARTMENT'
+            ? 2
+            : upperCase(body.address_type) === 'OFFICE'
+            ? 3
+            : 1,
         longitude: body.longitude,
         latitude: body.latitude,
         customer_id: body.customer_id,
