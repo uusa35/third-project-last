@@ -195,7 +195,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
             suppressHydrationWarning={suppressText}
             type="submit"
           >
-            {t('sign_in')}
+            {t('sign_in_up')}
           </button>
         </form>
         <button
