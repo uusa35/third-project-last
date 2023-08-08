@@ -53,11 +53,12 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     { id: 3, icon: <ReOrderIcon />, text: 'one-tap_re-ordering' },
     { id: 4, icon: <TrackOrderIcon />, text: 'tracking_orders' },
   ];
-  const excludedCountries = ['IL'];
+  // const excludedCountries = ['IL'];
   const [triggerCheckPhone] = useCheckPhoneMutation();
   const [triggerLogin] = useLoginMutation();
   const filteredCountries = getCountries().filter(
-    (country) => !excludedCountries.includes(country)
+    (country) => country === 'KW'
+    // !excludedCountries.includes(country)
   );
   const {
     handleSubmit,
@@ -94,7 +95,6 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       },
       url,
     }).then(async (r: any) => {
-      
       if (r.error) {
         router.push(appLinks.otpVerification('register'));
       } else {
@@ -154,6 +154,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
                 <PhoneInput
                   onChange={onChange}
                   defaultCountry="KW"
+                  // countries={['KW']}
                   id="phone"
                   className="focus:outline-none mt-2 border-b border-gray-100 pb-3"
                   style={{ borderBottomColor: '#e5e7eb' }}
