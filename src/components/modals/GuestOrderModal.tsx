@@ -136,6 +136,7 @@ const GuestOrderModal: FC<Props> = ({
             <form className="capitalize" onSubmit={handleSubmit(onSubmit)}>
               <div className="relative">
                 <input
+                  id="name"
                   {...register('name')}
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   //   onChange={(e) => setValue('name', toEn(e.target.value))}
@@ -206,6 +207,7 @@ const GuestOrderModal: FC<Props> = ({
               </div>
               <div className="relative">
                 <input
+                  id="email"
                   {...register('email')}
                   //   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                   //   onChange={(e) => setValue('email', e?.target?.value)}
