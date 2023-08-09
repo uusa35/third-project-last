@@ -99,6 +99,8 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
               type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
             })
           );
+        }else{
+          setIsBtnEnabled(false);
         }
       });
     }
