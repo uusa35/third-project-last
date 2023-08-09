@@ -974,6 +974,9 @@ const ProductShow: NextPage<Props> = ({
                           style={{ accentColor: color }}
                         />
                         <label
+                          onClick={() =>
+                            setTabsOpen([...tabsOpen, { id: s.id }])
+                          }
                           htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm"
                         >
@@ -1003,6 +1006,17 @@ const ProductShow: NextPage<Props> = ({
                           style={{ accentColor: color }}
                         />
                         <label
+                          onClick={() => {
+                            if (
+                              s.selection_type === `optional` &&
+                              s.must_select === 'multi'
+                            ) {
+                              dispatch(resetCheckBoxes());
+                            } else {
+                              dispatch(resetRadioBtns());
+                            }
+                            setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
+                          }}
                           htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm"
                         >
@@ -1078,6 +1092,7 @@ const ProductShow: NextPage<Props> = ({
                               className={`flex flex-row w-full justify-between items-center`}
                             >
                               <div className={`space-y-1`}>
+                                {/* addon name */}
                                 <div>
                                   <TextTrans ar={c.name_ar} en={c.name_en} />
                                 </div>
@@ -1181,7 +1196,18 @@ const ProductShow: NextPage<Props> = ({
                                   className="h-4 w-4 lg:h-5 lg:w-5 border-red-600 checked:ring-0 focus:ring-0"
                                   style={{ accentColor: color }}
                                 />
+                                {/* addon name */}
                                 <label
+                                  onClick={(e) =>
+                                    handleSelectAddOn(
+                                      s,
+                                      c,
+                                      s.must_select === 'multi'
+                                        ? `checkbox`
+                                        : 'radio',
+                                      e.target.checked
+                                    )
+                                  }
                                   htmlFor={`${c.id}${s.selection_type}`}
                                   className="ltr:ml-3 rtl:mr-3 block text-sm"
                                 >
