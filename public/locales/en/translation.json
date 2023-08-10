@@ -381,5 +381,6 @@
   "invalid_otp": "invalid otp",
   "the_date_must_be_a_date_after_yesterday.":"the date must be a date after yesterday.",
   "removed_some_out_of_stock_item":"removed some out of stock item/s",
-  "sign_in_up":"sign In/Up"
+  "sign_in_up":"sign In/Up",
+  "area_changed":"area charged successfully"
 }

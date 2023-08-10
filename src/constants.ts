@@ -182,6 +182,8 @@ export const displayUserAddress = (address: any) => {
         key !== `city` &&
         key !== `phone` &&
         key !== `name` &&
+        key !== `area_ar` &&
+        key !== `area_en` &&
         `${key} : ${value}  `
     ),
     (a) => a
