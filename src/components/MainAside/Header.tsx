@@ -1,6 +1,6 @@
 import { appLinks, suppressText } from '@/constants/*';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   MagnifyingGlassIcon,
   Bars3Icon,
@@ -83,6 +83,24 @@ export default function AsideHeader({ url }: Props) {
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  // when remove out of stock items
+  useEffect(() => {
+    if (
+      isSuccess &&
+      cartItems &&
+      cartItems.data &&
+      cartItems.msg === 'removed some out of stock item'
+    ) {
+      dispatch(
+        showToastMessage({
+          content: 'removed some out of stock item',
+          type: 'info',
+        })
+      );
+    }
+  }, [cartItems, isSuccess]);
+
   return (
     <div
       className={`absolute top-0 left-0 flex w-full justify-between items-center grow  z-90 text-white px-4 mt-5
@@ -132,10 +150,9 @@ export default function AsideHeader({ url }: Props) {
           <SearchIcon />
         </button>
         <button onClick={() => handleChangeLang(lang === 'ar' ? 'en' : 'ar')}>
-          {lang === 'ar' ? <AsideEN/> : <AsideAR />}
+          {lang === 'ar' ? <AsideEN /> : <AsideAR />}
         </button>
       </div>
-
     </div>
   );
 }

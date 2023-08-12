@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import MainContentLayout from '@/layouts/MainContentLayout';
 import { apiSlice } from '@/redux/api';
-import { vendorApi } from '@/redux/api/vendorApi';
+import { useLazyGetVendorQuery, vendorApi } from '@/redux/api/vendorApi';
 import { wrapper } from '@/redux/store';
 import { UserAddressFields, Vendor } from '@/types/index';
 import {
@@ -28,7 +28,7 @@ import {
   useLazyGetAddressesQuery,
 } from '@/redux/api/addressApi';
 import { useEffect, useState } from 'react';
-import { Address, AppQueryResult } from '@/types/queries';
+import { Address, AppQueryResult, Area, Branch } from '@/types/queries';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   difference,
@@ -42,11 +42,23 @@ import {
   toLower,
   upperFirst,
 } from 'lodash';
-import { setCustomer, setCustomerAddress } from '@/redux/slices/customerSlice';
+import {
+  isAuthenticated,
+  resetCustomerAddress,
+  resetPreferences,
+  setCustomer,
+  setCustomerAddress,
+  setPreferences,
+} from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
 import { RadioButtonChecked, RadioButtonUnchecked } from '@mui/icons-material';
-import { destinationId } from '@/redux/slices/searchParamsSlice';
+import {
+  destinationId,
+  setDestination,
+} from '@/redux/slices/searchParamsSlice';
 import ChangeLocationModal from '@/components/modals/ChangeLocationModal';
+import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
+import moment from 'moment';
 
 type Props = {
   element: Vendor;
@@ -59,9 +71,13 @@ const AddressSelectionIndex: NextPage<Props> = ({
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
+  const isAuth = useAppSelector(isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const destID = useAppSelector(destinationId);
+  const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
+  const [selectedArea, setSelectedArea] = useState<Area | undefined>(undefined);
+
   const {
     customer: {
       id,
@@ -70,7 +86,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
       phone,
       address: { id: addressId },
     },
-    locale: { isRTL },
+    locale: { isRTL, lang },
   } = useAppSelector((state) => state);
   const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
     useLazyGetAddressesQuery<{
@@ -78,6 +94,8 @@ const AddressSelectionIndex: NextPage<Props> = ({
       isLoading: boolean;
       isSuccess: boolean;
     }>();
+  const [triggerGetVendor, { data: vendorElement, isSuccess: vendorSuccess }] =
+    useLazyGetVendorQuery();
 
   useEffect(() => {
     if (url) {
@@ -115,14 +133,63 @@ const AddressSelectionIndex: NextPage<Props> = ({
       dispatch(setCustomerAddress(address));
     } else {
       // destid !== addressid
-      dispatch(
-        showToastMessage({
-          content: 'select_area_to_mach_your_selected_address',
-          type: `info`,
-        })
-      );
-      router.push(appLinks.selectArea('select_address'));
+      // set area of the selected address
+      setSelectedArea({
+        id: address.address.area_id,
+        name: address.address.area_en,
+        name_ar: address.address.area_ar,
+        name_en: address.address.area_ar,
+      });
+
+      setShowChangeLocModal(true);
+
+      // dispatch(
+      //   showToastMessage({
+      //     content: 'select_area_to_mach_your_selected_address',
+      //     type: `info`,
+      //   })
+      // );
+      // router.push(appLinks.selectArea('select_address'));
     }
+  };
+
+  const handleChangeArea = async (
+    destination: Area | Branch,
+    type: 'pickup' | 'delivery'
+  ) => {
+    // in case of user reset user address cause u changed dest id
+    if (isAuth) {
+      dispatch(resetCustomerAddress(undefined));
+    }
+    dispatch(setDestination({ destination, type }));
+    // dispatch(setAreaBranchModalStatus(true));
+    await triggerGetVendor(
+      {
+        lang,
+        url,
+        destination: { 'x-area-id': destination.id },
+      },
+      false
+    ).then((r: any) => {
+      if (r?.data?.Data?.delivery?.delivery_time) {
+        dispatch(
+          setPreferences({
+            date: moment().locale('en').format('YYYY-MM-DD'),
+            time: r?.data.Data?.delivery?.delivery_time,
+            type: 'delivery_now',
+          })
+        );
+      } else {
+        dispatch(resetPreferences(undefined));
+      }
+    });
+    dispatch(
+      showToastMessage({
+        content: `area_changed`,
+        type: `success`,
+      })
+    );
+    router.reload();
   };
 
   if (!isSuccess) return <></>;
@@ -208,6 +275,14 @@ const AddressSelectionIndex: NextPage<Props> = ({
           </button>
         </div>
       </div>
+      <ChangeLocationModal
+        isOpen={showChangeLocModal}
+        onRequestClose={() => setShowChangeLocModal(false)}
+        url={url}
+        selectedMethod="delivery"
+        area_branch={selectedArea as Area}
+        changeLocation={handleChangeArea}
+      />
     </MainContentLayout>
   );
 };

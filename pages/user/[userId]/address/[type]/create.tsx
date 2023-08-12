@@ -84,12 +84,8 @@ const AddressCreate: NextPage<Props> = ({
       floor_no: '',
       building_no: '',
       office_no: '',
-      area:
-        method === 'delivery'
-          ? isRTL
-            ? destination.name_ar
-            : destination.name_en
-          : null,
+      area_ar: method === 'delivery' ? destination.name_ar : null,
+      area_en: method === 'delivery' ? destination.name_en : null,
       area_id: method === 'delivery' ? destination.id : null,
       avenue: '',
       paci: '',
@@ -133,7 +129,14 @@ const AddressCreate: NextPage<Props> = ({
   const handleSaveAddress = async (body: any) => {
     await triggerCreateOrUpdateAddress({
       body: {
-        address_type: upperCase(body.address_type),
+        address_type:
+          upperCase(body.address_type) === 'HOUSE'
+            ? 1
+            : upperCase(body.address_type) === 'APARTMENT'
+            ? 2
+            : upperCase(body.address_type) === 'OFFICE'
+            ? 3
+            : 1,
         longitude: body.longitude,
         latitude: body.latitude,
         customer_id: userId.toString(),
@@ -150,7 +153,8 @@ const AddressCreate: NextPage<Props> = ({
           office_no: body.office_no,
           other_phone: body.other_phone,
           city: body.area,
-          area: body.area,
+          area_ar: body.area_ar,
+          area_en: body.area_en,
           area_id: body.area_id,
           notes: body.notes,
         },

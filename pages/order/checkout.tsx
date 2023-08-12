@@ -271,7 +271,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
           <>
             {/* map */}
             {/* <ElementMap lat={59.955413} lng={30.337844} height={'10rem'}/> */}
-            <div className={`w-full h-[10rem]`}>
+            {/* <div className={`w-full h-[10rem]`}>
               <GoogleMapReact
                 bootstrapURLKeys={{
                   key: 'AIzaSyChibV0_W_OlSRJg2GjL8TWVU8CzpRHRAE',
@@ -302,12 +302,13 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                   icon={MapMarker}
                 />
               </GoogleMapReact>
-            </div>
-            {/* orderDetails */}
+            </div> */}
 
+            {/* orderDetails */}
             <div className="p-5 border-b-4">
               <OrderDetails />
             </div>
+            
             {/* items */}
             <div className=" p-5 border-b-4">
               <p

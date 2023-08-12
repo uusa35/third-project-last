@@ -44,6 +44,7 @@ import {
   sum,
   sumBy,
   groupBy,
+  snakeCase,
 } from 'lodash';
 import {
   addMeter,
@@ -90,6 +91,7 @@ import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
 import PlusIcon from '@/appIcons/plus.svg';
 import MinusIcon from '@/appIcons/minus.svg';
 import { resetPromo } from '@/redux/slices/cartSlice';
+import { toast } from 'react-toastify';
 
 type Props = {
   product: Product;
@@ -709,13 +711,26 @@ const ProductShow: NextPage<Props> = ({
           } else {
             if (r?.error && r?.error?.data) {
               if (
-                r &&
-                r.error &&
-                r.error.data &&
+                // r &&
+                // r.error &&
+                // r.error.data &&
                 typeof r.error.data.msg === 'string' &&
                 r.error.data.msg.includes('not available')
               ) {
                 setIsOpenNotAvailable(true);
+              } else if (
+                // r &&
+                // r.error &&
+                // r.error.data &&
+                r.error.data.product &&
+                r.error.data.product[0].amount
+              ) {
+                toast(
+                  `${t(snakeCase(lowerCase(r.error.data.msg)), {
+                    amount: r.error.data.product[0]?.amount,
+                  })}`,
+                  { type: 'error' }
+                );
               } else {
                 dispatch(
                   showToastMessage({
@@ -959,6 +974,9 @@ const ProductShow: NextPage<Props> = ({
                           style={{ accentColor: color }}
                         />
                         <label
+                          onClick={() =>
+                            setTabsOpen([...tabsOpen, { id: s.id }])
+                          }
                           htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm"
                         >
@@ -988,6 +1006,17 @@ const ProductShow: NextPage<Props> = ({
                           style={{ accentColor: color }}
                         />
                         <label
+                          onClick={() => {
+                            if (
+                              s.selection_type === `optional` &&
+                              s.must_select === 'multi'
+                            ) {
+                              dispatch(resetCheckBoxes());
+                            } else {
+                              dispatch(resetRadioBtns());
+                            }
+                            setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
+                          }}
                           htmlFor={`${s.id}${s.selection_type}`}
                           className="mx-3 block text-sm"
                         >
@@ -1063,6 +1092,7 @@ const ProductShow: NextPage<Props> = ({
                               className={`flex flex-row w-full justify-between items-center`}
                             >
                               <div className={`space-y-1`}>
+                                {/* addon name */}
                                 <div>
                                   <TextTrans ar={c.name_ar} en={c.name_en} />
                                 </div>
@@ -1166,7 +1196,18 @@ const ProductShow: NextPage<Props> = ({
                                   className="h-4 w-4 lg:h-5 lg:w-5 border-red-600 checked:ring-0 focus:ring-0"
                                   style={{ accentColor: color }}
                                 />
+                                {/* addon name */}
                                 <label
+                                  onClick={(e) =>
+                                    handleSelectAddOn(
+                                      s,
+                                      c,
+                                      s.must_select === 'multi'
+                                        ? `checkbox`
+                                        : 'radio',
+                                      e.target.checked
+                                    )
+                                  }
                                   htmlFor={`${c.id}${s.selection_type}`}
                                   className="ltr:ml-3 rtl:mr-3 block text-sm"
                                 >

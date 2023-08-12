@@ -14,6 +14,7 @@ import { startCase } from 'lodash';
 import { showToastMessage } from '@/redux/slices/appSettingSlice';
 import { setCustomer } from '@/redux/slices/customerSlice';
 import { useRouter } from 'next/router';
+import flags from 'country-flag-icons/react/3x2';
 
 type Props = {
   isOpen: boolean;
@@ -108,9 +109,10 @@ const GuestOrderModal: FC<Props> = ({
     });
   };
 
-  // useEffect(() => {
-  //   console.log({ errors });
-  // }, [errors]);
+  // console.log(
+  //   flags,
+  //   Object.fromEntries(Object.entries(flags).filter(([key]) => key === 'KW'))
+  // );
 
   return (
     <>
@@ -136,6 +138,7 @@ const GuestOrderModal: FC<Props> = ({
             <form className="capitalize" onSubmit={handleSubmit(onSubmit)}>
               <div className="relative">
                 <input
+                  id="name"
                   {...register('name')}
                   //   placeholder={`${startCase(`${t('enter_your_name')}`)}`}
                   //   onChange={(e) => setValue('name', toEn(e.target.value))}
@@ -186,7 +189,11 @@ const GuestOrderModal: FC<Props> = ({
                   </div>
                 </label>
                 <PhoneInput
+                  // flags={Object.fromEntries(
+                  //   Object.entries(flags).filter(([key]) => key === 'KW')
+                  // )}
                   defaultCountry="KW"
+                  countries={['KW']}
                   type="text"
                   {...register('phone')}
                   aria-invalid={errors.phone}
@@ -206,6 +213,7 @@ const GuestOrderModal: FC<Props> = ({
               </div>
               <div className="relative">
                 <input
+                  id="email"
                   {...register('email')}
                   //   placeholder={`${startCase(`${t('enter_your_email')}`)}`}
                   //   onChange={(e) => setValue('email', e?.target?.value)}
