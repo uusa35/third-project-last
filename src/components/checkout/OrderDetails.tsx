@@ -40,6 +40,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
       name,
       phone,
       notes,
+      customerAddressInfo,
       address: CustomerAddress,
       address: { type: address_type },
       prefrences,
@@ -156,12 +157,16 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
 
       {id ? (
         <DetailComponent
-          onclick={() => {
-            router.push(appLinks.login.path);
-          }}
+          onclick={() =>
+            method === 'delivery'
+              ? isAuth
+                ? router.push(appLinks.selectAddress(id))
+                : router.push(appLinks.guestAddress.path)
+              : router.push(appLinks.selectBranch.path)
+          }
           icon={<ContactsIcon />}
           p1="contacts_info"
-          p2={`${name} , ${phone}`}
+          p2={`${customerAddressInfo.name} , ${customerAddressInfo.phone}`}
         />
       ) : (
         <></>

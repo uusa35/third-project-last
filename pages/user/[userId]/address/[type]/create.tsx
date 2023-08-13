@@ -46,6 +46,7 @@ const AddressCreate: NextPage<Props> = ({
   const {
     locale: { isRTL },
     customer,
+    customer: { customerAddressInfo },
     searchParams: { method, destination },
     cart: { promocode },
   } = useAppSelector((state) => state);
@@ -76,14 +77,20 @@ const AddressCreate: NextPage<Props> = ({
       longitude: ``,
       latitude: ``,
       customer_id: userId.toString(),
-      phone: '',
-      name: '',
+      phone: customerAddressInfo.phone,
+      name: customerAddressInfo.name,
       block: '',
       street: '',
       house_no: '',
       floor_no: '',
       building_no: '',
       office_no: '',
+      area:
+        method === 'delivery'
+          ? isRTL
+            ? destination.name_ar
+            : destination.name_en
+          : null,
       area_ar: method === 'delivery' ? destination.name_ar : null,
       area_en: method === 'delivery' ? destination.name_en : null,
       area_id: method === 'delivery' ? destination.id : null,
@@ -153,6 +160,7 @@ const AddressCreate: NextPage<Props> = ({
           office_no: body.office_no,
           other_phone: body.other_phone,
           city: body.area,
+          area: body.area,
           area_ar: body.area_ar,
           area_en: body.area_en,
           area_id: body.area_id,
