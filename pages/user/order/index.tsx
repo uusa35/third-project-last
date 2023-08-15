@@ -137,7 +137,7 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
                   <>
                     {/* upcoming */}
                     <div>
-                      <h2 className={`p-3 text-lg ${alexandriaFontBold}`}>
+                      <h2 className={`p-3 base-mobile-lg-desktop ${alexandriaFontBold}`}>
                         {t('upcoming')}
                       </h2>
                       <div className="px-5">
@@ -156,7 +156,7 @@ const OrderIndex: NextPage<Props> = ({ url }): React.ReactElement => {
                   <div className="border-t-4 border-[#F3F2F2]">
                     {/* completed */}
 
-                    <h2 className={`p-3 text-lg ${alexandriaFontBold}`}>
+                    <h2 className={`p-3 base-mobile-lg-desktop ${alexandriaFontBold}`}>
                       {t('completed')}
                     </h2>
                     <div className="px-5 ">

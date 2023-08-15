@@ -70,13 +70,13 @@ const ChangeLocationModal: FC<Props> = ({
         <div className="mt-5 mb-10">
           <p
             suppressHydrationWarning={suppressText}
-            className={`text-center text-lg font-semibold mb-3 capitalize ${alexandriaFontBold}`}
+            className={`text-center base-mobile-lg-desktop font-semibold mb-3 capitalize ${alexandriaFontBold}`}
           >
             {t(`${'You_’re_about_to_change_your_location'}`)}
           </p>
           <p
             suppressHydrationWarning={suppressText}
-            className="text-center text-xs capitalize text-[#544A45] text-sm"
+            className="text-center xxs-mobile-xs-desktop capitalize text-[#544A45] xs-mobile-sm-desktop"
           >
             {t(
               `${'changing_your_location_might_result_in_removing_the_items_from_your_cart'}`

@@ -14,7 +14,7 @@ const AppFooter: FC<Props> = ({}): React.ReactNode => {
   } = useAppSelector((state) => state);
 
   return (
-    <footer className={`w-full px-3 text-center text-xs bg-white`}>
+    <footer className={`w-full px-3 text-center xxs-mobile-xs-desktop bg-white`}>
       <p className=" font-bold">
         {t('rights_reserved')} <TextTrans ar={name_ar} en={name_en} />{' '}
         {new Date().getFullYear()} ©

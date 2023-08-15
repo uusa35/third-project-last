@@ -299,7 +299,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                       <TextTrans
                         ar={item.name_ar}
                         en={item.name_en}
-                        className="flex flex-1 text-lg font-bold"
+                        className="flex flex-1 base-mobile-lg-desktop font-bold"
                         length={60}
                       />
                     </AccordionHeader>
@@ -316,7 +316,7 @@ const SelectArea: NextPage<Props> = ({ element, url }): React.ReactElement => {
                             <TextTrans
                               ar={a.name_ar}
                               en={a.name_en}
-                              className="flex text-lg"
+                              className="flex base-mobile-lg-desktop"
                               length={60}
                             />
                             <div className="flex flex-1 justify-end items-end">

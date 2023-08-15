@@ -129,7 +129,7 @@ const OrderSuccess: NextPage<Props> = ({
                 </p>
                 <p
                   suppressHydrationWarning={suppressText}
-                  className="text-[#544A45] lg:w-3/4 text-sm py-1"
+                  className="text-[#544A45] lg:w-3/4 xs-mobile-sm-desktop py-1"
                 >
                   {t('estimated_time')}{' '}
                   <span className="text-[#1A1615] font-bold">
@@ -146,7 +146,7 @@ const OrderSuccess: NextPage<Props> = ({
                 </p>
                 <p
                   suppressHydrationWarning={suppressText}
-                  className="text-[#544A45] lg:w-3/4 text-sm"
+                  className="text-[#544A45] lg:w-3/4 xs-mobile-sm-desktop"
                 >
                   {t('order_id')}: <span>#{order.data.order_id}</span>
                 </p>
@@ -168,7 +168,7 @@ const OrderSuccess: NextPage<Props> = ({
               {t('payment_method')}
             </p>
             {order.data.payment_method === 'C.O.D' && (
-              <div className="flex items-center gap-x-2 text-sm">
+              <div className="flex items-center gap-x-2 xs-mobile-sm-desktop">
                 <CashIcon />
                 <p suppressHydrationWarning={suppressText}>
                   {t('cash_on_delivery')}
@@ -176,7 +176,7 @@ const OrderSuccess: NextPage<Props> = ({
               </div>
             )}
             {order.data.payment_method === 'knet' && (
-              <div className="flex items-center gap-x-2 text-sm">
+              <div className="flex items-center gap-x-2 xs-mobile-sm-desktop">
                 <KnetIcon />
                 <p suppressHydrationWarning={suppressText}>
                   {t(order.data.payment_method)}
@@ -184,7 +184,7 @@ const OrderSuccess: NextPage<Props> = ({
               </div>
             )}
             {order.data.payment_method === 'visa' && (
-              <div className="flex items-center gap-x-2 text-sm">
+              <div className="flex items-center gap-x-2 xs-mobile-sm-desktop">
                 <CreditIcon />
                 <p suppressHydrationWarning={suppressText}>
                   {t(order.data.payment_method)}
@@ -214,9 +214,9 @@ const OrderSuccess: NextPage<Props> = ({
                         ar={item.item_ar}
                         length={30}
                       />
-                      <span className="ms-1 text-sm">x{item.quantity}</span>
+                      <span className="ms-1 xs-mobile-sm-desktop">x{item.quantity}</span>
                     </div>
-                    <p className="text-sm">
+                    <p className="xs-mobile-sm-desktop">
                       {item.total} {t('kd')}
                     </p>
                   </div>
@@ -224,20 +224,20 @@ const OrderSuccess: NextPage<Props> = ({
                     {map(item.addon, (a) => (
                       <div key={a.addon_id} className="pe-3 ">
                         <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1 mb-2">
-                          <span className="pe-2 text-sm">
+                          <span className="pe-2 xs-mobile-sm-desktop">
                             x{a.addon_quantity}
                           </span>
                           <TextTrans
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
-                            className="text-xs"
+                            className="xxs-mobile-xs-desktop"
                             length={20}
                           />
                         </div>
                       </div>
                     ))}
                   </div>
-                  <p className={`truncate text-sm p-2`}>{item.extra_notes}</p>
+                  <p className={`truncate xs-mobile-sm-desktop p-2`}>{item.extra_notes}</p>
                 </div>
               </div>
             ))}

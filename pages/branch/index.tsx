@@ -87,12 +87,12 @@ const BranchIndex: NextPage<Props> = ({ url }): React.ReactNode => {
                 )}
               </div>
             </div>
-            <div className="text-md text-gray-400">{b.location}</div>
+            <div className="sm-mobile-base-desktop text-gray-400">{b.location}</div>
             <div className="flex flex-row ">
-              <div className="text-md me-2">
+              <div className="sm-mobile-base-desktop me-2">
                 <span className="text-green-600">{b.status}</span>
               </div>
-              <div className="flex flex-row justify-center items-center text-md">
+              <div className="flex flex-row justify-center items-center sm-mobile-base-desktop">
                 <div
                   className={`w-1 h-1 rounded-full ${
                     b.status === 'OPEN' ? `bg-green-600` : `bg-gray-400`

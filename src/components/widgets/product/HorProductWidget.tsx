@@ -46,7 +46,7 @@ const HorProductWidget: FC<Props> = ({
           </div>
           <div className="pt-3 px-2">
             <p
-              className="text-md font-semibold truncate"
+              className="sm-mobile-base-desktop font-semibold truncate"
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
@@ -94,12 +94,12 @@ const HorProductWidget: FC<Props> = ({
                 </div>
               ) : (
                 <p
-                  className="text-md uppercase"
+                  className="sm-mobile-base-desktop uppercase"
                   suppressHydrationWarning={suppressText}
                   style={{ color: `black` }}
                 >
                   {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                    <span className="text-xs">{t(`price_on_selection`)}</span>
+                    <span className="xxs-mobile-xs-desktop">{t(`price_on_selection`)}</span>
                   ) : (
                     parseFloat(element.price).toFixed(3)
                   )}
@@ -109,7 +109,7 @@ const HorProductWidget: FC<Props> = ({
                 </p>
               )}
               <button
-                className="border-[1px] rounded-md px-4 pt-1 uppercase text-center text-sm"
+                className="border-[1px] rounded-md px-4 pt-1 uppercase text-center xs-mobile-sm-desktop"
                 suppressHydrationWarning={suppressText}
               >
                 <div className={`flex justify-between rtl:flex-row-reverse`}>

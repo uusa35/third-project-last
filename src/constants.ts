@@ -66,12 +66,12 @@ export const montserratFontRegular = 'Montserrat-Arabic-Regular';
 export const tajwalFont = 'font-tajwal-medium';
 
 // classes
-export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md text-sm text-white shadow-inner drop-shadow-md`;
-export const submitBtnClass = `w-full ${mainBg} rounded-md text-sm text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
+export const mainBg = `bg-gradient-to-tl mix-blend-multiply rounded-md xs-mobile-sm-desktop text-white shadow-inner drop-shadow-md`;
+export const submitBtnClass = `w-full ${mainBg} rounded-md xs-mobile-sm-desktop text-white py-4 my-2 cursor-pointer shadow-lg capitalize disabled:from-gray-200 disabled:to-gray-400 drop-shadow-md`;
 export const addressInputField = `border-0 outline-none border-b-2 border-b-gray-100 w-full py-4 focus:ring-0 ${alexandriaFont}`;
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
 export const modalBtnContainer = `w-full border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4`;
-export const mainBtnClass = `text-white w-full text-md rounded-full py-3 mx-auto capitalize`;
+export const mainBtnClass = `text-white w-full sm-mobile-base-desktop rounded-full py-3 mx-auto capitalize`;
 export const toEn = (s) =>
   s.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, (a) => a.charCodeAt(0) & 15);
 

@@ -36,7 +36,7 @@ const DeliveryPickup: FC<Props> = ({ url }) => {
   return (
     <div className="px-4">
       {(method === 'pickup' || method === 'delivery') && (
-        <div className="flex gap-x-2 text-sm cursor-pointer">
+        <div className="flex gap-x-2 xs-mobile-sm-desktop cursor-pointer">
           {method === 'pickup' && (
             <Player
               src={PickupIcon}
@@ -69,7 +69,7 @@ const DeliveryPickup: FC<Props> = ({ url }) => {
               <div>
                 <div className="flex gap-x-1">
                   <p
-                    className={`text-xs ${alexandriaFont}`}
+                    className={`xxs-mobile-xs-desktop ${alexandriaFont}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {prefType === 'pickup_now' ? (
@@ -117,7 +117,7 @@ const DeliveryPickup: FC<Props> = ({ url }) => {
               <div>
                 <div className="flex gap-x-1">
                   <p
-                    className={`text-xs ${alexandriaFont}`}
+                    className={`xxs-mobile-xs-desktop ${alexandriaFont}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {prefType === 'delivery_now' ? (
@@ -143,7 +143,7 @@ const DeliveryPickup: FC<Props> = ({ url }) => {
 
                   {/* {prefType === 'delivery_later' && (
                     <p
-                      className={`text-xs ${alexandriaFont}`}
+                      className={`xxs-mobile-xs-desktop ${alexandriaFont}`}
                       suppressHydrationWarning={suppressText}
                     >
                       {date} {time} {t('to')}
@@ -179,7 +179,7 @@ const DeliveryPickup: FC<Props> = ({ url }) => {
               <p
                 suppressHydrationWarning={suppressText}
                 style={{ color: color }}
-                className={`text-xs ${alexandriaFontMeduim}`}
+                className={`xxs-mobile-xs-desktop ${alexandriaFontMeduim}`}
               >
                 {t('change')}
               </p>

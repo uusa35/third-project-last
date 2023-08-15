@@ -896,7 +896,7 @@ const ProductShow: NextPage<Props> = ({
                             : element?.Data?.description_en.length
                           : 99
                       }
-                      className="text-[#877D78] text-sm lg:text-base break-all"
+                      className="text-[#877D78] xs-mobile-sm-desktop lg:text-base break-all"
                     />
                     {((element?.Data?.description_ar.length >= 99 && isRTL) ||
                       (element?.Data?.description_en.length >= 99 &&
@@ -904,7 +904,7 @@ const ProductShow: NextPage<Props> = ({
                       <button
                         onClick={() => setIsReadMoreShown(!isReadMoreShown)}
                         style={{ color }}
-                        className="font-semibold text-sm px-3"
+                        className="font-semibold xs-mobile-sm-desktop px-3"
                       >
                         {isReadMoreShown
                           ? startCase(`${t('read_less')}`)
@@ -933,18 +933,18 @@ const ProductShow: NextPage<Props> = ({
                 >
                   <div className="flex justify-between">
                     <div>
-                      <p className="text-base lg:text-lg pb-2">
+                      <p className="base-mobile-lg-desktop pb-2">
                         {t('select')}{' '}
                         <TextTrans ar={s.title_ar} en={s.title_en} />
                       </p>
-                      <p className="text-[#877D78] text-sm lg:text-base">
+                      <p className="text-[#877D78] sm-mobile-base-desktop">
                         {s.must_select === 'single'
                           ? t('select1')
                           : t('multi_selection')}
                       </p>
                     </div>
                     <div
-                      className={`text-xs lg:text-sm text-center rounded-full w-20 h-8 pt-2 lg:pt-1 ${
+                      className={`xs-mobile-sm-desktop text-center rounded-full w-20 h-8 pt-2 lg:pt-1 ${
                         requiredSection && s.selection_type === 'mandatory'
                           ? 'bg-white border-red-600 border-[1px] text-red-600'
                           : 'bg-gray-100'
@@ -978,7 +978,7 @@ const ProductShow: NextPage<Props> = ({
                             setTabsOpen([...tabsOpen, { id: s.id }])
                           }
                           htmlFor={`${s.id}${s.selection_type}`}
-                          className="mx-3 block text-sm"
+                          className="mx-3 block xs-mobile-sm-desktop"
                         >
                           {t('yes')}
                         </label>
@@ -1018,7 +1018,7 @@ const ProductShow: NextPage<Props> = ({
                             setTabsOpen(filter(tabsOpen, (t) => t.id !== s.id));
                           }}
                           htmlFor={`${s.id}${s.selection_type}`}
-                          className="mx-3 block text-sm"
+                          className="mx-3 block xs-mobile-sm-desktop"
                         >
                           {t('no')}
                         </label>
@@ -1127,12 +1127,12 @@ const ProductShow: NextPage<Props> = ({
                                     )
                                   }
                                   type="button"
-                                  className={`w-6 h-6 lg:w-7 lg:h-7 text-base lg:text-lg font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
+                                  className={`w-6 h-6 lg:w-7 lg:h-7 base-mobile-lg-desktop font-semibold bg-white border-[1px] rounded-full pb-4 disabled:border-gray-300 disabled:text-gray-300`}
                                   style={{ borderColor: color, color }}
                                 >
                                   -
                                 </button>
-                                <span className="text-black text-xl inline-block text-center w-10 h-7">
+                                <span className="text-black lg-mobile-xl-desktop inline-block text-center w-10 h-7">
                                   {filter(
                                     productCart?.QuantityMeters,
                                     (q) => q.uId === `${s.id}${c.id}`
@@ -1144,7 +1144,7 @@ const ProductShow: NextPage<Props> = ({
                                     handleSelectAddOn(s, c, s.must_select, true)
                                   }
                                   type="button"
-                                  className="w-6 h-6 lg:w-7 lg:h-7 text-white text-base lg:text-lg font-semibold rounded-full pb-3 disabled:!bg-gray-200 disabled:cursor-not-allowed"
+                                  className="w-6 h-6 lg:w-7 lg:h-7 text-white base-mobile-lg-desktop font-semibold rounded-full pb-3 disabled:!bg-gray-200 disabled:cursor-not-allowed"
                                   style={{ backgroundColor: color }}
                                 >
                                   +
@@ -1209,7 +1209,7 @@ const ProductShow: NextPage<Props> = ({
                                     )
                                   }
                                   htmlFor={`${c.id}${s.selection_type}`}
-                                  className="ltr:ml-3 rtl:mr-3 block text-sm"
+                                  className="ltr:ml-3 rtl:mr-3 block xs-mobile-sm-desktop"
                                 >
                                   <TextTrans ar={c.name_ar} en={c.name_en} />
                                 </label>
@@ -1231,7 +1231,7 @@ const ProductShow: NextPage<Props> = ({
 
               {/* notes */}
               <div className="px-4 lg:px-8 py-4">
-                <p className="pb-3 text-sm lg:text-base">
+                <p className="pb-3 sm-mobile-base-desktop">
                   {t('special_instructions')}
                 </p>
                 <input
@@ -1240,7 +1240,7 @@ const ProductShow: NextPage<Props> = ({
                   suppressHydrationWarning={suppressText}
                   value={productCart?.ExtraNotes}
                   onChange={(e) => dispatch(setNotes(toEn(e.target.value)))}
-                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 text-sm lg:text-base`}
+                  className={`bg-neutral-100 py-3 rounded-md px-5 w-full focus:ring-0 outline-none capitalize placeholder:text-stone-400 sm-mobile-base-desktop`}
                 />
               </div>
             </div>
@@ -1263,7 +1263,7 @@ const ProductShow: NextPage<Props> = ({
                     >
                       <PlusIcon />
                     </button>
-                    <span className="text-black text-xl inline-block text-center w-10 h-7">
+                    <span className="text-black lg-mobile-xl-desktop inline-block text-center w-10 h-7">
                       {currentQty}
                     </span>
                     <button

@@ -95,7 +95,7 @@ const UpComingOrders: FC = () => {
             !isEmpty(data.data) && (
               <div className="px-4 mt-7">
                 <p
-                  className={`${alexandriaFontBold} mb-3 mt-5 text-lg`}
+                  className={`${alexandriaFontBold} mb-3 mt-5 base-mobile-lg-desktop`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('your_upcoming_order')}
@@ -106,7 +106,7 @@ const UpComingOrders: FC = () => {
                       <div
                         className={`border-2 border-[#E8E5E3] rounded-md p-5 w-full h-auto md:h-[150px]`}
                       >
-                        <div className="flex justify-between gap-x-2 text-[#544A45] text-xs border-b border-dashed border-[#E8E5E3] pb-3 mb-3">
+                        <div className="flex justify-between gap-x-2 text-[#544A45] xxs-mobile-xs-desktop border-b border-dashed border-[#E8E5E3] pb-3 mb-3">
                           <p
                             className={`${alexandriaFont}`}
                             suppressHydrationWarning={suppressText}
@@ -133,7 +133,7 @@ const UpComingOrders: FC = () => {
                             </div>
 
                             <div
-                              className={`text-[#544A45] text-xs ${alexandriaFontLight}`}
+                              className={`text-[#544A45] xxs-mobile-xs-desktop ${alexandriaFontLight}`}
                             >
                               <p
                                 className={`${alexandriaFontMeduim}`}

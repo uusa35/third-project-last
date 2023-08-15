@@ -115,7 +115,7 @@ const OrderTrack: NextPage<Props> = ({
         <div className="flex flex-col space-y-4 absolute bottom-0 w-full border-t border-gray-200 p-4">
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
-            <p className="text-md text-extrabold">{t('order_not_found')}</p>
+            <p className=" text-extrabold">{t('order_not_found')}</p>
             <Link
               href={`${appLinks.guestAddress.path}`}
               className={`${mainBtnClass} flex flex-row justify-center items-center hidden`}
@@ -136,7 +136,7 @@ const OrderTrack: NextPage<Props> = ({
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              <p className="w-fit text-md text-center mx-2">
+              <p className="w-fit  text-center mx-2">
                 {t('add_new_address')}
               </p>
             </Link>
@@ -145,7 +145,7 @@ const OrderTrack: NextPage<Props> = ({
       ) : (
         <div className="flex flex-1 w-full flex-col justify-center items-start mt-8">
           <div className="flex flex-1 flex-col w-full border-b-8 border-gray-100 pb-6 px-3">
-            <h1 className="text-xl font-bold">
+            <h1 className="lg-mobile-xl-desktop font-bold">
               {currentOrderStatus === 'pending' &&
                 t('order_received_we_have_got_ur_order')}
               {currentOrder &&
@@ -166,7 +166,7 @@ const OrderTrack: NextPage<Props> = ({
             </h1>
             {currentOrder.estimated_time && (
               <div className="flex flex-1 flex-row mt-2">
-                <p className="text-md text-gray-400 mr-2">
+                <p className=" text-gsm-mobile-base-desktop ray-400 mr-2">
                   {t('estimated_time')} :
                 </p>{' '}
                 <span className="font-bold ms-2">
@@ -209,7 +209,7 @@ const OrderTrack: NextPage<Props> = ({
           {(currentOrder.order_type === 'pickup' ||
             currentOrder.order_type === 'pickup_now') && (
             <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
-              <div className="capitlize text-xl mb-4 font-bold">
+              <div className="capitlize lg-mobile-xl-desktop mb-4 font-bold">
                 {t('pickup_from')}
               </div>
               <div className="flex w-full flex-row justify-between items-center ">
@@ -221,7 +221,7 @@ const OrderTrack: NextPage<Props> = ({
                     {t('branch_address')}
                   </p>
                   {currentOrder.destination.address && (
-                    <p className="flex flex-1 text-black text-sm">
+                    <p className="flex flex-1 text-black xs-mobile-sm-desktop">
                       {currentOrder.destination.address}
                     </p>
                   )}
@@ -238,7 +238,7 @@ const OrderTrack: NextPage<Props> = ({
                           currentOrder.destination.latitude,
                           currentOrder.destination.longitude
                         )}
-                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs"
+                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full xxs-mobile-xs-desktop"
                       >
                         <div>{t('get_direction')}</div>
                         <div>
@@ -258,7 +258,7 @@ const OrderTrack: NextPage<Props> = ({
           {((currentOrder && currentOrder?.order_type === 'delivery') ||
             currentOrder?.order_type === 'delivery_now') && (
             <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 py-6">
-              <p className="capitlize text-lg mb-4 font-bold">
+              <p className="capitlize base-mobile-lg-desktop mb-4 font-bold">
                 {t('delivery_location')}
               </p>
               <div className="flex w-full flex-row justify-between items-center ">
@@ -280,7 +280,7 @@ const OrderTrack: NextPage<Props> = ({
                           currentOrder.destination.latitude,
                           currentOrder.destination.longitude
                         )}
-                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full text-xs hidden"
+                        className="btn bg-gray-100 p-3 flex justify-center items-center rounded-full xxs-mobile-xs-desktop hidden"
                       >
                         <div>{t('get_direction')}</div>
                         <div>
@@ -298,7 +298,7 @@ const OrderTrack: NextPage<Props> = ({
           )}
           {/* your order */}
           <div className="flex flex-1 flex-col w-full px-3 border-b-8 border-gray-100 pb-6">
-            <p className="capitlize text-lg my-4 font-bold">{t('ur_order')}</p>
+            <p className="capitlize base-mobile-lg-desktop my-4 font-bold">{t('ur_order')}</p>
             {/*  item */}
             {currentOrder &&
               currentOrder.products &&
@@ -334,7 +334,7 @@ const OrderTrack: NextPage<Props> = ({
           </div>
           {/* Payment details */}
           <div className="flex flex-1 flex-col w-full px-3 pb-6">
-            <p className="capitlize text-lg my-4 font-bold">
+            <p className="capitlize base-mobile-lg-desktop my-4 font-bold">
               {t('payment_details')}
             </p>
             {/*  item */}
@@ -374,7 +374,7 @@ const OrderTrack: NextPage<Props> = ({
 
                 {/* total */}
                 <div className="flex flex-row justify-between items-center">
-                  <div className="text-lg font-bold">{t('total')}</div>
+                  <div className="base-mobile-lg-desktop font-bold">{t('total')}</div>
                   <p className="text-base font-bold">
                     {currentOrder?.total} {t('kd')}
                   </p>

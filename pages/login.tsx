@@ -129,7 +129,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
             {t('verify_your_mobile_number')}
           </h3>
           <span
-            className="text-[#877D78] text-sm lowercase"
+            className="text-[#877D78] xs-mobile-sm-desktop lowercase"
             suppressHydrationWarning={suppressText}
           >
             {upperFirst(`${t('you_ll_receive_a_one_time_password_shortly.')}`)}
@@ -139,7 +139,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
           <div className="pt-3 pb-5">
             <label
               htmlFor="phone"
-              className="text-zinc-500 text-sm"
+              className="text-zinc-500 xs-mobile-sm-desktop"
               suppressHydrationWarning={suppressText}
             >
               {t('phone_number')}
@@ -167,7 +167,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
               )}
             />
             {errors?.phone?.message && (
-              <div className={`text-sm text-red-600 pt-3`}>
+              <div className={`xs-mobile-sm-desktop text-red-600 pt-3`}>
                 {errors?.phone?.message && (
                   <p suppressHydrationWarning={suppressText}>
                     {t('phone_number_must_be_between_9_and_15_number')}
@@ -181,7 +181,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
               <div className="flex pb-3" key={advantage.id}>
                 {advantage.icon}
                 <span
-                  className="px-3 text-sm text-zinc-800"
+                  className="px-3 xs-mobile-sm-desktop text-zinc-800"
                   suppressHydrationWarning={suppressText}
                 >
                   {t(advantage.text)}

@@ -53,7 +53,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
           </div>
           <div className="w-full px-2 pt-2 pb-5">
             <p
-              className="relative text-md font-bold"
+              className="relative sm-mobile-base-desktop font-bold"
               suppressHydrationWarning={suppressText}
             >
               <TextTrans

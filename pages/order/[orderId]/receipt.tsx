@@ -137,14 +137,14 @@ const orderReceipt: NextPage<Props> = ({
 
                     <p
                       suppressHydrationWarning={suppressText}
-                      className="text-xs"
+                      className="xxs-mobile-xs-desktop"
                     >
                       {product.extra_notes}
                     </p>
                   </div>
 
                   {/* price */}
-                  <div className="font-bold text-sm">
+                  <div className="font-bold xs-mobile-sm-desktop">
                     <p
                       className=" uppercase"
                       //   style={{ color }}
@@ -166,10 +166,10 @@ const orderReceipt: NextPage<Props> = ({
               >
                 {t('contact_details')}
               </h2>
-              <div className="text-sm space-y-1">
+              <div className="xs-mobile-sm-desktop space-y-1">
                 {orderReceiptData.data?.contact_details.order_details
                   .order_type === 'delivery' ? (
-                  <div className="text-sm mb-3">
+                  <div className="xs-mobile-sm-desktop mb-3">
                     <p
                       className={`${alexandriaFontSemiBold} `}
                       suppressHydrationWarning={suppressText}
@@ -202,7 +202,7 @@ const orderReceipt: NextPage<Props> = ({
                     )}
                   </div>
                 ) : (
-                  <div className="text-sm mb-3">
+                  <div className="xs-mobile-sm-desktop mb-3">
                     <p
                       className={`${alexandriaFontSemiBold} `}
                       suppressHydrationWarning={suppressText}
@@ -239,7 +239,7 @@ const orderReceipt: NextPage<Props> = ({
             {/* payment summary */}
             <div className="py-3 px-4">
               <h2
-                className={`text-lg  py-3 ${alexandriaFontSemiBold}`}
+                className={`base-mobile-lg-desktop py-3 ${alexandriaFontSemiBold}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('payment_details')}

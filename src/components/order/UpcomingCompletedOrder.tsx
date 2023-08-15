@@ -34,7 +34,7 @@ const UpcomingCompletedOrder: FC<Props> = ({
         >
           {t('order')} #{order.order_code}
         </p>
-        <p className={`text-[#877D78] text-xs ${alexandriaFontLight}`}>
+        <p className={`text-[#877D78] xxs-mobile-xs-desktop ${alexandriaFontLight}`}>
           {order.created_at}
         </p>
 
@@ -42,12 +42,12 @@ const UpcomingCompletedOrder: FC<Props> = ({
         {completed && (
           <>
             {order.order_status === 'completed' ? (
-              <p className="text-xs text-[#12B76A]">
+              <p className="xxs-mobile-xs-desktop text-[#12B76A]">
                 {t('delivered_successfully')}
               </p>
             ) : order.order_status === 'canceled' ? (
               <p
-                className="text-xs text-[#F04438]"
+                className="xxs-mobile-xs-desktop text-[#F04438]"
                 suppressHydrationWarning={suppressText}
               >
                 {t('cancelled_successfully')}
@@ -59,7 +59,7 @@ const UpcomingCompletedOrder: FC<Props> = ({
         )}
         {/* products */}
 
-        <div className={`text-sm ${alexandriaFont}`}>
+        <div className={`xs-mobile-sm-desktop ${alexandriaFont}`}>
           {order.items?.map((item) => (
             <div className="flex gap-x-1">
               <TextTrans en={item.item_en} ar={item.item_ar} className={``} />
@@ -69,7 +69,7 @@ const UpcomingCompletedOrder: FC<Props> = ({
         </div>
 
         <p
-          className={`text-sm ${alexandriaFontSemiBold}`}
+          className={`xs-mobile-sm-desktop ${alexandriaFontSemiBold}`}
           suppressHydrationWarning={suppressText}
         >
           {t('total')} : {order.total} {t('kd')}
@@ -81,7 +81,7 @@ const UpcomingCompletedOrder: FC<Props> = ({
         <div className="py-2">
           <Link
             href={appLinks.orderTrack(order.order_code)}
-            className={`w-full block text-center py-2 bg-[#F3F2F2] rounded-full text-sm ${alexandriaFontMeduim}`}
+            className={`w-full block text-center py-2 bg-[#F3F2F2] rounded-full xs-mobile-sm-desktop ${alexandriaFontMeduim}`}
             suppressHydrationWarning={suppressText}
           >
             {t('track_order')}
@@ -92,14 +92,14 @@ const UpcomingCompletedOrder: FC<Props> = ({
         <div className="flex gap-x-2 py-3">
           <Link
             href={`#`}
-            className={`w-full md:w-1/3 py-2 bg-[#F3F2F2] rounded-full  text-sm text-center ${alexandriaFontMeduim}`}
+            className={`w-full md:w-1/3 py-2 bg-[#F3F2F2] rounded-full  xs-mobile-sm-desktop text-center ${alexandriaFontMeduim}`}
             suppressHydrationWarning={suppressText}
           >
             {t('re_order')}
           </Link>
           <Link
             href={appLinks.orderReceipt(order.order_code)}
-            className={`w-full md:w-1/3 py-2 bg-[#F3F2F2] rounded-full  text-sm text-center ${alexandriaFontMeduim}`}
+            className={`w-full md:w-1/3 py-2 bg-[#F3F2F2] rounded-full  xs-mobile-sm-desktop text-center ${alexandriaFontMeduim}`}
             suppressHydrationWarning={suppressText}
           >
             {t('view_receipt')}

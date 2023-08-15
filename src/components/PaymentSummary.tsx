@@ -36,7 +36,7 @@ const PaymentSummary: FC<Props> = ({
   } = useAppSelector((state) => state);
 
   return (
-    <div className={`py-2 capitalize text-sm ${alexandriaFont}`}>
+    <div className={`py-2 capitalize xs-mobile-sm-desktop ${alexandriaFont}`}>
       <>
         <div className="flex justify-between mb-2">
           <p suppressHydrationWarning={suppressText}>{t('subtotal')} </p>

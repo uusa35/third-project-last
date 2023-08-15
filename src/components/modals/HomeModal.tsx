@@ -86,7 +86,7 @@ const HomeModal: FC<Props> = ({
               <div className="w-full">
                 <button
                   onClick={() => ApplyPromocode()}
-                  className={`bg-white text-black w-full text-md rounded-full h-8 pt-2 pb-8 mx-auto capitalize ${alexandriaFont}`}
+                  className={`bg-white text-black w-full sm-mobile-base-desktop rounded-full h-8 pt-2 pb-8 mx-auto capitalize ${alexandriaFont}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('apply_coupon')}

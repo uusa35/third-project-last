@@ -182,7 +182,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                   id="search"
                   defaultValue={searchKey}
                   onChange={debounce((e) => handleChange(e.target.value), 400)}
-                  className={`flex-1 px-5 py-3 h-12 text-lg placeholder:text-stone-500 capitalize foucs:ring-0 outline-none`}
+                  className={`flex-1 px-5 py-3 h-12 base-mobile-lg-desktop placeholder:text-stone-500 capitalize foucs:ring-0 outline-none`}
                   suppressHydrationWarning={suppressText}
                   placeholder={`${t('search')}`}
                 />
@@ -195,7 +195,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                   isUndefined(searchKey)) && (
                   <div className="p-5">
                     <h3
-                      className="text-lg font-semibold pb-3"
+                      className="base-mobile-lg-desktop font-semibold pb-3"
                       suppressHydrationWarning={suppressText}
                     >
                       {t('popular_search')}

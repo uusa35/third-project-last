@@ -15,7 +15,7 @@ const Policy: FC<Props> = ({policyType}): JSX.Element => {
             <TextTrans 
               en={policyType?.title_en} 
               ar={policyType?.title_ar} 
-              className="!uppercase text-lg"
+              className="!uppercase base-mobile-lg-desktop"
             />
           </h2>
           <p className="text-[#544A45]">

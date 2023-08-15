@@ -50,7 +50,7 @@ const OrderFailure: NextPage<Props> = ({
     info: string;
   }) => {
     return (
-      <div className="flex justify-between items-center py-3 border-b-2 text-sm">
+      <div className="flex justify-between items-center py-3 border-b-2 xs-mobile-sm-desktop">
         <p suppressHydrationWarning={suppressText} className="text-[#877D78]">
           {t(title)}
         </p>
@@ -100,17 +100,17 @@ const OrderFailure: NextPage<Props> = ({
               </p>
               <p
                 suppressHydrationWarning={suppressText}
-                className="text-[#544A45] lg:w-3/4 py-2 text-xs"
+                className="text-[#544A45] lg:w-3/4 py-2 xxs-mobile-xs-desktop"
               >
                 {t('failure_msg')}
               </p>
-              <p className="text-[#544A45] lg:w-3/4 py-2 text-xs">{t('we_advise_that_saving_the_receipt')}</p>
+              <p className="text-[#544A45] lg:w-3/4 py-2 xxs-mobile-xs-desktop">{t('we_advise_that_saving_the_receipt')}</p>
             </div>
 
             <div className="flex justify-between items-center">
               <h4>{t('order_receipt')}</h4>
               <button
-                className="bg-stone-100 rounded-full px-4 py-2 text-sm flex items-center"
+                className="bg-stone-100 rounded-full px-4 py-2 xs-mobile-sm-desktop flex items-center"
                 onClick={() => window.print()}
               >
                 <DownloadIcon />
@@ -152,19 +152,19 @@ const OrderFailure: NextPage<Props> = ({
                     <h5 className="pe-6">
                       <TextTrans en={item.item_en} ar={item.item_ar} />
                     </h5>
-                    <span className="text-sm">x{item.quantity}</span>
+                    <span className="xs-mobile-sm-desktop">x{item.quantity}</span>
                   </div>
                   <div className="flex flex-wrap items-center">
                     {map(item.addon, (a) => (
                       <div key={a.addon_id} className="pe-3 pb-4">
                         <div className="bg-gray-100 text-zinc-400 rounded-2xl text-center h-8 px-3 pt-1 mb-2">
-                          <span className="pe-2 text-sm">
+                          <span className="pe-2 xs-mobile-sm-desktop">
                             x{a.addon_quantity}
                           </span>
                           <TextTrans
                             en={a.addon_name_en}
                             ar={a.addon_name_ar}
-                            className="text-sm"
+                            className="xs-mobile-sm-desktop"
                           />
                         </div>
                       </div>

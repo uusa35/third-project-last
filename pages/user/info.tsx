@@ -158,7 +158,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                 </div>
                 {errors?.name?.message && (
                   <div
-                    className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}
+                    className={`xs-mobile-sm-desktop text-red-600 w-full text-start pt-2 ps-2`}
                   >
                     {errors?.name?.message && (
                       <p suppressHydrationWarning={suppressText}>
@@ -225,7 +225,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
 
                 {errors?.password?.message && (
                   <div
-                    className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}
+                    className={`xs-mobile-sm-desktop text-red-600 w-full text-start pt-2 ps-2`}
                   >
                     {errors?.password?.message && (
                       <p suppressHydrationWarning={suppressText}>

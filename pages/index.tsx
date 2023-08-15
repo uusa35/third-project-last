@@ -159,7 +159,7 @@ const Home: NextPage<Props> = ({
           {vendorSuccess || vendorElement || vendorElement?.Data ? (
             <>
               {/* sm screen header */}
-              <Header CoverImg={vendorElement?.Data?.cover ?? ''} />
+              <Header url={url} CoverImg={vendorElement?.Data?.cover ?? ''} />
               {/*  HomePage vendor info */}
               <div className={`px-4 mt-3 lg:mt-0`}>
                 <HomeVendorMainInfo element={vendorElement} />
@@ -196,7 +196,7 @@ const Home: NextPage<Props> = ({
                     <UpcomingOrders />
                     <div className="px-4">
                       <p
-                        className={`relative text-md font-bold py-4 text-lg ${alexandriaFontBold}`}
+                        className={`relative font-bold py-4 base-mobile-lg-desktop ${alexandriaFontBold}`}
                         suppressHydrationWarning={suppressText}
                       >
                         {t('categories')}

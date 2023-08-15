@@ -7,7 +7,7 @@ export default function AsideFooter() {
   const { t } = useTranslation();
   return (
     <div
-      className={`absolute bottom-0 text-white  text-xs md:text-sm xl:text-md flex flex-1 w-full flex-row justify-between items-center p-4`}
+      className={`absolute bottom-0 text-white  xs-mobile-sm-desktop flex flex-1 w-full flex-row justify-between items-center p-4`}
     >
       <div
         className={`flex flex-row gap-x-3 items-center underline underline-offset-2`}

@@ -27,13 +27,13 @@ const EmptyUserOrders: FC<Props> = ({ handleChange = (s) => {} }) => {
         height={150}
       />
       <p
-        className={`text-lg ${alexandriaFontBold}`}
+        className={`base-mobile-lg-desktop ${alexandriaFontBold}`}
         suppressHydrationWarning={suppressText}
       >
         {t('you_dont_have_any_orders_yet')}
       </p>
       <p
-        className={`text-[#544A45] text-center text-sm ${alexandriaFontLight}`}
+        className={`text-[#544A45] text-center xs-mobile-sm-desktop ${alexandriaFontLight}`}
         suppressHydrationWarning={suppressText}
       >
         {t('have_a_tracking_code?_enter_order_id_below_to_track_it')}

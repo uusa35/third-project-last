@@ -18,7 +18,7 @@ function ErrorHandler() {
           <h2 className="text-2xl" suppressHydrationWarning={suppressText}>
             {t('looks_like_something_went_wrong')}
           </h2>
-          <p className="text-xl" suppressHydrationWarning={suppressText}>
+          <p className="lg-mobile-xl-desktop" suppressHydrationWarning={suppressText}>
             {t('we_are_working_on_it')}
           </p>
         </div>

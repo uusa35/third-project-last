@@ -61,14 +61,14 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
           <div className={`flex flex-col w-full px-1`}>
             {/* name */}
             <TextTrans
-              className={`text-lg ${alexandriaFontSemiBold}`}
+              className={`base-mobile-lg-desktop ${alexandriaFontSemiBold}`}
               ar={element?.Data?.name_ar ?? ''}
               en={element?.Data?.name_en ?? ''}
             />
 
             {/*info */}
             <div
-              className={`text-xs space-y-1 text-[#544A45] ${alexandriaFont}`}
+              className={`xxs-mobile-xs-desktop space-y-1 text-[#544A45] ${alexandriaFont}`}
             >
               {element?.Data?.delivery && (
                 // check if method is pickup or deliery
@@ -98,7 +98,7 @@ const HomeVendorMainInfo: FC<Props> = ({ element }): JSX.Element => {
               {/* status */}
               {element?.Data?.status && !isEmpty(currentStoreStatus) && (
                 <div
-                  className={`flex flex-row items-center text-xs`}
+                  className={`flex flex-row items-center xxs-mobile-xs-desktop`}
                   suppressHydrationWarning={suppressText}
                 >
                   <p

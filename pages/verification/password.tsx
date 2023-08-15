@@ -307,7 +307,7 @@ const UserPassword: NextPage<Props> = ({
             {t('enter_your_password_to_continue')}
           </h3>
           <span
-            className="text-[#877D78] text-sm lowercase"
+            className="text-[#877D78] xs-mobile-sm-desktop lowercase"
             suppressHydrationWarning={suppressText}
           >
             {upperFirst(
@@ -347,7 +347,7 @@ const UserPassword: NextPage<Props> = ({
               </div>
               {errors?.password?.message && (
                 <div
-                  className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}
+                  className={`xs-mobile-sm-desktop text-red-600 w-full text-start pt-2 ps-2`}
                 >
                   {errors?.password?.message && (
                     <p suppressHydrationWarning={suppressText}>
@@ -396,7 +396,7 @@ const UserPassword: NextPage<Props> = ({
                 </div>
               </div>
               {errors?.new_password?.message && (
-                <div className="text-sm text-red-600 w-full text-start pt-2 ps-2">
+                <div className="xs-mobile-sm-desktop text-red-600 w-full text-start pt-2 ps-2">
                   <p suppressHydrationWarning={suppressText}>
                     {t('new_password_is_required')}
                   </p>
@@ -440,7 +440,7 @@ const UserPassword: NextPage<Props> = ({
                 </div>
               </div>
               {errors?.confirmation_password?.message && (
-                <div className="text-sm text-red-600 w-full text-start pt-2 ps-2">
+                <div className="xs-mobile-sm-desktop text-red-600 w-full text-start pt-2 ps-2">
                   <p suppressHydrationWarning={suppressText}>
                     {errors?.confirmation_password?.message?.includes('Ref')
                       ? t('confirm_password_doesnt_match_new_password')

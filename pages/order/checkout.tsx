@@ -308,7 +308,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
             <div className="p-5 border-b-4">
               <OrderDetails />
             </div>
-            
+
             {/* items */}
             <div className=" p-5 border-b-4">
               <p
@@ -323,7 +323,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
 
               <Link
                 href={appLinks.home.path}
-                className="flex items-center gap-x-1 rounded-full border w-fit text-xs py-1 px-3  mt-3"
+                className="flex items-center gap-x-1 rounded-full border w-fit xxs-mobile-xs-desktop py-1 px-3  mt-3"
                 style={{ borderColor: color, color }}
               >
                 <Add color={color} fontSize="small" />
@@ -353,7 +353,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                       onClick={() => {
                         setSelectedPaymentMethod(m.id);
                       }}
-                      className="flex items-center gap-x-2 text-sm mb-3"
+                      className="flex items-center gap-x-2 xs-mobile-sm-desktop mb-3"
                     >
                       {selectedPaymentMethod === m.id ? (
                         <RadioButtonCheckedOutlined
@@ -400,7 +400,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                 {cartLessThanMin && (
                   <p
                     suppressHydrationWarning={suppressText}
-                    className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
+                    className={`w-full xxs-mobile-xs-desktop text-[#877D78] text-center py-2 ${alexandriaFont}`}
                   >{`${t('add_a_minimum_of')} ${(
                     parseFloat(
                       cartItems?.data?.minimum_order_price?.toString() || ''
