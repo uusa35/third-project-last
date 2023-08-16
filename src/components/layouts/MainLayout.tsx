@@ -171,7 +171,7 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
       className={`${
         router.locale === 'ar' ? montserratFontRegular : alexandriaFont
       }
-        flex-col justify-start items-start grow lg:flex lg:flex-row flex flex-row h-screen capitalize`}
+        flex-row justify-start items-start grow lg:flex lg:flex-row flex  h-screen capitalize`}
     >
       {children}
       <ToastAppContainer />
