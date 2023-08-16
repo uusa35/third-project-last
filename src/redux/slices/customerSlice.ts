@@ -10,13 +10,17 @@ const initialState: CustomerInfo = {
   name: ``,
   email: ``,
   phone: ``,
+  customerAddressInfo: {
+    name: '',
+    phone: '',
+  },
   address: {
     id: 0,
     customer_id: 0,
     type: 'HOUSE',
     address: {
       area: ``,
-      area_id: ``
+      area_id: ``,
     },
     longitude: ``,
     latitude: ``,
@@ -42,6 +46,10 @@ export const customerSlice = createSlice({
       return {
         ...state,
         ...action.payload,
+        customerAddressInfo: {
+          name: action.payload.name,
+          phone: action.payload.phone,
+        },
       };
     },
     removeCustomer: (
@@ -80,12 +88,16 @@ export const customerSlice = createSlice({
           type: action.payload?.type,
           ...action.payload?.address,
         },
+        customerAddressInfo:{
+          phone:action.payload?.address?.phone,
+          name:action.payload?.address?.name,
+        },
         customer_id: action.payload?.customer_id,
       };
     },
     setCustomerAddressArea: (
       state: typeof initialState,
-      action: PayloadAction<{ area: string | number, area_id: string | number }>
+      action: PayloadAction<{ area: string | number; area_id: string | number }>
     ) => {
       return {
         ...state,
@@ -152,7 +164,7 @@ export const customerSlice = createSlice({
       (state, action) => {
         state.prefrences = initialState.prefrences;
       }
-    )
+    );
   },
 });
 

@@ -403,6 +403,10 @@ export interface CustomerInfo {
   name: string;
   email: string;
   phone?: string;
+  customerAddressInfo: {
+    name: string;
+    phone: string;
+  };
   address?: Address;
   prefrences?: Prefrences;
   notes?: string;

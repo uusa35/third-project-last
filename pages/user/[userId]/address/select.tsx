@@ -102,15 +102,31 @@ const AddressSelectionIndex: NextPage<Props> = ({
       dispatch(setUrl(url));
     }
     triggerGetAddresses({ url }, false).then((r: any) => {
-      const addressWithSameAreaId = first(
-        filter(
-          r.data.data,
-          (a) => a.address.area_id && a.address.area_id === destID.toString()
-        )
+      const addressesWithSameAreaId = filter(
+        r.data.data,
+        (a) => a.address.area_id && a.address.area_id === destID.toString()
       );
-      if (addressWithSameAreaId) {
-        dispatch(setCustomerAddress(addressWithSameAreaId));
+
+      const selectedAddressExist = filter(
+        addressesWithSameAreaId,
+        (add) => add.id === addressId
+      );
+      console.log({ addressesWithSameAreaId }, { selectedAddressExist });
+
+      // when no address is selected in the state
+      if (isEmpty(selectedAddressExist)) {
+        dispatch(setCustomerAddress(first(addressesWithSameAreaId)));
       }
+
+      // const addressWithSameAreaId = first(
+      //   filter(
+      //     r.data.data,
+      //     (a) => a.address.area_id && a.address.area_id === destID.toString()
+      //   )
+      // );
+      // if (addressWithSameAreaId) {
+      //   dispatch(setCustomerAddress(addressWithSameAreaId));
+      // }
     });
   }, []);
 
