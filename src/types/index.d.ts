@@ -370,7 +370,7 @@ export interface OrderTrack {
 }
 
 export interface OrderUser {
-  user_id: number;
+  // user_id?: number;
   order_type: string;
   UserAgent?: string;
   PromoCode?: string;

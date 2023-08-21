@@ -58,55 +58,88 @@ const GuestOrderModal: FC<Props> = ({
     const parsedCountryCode = `+${
       parsePhoneNumber(body.phone)?.countryCallingCode
     }`;
-    await triggerSaveCustomerInfo({
-      body: {
+    dispatch(
+      setCustomer({
         ...body,
-        phone: parsedPhone,
-        // phone_country_code: parsedCountryCode,
-      },
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data.Data && r.data.status) {
-        // set country code manually because it doesn't come back from BE
-        dispatch(setCustomer({ ...r.data.Data }));
-        dispatch(
-          showToastMessage({
-            content: `info_saved`,
-            type: 'success',
-          })
-        );
-        if (method === 'pickup') {
-          router.push(appLinks.checkout.path);
-        } else {
-          // if (destination.id === customer.address.area_id) {
-          //   router.push()
-          // }
-          // router.push(appLinks.selectArea('guest'));
-          router.push(appLinks.guestAddress.path);
-        }
-      } else if (
-        r.error &&
-        r.error.data &&
-        r.error.data.msg &&
-        r.error.data.msg.phone[0]
-      ) {
-        setError(
-          'phone',
-          {
-            type: 'focus',
-            message: 'phone_number_must_be_between_8_and_15_number',
-          },
-          { shouldFocus: true }
-        );
-      } else {
-        dispatch(
-          showToastMessage({
-            content: `all_fields_r_required`,
-            type: 'error',
-          })
-        );
-      }
-    });
+        id: 'guest',
+        phone: parsedPhone || body.phone, //when phone is in state parsed is= undefined
+        // address: 'no addresses',
+        // date_of_birth: null,
+        // gender: null,
+      })
+    );
+    dispatch(
+      showToastMessage({
+        content: `info_saved`,
+        type: 'success',
+      })
+    );
+    if (method === 'pickup') {
+      router.push(appLinks.checkout.path);
+    } else {
+      // if (destination.id === customer.address.area_id) {
+      //   router.push()
+      // }
+      // router.push(appLinks.selectArea('guest'));
+      router.push(appLinks.guestAddress.path);
+    }
+
+    // await triggerSaveCustomerInfo({
+    //   body: {
+    //     ...body,
+    //     phone: parsedPhone,
+    //     // phone_country_code: parsedCountryCode,
+    //   },
+    //   url,
+    // }).then((r: any) => {
+    //   if (r.data && r.data.Data && r.data.status) {
+    //     console.log(r.data.Data, {
+    //       ...body,
+    //       phone: parsedPhone,
+    //       address: 'no addresses',
+    //       date_of_birth: null,
+    //       gender: null,
+    //     });
+    //     // set country code manually because it doesn't come back from BE
+    //     dispatch(setCustomer({ ...r.data.Data }));
+    //     dispatch(
+    //       showToastMessage({
+    //         content: `info_saved`,
+    //         type: 'success',
+    //       })
+    //     );
+    //     if (method === 'pickup') {
+    //       router.push(appLinks.checkout.path);
+    //     } else {
+    //       // if (destination.id === customer.address.area_id) {
+    //       //   router.push()
+    //       // }
+    //       // router.push(appLinks.selectArea('guest'));
+    //       router.push(appLinks.guestAddress.path);
+    //     }
+    //   } else if (
+    //     r.error &&
+    //     r.error.data &&
+    //     r.error.data.msg &&
+    //     r.error.data.msg.phone[0]
+    //   ) {
+    //     setError(
+    //       'phone',
+    //       {
+    //         type: 'focus',
+    //         message: 'phone_number_must_be_between_8_and_15_number',
+    //       },
+    //       { shouldFocus: true }
+    //     );
+    //   } else {
+    //     dispatch(
+    //       showToastMessage({
+    //         content: `all_fields_r_required`,
+    //         type: 'error',
+    //       })
+    //     );
+    //   }
+    // });
   };
 
   // console.log(

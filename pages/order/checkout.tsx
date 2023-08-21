@@ -60,6 +60,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       userAgent,
       id: customer_id,
       notes,
+      name,
+      email,
+      phone,
       address: CustomerAddress,
       address: { id: addressID, longitude, latitude, type },
     },
@@ -182,16 +185,26 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       await triggerCreateOrder({
         body: {
           // ...(isAuth ? {} : { user_id: customer_id }),
-          user_id: customer_id,
+          // user_id: customer_id,
+          ...(isAuth ? {} : { UserAgent: userAgent, name, email, phone }),
           ...(method === `delivery`
-            ? { address_id: addressID }
-            : // isAuth
-              //   ? { address_id: addressID }
-              //   : { address_id: addressID }
-              {}),
+            ? isAuth
+              ? { address_id: addressID }
+              : {
+                  address_type:
+                    CustomerAddress.type === 'HOUSE'
+                      ? 1
+                      : CustomerAddress.type === 'APARTMENT'
+                      ? 2
+                      : CustomerAddress.type === 'OFFICE'
+                      ? 3
+                      : 1,
+                  address: { ...CustomerAddress },
+                } //guest address
+            : {}),
           order_type: prefrences.type,
           // order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
-          ...(isAuth ? {} : { UserAgent: userAgent }),
+
           Messg: notes,
           PaymentMethod: selectedPaymentMethod,
           PromoCode: promocode,

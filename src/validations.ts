@@ -119,7 +119,10 @@ export const loginSchema = (isResetPassword: boolean) => {
     if (isResetPassword) {
       return yup.object().shape({
         new_password: yup.string().required().min(6),
-        confirmation_password: yup.string().required().oneOf([yup.ref('new_password'), null]),
+        confirmation_password: yup
+          .string()
+          .required()
+          .oneOf([yup.ref('new_password'), null]),
       });
     } else {
       return yup.object().shape({
