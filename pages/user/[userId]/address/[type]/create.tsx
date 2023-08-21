@@ -17,7 +17,11 @@ import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
-import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
+import {
+  setCustomerAddress,
+  setCustomerAddressInfo,
+  setNotes,
+} from '@/redux/slices/customerSlice';
 import { kebabCase, lowerCase, toUpper, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -68,9 +72,10 @@ const AddressCreate: NextPage<Props> = ({
     control,
     reset,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(addressSchema('method', t)),
+    resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method: 'delivery',
       address_type: toUpper(type),
@@ -100,6 +105,14 @@ const AddressCreate: NextPage<Props> = ({
       notes: '',
     },
   });
+
+  const [name, phone] = watch(['name', 'phone']);
+
+  // set state of phone and name on change
+  useEffect(() => {
+    console.log(name,phone);
+    dispatch(setCustomerAddressInfo({ name, phone }));
+  }, [name, phone]);
 
   const { data: cartItems } = useGetCartProductsQuery({
     userAgent: customer.userAgent,
@@ -183,7 +196,10 @@ const AddressCreate: NextPage<Props> = ({
         if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
           router.push(`${appLinks.checkout.path}`);
         } else {
-          router.back();
+          // router.push('/');
+         // wrong fix it is uaed in create account, my addresses and  show addresses
+
+          router.back(); 
         }
       } else {
         if (r.error && r.error.data?.msg) {
@@ -201,6 +217,8 @@ const AddressCreate: NextPage<Props> = ({
   const onSubmit = async (body: any) => {
     await handleSaveAddress(body);
   };
+
+
 
   return (
     <MainContentLayout

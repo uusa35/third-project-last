@@ -25,6 +25,7 @@ import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 import {
   setCustomerAddress,
+  setCustomerAddressInfo,
   setCustomerAddressType,
   setNotes,
 } from '@/redux/slices/customerSlice';
@@ -78,6 +79,7 @@ const AddressCreate: NextPage<Props> = ({
     setValue,
     control,
     reset,
+    watch,
     formState: { errors },
   } = useForm<any>({
     resolver: yupResolver(addressSchema(method, t)),
@@ -97,7 +99,7 @@ const AddressCreate: NextPage<Props> = ({
       apartment_no: customer?.address?.apartment_no,
       office_no: customer?.address?.office_no,
       area_id: destination?.id,
-      area: isRTL ? destination?.name_ar : name.en,
+      area: isRTL ? destination?.name_ar : destination?.name.en,
       avenue: customer?.address?.avenue,
       city: customer?.address?.city,
       paci: customer?.address?.paci,
@@ -105,6 +107,14 @@ const AddressCreate: NextPage<Props> = ({
       notes: customer?.address?.notes,
     },
   });
+
+  const [name, phone] = watch(['name', 'phone']);
+
+  // set state of phone and name on change
+  useEffect(() => {
+    // console.log(name, phone);
+    dispatch(setCustomerAddressInfo({ name, phone }));
+  }, [name, phone]);
 
   useEffect(() => {
     if (url) {

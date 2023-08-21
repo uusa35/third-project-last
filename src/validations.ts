@@ -59,7 +59,10 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 'OFFICE' && method === `delivery`) {
+          if (
+            (address_type === 'OFFICE' || address_type === 'APARTMENT') &&
+            method === `delivery`
+          ) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
