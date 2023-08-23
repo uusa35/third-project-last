@@ -142,10 +142,7 @@ const GuestOrderModal: FC<Props> = ({
     // });
   };
 
-  // console.log(
-  //   flags,
-  //   Object.fromEntries(Object.entries(flags).filter(([key]) => key === 'KW'))
-  // );
+  console.log({ errors });
 
   return (
     <>
@@ -189,17 +186,17 @@ const GuestOrderModal: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('fill_name')}</div>
-                  <div>
-                    {errors?.name?.message && (
-                      <p
-                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t('name_is_required')}
-                      </p>
-                    )}
-                  </div>
                 </label>
+                <div>
+                  {errors?.name?.message && (
+                    <p
+                      className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('name_is_required')}
+                    </p>
+                  )}
+                </div>
               </div>
               {/* phone */}
               <div className="pt-6 pb-5">
@@ -209,17 +206,6 @@ const GuestOrderModal: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('phone_number')} *</div>
-                  <div>
-                    {errors?.phone?.message && (
-                      <p
-                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t(`${errors?.phone?.message}`)}
-                        {/* {t('phone_number_must_be_between_8_and_15_number')} */}
-                      </p>
-                    )}
-                  </div>
                 </label>
                 <PhoneInput
                   // flags={Object.fromEntries(
@@ -243,6 +229,19 @@ const GuestOrderModal: FC<Props> = ({
                   }
                   onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                 />
+                <div>
+                  {errors?.phone?.message && (
+                    <p
+                      className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {errors?.phone?.message?.key
+                        ? t('phone_number_must_be_between_8_and_15_number')
+                        : t(`${errors?.phone?.message}`)}
+                      {/* {t('phone_number_must_be_between_8_and_15_number')} */}
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="relative">
                 <input
