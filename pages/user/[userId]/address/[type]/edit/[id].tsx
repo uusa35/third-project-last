@@ -16,7 +16,7 @@ import {
   BriefcaseIcon,
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
+import { appLinks, errorMsgClass, mainBtnClass, suppressText } from '@/constants/*';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
@@ -263,7 +263,7 @@ const AddressEdit: NextPage<Props> = ({
             </div>
             {errors?.phone && (
               <span
-                className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('phone_is_required')}
@@ -290,7 +290,7 @@ const AddressEdit: NextPage<Props> = ({
             </div>
             {errors?.name && (
               <span
-                className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('name_is_required')}
@@ -353,7 +353,7 @@ const AddressEdit: NextPage<Props> = ({
             </div>
             {(errors?.area?.message || errors?.area_id?.message) && (
               <span
-                className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('area_is_required')}
@@ -381,7 +381,7 @@ const AddressEdit: NextPage<Props> = ({
             </div>
             {errors?.street?.message && (
               <span
-                className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('street_is_required')}
@@ -410,7 +410,7 @@ const AddressEdit: NextPage<Props> = ({
               </div>
               {errors?.house_no?.message && (
                 <span
-                  className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                  className={`${errorMsgClass}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('house_no_is_required')}
@@ -440,7 +440,7 @@ const AddressEdit: NextPage<Props> = ({
               </div>
               {errors?.building_no?.message && (
                 <span
-                  className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                  className={`${errorMsgClass}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('building_no_is_required')}
@@ -473,7 +473,7 @@ const AddressEdit: NextPage<Props> = ({
                 </div>
                 {errors?.floor_no?.message && (
                   <span
-                    className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('floor_no_is_required')}
@@ -501,7 +501,7 @@ const AddressEdit: NextPage<Props> = ({
                 </div>
                 {errors?.apartment_no?.message && (
                   <span
-                    className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('apartment_no_is_required')}
@@ -533,7 +533,7 @@ const AddressEdit: NextPage<Props> = ({
                 </div>
                 {errors?.office_no?.message && (
                   <span
-                    className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('office_no_is_required')}
@@ -564,7 +564,7 @@ const AddressEdit: NextPage<Props> = ({
             </div>
             {errors?.notes?.message && (
               <span
-                className={`xs-mobile-sm-desktop text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('notes')}

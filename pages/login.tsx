@@ -8,6 +8,7 @@ import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
 import {
   appLinks,
+  errorMsgClass,
   imageSizes,
   mainBtnClass,
   suppressText,
@@ -167,7 +168,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
               )}
             />
             {errors?.phone?.message && (
-              <div className={`xs-mobile-sm-desktop text-red-600 pt-3`}>
+              <div className={`${errorMsgClass}`}>
                 {errors?.phone?.message && (
                   <p suppressHydrationWarning={suppressText}>
                     {t('phone_number_must_be_between_9_and_15_number')}

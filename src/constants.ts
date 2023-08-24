@@ -72,6 +72,8 @@ export const addressInputField = `border-0 outline-none border-b-2 border-b-gray
 export const footerBtnClass = `p-2 px-6 rounded-lg w-fit disabled:bg-stone-600 disabled:text-stone-200 disabled:bg-opacity-40 disabled:opacity-60  shadow-xl capitalize border border-stone-100/25 hover:shadow-inner hover:border-stone-200/80 `;
 export const modalBtnContainer = `w-full border-t-[1px] border-gray-200 px-4 flex items-end space-x-5 pt-4`;
 export const mainBtnClass = `text-white w-full sm-mobile-base-desktop rounded-full py-3 mx-auto capitalize`;
+export const errorMsgClass = `xs-mobile-sm-desktop text-red-600 py-2 capitalize`;
+
 export const toEn = (s) =>
   s.replace(/[\u0660-\u0669\u06f0-\u06f9]/g, (a) => a.charCodeAt(0) & 15);
 

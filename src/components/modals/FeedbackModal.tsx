@@ -21,6 +21,7 @@ import {
   mainBtnClass,
   suppressText,
   toEn,
+  errorMsgClass,
 } from '@/constants/*';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -192,7 +193,7 @@ const FeedbackModal: FC<Props> = ({
             <div className="px-5">
               {errors?.rate?.message && (
                 <p
-                  className={`text-base text-red-600 font-semibold py-2 capitalize  ${
+                  className={`${errorMsgClass}  ${
                     isRTL ? 'text-end' : 'text-start'
                   }`}
                   suppressHydrationWarning={suppressText}
@@ -228,7 +229,7 @@ const FeedbackModal: FC<Props> = ({
               <div>
                 {errors?.user_name?.message && (
                   <p
-                    className={`text-base text-red-600 font-semibold py-2 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('name_is_required')}
@@ -265,9 +266,9 @@ const FeedbackModal: FC<Props> = ({
                     />
                   )}
                 />
-                {errors?.phone?.message?.key && (
+                {errors?.phone?.message && (
                   <p
-                    className={`text-base text-red-600 font-semibold py-2 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('phone_number_must_be_between_8_and_15_number')}
@@ -277,7 +278,7 @@ const FeedbackModal: FC<Props> = ({
               <LimitedTextarea control={control} errors={errors} />
               {errors.note && (
                 <p
-                  className={`text-base text-red-600 font-semibold py-2 capitalize`}
+                  className={`${errorMsgClass}`}
                 >
                   {t('note_is_required')}
                 </p>

@@ -1,15 +1,24 @@
 import * as yup from 'yup';
 
-export const customerInfoSchema = yup
-  .object({
-    id: yup.number().nullable(),
-    name: yup.string().required().min(2).max(50),
-    email: yup.string().email().nullable(),
-    // phone: yup.number().min(100000).max(999999999999).required(),
-    phone: yup.number().required().min(10000000000).max(999999999999),
-    // phone: yup.string().required().matches(/^\+\d{8,15}$/),
-  })
-  .required();
+export const customerInfoSchema = ({
+  minPhone = 10000000000,
+  maxPhone = 999999999999999,
+  requiredPass = false,
+}) =>
+  yup
+    .object({
+      id: yup.number().nullable(),
+      name: yup.string().required().min(2).max(50),
+      email: yup.string().email().nullable(),
+      // phone: yup.number().min(100000).max(999999999999).required(),
+      phone: yup.number().required().min(minPhone).max(maxPhone),
+      password: yup.string().min(80).when(`${requiredPass}`, {
+        is: true,
+        then: yup.string().required(),
+      }),
+      // phone: yup.string().required().matches(/^\+\d{8,15}$/),
+    })
+    .required();
 
 export const addressSchema = (method: string, t: any) =>
   yup
@@ -17,7 +26,7 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
-      phone: yup.number().required().min(10000000000).max(999999999999),
+      phone: yup.number().required().min(10000000000).max(999999999999999),
       name: yup.string().required(),
       // block: yup
       //   .string()
@@ -108,12 +117,12 @@ export const feedbackSchema = yup.object().shape({
   user_name: yup.string().min(2).max(50).required(),
   rate: yup.number().min(1).max(5).required(),
   note: yup.string().min(2).max(460).required(),
-  phone: yup.number().min(10000000000).max(999999999999),
+  phone: yup.number().min(10000000000).max(999999999999999),
 });
 
 export const checkPhone = yup
   .object({
-    phone: yup.number().min(10000000000).max(999999999999),
+    phone: yup.number().min(10000000000).max(999999999999999),
   })
   .required();
 
