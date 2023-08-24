@@ -205,7 +205,9 @@ const AddressIndex: NextPage<Props> = ({
         ) : (
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
-            <p className="sm-mobile-base-desktop text-extrabold">{t('no_address')}</p>
+            <p className="sm-mobile-base-desktop text-extrabold">
+              {t('no_address')}
+            </p>
             <p className="sm-mobile-base-desktop text-extrabold text-center w-full lg:w-[80%]">
               {t('no_address_des')}
             </p>
@@ -220,7 +222,9 @@ const AddressIndex: NextPage<Props> = ({
             suppressHydrationWarning={suppressText}
           >
             <PlusSmallIcon className="w-6 h-6" />
-            <p className="w-fit sm-mobile-base-desktop text-center mx-2">{t('add_address')}</p>
+            <p className="w-fit sm-mobile-base-desktop text-center mx-2">
+              {t('add_address')}
+            </p>
           </Link>
         </div>
         {/* )} */}

@@ -12,7 +12,7 @@ export const customerInfoSchema = ({
       email: yup.string().email().nullable(),
       // phone: yup.number().min(100000).max(999999999999).required(),
       phone: yup.number().required().min(minPhone).max(maxPhone),
-      password: yup.string().min(80).when(`${requiredPass}`, {
+      password: yup.string().min(6).when(`${requiredPass}`, {
         is: true,
         then: yup.string().required(),
       }),
@@ -26,7 +26,7 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
-      phone: yup.number().required().min(10000000000).max(999999999999999),
+      phone: yup.number().required().min(10000000).max(999999999999999),
       name: yup.string().required(),
       // block: yup
       //   .string()

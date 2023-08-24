@@ -7,7 +7,12 @@ import { wrapper } from '@/redux/store';
 import { AddressTypes, UserAddressFields, Vendor } from '@/types/index';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { appLinks, errorMsgClass, mainBtnClass, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  errorMsgClass,
+  mainBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { useEffect, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
@@ -110,7 +115,7 @@ const AddressCreate: NextPage<Props> = ({
 
   // set state of phone and name on change
   useEffect(() => {
-    console.log(name,phone);
+    console.log(name, phone);
     dispatch(setCustomerAddressInfo({ name, phone }));
   }, [name, phone]);
 
@@ -193,13 +198,14 @@ const AddressCreate: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          router.push(`${appLinks.checkout.path}`);
+        if (router.query?.prevPG === 'map' || router.query?.prevPG === 'cart') {
+          if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
+            router.push(`${appLinks.checkout.path}`);
+          } else {
+            router.push('/');
+          }
         } else {
-          // router.push('/');
-         // wrong fix it is uaed in create account, my addresses and  show addresses
-
-          router.back(); 
+          router.back();
         }
       } else {
         if (r.error && r.error.data?.msg) {
@@ -217,8 +223,6 @@ const AddressCreate: NextPage<Props> = ({
   const onSubmit = async (body: any) => {
     await handleSaveAddress(body);
   };
-
-
 
   return (
     <MainContentLayout
