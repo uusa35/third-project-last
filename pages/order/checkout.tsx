@@ -199,7 +199,12 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                       : CustomerAddress.type === 'OFFICE'
                       ? 3
                       : 1,
-                  address: { ...CustomerAddress },
+                  address: Object.keys(CustomerAddress).reduce(function (r, e) {
+                    if (e !== 'id' && e !== '' && CustomerAddress[e] !== null)
+                      r[e] = CustomerAddress[e];
+                    // if (acceptedValues.includes(CustomerAddress[e])) r[e] = myObject[e]
+                    return r;
+                  }, {}),
                 } //guest address
             : {}),
           order_type: prefrences.type,
@@ -258,6 +263,18 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       });
     }
   };
+
+  console.log(
+    {
+      add: Object.keys(CustomerAddress).reduce(function (r, e) {
+        if (e !== 'id' && e !== '' && CustomerAddress[e] !== null)
+          r[e] = CustomerAddress[e];
+        // if (acceptedValues.includes(CustomerAddress[e])) r[e] = myObject[e]
+        return r;
+      }, {}),
+    },
+    CustomerAddress
+  );
 
   if (!isSuccess) {
     <p>loading</p>;
