@@ -218,7 +218,7 @@ const FeedbackModal: FC<Props> = ({
                 />
                 <label
                   htmlFor="user_name"
-                  className={`absolute text-stone-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start ${
+                  className={`absolute text-stone-500 duration-300 transform -translate-y-4 top-4 z-10 origin-[0] left-2.5 peer-focus:text-stone-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus::scale-100 peer-focus:-translate-y-4 w-full text-start ${
                     isRTL && 'ps-4'
                   }`}
                   suppressHydrationWarning={suppressText}
