@@ -69,21 +69,21 @@ const AddressEdit: NextPage<Props> = ({
     searchParams: { method, destination },
     cart: { promocode },
   } = useAppSelector((state) => state);
-  const desObject = useAppSelector(destinationHeaderObject);
+  // const desObject = useAppSelector(destinationHeaderObject);
   const [currentAddress, setCurrentAddress] = useState<any>(null);
-  const [currentAddresses, setCurrentAddresses] = useState<any>(null);
-  const refForm = useRef<any>();
+  // const [currentAddresses, setCurrentAddresses] = useState<any>(null);
+  // const refForm = useRef<any>();
   const [triggerUpdateAddress, { isLoading: AddAddressLoading }] =
     useUpdateAddressMutation();
   const [
     triggerGetAddressById,
     { data: address, isSuccess: addressByIdSuccess },
   ] = useLazyGetAddressesByIdQuery();
-  const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
-    useLazyGetAddressesQuery<{
-      data: AppQueryResult<UserAddressFields[]>;
-      isLoading: boolean;
-    }>();
+  // const [triggerGetAddresses, { data: addresses, isLoading }, isSuccess] =
+  //   useLazyGetAddressesQuery<{
+  //     data: AppQueryResult<UserAddressFields[]>;
+  //     isLoading: boolean;
+  //   }>();
   const {
     register,
     handleSubmit,
@@ -118,12 +118,12 @@ const AddressEdit: NextPage<Props> = ({
     },
   });
 
-  const { data: cartItems } = useGetCartProductsQuery({
-    userAgent: customer.userAgent,
-    area_branch: desObject,
-    url,
-    PromoCode: promocode,
-  });
+  // const { data: cartItems } = useGetCartProductsQuery({
+  //   userAgent: customer.userAgent,
+  //   area_branch: desObject,
+  //   url,
+  //   PromoCode: promocode,
+  // });
 
   useEffect(() => {
     if (url) {

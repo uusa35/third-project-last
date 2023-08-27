@@ -95,6 +95,7 @@ const AddressCreate: NextPage<Props> = ({
       floor_no: '',
       building_no: '',
       office_no: '',
+      apartment_no: '',
       area:
         method === 'delivery'
           ? isRTL
@@ -115,7 +116,7 @@ const AddressCreate: NextPage<Props> = ({
 
   // set state of phone and name on change
   useEffect(() => {
-    console.log(name, phone);
+    // console.log(name, phone);
     dispatch(setCustomerAddressInfo({ name, phone }));
   }, [name, phone]);
 
@@ -145,7 +146,7 @@ const AddressCreate: NextPage<Props> = ({
   }, [type]);
 
   // console.log('type', type);
-  // console.log({ errors });
+  console.log({ errors });
   // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
@@ -176,6 +177,7 @@ const AddressCreate: NextPage<Props> = ({
           floor_no: body.floor_no,
           building_no: body.building_no,
           office_no: body.office_no,
+          apartment_no: body.apartment_no,
           other_phone: body.other_phone,
           city: body.area,
           area: body.area,
@@ -258,6 +260,15 @@ const AddressCreate: NextPage<Props> = ({
                 placeholder={`${t('phone_no')}`}
               />
             </div>
+            {errors?.phone?.message && (
+              <div className={`${errorMsgClass}`}>
+                {errors?.phone?.message && (
+                  <p suppressHydrationWarning={suppressText}>
+                    {t('phone_number_must_be_between_9_and_15_number')}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {/*  full_name  */}
