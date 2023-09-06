@@ -35,7 +35,7 @@ const ChangeMood3Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                     <h5 className="font-bold pt-3" suppressHydrationWarning={suppressText}>
                         {`${upperFirst(`${t('your_item_is_not_available')}`)}`}
                     </h5>
-                    <div className="space-x-1 pb-8 pt-2 text-center text-sm text-stone-500 w-[80%] mx-auto break-words">
+                    <div className="space-x-1 pb-8 pt-2 text-center xs-mobile-sm-desktop text-stone-500 w-[80%] mx-auto break-words">
                         <span suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('we_are_sorry_about_that_the_item_is_not_available_in')}
                             ${method === 'delivery' ? t('area'): t('branch')}

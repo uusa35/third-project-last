@@ -34,7 +34,7 @@ const SigninAddFavModal: FC<Props> = ({
             >
               {`${upperFirst(`${t('sign_in_register_to_add_favourite')}`)}`}
             </h5>
-            <div className="space-x-1 pb-8 pt-2 text-center text-sm text-stone-500 w-[80%] mx-auto break-words">
+            <div className="space-x-1 pb-8 pt-2 text-center xs-mobile-sm-desktop text-stone-500 w-[80%] mx-auto break-words">
               <span suppressHydrationWarning={suppressText}>
                 {`${upperFirst(
                   `${t(

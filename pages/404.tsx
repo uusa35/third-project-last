@@ -17,7 +17,7 @@ const Custom404: NextPage = (): React.ReactElement => {
       <div className='pt-5 space-x-3'>
         <button
           onClick={() => window.location.reload()}
-          className={`text-center text-md capitalize text-white px-6 py-2 rounded-full`}
+          className={`text-center sm-mobile-base-desktop capitalize text-white px-6 py-2 rounded-full`}
           suppressHydrationWarning={suppressText}
           style={{ backgroundColor: color }}
         >
@@ -25,7 +25,7 @@ const Custom404: NextPage = (): React.ReactElement => {
         </button>
         <button
           onClick={() => router.back()}
-          className={`text-center text-md capitalize bg-[#E8E5E3]  px-11 py-2 rounded-full`}
+          className={`text-center sm-mobile-base-desktop capitalize bg-[#E8E5E3]  px-11 py-2 rounded-full`}
           suppressHydrationWarning={suppressText}
         >
             {t('back')}

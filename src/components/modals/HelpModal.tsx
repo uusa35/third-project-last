@@ -50,7 +50,7 @@ const HelpModal: FC<Props> = ({
           </div>
           <div className={`p-4 ${isRTL ? `text-right` : `text-left`}`}>
             <h4
-              className="font-semibold text-lg capitalize pb-2"
+              className="font-semibold base-mobile-lg-desktop capitalize pb-2"
               suppressHydrationWarning={suppressText}
             >
               {t('how_can_we_help_you?')}

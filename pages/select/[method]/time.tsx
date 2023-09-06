@@ -372,10 +372,10 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
                         })
                       }
                     >
-                      <span className="flex text-sm">
+                      <span className="flex xs-mobile-sm-desktop">
                         {t(lowerCase(day.day))}
                       </span>
-                      <span className="flex flex-row text-sm">{day.date}</span>
+                      <span className="flex flex-row xs-mobile-sm-desktop">{day.date}</span>
                     </button>
                   </div>
                 </div>
@@ -384,7 +384,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
           )}
           {isScheduled && selectedHour && (
             <div>
-              <h1 className="text-md lg:text-lg font-extrbold my-4">
+              <h1 className="base-mobile-lg-desktop  font-extrbold my-4">
                 {t('select_time')}
               </h1>
               {timings &&

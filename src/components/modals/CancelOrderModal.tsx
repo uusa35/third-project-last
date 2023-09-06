@@ -43,17 +43,17 @@ const CancelOrderModal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element => 
                         </button>
                     </div>
                     <div className="px-4 pb-2">
-                        <h4 className="font-bold text-lg pb-2" suppressHydrationWarning={suppressText}>
+                        <h4 className="font-bold base-mobile-lg-desktop pb-2" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('why_did_you_cancel_this_order?')}`)}`}
                         </h4>
-                        <p className="text-sm pb-4 w-full md:w-[75%]" suppressHydrationWarning={suppressText}>
+                        <p className="xs-mobile-sm-desktop pb-4 w-full md:w-[75%]" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('to_help_provide_the_right_next_step_please_let_us_know_why_you_canceled_your_order')}`)}`}
                         </p>
                         {map(reasons, (reason) => (
                             <label 
                                 key={reason.id} 
                                 htmlFor={`${reason.id}`}
-                                className="border-t-[1px] border-slate-200 px-4 py-3 text-sm flex items-center space-x-2 cursor-pointer">
+                                className="border-t-[1px] border-slate-200 px-4 py-3 xs-mobile-sm-desktop flex items-center space-x-2 cursor-pointer">
                                 <input 
                                     type="radio"
                                     name="cancelReason" 

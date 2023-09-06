@@ -88,11 +88,23 @@ export const customerSlice = createSlice({
           type: action.payload?.type,
           ...action.payload?.address,
         },
-        customerAddressInfo:{
-          phone:action.payload?.address?.phone,
-          name:action.payload?.address?.name,
+        customerAddressInfo: {
+          phone: action.payload?.address?.phone,
+          name: action.payload?.address?.name,
         },
         customer_id: action.payload?.customer_id,
+      };
+    },
+    setCustomerAddressInfo: (
+      state: typeof initialState,
+      action: PayloadAction<CustomerInfo['customerAddressInfo']>
+    ) => {
+      return {
+        ...state,
+        customerAddressInfo: {
+          ...state.customerAddressInfo,
+          ...action.payload,
+        },
       };
     },
     setCustomerAddressArea: (
@@ -172,6 +184,7 @@ export const {
   setCustomer,
   removeCustomer,
   setCustomerAddress,
+  setCustomerAddressInfo,
   setCustomerAddressArea,
   setCustomerAddressType,
   resetCustomerAddress,
@@ -181,6 +194,7 @@ export const {
   setNotes,
   signIn,
   signOut,
+
 } = customerSlice.actions;
 
 export const isAuthenticated = (state: RootState) =>

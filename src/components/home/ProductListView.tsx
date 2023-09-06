@@ -93,7 +93,7 @@ const ProductListView: FC<Props> = ({ productCategories }): React.ReactNode => {
                 id={`category_${c.cat_id}`}
                 key={i}
                 href={`#${c.cat_id}`}
-                className={`${alexandriaFont} text-sm rounded-full px-4 py-2 whitespace-nowrap snap-center ${
+                className={`${alexandriaFont} xs-mobile-sm-desktop rounded-full px-4 py-2 whitespace-nowrap snap-center ${
                   c.cat_id == currentId ? `text-white active-cat` : ''
                 }`}
                 style={{
@@ -121,7 +121,7 @@ const ProductListView: FC<Props> = ({ productCategories }): React.ReactNode => {
                 }
               >
                 <TextTrans
-                  className={`text-lg mt-5 ${alexandriaFontBold}`}
+                  className={`base-mobile-lg-desktop mt-5 ${alexandriaFontBold}`}
                   ar={category.name_ar}
                   en={category.name_en}
                 />

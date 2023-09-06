@@ -96,7 +96,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 } w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize xs-mobile-sm-desktop text-center w-full ${
                     activeTabIndex === 'pickup'
                       ? 'text-stone-500'
                       : 'font-semibold'
@@ -129,7 +129,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                 } w-1/2`}
               >
                 <button
-                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize text-sm text-center w-full ${
+                  className={`md:ltr:mr-3 md:rtl:ml-3 capitalize xs-mobile-sm-desktop text-center w-full ${
                     activeTabIndex === 'pickup'
                       ? 'text-stone-500'
                       : 'font-semibold'
@@ -166,7 +166,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     <PlaceOutlined style={{ color }} />
                     <div className="px-3">
                       <h6
-                        className="text-sm text-stone-500 text-capitalize pb-1"
+                        className="xs-mobile-sm-desktop text-stone-500 text-capitalize pb-1"
                         suppressHydrationWarning={suppressText}
                       >
                         {t('delivering_to')}
@@ -204,7 +204,7 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
                     <PlaceOutlined style={{ color }} />
                     <div className="px-3">
                       <h6
-                        className={`text-sm text-stone-500 pb-1`}
+                        className={`xs-mobile-sm-desktop text-stone-500 pb-1`}
                         suppressHydrationWarning={suppressText}
                       >
                         {upperFirst(`${t('pickup_from')}`)}
@@ -238,9 +238,9 @@ const ChangeMoodModal = ({ url }: Props): JSX.Element => {
             >
               <div className="flex justify-between items-center">
                 <WatchLaterOutlined style={{ color }} />
-                <div className="px-3 text-sm">
+                <div className="px-3 xs-mobile-sm-desktop">
                   <h6
-                    className="text-sm text-stone-500 pb-1 capitalize"
+                    className="xs-mobile-sm-desktop text-stone-500 pb-1 capitalize"
                     suppressHydrationWarning={suppressText}
                   >
                     {activeTabIndex === 'delivery'

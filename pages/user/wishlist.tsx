@@ -110,7 +110,7 @@ const Wishlist: NextPage<Props> = ({ url }): React.ReactElement => {
                   </p>
                   <p
                     suppressHydrationWarning={suppressText}
-                    className={`text-[#544A45] text-sm ${alexandriaFontLight}`}
+                    className={`text-[#544A45] xs-mobile-sm-desktop ${alexandriaFontLight}`}
                   >
                     {t(
                       'add_something_to_your_wish_list_to_make_it_easier_to_access_it_later'

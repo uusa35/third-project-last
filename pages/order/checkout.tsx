@@ -60,6 +60,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       userAgent,
       id: customer_id,
       notes,
+      name,
+      email,
+      phone,
       address: CustomerAddress,
       address: { id: addressID, longitude, latitude, type },
     },
@@ -182,16 +185,31 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       await triggerCreateOrder({
         body: {
           // ...(isAuth ? {} : { user_id: customer_id }),
-          user_id: customer_id,
+          // user_id: customer_id,
+          ...(isAuth ? {} : { UserAgent: userAgent, name, email, phone }),
           ...(method === `delivery`
-            ? { address_id: addressID }
-            : // isAuth
-              //   ? { address_id: addressID }
-              //   : { address_id: addressID }
-              {}),
+            ? isAuth
+              ? { address_id: addressID }
+              : {
+                  address_type:
+                    CustomerAddress.type === 'HOUSE'
+                      ? 1
+                      : CustomerAddress.type === 'APARTMENT'
+                      ? 2
+                      : CustomerAddress.type === 'OFFICE'
+                      ? 3
+                      : 1,
+                  address: Object.keys(CustomerAddress).reduce(function (r, e) {
+                    if (e !== 'id' && e !== '' && CustomerAddress[e] !== null)
+                      r[e] = CustomerAddress[e];
+                    // if (acceptedValues.includes(CustomerAddress[e])) r[e] = myObject[e]
+                    return r;
+                  }, {}),
+                } //guest address
+            : {}),
           order_type: prefrences.type,
           // order_type: method === `delivery` ? 'delivery_now' : 'pickup_now',
-          ...(isAuth ? {} : { UserAgent: userAgent }),
+
           Messg: notes,
           PaymentMethod: selectedPaymentMethod,
           PromoCode: promocode,
@@ -245,6 +263,18 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
       });
     }
   };
+
+  console.log(
+    {
+      add: Object.keys(CustomerAddress).reduce(function (r, e) {
+        if (e !== 'id' && e !== '' && CustomerAddress[e] !== null)
+          r[e] = CustomerAddress[e];
+        // if (acceptedValues.includes(CustomerAddress[e])) r[e] = myObject[e]
+        return r;
+      }, {}),
+    },
+    CustomerAddress
+  );
 
   if (!isSuccess) {
     <p>loading</p>;
@@ -308,7 +338,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
             <div className="p-5 border-b-4">
               <OrderDetails />
             </div>
-            
+
             {/* items */}
             <div className=" p-5 border-b-4">
               <p
@@ -323,7 +353,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
 
               <Link
                 href={appLinks.home.path}
-                className="flex items-center gap-x-1 rounded-full border w-fit text-xs py-1 px-3  mt-3"
+                className="flex items-center gap-x-1 rounded-full border w-fit xxs-mobile-xs-desktop py-1 px-3  mt-3"
                 style={{ borderColor: color, color }}
               >
                 <Add color={color} fontSize="small" />
@@ -353,7 +383,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                       onClick={() => {
                         setSelectedPaymentMethod(m.id);
                       }}
-                      className="flex items-center gap-x-2 text-sm mb-3"
+                      className="flex items-center gap-x-2 xs-mobile-sm-desktop mb-3"
                     >
                       {selectedPaymentMethod === m.id ? (
                         <RadioButtonCheckedOutlined
@@ -400,7 +430,7 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
                 {cartLessThanMin && (
                   <p
                     suppressHydrationWarning={suppressText}
-                    className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
+                    className={`w-full xxs-mobile-xs-desktop text-[#877D78] text-center py-2 ${alexandriaFont}`}
                   >{`${t('add_a_minimum_of')} ${(
                     parseFloat(
                       cartItems?.data?.minimum_order_price?.toString() || ''

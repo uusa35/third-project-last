@@ -45,7 +45,7 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
   return (
     <div>
       <p className={`mt-5 ${alexandriaFontMeduim}`}>{t('promotions')}</p>
-      <div className="flex items-center  gap-x-3 text-sm bg-[#F5F5F5] text-[#877D78] py-2 px-3 rounded-md my-2">
+      <div className="flex items-center  gap-x-3 xs-mobile-sm-desktop bg-[#F5F5F5] text-[#877D78] py-2 px-3 rounded-md my-2">
         <div className={`flex items-center gap-x-1 w-full ${alexandriaFont}`}>
           <PromotionIcon />
           <input
@@ -79,7 +79,7 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
                     promocode === prmocode_item
                       ? 'border-[#12B76A] text-[#12B76A]'
                       : 'border-[#B7B1AE]'
-                  } w-fit text-sm py-1 px-3 cursor-pointer`}
+                  } w-fit xs-mobile-sm-desktop py-1 px-3 cursor-pointer`}
                 >
                   {promocode === prmocode_item ? (
                     <GreenCheckIcon />

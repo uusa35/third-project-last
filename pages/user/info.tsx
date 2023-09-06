@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import AccountInfoImg from '@/appImages/account_info.png';
 import {
   appLinks,
+  errorMsgClass,
   imageSizes,
   mainBtnClass,
   setToken,
@@ -50,9 +51,16 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(customerInfoSchema),
+    resolver: yupResolver(
+      customerInfoSchema({
+        minPhone: 10000000,
+        maxPhone: 9999999999999,
+        requiredPass: true,
+      })
+    ),
     defaultValues: {
       id: null,
       name: name ?? ``,
@@ -97,6 +105,8 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
     });
   };
 
+  console.log({ errors }, getValues());
+
   return (
     <Fragment>
       <MainHead
@@ -135,7 +145,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                 </p>
               </div>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="relative pb-4">
+                <div className="relative">
                   <input
                     type="text"
                     id="name"
@@ -158,7 +168,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                 </div>
                 {errors?.name?.message && (
                   <div
-                    className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}
+                    className={`${errorMsgClass} w-full text-start pt-2 ps-2`}
                   >
                     {errors?.name?.message && (
                       <p suppressHydrationWarning={suppressText}>
@@ -189,7 +199,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                   </label>
                 </div>
 
-                <div className="relative pb-4 mt-5">
+                <div className="relative mt-5">
                   <input
                     type={passwordVisible ? 'text' : 'password'}
                     id="password"
@@ -224,14 +234,15 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
                 </div>
 
                 {errors?.password?.message && (
-                  <div
-                    className={`text-sm text-red-600 w-full text-start pt-2 ps-2`}
-                  >
-                    {errors?.password?.message && (
-                      <p suppressHydrationWarning={suppressText}>
-                        {t('password_is_required')}
-                      </p>
-                    )}
+                  <div className={`${errorMsgClass} w-full text-start ps-2`}>
+                    <p suppressHydrationWarning={suppressText}>
+                      {errors?.password?.message?.key &&
+                      errors?.password?.message?.values
+                        ? t(errors?.password?.message?.key, {
+                            min: errors?.password?.message?.values,
+                          })
+                        : t('password_is_required')}
+                    </p>
                   </div>
                 )}
                 <button

@@ -82,7 +82,7 @@ export default function CheckoutFixedBtn({
               {cartLessThanMin && (
                 <p
                   suppressHydrationWarning={suppressText}
-                  className={`w-full text-xs text-[#877D78] text-center py-2 ${alexandriaFont}`}
+                  className={`w-full xxs-mobile-xs-desktop text-[#877D78] text-center py-2 ${alexandriaFont}`}
                 >{`${t('add_a_minimum_of')} ${(
                   parseFloat(
                     cartItems?.data?.minimum_order_price?.toString() || ''

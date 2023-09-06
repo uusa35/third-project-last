@@ -349,7 +349,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         router.push(appLinks.selectAddress(customer_id));
       } else {
         // auth user has no address.
-        router.push(appLinks.createAuthAddress(customer_id, 'delivery'));
+        router.push(
+          appLinks.createAuthAddress(customer_id, 'house', 'prevPG=cart')
+        );
       }
     });
   };

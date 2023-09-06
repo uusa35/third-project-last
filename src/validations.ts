@@ -1,15 +1,24 @@
 import * as yup from 'yup';
 
-export const customerInfoSchema = yup
-  .object({
-    id: yup.number().nullable(),
-    name: yup.string().required().min(2).max(50),
-    email: yup.string().email().nullable(),
-    // phone: yup.number().min(100000).max(999999999999).required(),
-    // phone: yup.string().required().min(8).max(15),
-    phone: yup.string().required(),
-  })
-  .required();
+export const customerInfoSchema = ({
+  minPhone = 10000000000,
+  maxPhone = 999999999999999,
+  requiredPass = false,
+}) =>
+  yup
+    .object({
+      id: yup.number().nullable(),
+      name: yup.string().required().min(2).max(50),
+      email: yup.string().email().nullable(),
+      // phone: yup.number().min(100000).max(999999999999).required(),
+      phone: yup.number().required().min(minPhone).max(maxPhone),
+      password: yup.string().min(6).when(`${requiredPass}`, {
+        is: true,
+        then: yup.string().required(),
+      }),
+      // phone: yup.string().required().matches(/^\+\d{8,15}$/),
+    })
+    .required();
 
 export const addressSchema = (method: string, t: any) =>
   yup
@@ -17,7 +26,7 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
-      phone: yup.string().min(0).max(999999999999),
+      phone: yup.number().required().min(10000000).max(999999999999999),
       name: yup.string().required(),
       // block: yup
       //   .string()
@@ -59,7 +68,10 @@ export const addressSchema = (method: string, t: any) =>
         .string()
         .max(100)
         .when('address_type', (address_type, schema) => {
-          if (address_type === 'OFFICE' && method === `delivery`) {
+          if (
+            (address_type === 'OFFICE' || address_type === 'APARTMENT') &&
+            method === `delivery`
+          ) {
             return schema.required(t(`validation.required`));
           }
           return schema.nullable(true);
@@ -105,12 +117,12 @@ export const feedbackSchema = yup.object().shape({
   user_name: yup.string().min(2).max(50).required(),
   rate: yup.number().min(1).max(5).required(),
   note: yup.string().min(2).max(460).required(),
-  phone: yup.string().min(0).max(999999999999),
+  phone: yup.number().min(10000000000).max(999999999999999),
 });
 
 export const checkPhone = yup
   .object({
-    phone: yup.number().min(10000000000).max(999999999999),
+    phone: yup.number().min(10000000000).max(999999999999999),
   })
   .required();
 
@@ -119,7 +131,10 @@ export const loginSchema = (isResetPassword: boolean) => {
     if (isResetPassword) {
       return yup.object().shape({
         new_password: yup.string().required().min(6),
-        confirmation_password: yup.string().required().oneOf([yup.ref('new_password'), null]),
+        confirmation_password: yup
+          .string()
+          .required()
+          .oneOf([yup.ref('new_password'), null]),
       });
     } else {
       return yup.object().shape({

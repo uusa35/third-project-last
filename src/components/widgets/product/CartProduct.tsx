@@ -137,7 +137,7 @@ export default function CartProduct({
 
           {/* notes */}
           {checkoutProduct && (
-            <p suppressHydrationWarning={suppressText} className="text-xs">
+            <p suppressHydrationWarning={suppressText} className="xxs-mobile-xs-desktop">
               {product.ExtraNotes}
             </p>
           )}
@@ -151,7 +151,7 @@ export default function CartProduct({
             >
               <div
                 onClick={() => HandelDecIncRmv(product, 'dec')}
-                className="rounded-full text-white cursor-pointer  w-5 h-5 flex items-center justify-center text-lg"
+                className="rounded-full text-white cursor-pointer  w-5 h-5 flex items-center justify-center base-mobile-lg-desktop"
                 style={{ backgroundColor: color }}
               >
                 -
@@ -161,7 +161,7 @@ export default function CartProduct({
               </label>
               <div
                 onClick={() => HandelDecIncRmv(product, 'inc')}
-                className="rounded-full text-white cursor-pointer w-5 h-5 flex items-center justify-center text-lg"
+                className="rounded-full text-white cursor-pointer w-5 h-5 flex items-center justify-center base-mobile-lg-desktop"
                 style={{ backgroundColor: color }}
               >
                 +
@@ -171,7 +171,7 @@ export default function CartProduct({
         </div>
 
         {/* price */}
-        <div className="font-bold text-sm">
+        <div className="font-bold xs-mobile-sm-desktop">
           {product.SalePrice !== product.Price ? (
             <div>
               <p

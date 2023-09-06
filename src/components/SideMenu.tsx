@@ -99,12 +99,12 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
                       {/* img */}
                       <div className="rounded-full h-5 w-5"></div>
                       <div>
-                        <p className="text-sm mb-1">{t('Welcome_back')} !</p>
+                        <p className="xs-mobile-sm-desktop mb-1">{t('Welcome_back')} !</p>
                         <p className="font-bold">{name}</p>
                       </div>
                     </div>
                     <button
-                      className="bg-white rounded-xl text-sm font-semibold px-2 py-px"
+                      className="bg-white rounded-xl xs-mobile-sm-desktop font-semibold px-2 py-px"
                       onClick={() => handleSignOut()}
                     >
                       {t('sign_out')}

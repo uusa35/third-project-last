@@ -52,7 +52,7 @@ const OffLineWidget: FC<Props> = ({
             />
           )}
           <p
-            className={`text-lg text-center font-semibold whitespace-wrap break-words w-full pt-5 pb-3`}
+            className={`base-mobile-lg-desktop text-center font-semibold whitespace-wrap break-words w-full pt-5 pb-3`}
             suppressHydrationWarning={suppressText}
           >
             {/* {message} */}

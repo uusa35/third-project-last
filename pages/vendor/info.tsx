@@ -105,12 +105,12 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
               <TextTrans
                 ar={vendorElement?.Data?.name_ar}
                 en={vendorElement?.Data?.name_en}
-                className="capitalize text-md text-center my-3"
+                className="capitalize sm-mobile-base-desktop text-center my-3"
               />
               <TextTrans
                 ar={vendorElement?.Data?.desc}
                 en={vendorElement?.Data?.desc}
-                className="text-sm text-center leading-6"
+                className="xs-mobile-sm-desktop text-center leading-6"
                 length={600}
               />
             </Link>
@@ -119,13 +119,13 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
               {/* branches */}
               <Link
                 href={`${appLinks.branchIndex.path}`}
-                className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6 text-lg"
+                className="flex flex-row flex-1 justify-between items-center border-t-8 border-stone-100 p-6 base-mobile-lg-desktop"
               >
                 <div
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <OurBranchesIcon stroke={`black`} />
-                  <span className="text-lg px-2">{t('our_branches')}</span>
+                  <span className="base-mobile-lg-desktop px-2">{t('our_branches')}</span>
                 </div>
                 {isRTL ? <ChevronLeftOutlined /> : <ChevronRightOutlined />}
               </Link>
@@ -136,11 +136,11 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                     className={`flex flex-row space-x-3 justify-center items-center`}
                   >
                     <MinChargeIcon />
-                    <span className="text-md lg:text-lg px-2">
+                    <span className="base-mobile-lg-desktop px-2">
                       {t('min_order_with_delivery')}
                     </span>
                   </div>
-                  <div className={`text-lg`}>
+                  <div className={`base-mobile-lg-desktop`}>
                     {vendorElement?.Data?.delivery?.minimum_order_price}{' '}
                     {t(`kwd`)}
                   </div>
@@ -152,11 +152,11 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <AccessTimeIcon />
-                  <span className="text-md lg:text-lg px-2">
+                  <span className="base-mobile-lg-desktop px-2">
                     {t('opening_hours')}
                   </span>
                 </div>
-                <div className={`text-lg`}>
+                <div className={`base-mobile-lg-desktop`}>
                   {vendorElement?.Data?.WorkHours}
                 </div>
               </div>
@@ -166,7 +166,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <PayemtOptionsIcon />
-                  <span className="text-md lg:text-lg px-2">
+                  <span className="base-mobile-lg-desktop px-2">
                     {t('payment_options')}
                   </span>
                 </div>
@@ -194,7 +194,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   className={`flex flex-row space-x-3 justify-center items-center`}
                 >
                   <ContactUsIcon />
-                  <span className="text-md lg:text-lg px-2">
+                  <span className="base-mobile-lg-desktop px-2">
                     {t('contact_us')}
                   </span>
                 </div>

@@ -36,13 +36,13 @@ const SaleNotification: FC<Props> = ({
       delivery_fees &&
       min_for_free_delivery ? (
         <div>
-          <div className="bg-[#F5F5F5] text-xs py-4 px-3">
+          <div className="bg-[#F5F5F5] xxs-mobile-xs-desktop py-4 px-3">
             <div className="flex justify-between gap-x-2">
               <div className="flex items-center gap-x-2">
                 <Salenotification />
                 <div>
                   <p
-                    className={`${alexandriaFontMeduim} text-sm`}
+                    className={`${alexandriaFontMeduim} xs-mobile-sm-desktop`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('free_delivery_on_orders_above')} {min_for_free_delivery}{' '}

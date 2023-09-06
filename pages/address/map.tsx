@@ -109,7 +109,7 @@ const AddressMap: NextPage<Props> = ({ element, url }): React.ReactElement => {
                 href={
                   method === 'delivery'
                     ? isAuth && id
-                      ? appLinks.createAuthAddress(id)
+                      ? appLinks.createAuthAddress(id,'house','prevPG=map')
                       : appLinks.cart.path
                     : appLinks.cart.path
                 }

@@ -48,7 +48,7 @@ const VerProductWidget: FC<Props> = ({
         <div className="relative">
           <div className="flex gap-x-2 justify-between">
             <div className="w-2/3">
-              <p className=" flex flex-col text-md">
+              <p className=" flex flex-col sm-mobile-base-desktop">
                 <TextTrans
                   className={`text-black ${alexandriaFontSemiBold} mb-2`}
                   ar={element.name_ar}
@@ -56,7 +56,7 @@ const VerProductWidget: FC<Props> = ({
                   length={20}
                 />
                 <TextTrans
-                  className={`${alexandriaFontLight} text-[#877D78] text-xs md:text-sm whitespace-wrap break-all pt-1`}
+                  className={`${alexandriaFontLight} text-[#877D78] xs-mobile-sm-desktop whitespace-wrap break-all pt-1`}
                   ar={element.description_ar}
                   en={element.description_en}
                   length={100}
@@ -64,7 +64,7 @@ const VerProductWidget: FC<Props> = ({
               </p>
 
               <div
-                className={`flex flex-row justify-start items-center text-xs md:text-sm mt-3`}
+                className={`flex flex-row justify-start items-center xs-mobile-sm-desktop mt-3`}
               >
                 {element.new_price && element.new_price !== element.price ? (
                   <div
@@ -91,7 +91,7 @@ const VerProductWidget: FC<Props> = ({
                     style={{ color, borderColor: color, border: '1px solid' }}
                   >
                     {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                      <span className={`text-xs ${montserratFontRegular}`}>
+                      <span className={`xxs-mobile-xs-desktop ${montserratFontRegular}`}>
                         {t(`price_on_selection`)}
                       </span>
                     ) : (

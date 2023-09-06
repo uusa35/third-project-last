@@ -67,7 +67,7 @@ const OrderDetails: FC<Props> = ({ OrderStatus = false }) => {
     return (
       <div
         onClick={() => onclick()}
-        className="flex justify-between items-center gap-x-2 py-2 text-xs cursor-pointer"
+        className="flex justify-between items-center gap-x-2 py-2 xxs-mobile-xs-desktop cursor-pointer"
       >
         <div className="flex gap-x-3">
           <div>{icon}</div>

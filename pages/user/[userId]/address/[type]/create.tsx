@@ -7,7 +7,12 @@ import { wrapper } from '@/redux/store';
 import { AddressTypes, UserAddressFields, Vendor } from '@/types/index';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { appLinks, mainBtnClass, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  errorMsgClass,
+  mainBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { useEffect, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
@@ -17,7 +22,11 @@ import { addressSchema } from 'src/validations';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
-import { setCustomerAddress, setNotes } from '@/redux/slices/customerSlice';
+import {
+  setCustomerAddress,
+  setCustomerAddressInfo,
+  setNotes,
+} from '@/redux/slices/customerSlice';
 import { kebabCase, lowerCase, toUpper, upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
@@ -68,9 +77,10 @@ const AddressCreate: NextPage<Props> = ({
     control,
     reset,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(addressSchema('method', t)),
+    resolver: yupResolver(addressSchema(method, t)),
     defaultValues: {
       method: 'delivery',
       address_type: toUpper(type),
@@ -85,6 +95,7 @@ const AddressCreate: NextPage<Props> = ({
       floor_no: '',
       building_no: '',
       office_no: '',
+      apartment_no: '',
       area:
         method === 'delivery'
           ? isRTL
@@ -100,6 +111,14 @@ const AddressCreate: NextPage<Props> = ({
       notes: '',
     },
   });
+
+  const [name, phone] = watch(['name', 'phone']);
+
+  // set state of phone and name on change
+  useEffect(() => {
+    // console.log(name, phone);
+    dispatch(setCustomerAddressInfo({ name, phone }));
+  }, [name, phone]);
 
   const { data: cartItems } = useGetCartProductsQuery({
     userAgent: customer.userAgent,
@@ -127,7 +146,7 @@ const AddressCreate: NextPage<Props> = ({
   }, [type]);
 
   // console.log('type', type);
-  // console.log({ errors });
+  console.log({ errors });
   // console.log('method', method);
   // console.log('destination', destination);
   // console.log('data ====>', getValues());
@@ -158,6 +177,7 @@ const AddressCreate: NextPage<Props> = ({
           floor_no: body.floor_no,
           building_no: body.building_no,
           office_no: body.office_no,
+          apartment_no: body.apartment_no,
           other_phone: body.other_phone,
           city: body.area,
           area: body.area,
@@ -180,8 +200,12 @@ const AddressCreate: NextPage<Props> = ({
         if (body.notes) {
           dispatch(setNotes(body.notes));
         }
-        if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
-          router.push(`${appLinks.checkout.path}`);
+        if (router.query?.prevPG === 'map' || router.query?.prevPG === 'cart') {
+          if (cartItems && cartItems.data && cartItems?.data?.Cart.length > 0) {
+            router.push(`${appLinks.checkout.path}`);
+          } else {
+            router.push('/');
+          }
         } else {
           router.back();
         }
@@ -224,7 +248,7 @@ const AddressCreate: NextPage<Props> = ({
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="phone"
-              className="block text-sm font-medium text-gray-900"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
             >
               {t('phone_no')}*
             </label>
@@ -232,10 +256,19 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 {...register('phone')}
                 suppressHydrationWarning={suppressText}
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                 placeholder={`${t('phone_no')}`}
               />
             </div>
+            {errors?.phone?.message && (
+              <div className={`${errorMsgClass}`}>
+                {errors?.phone?.message && (
+                  <p suppressHydrationWarning={suppressText}>
+                    {t('phone_number_must_be_between_9_and_15_number')}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           {/*  full_name  */}
@@ -243,7 +276,7 @@ const AddressCreate: NextPage<Props> = ({
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="full_name"
-              className="block text-sm font-medium text-gray-900"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
             >
               {t('full_name')}*
             </label>
@@ -251,7 +284,7 @@ const AddressCreate: NextPage<Props> = ({
               <input
                 suppressHydrationWarning={suppressText}
                 {...register('name')}
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                 placeholder={`${t('full_name')}`}
               />
             </div>
@@ -264,7 +297,7 @@ const AddressCreate: NextPage<Props> = ({
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="city_and_area"
-              className="block text-sm font-medium text-gray-900"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
             >
               {t('city_and_area')}*
             </label>
@@ -276,7 +309,7 @@ const AddressCreate: NextPage<Props> = ({
                 name="area"
                 disabled
                 id="area"
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6 disabled:bg-white"
                 placeholder={`${t('city_and_area')}`}
                 onFocus={() => router.push(appLinks.selectArea(`user_create`))}
               />
@@ -287,7 +320,7 @@ const AddressCreate: NextPage<Props> = ({
                 name="area_id"
                 disabled
                 id="area_id"
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6 disabled:bg-white hidden"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6 disabled:bg-white hidden"
                 placeholder={`${t('city_and_area')}`}
                 onFocus={() => router.push(appLinks.selectArea(`user_create`))}
               />
@@ -311,7 +344,7 @@ const AddressCreate: NextPage<Props> = ({
             </div>
             {(errors?.area?.message || errors?.area_id?.message) && (
               <span
-                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('area_is_required')}
@@ -324,7 +357,7 @@ const AddressCreate: NextPage<Props> = ({
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="street"
-              className="block text-sm font-medium text-gray-900"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
             >
               {t('street')}*
             </label>
@@ -333,13 +366,13 @@ const AddressCreate: NextPage<Props> = ({
                 {...register('street')}
                 defaultValue={currentAddress?.address?.street}
                 suppressHydrationWarning={suppressText}
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                 placeholder={`${t('street')}`}
               />
             </div>
             {errors?.street?.message && (
               <span
-                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('street_is_required')}
@@ -353,7 +386,7 @@ const AddressCreate: NextPage<Props> = ({
               <label
                 suppressHydrationWarning={suppressText}
                 htmlFor="house_no"
-                className="block text-sm font-medium text-gray-900"
+                className="block xs-mobile-sm-desktop font-medium text-gray-900"
               >
                 {t('house_no')}*
               </label>
@@ -362,13 +395,13 @@ const AddressCreate: NextPage<Props> = ({
                   {...register('house_no')}
                   suppressHydrationWarning={suppressText}
                   defaultValue={currentAddress?.address?.house_no}
-                  className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                  className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                   placeholder={`${t('house_no')}`}
                 />
               </div>
               {errors?.house_no?.message && (
                 <span
-                  className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                  className={`${errorMsgClass}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('house_no_is_required')}
@@ -383,7 +416,7 @@ const AddressCreate: NextPage<Props> = ({
               <label
                 suppressHydrationWarning={suppressText}
                 htmlFor="building_no"
-                className="block text-sm font-medium text-gray-900"
+                className="block xs-mobile-sm-desktop font-medium text-gray-900"
               >
                 {t('building_no')}*
               </label>
@@ -392,13 +425,13 @@ const AddressCreate: NextPage<Props> = ({
                   {...register('building_no')}
                   suppressHydrationWarning={suppressText}
                   defaultValue={currentAddress?.address?.building_no}
-                  className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                  className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                   placeholder={`${t('building_no')}`}
                 />
               </div>
               {errors?.building_no?.message && (
                 <span
-                  className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                  className={`${errorMsgClass}`}
                   suppressHydrationWarning={suppressText}
                 >
                   {t('building_no_is_required')}
@@ -416,7 +449,7 @@ const AddressCreate: NextPage<Props> = ({
                 <label
                   suppressHydrationWarning={suppressText}
                   htmlFor="floor_no"
-                  className="block text-sm font-medium text-gray-900"
+                  className="block xs-mobile-sm-desktop font-medium text-gray-900"
                 >
                   {t('floor_no')}*
                 </label>
@@ -425,13 +458,13 @@ const AddressCreate: NextPage<Props> = ({
                     {...register('floor_no')}
                     suppressHydrationWarning={suppressText}
                     defaultValue={currentAddress?.address?.floor_no}
-                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                     placeholder={`${t('floor_no')}`}
                   />
                 </div>
                 {errors?.floor_no?.message && (
                   <span
-                    className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('floor_no_is_required')}
@@ -444,7 +477,7 @@ const AddressCreate: NextPage<Props> = ({
                 <label
                   suppressHydrationWarning={suppressText}
                   htmlFor="apartment_no"
-                  className="block text-sm font-medium text-gray-900"
+                  className="block xs-mobile-sm-desktop font-medium text-gray-900"
                 >
                   {t('apartment_no')}*
                 </label>
@@ -453,13 +486,13 @@ const AddressCreate: NextPage<Props> = ({
                     {...register('apartment_no')}
                     suppressHydrationWarning={suppressText}
                     defaultValue={currentAddress?.address?.apartment_no}
-                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                     placeholder={`${t('apartment_no')}`}
                   />
                 </div>
                 {errors?.apartment_no?.message && (
                   <span
-                    className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('apartment_no_is_required')}
@@ -476,7 +509,7 @@ const AddressCreate: NextPage<Props> = ({
                 <label
                   suppressHydrationWarning={suppressText}
                   htmlFor="office_no"
-                  className="block text-sm font-medium text-gray-900"
+                  className="block xs-mobile-sm-desktop font-medium text-gray-900"
                 >
                   {t('office_no')}*
                 </label>
@@ -485,13 +518,13 @@ const AddressCreate: NextPage<Props> = ({
                     {...register('office_no')}
                     suppressHydrationWarning={suppressText}
                     defaultValue={currentAddress?.address?.office_no}
-                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                    className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                     placeholder={`${t('office_no')}`}
                   />
                 </div>
                 {errors?.office_no?.message && (
                   <span
-                    className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                    className={`${errorMsgClass}`}
                     suppressHydrationWarning={suppressText}
                   >
                     {t('office_no_is_required')}
@@ -506,7 +539,7 @@ const AddressCreate: NextPage<Props> = ({
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="notice"
-              className="block text-sm font-medium text-gray-900"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
             >
               {t('notice')}{' '}
               <span className="text-[10px]">({t('optional')})</span>
@@ -516,13 +549,13 @@ const AddressCreate: NextPage<Props> = ({
                 {...register('notes')}
                 suppressHydrationWarning={suppressText}
                 defaultValue={currentAddress?.address?.notes}
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                 placeholder={`${t('notice')}`}
               />
             </div>
             {errors?.notes?.message && (
               <span
-                className={`text-sm text-red-800 font-semibold pt-1 capitalize`}
+                className={`${errorMsgClass}`}
                 suppressHydrationWarning={suppressText}
               >
                 {t('notes')}
@@ -535,7 +568,7 @@ const AddressCreate: NextPage<Props> = ({
             <label
               suppressHydrationWarning={suppressText}
               htmlFor="other_phone"
-              className="block text-sm font-medium text-gray-900"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
             >
               {t('other_phone_no')}{' '}
               <span className="text-[10px]">({t('optional')})</span>
@@ -545,7 +578,7 @@ const AddressCreate: NextPage<Props> = ({
                 {...register('other_phone')}
                 suppressHydrationWarning={suppressText}
                 defaultValue={currentAddress?.address?.other_phone}
-                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 sm:text-sm sm:leading-6"
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
                 placeholder={`${t('other_phone_no')}`}
               />
             </div>
@@ -558,7 +591,7 @@ const AddressCreate: NextPage<Props> = ({
               style={{ backgroundColor: color }}
               suppressHydrationWarning={suppressText}
             >
-              <p className="text-md">{t('save_address')}</p>
+              <p className="sm-mobile-base-desktop">{t('save_address')}</p>
             </button>
           </div>
         </form>

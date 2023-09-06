@@ -76,7 +76,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
   const router = useRouter();
   const destID = useAppSelector(destinationId);
   const [showChangeLocModal, setShowChangeLocModal] = useState<boolean>(false);
-  const [selectedArea, setSelectedArea] = useState<Area | undefined>(undefined);
+  const [selectedAddress, setSelectedAddress] = useState<any>(undefined);
 
   const {
     customer: {
@@ -107,11 +107,13 @@ const AddressSelectionIndex: NextPage<Props> = ({
         (a) => a.address.area_id && a.address.area_id === destID.toString()
       );
 
+      // check if the selected address in th 
+      // state is with the same area id
       const selectedAddressExist = filter(
         addressesWithSameAreaId,
         (add) => add.id === addressId
       );
-      console.log({ addressesWithSameAreaId }, { selectedAddressExist });
+      // console.log({ addressesWithSameAreaId }, { selectedAddressExist });
 
       // when no address is selected in the state
       if (isEmpty(selectedAddressExist)) {
@@ -148,14 +150,17 @@ const AddressSelectionIndex: NextPage<Props> = ({
       // destid === addressid
       dispatch(setCustomerAddress(address));
     } else {
+      
+      // setSelectedArea({
+      //   id: address.address.area_id,
+      //   name: address.address.area_en,
+      //   name_ar: address.address.area_ar,
+      //   name_en: address.address.area_ar,
+      // });
+
       // destid !== addressid
-      // set area of the selected address
-      setSelectedArea({
-        id: address.address.area_id,
-        name: address.address.area_en,
-        name_ar: address.address.area_ar,
-        name_en: address.address.area_ar,
-      });
+      // set selected address
+      setSelectedAddress(address);
 
       setShowChangeLocModal(true);
 
@@ -177,8 +182,12 @@ const AddressSelectionIndex: NextPage<Props> = ({
     if (isAuth) {
       dispatch(resetCustomerAddress(undefined));
     }
+
+    // when selecting address with
+    //diffrent area change area then set address
     dispatch(setDestination({ destination, type }));
-    // dispatch(setAreaBranchModalStatus(true));
+    dispatch(setCustomerAddress(selectedAddress));
+
     await triggerGetVendor(
       {
         lang,
@@ -205,7 +214,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
         type: `success`,
       })
     );
-    router.reload();
+    // router.reload();
   };
 
   if (!isSuccess) return <></>;
@@ -216,7 +225,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
         {addresses?.data && !isEmpty(addresses?.data) ? (
           <div>
             <div className={`mx-4 mb-4`}>
-              <h1 className="text-md md:text-lg font-extrabold">
+              <h1 className="base-mobile-lg-desktop font-extrabold">
                 {t('select_address')}
               </h1>
             </div>
@@ -227,7 +236,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
                 style={{ borderColor: color }}
                 key={address.id}
               >
-                <div className="flex  flex-col w-full border-b rounded-md p-3 overflow-hidden w-full text-sm">
+                <div className="flex  flex-col w-full border-b rounded-md p-3 overflow-hidden w-full xs-mobile-sm-desktop">
                   <div
                     className={`flex  flex-row w-full justify-between items-start p-2`}
                   >
@@ -261,8 +270,10 @@ const AddressSelectionIndex: NextPage<Props> = ({
         ) : (
           <div className="flex flex-1 min-h-screen space-y-3 flex-col justify-center items-center mx-4">
             <NoAddresses className="w-auto h-auto object-contain " />
-            <p className="text-md text-extrabold">{t('no_address')}</p>
-            <p className="text-md text-extrabold text-center w-full lg:w-[80%]">
+            <p className="sm-mobile-base-desktop text-extrabold">
+              {t('no_address')}
+            </p>
+            <p className="sm-mobile-base-desktop text-extrabold text-center w-full lg:w-[80%]">
               {t('no_address_des')}
             </p>
           </div>
@@ -275,7 +286,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
             suppressHydrationWarning={suppressText}
           >
             <PlusSmallIcon className="w-6 h-6 text-black" />
-            <p className="w-fit text-md text-center mx-2 text-black">
+            <p className="w-fit sm-mobile-base-desktop text-center mx-2 text-black">
               {t('add_new_address')}
             </p>
           </Link>
@@ -296,7 +307,14 @@ const AddressSelectionIndex: NextPage<Props> = ({
         onRequestClose={() => setShowChangeLocModal(false)}
         url={url}
         selectedMethod="delivery"
-        area_branch={selectedArea as Area}
+        area_branch={
+          {
+            id: selectedAddress?.address?.area_id,
+            name: selectedAddress?.address?.area_en,
+            name_ar: selectedAddress?.address?.area_ar,
+            name_en: selectedAddress?.address?.area_ar,
+          } as Area
+        }
         changeLocation={handleChangeArea}
       />
     </MainContentLayout>

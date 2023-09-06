@@ -161,7 +161,7 @@ const OtpVerifications: NextPage<Props> = ({
             </div>
             <div className="text-center">
               <h3
-                className="font-bold text-lg pb-2"
+                className="font-bold base-mobile-lg-desktop pb-2"
                 suppressHydrationWarning={suppressText}
               >
                 {t('confirmation_your_number')}

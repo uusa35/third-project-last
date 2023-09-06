@@ -46,7 +46,7 @@ const UserOrders: NextPage<Props> = ({ url }): React.ReactElement => {
             height={150}
           />
           <h3
-            className="text-lg font-bold"
+            className="base-mobile-lg-desktop font-bold"
             suppressHydrationWarning={suppressText}
           >
             {t('no_order_with_this_id')}

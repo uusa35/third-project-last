@@ -35,10 +35,10 @@ const CancelOrder2Modal: FC<Props> = ({ isOpen, onRequestClose }):JSX.Element =>
                         </button>
                     </div>
                     <div className="px-4 pb-2">
-                        <h4 className="font-semibold text-lg pb-2" suppressHydrationWarning={suppressText}>
+                        <h4 className="font-semibold base-mobile-lg-desktop pb-2" suppressHydrationWarning={suppressText}>
                             {`${upperFirst(`${t('why_did_you_cancel_this_order?')}`)}`}
                         </h4>
-                        <p className="text-sm pb-4 space-x-1" suppressHydrationWarning={suppressText}>
+                        <p className="xs-mobile-sm-desktop pb-4 space-x-1" suppressHydrationWarning={suppressText}>
                             <span>
                                 {`${upperFirst(`${t('a_cancellation_of')}`)}`}
                             </span>

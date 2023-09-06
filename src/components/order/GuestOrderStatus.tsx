@@ -54,7 +54,7 @@ const GuestOrderStatus: FC<Props> = ({ order }) => {
     isDelivery?: boolean;
   }) => {
     return (
-      <div className="flex justify-between items-center gap-x-2 py-2 text-xs">
+      <div className="flex justify-between items-center gap-x-2 py-2 xxs-mobile-xs-desktop">
         <div className="flex gap-x-3">
           <div>{icon}</div>
           <div>
@@ -82,7 +82,7 @@ const GuestOrderStatus: FC<Props> = ({ order }) => {
               order.customer.address.latitude,
               order.customer.address.longitude
             )}
-            className="btn min-w-fit h-9 px-2 bg-gray-100 flex justify-center items-center rounded-full text-xs"
+            className="btn min-w-fit h-9 px-2 bg-gray-100 flex justify-center items-center rounded-full xxs-mobile-xs-desktop"
           >
             <div className={`${isRTL && '-rotate-90'}`}>
               <DirectionIcon />

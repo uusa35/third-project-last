@@ -3,7 +3,13 @@ import MainModal from './MainModal';
 import { useTranslation } from 'react-i18next';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input';
-import { appLinks, mainBtnClass, suppressText, toEn } from '@/constants/*';
+import {
+  appLinks,
+  errorMsgClass,
+  mainBtnClass,
+  suppressText,
+  toEn,
+} from '@/constants/*';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { customerInfoSchema } from 'src/validations';
@@ -44,7 +50,7 @@ const GuestOrderModal: FC<Props> = ({
     control,
     formState: { errors },
   } = useForm<any>({
-    resolver: yupResolver(customerInfoSchema),
+    resolver: yupResolver(customerInfoSchema({})),
     defaultValues: {
       id: null,
       name: customer.name ?? ``,
@@ -54,65 +60,97 @@ const GuestOrderModal: FC<Props> = ({
   });
 
   const onSubmit = async (body: any) => {
-    const parsedPhone = parsePhoneNumber(body.phone)?.nationalNumber;
+    console.log({ body });
+
+    const parsedPhone = parsePhoneNumber(body.phone.toString())?.nationalNumber;
     const parsedCountryCode = `+${
-      parsePhoneNumber(body.phone)?.countryCallingCode
+      parsePhoneNumber(body.phone.toString())?.countryCallingCode
     }`;
-    await triggerSaveCustomerInfo({
-      body: {
+    dispatch(
+      setCustomer({
         ...body,
-        phone: parsedPhone,
-        // phone_country_code: parsedCountryCode,
-      },
-      url,
-    }).then((r: any) => {
-      if (r.data && r.data.Data && r.data.status) {
-        // set country code manually because it doesn't come back from BE
-        dispatch(setCustomer({ ...r.data.Data }));
-        dispatch(
-          showToastMessage({
-            content: `info_saved`,
-            type: 'success',
-          })
-        );
-        if (method === 'pickup') {
-          router.push(appLinks.checkout.path);
-        } else {
-          // if (destination.id === customer.address.area_id) {
-          //   router.push()
-          // }
-          // router.push(appLinks.selectArea('guest'));
-          router.push(appLinks.guestAddress.path);
-        }
-      } else if (
-        r.error &&
-        r.error.data &&
-        r.error.data.msg &&
-        r.error.data.msg.phone[0]
-      ) {
-        setError(
-          'phone',
-          {
-            type: 'focus',
-            message: 'phone_number_must_be_between_8_and_15_number',
-          },
-          { shouldFocus: true }
-        );
-      } else {
-        dispatch(
-          showToastMessage({
-            content: `all_fields_r_required`,
-            type: 'error',
-          })
-        );
-      }
-    });
+        id: 'guest',
+        phone: parsedPhone || body.phone.toString(), //when phone is in state parsed is= undefined
+        // address: 'no addresses',
+        // date_of_birth: null,
+        // gender: null,
+      })
+    );
+    dispatch(
+      showToastMessage({
+        content: `info_saved`,
+        type: 'success',
+      })
+    );
+    if (method === 'pickup') {
+      router.push(appLinks.checkout.path);
+    } else {
+      // if (destination.id === customer.address.area_id) {
+      //   router.push()
+      // }
+      // router.push(appLinks.selectArea('guest'));
+      router.push(appLinks.guestAddress.path);
+    }
+
+    // await triggerSaveCustomerInfo({
+    //   body: {
+    //     ...body,
+    //     phone: parsedPhone,
+    //     // phone_country_code: parsedCountryCode,
+    //   },
+    //   url,
+    // }).then((r: any) => {
+    //   if (r.data && r.data.Data && r.data.status) {
+    //     console.log(r.data.Data, {
+    //       ...body,
+    //       phone: parsedPhone,
+    //       address: 'no addresses',
+    //       date_of_birth: null,
+    //       gender: null,
+    //     });
+    //     // set country code manually because it doesn't come back from BE
+    //     dispatch(setCustomer({ ...r.data.Data }));
+    //     dispatch(
+    //       showToastMessage({
+    //         content: `info_saved`,
+    //         type: 'success',
+    //       })
+    //     );
+    //     if (method === 'pickup') {
+    //       router.push(appLinks.checkout.path);
+    //     } else {
+    //       // if (destination.id === customer.address.area_id) {
+    //       //   router.push()
+    //       // }
+    //       // router.push(appLinks.selectArea('guest'));
+    //       router.push(appLinks.guestAddress.path);
+    //     }
+    //   } else if (
+    //     r.error &&
+    //     r.error.data &&
+    //     r.error.data.msg &&
+    //     r.error.data.msg.phone[0]
+    //   ) {
+    //     setError(
+    //       'phone',
+    //       {
+    //         type: 'focus',
+    //         message: 'phone_number_must_be_between_8_and_15_number',
+    //       },
+    //       { shouldFocus: true }
+    //     );
+    //   } else {
+    //     dispatch(
+    //       showToastMessage({
+    //         content: `all_fields_r_required`,
+    //         type: 'error',
+    //       })
+    //     );
+    //   }
+    // });
   };
 
-  // console.log(
-  //   flags,
-  //   Object.fromEntries(Object.entries(flags).filter(([key]) => key === 'KW'))
-  // );
+  // console.log({ errors });
 
   return (
     <>
@@ -156,17 +194,17 @@ const GuestOrderModal: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('fill_name')}</div>
-                  <div>
-                    {errors?.name?.message && (
-                      <p
-                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t('name_is_required')}
-                      </p>
-                    )}
-                  </div>
                 </label>
+                <div>
+                  {errors?.name?.message && (
+                    <p
+                      className={`${errorMsgClass}`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {t('name_is_required')}
+                    </p>
+                  )}
+                </div>
               </div>
               {/* phone */}
               <div className="pt-6 pb-5">
@@ -176,17 +214,6 @@ const GuestOrderModal: FC<Props> = ({
                   suppressHydrationWarning={suppressText}
                 >
                   <div>{t('phone_number')} *</div>
-                  <div>
-                    {errors?.phone?.message && (
-                      <p
-                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
-                        suppressHydrationWarning={suppressText}
-                      >
-                        {t(`${errors?.phone?.message}`)}
-                        {/* {t('phone_number_must_be_between_8_and_15_number')} */}
-                      </p>
-                    )}
-                  </div>
                 </label>
                 <PhoneInput
                   // flags={Object.fromEntries(
@@ -210,6 +237,21 @@ const GuestOrderModal: FC<Props> = ({
                   }
                   onBlur={(e) => (e.target.style.borderBottomColor = '#e5e7eb')}
                 />
+                <div>
+                  {errors?.phone?.message && (
+                    <p
+                      className={`${errorMsgClass}`}
+                      suppressHydrationWarning={suppressText}
+                    >
+                      {errors?.phone?.message?.key ||
+                      errors?.phone?.type === 'min' ||
+                      errors?.phone?.type === 'max'
+                        ? t('phone_number_must_be_between_8_and_15_number')
+                        : t(`${errors?.phone?.message}`)}
+                      {/* {t('phone_number_must_be_between_8_and_15_number')} */}
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="relative">
                 <input
@@ -234,7 +276,7 @@ const GuestOrderModal: FC<Props> = ({
                   <div>
                     {errors?.email?.message && (
                       <p
-                        className={`text-base text-red-800 font-semibold py-2 capitalize`}
+                        className={`${errorMsgClass}`}
                         suppressHydrationWarning={suppressText}
                       >
                         {t('email_is_required')}
