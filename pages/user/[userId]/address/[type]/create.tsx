@@ -40,6 +40,7 @@ type Props = {
   url: string;
   userId: string;
   type: string;
+  prevPG: string;
 };
 
 const AddressCreate: NextPage<Props> = ({
@@ -47,6 +48,7 @@ const AddressCreate: NextPage<Props> = ({
   url,
   userId,
   type,
+  prevPG,
 }): React.ReactElement => {
   const { t } = useTranslation();
   const color = useAppSelector(themeColor);
@@ -116,7 +118,6 @@ const AddressCreate: NextPage<Props> = ({
 
   // set state of phone and name on change
   useEffect(() => {
-    // console.log(name, phone);
     dispatch(setCustomerAddressInfo({ name, phone }));
   }, [name, phone]);
 
@@ -144,13 +145,6 @@ const AddressCreate: NextPage<Props> = ({
       }
     }
   }, [type]);
-
-  // console.log('type', type);
-  console.log({ errors });
-  // console.log('method', method);
-  // console.log('destination', destination);
-  // console.log('data ====>', getValues());
-  // console.log('customer', customer.address);
 
   const handleSaveAddress = async (body: any) => {
     await triggerCreateOrUpdateAddress({
@@ -206,6 +200,8 @@ const AddressCreate: NextPage<Props> = ({
           } else {
             router.push('/');
           }
+        } else if (prevPG.includes('select') || prevPG.includes('user')) {
+          router.push(`${appLinks.selectAddress(userId)}`);
         } else {
           router.back();
         }
@@ -604,7 +600,7 @@ export default AddressCreate;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ req, locale, query }) => {
+    async ({ req, locale, query, context }) => {
       const url = req.headers.host;
       if (!query.userId || !query.type) {
         return {
@@ -625,6 +621,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           element: element.Data,
           userId: query.userId,
           type: query.type,
+          prevPG: req.headers.referer,
           url,
         },
       };

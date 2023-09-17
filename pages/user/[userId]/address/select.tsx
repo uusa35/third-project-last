@@ -107,7 +107,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
         (a) => a.address.area_id && a.address.area_id === destID.toString()
       );
 
-      // check if the selected address in th 
+      // check if the selected address in th
       // state is with the same area id
       const selectedAddressExist = filter(
         addressesWithSameAreaId,
@@ -150,7 +150,6 @@ const AddressSelectionIndex: NextPage<Props> = ({
       // destid === addressid
       dispatch(setCustomerAddress(address));
     } else {
-      
       // setSelectedArea({
       //   id: address.address.area_id,
       //   name: address.address.area_en,
@@ -281,7 +280,7 @@ const AddressSelectionIndex: NextPage<Props> = ({
 
         <div className="relative -bottom-10 p-2 w-full">
           <Link
-            href={`${appLinks.createAuthAddress(id)}`}
+            href={`${appLinks.createAuthAddress(id, 'house')}`}
             className={`${mainBtnClass} flex flex-row justify-center items-center bg-gray-200`}
             suppressHydrationWarning={suppressText}
           >
