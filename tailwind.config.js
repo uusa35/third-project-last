@@ -19,7 +19,9 @@ module.exports = {
         GE_SS_Text_Medium: ['GE_SS_Text_Medium', 'sans-serif'],
       },
       fontSize: {
-        xxs: '.6rem',
+        xxs: '.5rem',
+        xs: '.6rem',
+        md: '.7rem',
       },
     },
   },

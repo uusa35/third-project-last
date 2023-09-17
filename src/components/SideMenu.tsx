@@ -55,7 +55,7 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
   const handleSignOut = async () => {
     dispatch(signOut(undefined));
     await deleteToken();
-    return router.push('/');
+    return router.push('/').then(() => router.reload());
   };
 
   return (
@@ -99,7 +99,9 @@ const SideMenu: FC<Props> = (): React.ReactNode => {
                       {/* img */}
                       <div className="rounded-full h-5 w-5"></div>
                       <div>
-                        <p className="xs-mobile-sm-desktop mb-1">{t('Welcome_back')} !</p>
+                        <p className="xs-mobile-sm-desktop mb-1">
+                          {t('Welcome_back')} !
+                        </p>
                         <p className="font-bold">{name}</p>
                       </div>
                     </div>

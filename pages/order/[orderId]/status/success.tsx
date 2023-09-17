@@ -35,6 +35,11 @@ import { NextPage } from 'next';
 import { isAuthenticated } from '@/redux/slices/customerSlice';
 import HomeIcon from '@/appIcons/home_success.svg';
 import Link from 'next/link';
+import {
+  resetCheckBoxes,
+  resetMeters,
+  resetRadioBtns,
+} from '@/redux/slices/productCartSlice';
 
 type Props = {
   url: string;
@@ -81,7 +86,11 @@ const OrderSuccess: NextPage<Props> = ({
           url,
         },
         false
-      )
+      ).then(() => {
+        dispatch(resetRadioBtns());
+        dispatch(resetCheckBoxes());
+        dispatch(resetMeters());
+      })
     );
   }, [orderId]);
 
@@ -214,7 +223,9 @@ const OrderSuccess: NextPage<Props> = ({
                         ar={item.item_ar}
                         length={30}
                       />
-                      <span className="ms-1 xs-mobile-sm-desktop">x{item.quantity}</span>
+                      <span className="ms-1 xs-mobile-sm-desktop">
+                        x{item.quantity}
+                      </span>
                     </div>
                     <p className="xs-mobile-sm-desktop">
                       {item.total} {t('kd')}
@@ -237,7 +248,9 @@ const OrderSuccess: NextPage<Props> = ({
                       </div>
                     ))}
                   </div>
-                  <p className={`truncate xs-mobile-sm-desktop p-2`}>{item.extra_notes}</p>
+                  <p className={`truncate xs-mobile-sm-desktop p-2`}>
+                    {item.extra_notes}
+                  </p>
                 </div>
               </div>
             ))}

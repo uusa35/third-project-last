@@ -8,6 +8,7 @@ import { wrapper } from '@/redux/store';
 import { Vendor } from '@/types/index';
 import {
   appLinks,
+  deleteToken,
   errorMsgClass,
   imageSizes,
   mainBtnClass,
@@ -78,9 +79,11 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     }
   }, []);
 
-  const handleGuest = () => {
+  const handleGuest = async () => {
     setIsOpen(true);
-    dispatch(signOut);
+    dispatch(signOut(undefined));
+    await deleteToken();
+    router.reload();
   };
 
   const onSubmit = async (body: any) => {

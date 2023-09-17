@@ -90,7 +90,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       PromoCode: promocode,
       url,
     },
-    { refetchOnMountOrArgChange: true }
+    { refetchOnMountOrArgChange: 0.1 }
   );
 
   // when remove out of stock items

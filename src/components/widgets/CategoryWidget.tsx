@@ -37,7 +37,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }} className="pb-3">
       <button
         onClick={() => handleSearchRedirection(element.id.toString())}
-        className={`aspect-square shadow-lg rounded-lg capitalize w-full h-full`}
+        className={`aspect-square rounded-lg capitalize w-full h-full`}
         suppressHydrationWarning={suppressText}
         data-cy="category"
       >
