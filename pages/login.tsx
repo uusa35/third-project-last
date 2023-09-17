@@ -83,7 +83,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     setIsOpen(true);
     dispatch(signOut(undefined));
     await deleteToken();
-    router.reload();
+    // router.reload();
   };
 
   const onSubmit = async (body: any) => {

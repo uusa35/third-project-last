@@ -1,5 +1,5 @@
 import NoFoundImage from '@/appImages/not_found.png';
-import { filter, map, toString } from 'lodash';
+import { filter, isUndefined, map, toString } from 'lodash';
 import i18n from './i18n/config';
 export const baseUrl = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const appVersion = `0.0.2`;
@@ -174,11 +174,13 @@ export const getToken = () =>
 export const displayUserAddress = (address: any) => {
   let formattedAddress;
 
+  console.log('address', address);
+
   formattedAddress = filter(
     map(
       address,
       (value, key) =>
-        value !== null &&
+        value !== null && !isUndefined(value) && value !== undefined &&
         key !== `id` &&
         key !== `area_id` &&
         key !== `city` &&

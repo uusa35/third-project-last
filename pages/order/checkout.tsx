@@ -148,19 +148,6 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   }, [isSuccess]);
 
-  // get user address
-  // const { data: userAddress, isSuccess: userAddressSuccess } =
-  //   useGetAddressesByTypeQuery<{
-  //     data: AppQueryResult<Address>;
-  //     isSuccess: boolean;
-  //   }>(
-  //     {
-  //       type,
-  //       url,
-  //     },
-  //     { refetchOnMountOrArgChange: true, skip: !isAuth }
-  //   );
-
   // create order
   const handleCreateOrder = async () => {
     if (!customer_id && !isAuth) {
@@ -264,29 +251,9 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   };
 
-  console.log(
-    {
-      add: Object.keys(CustomerAddress).reduce(function (r, e) {
-        if (e !== 'id' && e !== '' && CustomerAddress[e] !== null)
-          r[e] = CustomerAddress[e];
-        // if (acceptedValues.includes(CustomerAddress[e])) r[e] = myObject[e]
-        return r;
-      }, {}),
-    },
-    CustomerAddress
-  );
-
   if (!isSuccess) {
     <p>loading</p>;
   }
-
-  // console.log({
-  //   time: moment(prefrences.time, ['h:mm A']).locale('en').format('HH:mm:ss'),
-  //   t2: moment()
-  //     .add(prefrences.time, 'minutes')
-  //     .locale('en')
-  //     .format('HH:mm:ss'),
-  // });
 
   return (
     <MainContentLayout showBackBtnHeader={true} currentModule="checkout">
