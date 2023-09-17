@@ -174,8 +174,6 @@ export const getToken = () =>
 export const displayUserAddress = (address: any) => {
   let formattedAddress;
 
-  console.log('address', address);
-
   formattedAddress = filter(
     map(
       address,

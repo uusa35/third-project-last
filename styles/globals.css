@@ -112,7 +112,7 @@ button:disabled {
     @apply text-xs md:text-sm;
   }
   .sm-mobile-base-desktop {
-    @apply text-sm md:text-base;
+    @apply text-xs md:text-base;
   }
   .base-mobile-lg-desktop {
     @apply text-base md:text-md;

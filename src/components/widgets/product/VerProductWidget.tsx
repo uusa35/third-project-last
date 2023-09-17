@@ -48,9 +48,9 @@ const VerProductWidget: FC<Props> = ({
         <div className="relative">
           <div className="flex gap-x-2 justify-between">
             <div className="w-2/3">
-              <p className=" flex flex-col sm-mobile-base-desktop">
+              <p className=" flex flex-col ">
                 <TextTrans
-                  className={`text-black ${alexandriaFontSemiBold} mb-2`}
+                  className={`text-black ${alexandriaFontSemiBold} mb-2 sm-mobile-base-desktop`}
                   ar={element.name_ar}
                   en={element.name_en}
                   length={20}
@@ -91,7 +91,9 @@ const VerProductWidget: FC<Props> = ({
                     style={{ color, borderColor: color, border: '1px solid' }}
                   >
                     {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                      <span className={`xxs-mobile-xs-desktop ${montserratFontRegular}`}>
+                      <span
+                        className={`xxs-mobile-xs-desktop ${montserratFontRegular}`}
+                      >
                         {t(`price_on_selection`)}
                       </span>
                     ) : (
