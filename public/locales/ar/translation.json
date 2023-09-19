@@ -359,12 +359,12 @@
   "back_to_store": "العودة إلى المتجر",
   "we_advise_that_saving_the_receipt": "ننصح بحفظ الإيصال",
   "add_new_address": "اضافة عنوان جديد",
-  "select_area_to_mach_your_selected_address":"اختر المنطقه التي تتوافق مع العنوان المحدد",
-  "some_out_of_stock_item":"متاح فقط {{amount}}  من هذا المنتج",
-  "invalid_otp" : "رقم التحقق غير صحيح",
-  "the_date_must_be_a_date_after_yesterday.":"اختر تاريخًا بعد تاريخ امس",
-  "removed_some_out_of_stock_item":"تم ازاله بعض المنتجات الني نفذت كمياتها",
-  "sign_in_up":"تسجيل دخول",
-  "area_changed":"تم تغيير المنطقة بنجاح"
-
+  "select_area_to_mach_your_selected_address": "اختر المنطقه التي تتوافق مع العنوان المحدد",
+  "some_out_of_stock_item": "متاح فقط {{amount}}  من هذا المنتج",
+  "invalid_otp": "رقم التحقق غير صحيح",
+  "the_date_must_be_a_date_after_yesterday.": "اختر تاريخًا بعد تاريخ امس",
+  "removed_some_out_of_stock_item": "تم ازاله بعض المنتجات الني نفذت كمياتها",
+  "sign_in_up": "تسجيل دخول",
+  "area_changed": "تم تغيير المنطقة بنجاح",
+  "no_products_found": "لا يوجد منتجات طبعا لمعايير البحث"
 }

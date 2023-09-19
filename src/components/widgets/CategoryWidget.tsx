@@ -61,7 +61,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
-                className={`${alexandriaFontSemiBold} line-clamp-1 text-left`}
+                className={`${alexandriaFontSemiBold} line-clamp-1 ltr:text-left rtl:text-right`}
                 // style={{
                 //   maxWidth: '30ch',
                 //   textOverflow: 'ellipsis',

@@ -13,6 +13,8 @@ import CustomImage from '@/components/CustomImage';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import Image from 'next/image';
 import NoProductFound from '@/appImages/no_product.png';
+import NoProducts from '@/appImages/no_result_found.webp';
+
 import {
   debounce,
   isEmpty,
@@ -273,7 +275,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                 }  overflow-y-scroll
           `}
               >
-                {currentProducts.length ? (
+                {currentProducts.length > 0 ? (
                   <div
                     className={`p-5 ${
                       vendor?.Data?.template_type === 'THEME_TWO_CATEGORY_LIST'
@@ -300,7 +302,19 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                       </>
                     ))}
                   </div>
-                ) : null}
+                ) : (
+                  <div className="flex flex-col min-h-screen  justify-center items-center border-4">
+                    <Image
+                      src={NoProducts}
+                      alt="no product found"
+                      width={150}
+                      height={150}
+                    />
+                    <h1 className="capitalize">
+                      {upperFirst(`${t('no_products_found')}`)}
+                    </h1>
+                  </div>
+                )}
               </div>
             </>
           )}
