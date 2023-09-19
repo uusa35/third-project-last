@@ -11,6 +11,7 @@ import { useAppSelector } from '@/redux/hooks';
 import TextTrans from '@/components/TextTrans';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { motion } from 'framer-motion';
+import PlusIcon from '@/appIcons/add.svg';
 
 type Props = {
   element: Product;
@@ -31,7 +32,7 @@ const HorProductWidget: FC<Props> = ({
     <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }}>
       <Link
         href={`${appLinks.productShow(element.id, element.name)}`}
-        className={`h-auto shadow-7xl h-full  block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
+        className={`shadow-7xl h-full  block  capitalize mb-2 border-b-2 border-gray-100 py-5`}
         data-cy="product"
       >
         <div className="relative">
@@ -99,7 +100,9 @@ const HorProductWidget: FC<Props> = ({
                   style={{ color: `black` }}
                 >
                   {parseFloat(element.price).toFixed(3) === '0.000' ? (
-                    <span className="xxs-mobile-xs-desktop">{t(`price_on_selection`)}</span>
+                    <span className="xxs-mobile-xs-desktop">
+                      {t(`price_on_selection`)}
+                    </span>
                   ) : (
                     parseFloat(element.price).toFixed(3)
                   )}
@@ -109,12 +112,18 @@ const HorProductWidget: FC<Props> = ({
                 </p>
               )}
               <button
-                className="border-[1px] rounded-md px-4 pt-1 uppercase text-center xs-mobile-sm-desktop"
+                className="rounded-md px-4 pt-1 uppercase text-center xs-mobile-sm-desktop"
                 suppressHydrationWarning={suppressText}
               >
                 <div className={`flex justify-between rtl:flex-row-reverse`}>
-                  <p className="pe-2 rtl:ps-2 rtl:pe-0">+</p>
-                  <p>{t('add')}</p>
+                  <p
+                    className={`w-8 h-8 rounded-full flex justify-center items-center`}
+                    style={{
+                      backgroundColor: color,
+                    }}
+                  >
+                    <PlusIcon className="text-white" />
+                  </p>
                 </div>
               </button>
             </div>

@@ -33,6 +33,8 @@ import { Product } from '@/types/index';
 import VerProductWidget from '@/components/widgets/product/VerProductWidget';
 import ContentLoader from '@/components/skeletons';
 import { NextPage } from 'next';
+import HorProductWidget from '@/components/widgets/product/HorProductWidget';
+import { useGetVendorQuery } from '@/redux/api/vendorApi';
 
 type Props = {
   url: string;
@@ -55,6 +57,13 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
   const { query }: any = useRouter();
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const desObject = useAppSelector(destinationHeaderObject);
+  const { data: vendor, isLoading } = useGetVendorQuery(
+    {
+      lang,
+      url,
+    },
+    { refetchOnMountOrArgChange: 0.1 }
+  );
   const [triggerGetProducts, { isLoading: getProductsLoading }] =
     useLazyGetProductsQuery();
   const [triggerSearchProducts] = useLazyGetSearchProductsQuery();
@@ -138,7 +147,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
     isUndefined(searchKey) && handleFire();
   }, [searchKey]);
 
-  // set products once page loaded , commented for now till confirmation 
+  // set products once page loaded , commented for now till confirmation
   // useEffect(() => {
   //  if(!(category_id)) {
   //   triggerSearchProducts({
@@ -160,6 +169,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
       <MainHead
         title={t('search_products')}
         description={`${t('search_products')}`}
+        url={url}
       />
       <MainContentLayout url={url}>
         <>
@@ -264,13 +274,30 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
           `}
               >
                 {currentProducts.length ? (
-                  <div className="p-5">
+                  <div
+                    className={`p-5 ${
+                      vendor?.Data?.template_type === 'THEME_TWO_CATEGORY_LIST'
+                        ? `grid grid-cols-2 gap-x-2`
+                        : ``
+                    }`}
+                  >
                     {map(currentProducts, (product: Product) => (
-                      <VerProductWidget
-                        element={product}
-                        category_id={`${category_id}`}
-                        key={product.id}
-                      />
+                      <>
+                        {vendor?.Data?.template_type ===
+                        'THEME_TWO_CATEGORY_LIST' ? (
+                          <HorProductWidget
+                            element={product}
+                            category_id={`${category_id}`}
+                            key={product.id}
+                          />
+                        ) : (
+                          <VerProductWidget
+                            element={product}
+                            category_id={`${category_id}`}
+                            key={product.id}
+                          />
+                        )}
+                      </>
                     ))}
                   </div>
                 ) : null}
@@ -279,9 +306,9 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
           )}
         </>
       </MainContentLayout>
-      </Suspense>
-  )
-}
+    </Suspense>
+  );
+};
 export default Search;
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>

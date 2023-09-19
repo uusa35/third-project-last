@@ -34,7 +34,11 @@ const CategoryWidget: FC<Props> = ({ element }) => {
   };
 
   return (
-    <motion.div whileTap={{ opacity: 1 }} whileHover={{ opacity: 0.8 }} className="pb-3">
+    <motion.div
+      whileTap={{ opacity: 1 }}
+      whileHover={{ opacity: 0.8 }}
+      className="pb-3"
+    >
       <button
         onClick={() => handleSearchRedirection(element.id.toString())}
         className={`aspect-square rounded-lg capitalize w-full h-full`}
@@ -57,7 +61,7 @@ const CategoryWidget: FC<Props> = ({ element }) => {
               suppressHydrationWarning={suppressText}
             >
               <TextTrans
-                className={`${alexandriaFontSemiBold} line-clamp-1` }
+                className={`${alexandriaFontSemiBold} line-clamp-1 text-left`}
                 // style={{
                 //   maxWidth: '30ch',
                 //   textOverflow: 'ellipsis',

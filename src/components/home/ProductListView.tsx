@@ -15,9 +15,13 @@ import { map } from 'lodash';
 
 type Props = {
   productCategories: Category[];
+  templateType?: string;
 };
 
-const ProductListView: FC<Props> = ({ productCategories }): React.ReactNode => {
+const ProductListView: FC<Props> = ({
+  productCategories,
+  templateType = 'BASIC_LIST',
+ }): React.ReactNode => {
   const {
     locale: { isRTL },
   } = useAppSelector((state) => state);

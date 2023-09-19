@@ -347,7 +347,7 @@ const ProductShow: NextPage<Props> = ({
         // to execute the for looop only when all those if conditions is failed
         // const MendatoryValidation = handleValidateMendatory();
         // const minValueValidation = handleValidateMinQty();
-        // console.log({ MendatoryValidation }, { minValueValidation });
+
         if (!MendatoryValidation || !minValueValidation) {
           dispatch(disableAddToCart());
         } else {
