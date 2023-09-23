@@ -383,5 +383,6 @@
   "removed_some_out_of_stock_item": "removed some out of stock item/s",
   "sign_in_up": "sign In/Up",
   "area_changed": "area charged successfully",
-  "no_products_found": "no products found."
+  "no_products_found": "no products found.",
+  "min_cart_should_be_5": "min cart should be at least 5 KD."
 }
