@@ -37,6 +37,20 @@ const HorProductWidget: FC<Props> = ({
       >
         <div className="relative">
           <div className="h-60 w-full overflow-hidden rounded-lg">
+            {element.never_out_of_stock === 0 && element.amount < 1 ? (
+              <p
+                className="absolute right-0 text-white text-xxs w-fit rounded-full px-1 py-px bg-amber-400"
+                suppressHydrationWarning={suppressText}
+              >
+                {t('out_stock')}
+              </p>
+            ) : (
+              <></>
+              // <p
+              //   className="absolute text-white text-xxs w-fit rounded-full px-1 py-px bg-amber-400"
+              //   suppressHydrationWarning={suppressText}
+              // ></p>
+            )}
             <CustomImage
               src={`${element.cover ?? NoFoundImage.src}`}
               alt={element.name}

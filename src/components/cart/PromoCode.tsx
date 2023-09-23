@@ -41,7 +41,6 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
     { refetchOnMountOrArgChange: true }
   );
 
-  // remove this part later line 81
   return (
     <div>
       <p className={`mt-5 ${alexandriaFontMeduim}`}>{t('promotions')}</p>
@@ -58,7 +57,10 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
             type="text"
           />
         </div>
-        <button onClick={() => handelApplyPromoCode(promoCodeVal)}>
+        <button
+          onClick={() => handelApplyPromoCode(promoCodeVal)}
+          className="capitalize"
+        >
           {enable_promocode && promocode === promoCodeVal
             ? t('remove')
             : t('apply')}
@@ -79,7 +81,7 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
                     promocode === prmocode_item
                       ? 'border-[#12B76A] text-[#12B76A]'
                       : 'border-[#B7B1AE]'
-                  } w-fit xs-mobile-sm-desktop py-1 px-3 cursor-pointer`}
+                  } w-fit xs-mobile-sm-desktop py-1 px-3 cursor-pointer lowercase`}
                 >
                   {promocode === prmocode_item ? (
                     <GreenCheckIcon />
