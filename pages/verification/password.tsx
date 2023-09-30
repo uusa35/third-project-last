@@ -198,7 +198,7 @@ const UserPassword: NextPage<Props> = ({
               ).then((r: any) => {
                 if (r.data && r.data.data && r.data.data.Cart) {
                   if (r.data.data.Cart.length > 0) {
-                    router.push(`${appLinks.checkout.path}`);
+                    router.push(`${appLinks.cart.path}`);
                   } else {
                     router.push('/');
                   }
@@ -233,7 +233,6 @@ const UserPassword: NextPage<Props> = ({
             })
           );
         } else {
-          console.log('first', omit(r.data.data.user, 'address'));
           dispatch(setCustomer(omit(r.data.data.user, 'address')));
           dispatch(signIn(r.data.data.token));
           setToken(r.data.data.token);
@@ -265,7 +264,7 @@ const UserPassword: NextPage<Props> = ({
           ).then((r: any) => {
             if (r.data && r.data.data && r.data.data.Cart) {
               if (r.data.data.Cart.length > 0) {
-                router.push(`${appLinks.checkout.path}`);
+                router.push(`${appLinks.cart.path}`);
               } else {
                 router.push('/');
               }
@@ -347,9 +346,7 @@ const UserPassword: NextPage<Props> = ({
                 </div>
               </div>
               {errors?.password?.message && (
-                <div
-                  className={`${errorMsgClass} w-full text-start pt-2 ps-2`}
-                >
+                <div className={`${errorMsgClass} w-full text-start pt-2 ps-2`}>
                   {errors?.password?.message && (
                     <p suppressHydrationWarning={suppressText}>
                       {t('password_is_required')}
