@@ -16,7 +16,12 @@ import {
   BriefcaseIcon,
 } from '@heroicons/react/24/outline';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { appLinks, errorMsgClass, mainBtnClass, suppressText } from '@/constants/*';
+import {
+  appLinks,
+  errorMsgClass,
+  mainBtnClass,
+  suppressText,
+} from '@/constants/*';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   useCreateAddressMutation,
@@ -357,6 +362,34 @@ const AddressEdit: NextPage<Props> = ({
                 suppressHydrationWarning={suppressText}
               >
                 {t('area_is_required')}
+              </span>
+            )}
+          </div>
+
+          {/*  block  */}
+          <div className="w-full">
+            <label
+              suppressHydrationWarning={suppressText}
+              htmlFor="block"
+              className="block xs-mobile-sm-desktop font-medium text-gray-900"
+            >
+              {t('block')}*
+            </label>
+            <div className="relative rounded-md shadow-sm">
+              <input
+                {...register('block')}
+                defaultValue={currentAddress?.address?.block}
+                suppressHydrationWarning={suppressText}
+                className="block w-full border-0 py-1 text-gray-900 border-b border-gray-400 placeholder:text-gray-400 focus:border-red-600 xs-mobile-sm-desktop sm:leading-6"
+                placeholder={`${t('block')}`}
+              />
+            </div>
+            {errors?.block?.message && (
+              <span
+                className={`${errorMsgClass}`}
+                suppressHydrationWarning={suppressText}
+              >
+                {t('block_is_required')}
               </span>
             )}
           </div>

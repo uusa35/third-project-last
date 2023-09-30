@@ -13,7 +13,7 @@ import CustomImage from '@/components/CustomImage';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import Image from 'next/image';
 import NoProductFound from '@/appImages/no_product.png';
-import NoProducts from '@/appImages/no_result_found.webp';
+
 
 import {
   debounce,
@@ -129,6 +129,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
     if (key.length >= 2 && url) {
       setSearchKey(key);
       await triggerSearchProducts({
+        category_id: category_id?.toString() ?? ``,
         key,
         lang,
         destination: desObject,
@@ -305,7 +306,7 @@ const Search: NextPage<Props> = ({ url }): React.ReactElement => {
                 ) : (
                   <div className="flex flex-col min-h-screen  justify-center items-center border-4">
                     <Image
-                      src={NoProducts}
+                      src={NoProductFound}
                       alt="no product found"
                       width={150}
                       height={150}

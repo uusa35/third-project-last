@@ -28,15 +28,15 @@ export const addressSchema = (method: string, t: any) =>
       address_type: yup.string().required(),
       phone: yup.number().required().min(10000000).max(999999999999999),
       name: yup.string().required(),
-      // block: yup
-      //   .string()
-      //   .max(100)
-      //   .when('address_type', (address_type, schema) => {
-      //     if (method === `delivery`) {
-      //       return schema.required(t(`validation.required`));
-      //     }
-      //     return schema.nullable(true);
-      //   }),
+      block: yup
+        .string()
+        .max(100)
+        .when('address_type', (address_type, schema) => {
+          if (method === `delivery`) {
+            return schema.required(t(`validation.required`));
+          }
+          return schema.nullable(true);
+        }),
       street: yup
         .string()
         .max(100)
