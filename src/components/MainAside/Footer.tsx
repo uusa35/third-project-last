@@ -17,7 +17,9 @@ export default function AsideFooter() {
         <Link href={appLinks.privacyPolicy.path}>{t('privacy_policy')}</Link>
       </div>
       <div className={`flex flex-1 flex-row justify-end items-center`}>
-        <Link href={`/`}>{t('powered_by_queue')}</Link>
+        <Link target="_blank" href="https://getq.app">
+          {t('powered_by_queue')}
+        </Link>
       </div>
     </div>
   );

@@ -14,12 +14,20 @@ const AppFooter: FC<Props> = ({}): React.ReactNode => {
   } = useAppSelector((state) => state);
 
   return (
-    <footer className={`w-full px-3 text-center xxs-mobile-xs-desktop bg-white`}>
+    <footer
+      className={`w-full px-3 text-center xxs-mobile-xs-desktop bg-white`}
+    >
       <p className=" font-bold">
         {t('rights_reserved')} <TextTrans ar={name_ar} en={name_en} />{' '}
         {new Date().getFullYear()} ©
       </p>
-      <p className=" py-1 pb-2 text-zinc-500">{t('powered_by_queue')}®</p>
+      <a
+        href="https://getq.app"
+        className=" py-1 pb-2 text-zinc-500"
+        target="_blank"
+      >
+        {t('powered_by_queue')}®
+      </a>
       <p className=" py-1 text-zinc-500 text-[8px]">v {appVersion}</p>
     </footer>
   );
