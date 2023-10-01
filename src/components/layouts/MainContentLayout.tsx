@@ -1,3 +1,4 @@
+'use client';
 import { FC, ReactNode, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';

@@ -1,3 +1,4 @@
+'use client';
 import { appLinks, imageSizes, imgUrl } from '@/constants/*';
 import Link from 'next/link';
 import React, { FC } from 'react';

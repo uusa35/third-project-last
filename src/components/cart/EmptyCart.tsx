@@ -1,3 +1,4 @@
+'use client';
 import React, { FC } from 'react';
 import CustomImage from '../CustomImage';
 import Link from 'next/link';
@@ -16,7 +17,7 @@ const EmptyCart: FC = () => {
         <EmptyCartImage />
       </div>
       <div className="capitalize text-center">
-        <div className='my-5'>
+        <div className="my-5">
           <p suppressHydrationWarning={suppressText} className="font-bold pb-1">
             {t('your_cart_is_empty')}
           </p>

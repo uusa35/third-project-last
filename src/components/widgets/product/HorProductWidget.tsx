@@ -1,3 +1,4 @@
+'use client';
 import { FC } from 'react';
 import { appLinks, imageSizes } from '@/constants/*';
 import { Product } from '@/types/index';

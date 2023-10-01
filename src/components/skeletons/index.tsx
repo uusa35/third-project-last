@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import CategorySkeleton from './CategorySkeleton';
 import ContactDetailsSkeleton from './ContactDetailsSkeleton';
