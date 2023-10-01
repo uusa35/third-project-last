@@ -23,7 +23,7 @@ const AppFooter: FC<Props> = ({}): React.ReactNode => {
       </p>
       <a
         href="https://getq.app"
-        className=" py-1 pb-2 text-zinc-500"
+        className=" py-1 pb-2 text-zinc-500 text-sm"
         target="_blank"
       >
         {t('powered_by_queue')}®
