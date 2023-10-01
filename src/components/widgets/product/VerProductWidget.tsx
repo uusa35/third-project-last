@@ -50,7 +50,7 @@ const VerProductWidget: FC<Props> = ({
             <div className="w-2/3">
               <p className=" flex flex-col ">
                 <TextTrans
-                  className={`text-black ${alexandriaFontSemiBold} mb-2 sm-mobile-base-desktop`}
+                  className={`text-black ${alexandriaFontSemiBold} mb-2 base-mobile-lg-desktop`}
                   ar={element.name_ar}
                   en={element.name_en}
                   length={20}

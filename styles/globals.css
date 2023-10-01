@@ -115,7 +115,7 @@ button:disabled {
     @apply text-xs md:text-base;
   }
   .base-mobile-lg-desktop {
-    @apply text-base md:text-md;
+    @apply text-base md:text-md xl:text-lg;
   }
   .lg-mobile-xl-desktop {
     @apply text-lg md:text-xl;

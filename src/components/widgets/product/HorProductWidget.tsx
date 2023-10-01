@@ -73,6 +73,7 @@ const HorProductWidget: FC<Props> = ({
                   display: 'block',
                   color: `black`,
                 }}
+                className={`sm-mobile-base-desktop`}
                 ar={element.name_ar}
                 en={element.name_en}
               />
@@ -85,6 +86,7 @@ const HorProductWidget: FC<Props> = ({
                   display: 'block',
                   color: `black`,
                 }}
+                className={`sm-mobile-base-desktop`}
                 ar={element.description_ar}
                 en={element.description_en}
               />
