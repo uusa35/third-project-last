@@ -81,7 +81,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
 
   const handleGuest = async () => {
     setIsOpen(true);
-    dispatch(signOut(undefined));
+    // dispatch(signOut(undefined));
     await deleteToken();
     // router.reload();
   };

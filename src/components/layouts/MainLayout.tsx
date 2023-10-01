@@ -77,7 +77,7 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
 
   useEffect(() => {
     setAppDefaults();
-  }, [vendorSuccess, url, isAuth]);
+  }, [vendorSuccess, url, isAuth, userAgent]);
   // removed tempid success from dependency
 
   const setAppDefaults = async () => {

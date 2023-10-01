@@ -80,7 +80,6 @@ export const cartApi = apiSlice.injectEndpoints({
       }),
       providesTags: ['Cart'],
     }),
-
     GetPromoCodes: builder.query<
       AppQueryResult<string[]>,
       {
@@ -98,7 +97,6 @@ export const cartApi = apiSlice.injectEndpoints({
           response.status == 200 && result.status,
       }),
     }),
-
     checkPromoCode: builder.query<
       AppQueryResult<ServerCart>,
       {
