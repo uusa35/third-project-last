@@ -88,17 +88,8 @@ const UserPassword: NextPage<Props> = ({
     [key: string]: boolean;
   }>({});
   const excludedCountries = ['IL'];
-  // const filteredCountries = getCountries().filter(
-  //   (country) => !excludedCountries.includes(country)
-  // );
   const [triggerLogin] = useLoginMutation();
   const [triggerResetPassword] = useResetPasswordMutation();
-  // const [triggerGetAddresses, { data: addresses, isLoading, isSuccess }] =
-  //   useLazyGetAddressesQuery<{
-  //     data: AppQueryResult<UserAddressFields[]>;
-  //     isLoading: boolean;
-  //     isSuccess: boolean;
-  //   }>();
   const [triggerGetCart] = useLazyGetCartProductsQuery();
   const [triggerSendOtp] = useSendotpMutation();
 
@@ -170,6 +161,7 @@ const UserPassword: NextPage<Props> = ({
               dispatch(setCustomer(omit(r.data.data.user, 'address')));
               dispatch(signIn(r.data.data.token));
               setToken(r.data.data.token);
+              
               if (
                 r.data &&
                 r.data.data &&
