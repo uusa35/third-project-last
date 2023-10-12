@@ -106,7 +106,7 @@ button:disabled {
 /* responsive fonts */
 @layer components {
   .xxs-mobile-xs-desktop {
-    @apply t`ext-xxs md:text-xs;
+    @apply text-xxs md:text-xs;
   }
   .xs-mobile-sm-desktop {
     @apply text-xs md:text-sm;

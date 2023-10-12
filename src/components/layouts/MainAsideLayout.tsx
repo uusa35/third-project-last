@@ -30,7 +30,7 @@ const MainAsideLayout: FC<Props> = ({ element, url }): React.ReactNode => {
           <AsideContent element={element} />
 
           {/* footer in aside */}
-          <AsideFooter />
+          <AsideFooter url={url} />
         </div>
       </div>
     </Suspense>

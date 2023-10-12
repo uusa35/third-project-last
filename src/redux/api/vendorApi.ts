@@ -44,6 +44,25 @@ export const vendorApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    checkStaticPages: builder.query<
+      AppQueryResult<HomePromoCode[]>,
+      {
+        lang: Locale['lang'] | string | undefined;
+        url: string | undefined;
+      }
+    >({
+      query: ({ lang, url }) => ({
+        url: `static-page`,
+        headers: {
+          lang,
+          url,
+        },
+        validateStatus: (response, result) =>
+          response.status == 200 && result.status,
+        keepUnusedDataFor: 0,
+      }),
+    }),
+
     getDeliveryPickupDetails: builder.query<
       AppQueryResult<DeliveryPickupDetails>,
       {
@@ -72,5 +91,6 @@ export const {
   useGetVendorQuery,
   useGetDeliveryPickupDetailsQuery,
   useLazyGetVendorQuery,
-  useGetHomePromocodeQuery
+  useGetHomePromocodeQuery,
+  useCheckStaticPagesQuery
 } = vendorApi;
