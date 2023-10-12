@@ -131,7 +131,6 @@ export const orderApi = apiSlice.injectEndpoints({
           headers: { lang, url, ...destination },
         }),
       }),
-
       getUserOrders: builder.query<
         AppQueryResult<any>,
         { lang: Locale['lang']; destination: any; url: string }

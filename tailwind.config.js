@@ -23,6 +23,9 @@ module.exports = {
         xs: '.6rem',
         md: '.7rem',
       },
+      maxWidth: {
+        '8xl': '2500px',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
