@@ -161,6 +161,18 @@ const checkout: NextPage<Props> = ({ url }): React.ReactElement => {
     ) {
       if (isAuth) router.push(appLinks.selectAddress(customer_id));
       else router.push(appLinks.guestAddress.path);
+    } else if (
+      prefrences.type === 'pickup_now' &&
+      moment(prefrences.date, 'YYYY-MM-DD').isSameOrAfter(
+        moment().format('YYYY-DD-MM')
+      )
+    ) {
+      dispatch(
+        showToastMessage({
+          content: 'your_pickup_date_is_old_please_choose_recent_date',
+          type: `error`,
+        })
+      );
     } else if (isNull(selectedPaymentMethod)) {
       dispatch(
         showToastMessage({

@@ -385,5 +385,6 @@
   "sign_in_up": "sign In/Up",
   "area_changed": "area charged successfully",
   "no_products_found": "no products found.",
-  "min_cart_should_be_5": "min cart should be at least 5 KD."
+  "min_cart_should_be_5": "min cart should be at least 5 KD.",
+  "your_pickup_date_is_old_please_choose_recent_date": "your pickup date is old please re-choose recent date"
 }

@@ -80,9 +80,6 @@ const nextConfig = withSvgr({
     // minimumCacheTTL: 60 * 60 * 24,
     minimumCacheTTL: 0,
     dangerouslyAllowSVG: true,
-    // contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // disableStaticImages: false,
-    staticPageGenerationTimeout: 60,
     webpack(config) {
       config.module.rules.push({
         test: /\.svg$/,
