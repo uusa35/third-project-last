@@ -41,7 +41,8 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   const router = useRouter();
   const color = useAppSelector(themeColor);
   const {
-    customer: { phone, name, email, countryCode, userAgent },
+    searchParams: { destination, destination_type, method },
+    customer: { phone, name, email, countryCode, userAgent, id },
     locale: { isRTL },
   } = useAppSelector((state) => state);
   const isAuth = useAppSelector(isAuthenticated);
@@ -56,7 +57,7 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
   } = useForm<any>({
     resolver: yupResolver(
       customerInfoSchema({
-        minPhone: 10000000,
+        minPhone: 10000,
         maxPhone: 9999999999999,
         requiredPass: true,
       })
@@ -93,7 +94,14 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
         dispatch(setCustomer(r.data.data.user));
         dispatch(signIn(r.data.data.token));
         setToken(r.data.data.token);
-        router.push(`${appLinks.addressMap.path}`);
+        if (method === 'delivery') {
+          if (isAuth && id) {
+            router.push(appLinks.createAuthAddress(id, 'house', 'prevPG=user'));
+          }
+          router.push(appLinks.cart.path);
+        } else {
+          router.push(appLinks.home.path);
+        }
       } else if (r.error && r.error.msg) {
         dispatch(
           showToastMessage({

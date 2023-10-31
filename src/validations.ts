@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
 export const customerInfoSchema = ({
-  minPhone = 10000000000,
-  maxPhone = 999999999999999,
+  minPhone = 10000000,
+  maxPhone = 9999999999999,
   requiredPass = false,
 }) =>
   yup
