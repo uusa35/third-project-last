@@ -222,7 +222,6 @@ const GuestOrderModal: FC<Props> = ({
                   defaultCountry="KW"
                   countries={['KW']}
                   type="text"
-                  pattern="[5-9]\d{7,14}"
                   {...register('phone')}
                   aria-invalid={errors.phone}
                   //   type="text"
