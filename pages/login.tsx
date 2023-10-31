@@ -73,6 +73,8 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     },
   });
 
+  console.log('errors', errors)
+
   useEffect(() => {
     if (url) {
       dispatch(setUrl(url));

@@ -283,7 +283,7 @@
   "to": "to",
   "info": "info",
   "from": "from",
-  "phone_number_must_be_between_9_and_15_number": "phone number must be between 9 and 15 number",
+  "phone_number_must_be_between_9_and_15_number": "phone number must be between 8 and 15 number",
   "send": "send",
   "otp": "otp",
   "verification": "verification",

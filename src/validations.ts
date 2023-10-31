@@ -1,7 +1,8 @@
 import * as yup from 'yup';
 
+const phoneRegExp = /^((\\[+5-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 export const customerInfoSchema = ({
-  minPhone = 10000000,
+  minPhone = 100000,
   maxPhone = 9999999999999,
   requiredPass = false,
 }) =>
@@ -11,7 +12,7 @@ export const customerInfoSchema = ({
       name: yup.string().required().min(2).max(50),
       email: yup.string().email().nullable(),
       // phone: yup.number().min(100000).max(999999999999).required(),
-      phone: yup.number().required().min(minPhone).max(maxPhone),
+      phone: yup.number().min(99999).max(999999999999),
       password: yup.string().min(6).when(`${requiredPass}`, {
         is: true,
         then: yup.string().required(),
@@ -26,7 +27,7 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
-      phone: yup.number().required().min(10000000).max(999999999999999),
+      phone: yup.number().min(99999).max(999999999999),
       name: yup.string().required(),
       block: yup
         .string()
@@ -117,12 +118,13 @@ export const feedbackSchema = yup.object().shape({
   user_name: yup.string().min(2).max(50).required(),
   rate: yup.number().min(1).max(5).required(),
   note: yup.string().min(2).max(460).required(),
-  phone: yup.number().min(10000000000).max(999999999999999),
+  phone: yup.number().min(99999).max(999999999999),
 });
 
 export const checkPhone = yup
   .object({
-    phone: yup.number().min(10000000000).max(999999999999999),
+    phone: yup.number().min(99999).max(999999999999),
+
   })
   .required();
 
