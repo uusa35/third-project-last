@@ -65,15 +65,17 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(checkPhone),
     defaultValues: {
       phone: customer.phone ?? ``,
+      fullPhoneNo : ``
     },
   });
 
-  console.log('errors', errors)
+  console.log('errors', errors);
 
   useEffect(() => {
     if (url) {
@@ -86,14 +88,16 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
   };
 
   const onSubmit = async (body: any) => {
-    const parsedPhoneNumber = parsePhoneNumber(`+${body.phone}`);
+    
+    const parsedPhoneNumber = parsePhoneNumber(`${body.fullPhoneNo}`);
     const userPhone = parsedPhoneNumber
       ? parsedPhoneNumber?.nationalNumber
       : ``;
     const userCountryCode = `+${parsedPhoneNumber?.countryCallingCode}`;
+    
     await triggerCheckPhone({
       body: {
-        phone: userPhone,
+        phone : body.phone,
         phone_country_code: userCountryCode,
       },
       url,
@@ -106,7 +110,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
       dispatch(
         setCustomer({
           countryCode: `+${parsedPhoneNumber?.countryCallingCode}`,
-          phone: userPhone,
+          phone: body.phone,
         })
       );
     });
@@ -155,7 +159,11 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
               }}
               render={({ field: { onChange } }) => (
                 <PhoneInput
-                  onChange={onChange}
+                  // onChange={onChange}
+                  onChange={(e : string) => { 
+                    setValue('phone', e?.slice(4));
+                    setValue('fullPhoneNo', e);
+                  }}
                   defaultCountry="KW"
                   // countries={['KW']}
                   id="phone"

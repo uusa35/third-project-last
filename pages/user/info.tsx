@@ -113,8 +113,6 @@ const AccountInfo: NextPage<Props> = ({ url }): React.ReactElement => {
     });
   };
 
-  console.log({ errors }, getValues());
-
   return (
     <Fragment>
       <MainHead

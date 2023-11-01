@@ -99,7 +99,7 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
               type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
             })
           );
-        }else{
+        } else {
           setIsBtnEnabled(false);
         }
       });
@@ -295,7 +295,6 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
       </MainContentLayout>
     );
 
-  console.log({ timings });
   return (
     <Suspense>
       <MainHead
@@ -375,7 +374,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
                       <span className="flex xs-mobile-sm-desktop">
                         {t(lowerCase(day.day))}
                       </span>
-                      <span className="flex flex-row xs-mobile-sm-desktop">{day.date}</span>
+                      <span className="flex flex-row xs-mobile-sm-desktop">
+                        {day.date}
+                      </span>
                     </button>
                   </div>
                 </div>

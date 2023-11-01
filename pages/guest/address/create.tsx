@@ -34,7 +34,7 @@ import {
   setCustomerAddressType,
   setNotes,
 } from '@/redux/slices/customerSlice';
-import { kebabCase, lowerCase, upperCase } from 'lodash';
+import { upperCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { AppQueryResult } from '@/types/queries';
@@ -112,12 +112,10 @@ const AddressCreate: NextPage<Props> = ({
       notes: customer?.address?.notes,
     },
   });
-
   const [name, phone] = watch(['name', 'phone']);
 
   // set state of phone and name on change
   useEffect(() => {
-    // console.log(name, phone);
     dispatch(setCustomerAddressInfo({ name, phone }));
   }, [name, phone]);
 
@@ -185,90 +183,13 @@ const AddressCreate: NextPage<Props> = ({
         router.push(`${appLinks.checkout.path}`);
       }
     });
-
-    // await triggerCreateAddress({
-    //   body: {
-    //     address_type:
-    //       upperCase(body.address_type) === 'HOUSE'
-    //         ? 1
-    //         : upperCase(body.address_type) === 'APARTMENT'
-    //         ? 2
-    //         : upperCase(body.address_type) === 'OFFICE'
-    //         ? 3
-    //         : 1,
-    //     longitude: body.longitude,
-    //     latitude: body.latitude,
-    //     customer_id: 43,
-    //     address: {
-    //       phone: body.phone,
-    //       name: body.name,
-    //       block: body.block,
-    //       street: body.street,
-    //       house_no: body.house_no,
-    //       avenue: body.avenue,
-    //       paci: body.paci,
-    //       floor_no: body.floor_no,
-    //       building_no: body.building_no,
-    //       office_no: body.office_no,
-    //       apartment_no: body.apartment_no,
-    //       city: body.area,
-    //       area: body.area,
-    //       area_id: body.area_id,
-    //       other_phone: body.other_phone,
-    //       notes: body.notes,
-    //     },
-    //   },
-    //   url,
-    // }).then((r: any) => {
-    //   if (r.data && r.data.status) {
-    //     console.log(r.data.Data, body);
-    //     dispatch(
-    //       showToastMessage({
-    //         content: `address_saved_successfully`,
-    //         type: `success`,
-    //       })
-    //     );
-    //     dispatch(setCustomerAddress(r.data.Data));
-    //     if (body.notes) {
-    //       dispatch(setNotes(body.notes));
-    //     }
-    //     triggerGetCart(
-    //       {
-    //         userAgent: customer.userAgent,
-    //         area_branch: destObj,
-    //         PromoCode: promocode,
-    //         url,
-    //       },
-    //       false
-    //     ).then((r: any) => {
-    //       if (r.data && r.data.data && r.data.data.Cart.length == 0) {
-    //         // router.push(`${appLinks.home.path}`);
-    //       } else {
-    //         // router.push(`${appLinks.checkout.path}`);
-    //       }
-    //     });
-    //     // checkTimeAvailability();
-    //   } else {
-    //     if (r.error && r.error.data?.msg) {
-    //       dispatch(
-    //         showToastMessage({
-    //           content: lowerCase(kebabCase(r.error?.data?.msg[`address`][0])),
-    //           type: `error`,
-    //         })
-    //       );
-    //     }
-    //   }
-    // });
   };
 
   const onSubmit = async (body: any) => {
-    // if (destination.method === 'delivery') {
     await handelSaveAddress(body);
-    // }
   };
 
   useEffect(() => {
-    console.log({ errors });
     if (errors.customer_id) {
       router.push(appLinks.login.path).then(() => {
         dispatch(

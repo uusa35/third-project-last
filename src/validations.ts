@@ -12,7 +12,7 @@ export const customerInfoSchema = ({
       name: yup.string().required().min(2).max(50),
       email: yup.string().email().nullable(),
       // phone: yup.number().min(100000).max(999999999999).required(),
-      phone: yup.number().min(99999).max(999999999999),
+      phone: yup.number().required().min(99999).max(999999999999),
       password: yup.string().min(6).when(`${requiredPass}`, {
         is: true,
         then: yup.string().required(),
@@ -27,7 +27,7 @@ export const addressSchema = (method: string, t: any) =>
     .shape({
       method: yup.string().required(),
       address_type: yup.string().required(),
-      phone: yup.number().min(99999).max(999999999999),
+      phone: yup.number().required().min(99999).max(999999999999),
       name: yup.string().required(),
       block: yup
         .string()
@@ -123,7 +123,8 @@ export const feedbackSchema = yup.object().shape({
 
 export const checkPhone = yup
   .object({
-    phone: yup.number().min(99999).max(999999999999),
+    // 65772444
+    phone: yup.number().required().min(9999999).max(999999999999),
 
   })
   .required();
