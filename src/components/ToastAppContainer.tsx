@@ -33,23 +33,7 @@ const ToastAppContainer = () => {
         rtl={isRTL}
         pauseOnFocusLoss
         pauseOnHover
-        // bodyStyle={{ height: 'auto' }}
-        // style={{
-        //   width: 'max-content',
-        //   minWidth: '350px',
-        //   minHeight: '40px',
-        //   display: 'flex',
-        //   alignSelf: 'center',
-        // }}
         theme="colored"
-        // progressClassName={`bg-red-900`}
-        // toastClassName={`p-0 m-0 w-full`}
-        //bodyClassName={`p-0 m-0 w-full`}
-        // toastStyle={{
-        //   backgroundColor: type === `error` ? `red` : '#12b764',
-        //   color: `white`,
-        //   fontSize: '14px',
-        // }}
         closeButton={
           <div className="flex items-center">
             <CloseIcon style={{ color: `white` }} />
