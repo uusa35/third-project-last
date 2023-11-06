@@ -25,6 +25,7 @@ const initialState: appSetting = {
   },
   currentModule: `home`,
   lastHomeModalShownTime: null,
+   HomePromoCodeOpen:true,
 };
 
 export const appSettingSlice = createSlice({
@@ -231,6 +232,13 @@ export const appSettingSlice = createSlice({
     setLastHomeModalShownTime: (state, action: PayloadAction<number>) => {
       state.lastHomeModalShownTime = action.payload;
     },
+     homePromoCodeOpenModal: (
+      state: typeof initialState,
+      action: PayloadAction<boolean>
+    ) => ({
+      ...state,
+      HomePromoCodeOpen: action.payload,
+    }),
   },
 
 });
@@ -262,4 +270,5 @@ export const {
   setPreviousUrl,
   changePreviousUrlLocale,
   setLastHomeModalShownTime,
+  homePromoCodeOpenModal
 } = appSettingSlice.actions;

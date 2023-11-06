@@ -19,6 +19,7 @@ import { customerSlice } from '@/redux/slices/customerSlice';
 import { productCartSlice } from '@/redux/slices/productCartSlice';
 import { CartSlice } from '@/redux/slices/cartSlice';
 import { ModalsSlice } from '@/redux/slices/modalsSlice';
+import { PromoCodeSlice } from './promocodeSlice';
 
 
 export const rootReducer = combineReducers({
@@ -42,6 +43,6 @@ export const rootReducer = combineReducers({
   [staticPagesApi.reducerPath]: staticPagesApi.reducer,
   [productCartSlice.name]: productCartSlice.reducer,
   [CartSlice.name]: CartSlice.reducer,
-  [ModalsSlice.name]: ModalsSlice.reducer
-  
+  [ModalsSlice.name]: ModalsSlice.reducer,
+  [PromoCodeSlice.name]: PromoCodeSlice.reducer
 });

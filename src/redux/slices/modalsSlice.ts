@@ -5,7 +5,7 @@ import { searchParamsSlice } from './searchParamsSlice';
 const initialState: Modals = {
   areaBranchIsOpen: false,
   closedStoreIsOpen: false,
-  showHelpModal: false
+  showHelpModal: false,
 };
 
 export const ModalsSlice = createSlice({
@@ -32,7 +32,7 @@ export const ModalsSlice = createSlice({
     ) => ({
       ...state,
       showHelpModal: action.payload,
-    }),
+    })
   },
   extraReducers: (builder) => {
     builder.addCase(searchParamsSlice.actions.setDestination, (state, action) => {

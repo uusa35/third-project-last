@@ -5,10 +5,11 @@ import PromocodeIcon from '@/appIcons/promocode.svg';
 import { useGetPromoCodesQuery } from '@/redux/api/cartApi';
 import { AppQueryResult } from '@/types/queries';
 import { isEmpty } from 'lodash';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import GreenCheckIcon from '@/appIcons/check.svg';
 import { destinationHeaderObject } from '@/redux/slices/searchParamsSlice';
 import { alexandriaFont, alexandriaFontMeduim } from '@/constants/*';
+import { resetPromo } from '@/redux/slices/cartSlice';
 
 type Props = {
   url: string;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const {
     cart: { promocode, enable_promocode },
@@ -75,6 +77,7 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
                 <div
                   key={i}
                   onClick={() => {
+                    dispatch(resetPromo());
                     setPromoCodeVal(prmocode_item);
                   }}
                   className={`flex items-center gap-x-1 rounded-full border ${

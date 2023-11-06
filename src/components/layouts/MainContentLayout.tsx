@@ -14,12 +14,14 @@ import NoNetwork from '@/appImages/no_network.png';
 import ReloadIcon from '@/appIcons/reload.svg';
 import { useTranslation } from 'react-i18next';
 // import ScrollToTopButton from '@/components/ScrollToTopButton';
-const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
-  ssr: false,
-});
-const SideMenu = dynamic(() => import(`@/components/SideMenu`), {
-  ssr: false,
-});
+import AppHeader from '@/components/AppHeader';
+import SideMenu from '@/components/SideMenu';
+// const AppHeader = dynamic(() => import(`@/components/AppHeader`), {
+//   ssr: false,
+// });
+// const SideMenu = dynamic(() => import(`@/components/SideMenu`), {
+//   ssr: false,
+// });
 
 type Props = {
   children: ReactNode | undefined;

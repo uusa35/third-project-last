@@ -1,4 +1,6 @@
+
 import { Address } from '@/types/queries';
+
 
 export interface Product {
   id: number;
@@ -125,6 +127,7 @@ export type appSetting = {
     title?: string;
     showToast: boolean;
   };
+  HomePromoCodeOpen: boolean;
 };
 
 export interface ServerCart {
@@ -467,3 +470,7 @@ export interface StaticPage {
 }
 
 export type AddressTypes = 'HOUSE' | 'OFFICE' | 'APARTMENT';
+
+export type HomePromoCodeSlice = {
+  closedModals: { closedDate: string; id: number }[];
+};
