@@ -18,9 +18,14 @@ import { useTranslation } from 'react-i18next';
 import { useLazyGetCategoriesQuery } from '@/redux/api/categoryApi';
 import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
-import { filter, isEmpty, isNull, map } from 'lodash';
+import { filter, forEach, isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/components/widgets/CategoryWidget';
-import { alexandriaFontBold, alexandriaFontSemiBold, isLocal, suppressText } from '@/constants/*';
+import {
+  alexandriaFontBold,
+  alexandriaFontSemiBold,
+  isLocal,
+  suppressText,
+} from '@/constants/*';
 import AppFooter from '@/components/AppFooter';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
@@ -33,12 +38,17 @@ import {
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
 import {
+  homePromoCodeOpenModal,
   setLastHomeModalShownTime,
   setUrl,
 } from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
 import { NextPage } from 'next';
+import {
+  addToHiddenModals,
+  removeExpiredPromoCodes,
+} from '@/redux/slices/promocodeSlice';
 
 type Props = {
   element: Vendor;
@@ -55,7 +65,8 @@ const Home: NextPage<Props> = ({
   const {
     locale: { lang },
     searchParams: { destination, method },
-    appSetting: { lastHomeModalShownTime },
+    appSetting: { lastHomeModalShownTime, HomePromoCodeOpen },
+    PromoCode: { closedModals },
   } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
   const DestinationId = useAppSelector(destinationId);
@@ -136,6 +147,37 @@ const Home: NextPage<Props> = ({
     },
     { refetchOnMountOrArgChange: true }
   );
+
+  const checkItemExistInHiddenModals = (itemId: number) => {
+    let exist = false;
+    closedModals.filter((i: { closedDate: string; id: number }) => {
+      if (i.id === itemId) {
+        exist = true;
+      }
+    });
+    return exist;
+  };
+
+  const handelHomePromoCodeShowTime = () => {
+    if (isEmpty(closedModals)) {
+      return homePromocodeData?.data;
+    } else {
+      // remove expired data from state
+      // check on each obj from server if it exist in state
+      dispatch(removeExpiredPromoCodes());
+
+      let validPromoCodes: HomePromoCode[] = [];
+      // loop on all promodata
+      forEach(homePromocodeData?.data, (item) => {
+        if (!checkItemExistInHiddenModals(item.promo_code_id))
+          validPromoCodes.push(item);
+      });
+
+      console.log({ validPromoCodes, closedModals });
+
+      return validPromoCodes;
+    }
+  };
 
   return (
     <Suspense>
@@ -225,13 +267,19 @@ const Home: NextPage<Props> = ({
               <CheckoutFixedBtn url={url} />
               {homePromocodeSuccess &&
                 homePromocodeData?.data &&
-                !isEmpty(homePromocodeData?.data) && (
+                !isEmpty(homePromocodeData?.data) &&(
                   <HomeModal
-                    data={homePromocodeData?.data}
-                    isOpen={shouldDisplayModal}
-                    onRequestClose={() =>
-                      dispatch(setLastHomeModalShownTime(currentTime))
-                    }
+                    data={handelHomePromoCodeShowTime()}
+                    isOpen={HomePromoCodeOpen}
+                    onRequestClose={() => {
+                      dispatch(
+                        addToHiddenModals({
+                          closedDate: new Date().toString(),
+                          id: handelHomePromoCodeShowTime()[0].promo_code_id,
+                        })
+                      );
+                      dispatch(homePromoCodeOpenModal(false));
+                    }}
                   />
                 )}
             </>

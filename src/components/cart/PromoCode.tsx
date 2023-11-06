@@ -17,7 +17,7 @@ type Props = {
 };
 
 const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
-  const dispatch=useAppDispatch()
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const {
     cart: { promocode, enable_promocode },
@@ -77,9 +77,8 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
                 <div
                   key={i}
                   onClick={() => {
-                    dispatch(resetPromo()); 
+                    dispatch(resetPromo());
                     setPromoCodeVal(prmocode_item);
-                                     
                   }}
                   className={`flex items-center gap-x-1 rounded-full border ${
                     promocode === prmocode_item
