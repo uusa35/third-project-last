@@ -20,13 +20,7 @@ import { useLazyGetProductsQuery } from '@/redux/api/productApi';
 import ProductListView from '@/components/home/ProductListView';
 import { filter, forEach, isEmpty, isNull, map } from 'lodash';
 import CategoryWidget from '@/components/widgets/CategoryWidget';
-import {
-  alexandriaFontBold,
-  alexandriaFontSemiBold,
-  isLocal,
-  suppressText,
-} from '@/constants/*';
-import AppFooter from '@/components/AppFooter';
+import { alexandriaFontSemiBold, isLocal, suppressText } from '@/constants/*';
 import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
 import ContentLoader from '@/components/skeletons';
@@ -37,11 +31,7 @@ import {
   destinationHeaderObject,
 } from '@/redux/slices/searchParamsSlice';
 import AdsScrollBar from '@/components/home/AdsScrollBar';
-import {
-  homePromoCodeOpenModal,
-  setLastHomeModalShownTime,
-  setUrl,
-} from '@/redux/slices/appSettingSlice';
+import { homePromoCodeOpenModal, setUrl } from '@/redux/slices/appSettingSlice';
 import HomeModal from '@/components/modals/HomeModal';
 import UpcomingOrders from '@/components/home/UpcomingOrders';
 import { NextPage } from 'next';
@@ -267,7 +257,7 @@ const Home: NextPage<Props> = ({
               <CheckoutFixedBtn url={url} />
               {homePromocodeSuccess &&
                 homePromocodeData?.data &&
-                !isEmpty(homePromocodeData?.data) &&(
+                !isEmpty(homePromocodeData?.data) && (
                   <HomeModal
                     data={handelHomePromoCodeShowTime()}
                     isOpen={HomePromoCodeOpen}
