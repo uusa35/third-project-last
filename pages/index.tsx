@@ -38,7 +38,7 @@ import { NextPage } from 'next';
 import {
   addToHiddenModals,
   removeExpiredPromoCodes,
-} from '@/redux/slices/promocodeSlice';
+} from '@/redux/slices/promoCodeSlice';
 
 type Props = {
   element: Vendor;

@@ -6,7 +6,7 @@ const initialState: HomePromoCodeSlice = {
   closedModals: [],
 };
 
-export const PromoCodeSlice = createSlice({
+export const promoCodeSlice = createSlice({
   name: 'PromoCode',
   initialState,
   reducers: {
@@ -33,4 +33,4 @@ export const PromoCodeSlice = createSlice({
 });
 
 export const { removeExpiredPromoCodes, addToHiddenModals } =
-  PromoCodeSlice.actions;
+  promoCodeSlice.actions;
