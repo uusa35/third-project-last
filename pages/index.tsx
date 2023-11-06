@@ -58,6 +58,7 @@ const Home: NextPage<Props> = ({
     appSetting: { lastHomeModalShownTime, HomePromoCodeOpen },
     PromoCode: { closedModals },
   } = useAppSelector((state) => state);
+  const [modalData, setModalData] = useState<HomePromoCode[]>([]);
   const dispatch = useAppDispatch();
   const DestinationId = useAppSelector(destinationId);
   const desObject = useAppSelector(destinationHeaderObject);
@@ -148,9 +149,10 @@ const Home: NextPage<Props> = ({
     return exist;
   };
 
-  const handelHomePromoCodeShowTime = () => {
+  useEffect(() => {
     if (isEmpty(closedModals)) {
-      return homePromocodeData?.data;
+      // return homePromocodeData?.data;
+      setModalData(homePromocodeData?.data);
     } else {
       // remove expired data from state
       // check on each obj from server if it exist in state
@@ -163,11 +165,12 @@ const Home: NextPage<Props> = ({
           validPromoCodes.push(item);
       });
 
-      console.log({ validPromoCodes, closedModals });
+      console.log({ validPromoCodes, closedModals }, homePromocodeData?.data);
 
-      return validPromoCodes;
+      // return validPromoCodes;
+      setModalData(validPromoCodes);
     }
-  };
+  }, [homePromocodeData]);
 
   return (
     <Suspense>
@@ -259,13 +262,13 @@ const Home: NextPage<Props> = ({
                 homePromocodeData?.data &&
                 !isEmpty(homePromocodeData?.data) && (
                   <HomeModal
-                    data={handelHomePromoCodeShowTime()}
+                    data={modalData}
                     isOpen={HomePromoCodeOpen}
                     onRequestClose={() => {
                       dispatch(
                         addToHiddenModals({
                           closedDate: new Date().toString(),
-                          id: handelHomePromoCodeShowTime()[0].promo_code_id,
+                          id: modalData[0].promo_code_id,
                         })
                       );
                       dispatch(homePromoCodeOpenModal(false));
