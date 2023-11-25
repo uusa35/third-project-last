@@ -154,11 +154,11 @@ const SelectBranch: NextPage<Props> = ({
         false
       )
         .then((r: any) => {
-          if (r?.data?.Data?.delivery?.delivery_time) {
+          if (r?.data?.Data?.delivery?.estimated_preparation_time) {
             dispatch(
               setPreferences({
                 date: moment().locale('en').format('YYYY-MM-DD'),
-                time: r?.data.Data?.delivery?.delivery_time,
+                time: r?.data.Data?.delivery?.estimated_preparation_time,
                 type: 'pickup_now',
               })
             );
