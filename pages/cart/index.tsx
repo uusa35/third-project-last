@@ -90,7 +90,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
       PromoCode: promocode,
       url,
     },
-    { refetchOnMountOrArgChange: 0.1 }
+    { refetchOnMountOrArgChange: true }
   );
 
   // when remove out of stock items
@@ -308,9 +308,10 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
     // remove promo if exists
-    if (enable_promocode) {
-      dispatch(resetPromo());
-    } else if (value) {
+    // if (enable_promocode) {
+    //   dispatch(resetPromo());
+    // } else 
+    if (value) {
       triggerCheckPromoCode({
         userAgent: userAgent,
         PromoCode: value,
@@ -329,7 +330,7 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         } else if (r.data && r.data.status && r.data.promoCode) {
           // promoCode Success case
           dispatch(setPromocode(value));
-          refetchCart();
+          // refetchCart();
           dispatch(
             showToastMessage({
               content: r.data.msg,
