@@ -95,7 +95,10 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
           dispatch(
             setPreferences({
               date: moment().locale('en').format('YYYY-MM-DD'),
-              time: r?.data.Data?.delivery?.delivery_time,
+              time:
+                method === 'delivery'
+                  ? r?.data.Data?.delivery?.delivery_time
+                  : r?.data.Data?.delivery?.estimated_preparation_time,
               type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
             })
           );
@@ -181,7 +184,10 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
               dispatch(
                 setPreferences({
                   date: moment().locale('en').format('YYYY-MM-DD'),
-                  time: r?.data.Data?.delivery?.delivery_time,
+                  time:
+                    method === 'delivery'
+                      ? r?.data.Data?.delivery?.delivery_time
+                      : r?.data.Data?.delivery?.estimated_preparation_time,
                   type: method === 'delivery' ? 'delivery_now' : 'pickup_now',
                 })
               );
@@ -308,7 +314,12 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
         currentModule="select_time"
       >
         <div className="p-5 w-full overflow-x-hidden">
-          {!isUndefined(vendorElement?.Data?.delivery?.delivery_time) && (
+          {((!isUndefined(vendorElement?.Data?.delivery?.delivery_time) &&
+            method === 'delivery') ||
+            (!isUndefined(
+              vendorElement?.Data?.delivery?.estimated_preparation_time
+            ) &&
+              method === 'pickup')) && (
             <label className="flex items-center w-full pt-2 pb-4 border-b-2 border-gray-100">
               <input
                 id="now"
@@ -323,7 +334,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
               />
               <span className={`font-bold mx-4`}>
                 {`${t('now_within')} ${
-                  vendorElement?.Data?.delivery?.delivery_time
+                  method === 'delivery'
+                    ? vendorElement?.Data?.delivery?.delivery_time
+                    : vendorElement?.Data?.delivery?.estimated_preparation_time
                 } ${t('minutes')}`}
               </span>
             </label>
@@ -461,7 +474,11 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
               ) : (
                 <div>
                   {t('now_within')}
-                  {vendorElement?.Data?.delivery?.delivery_time} {t('minutes')}
+                  {method === 'delivery'
+                    ? vendorElement?.Data?.delivery?.delivery_time
+                    : vendorElement?.Data?.delivery
+                        ?.estimated_preparation_time}{' '}
+                  {t('minutes')}
                 </div>
               )}
             </div>
