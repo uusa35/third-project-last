@@ -137,6 +137,7 @@ const OtpVerifications: NextPage<Props> = ({
     setOtp(toEn(enteredOtp));
   };
 
+  console.log('countryCode', countryCode);
   return (
     <Fragment>
       <MainHead

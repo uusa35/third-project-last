@@ -35,7 +35,7 @@ import { themeColor } from '@/redux/slices/vendorSlice';
 import { setCustomer, signIn, signOut } from '@/redux/slices/customerSlice';
 import { checkPhone } from 'src/validations';
 import { map, upperCase, upperFirst } from 'lodash';
-import { setUrl } from '@/redux/slices/appSettingSlice';
+import { setUrl, showToastMessage } from '@/redux/slices/appSettingSlice';
 
 type Props = {
   element: Vendor;
@@ -71,7 +71,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
     resolver: yupResolver(checkPhone),
     defaultValues: {
       phone: customer.phone ?? ``,
-      fullPhoneNo : ``
+      fullPhoneNo: ``,
     },
   });
 
@@ -88,32 +88,36 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
   };
 
   const onSubmit = async (body: any) => {
-    
-    const parsedPhoneNumber = parsePhoneNumber(`${body.fullPhoneNo}`);
+    const parsedPhoneNumber: any = parsePhoneNumber(`${body.fullPhoneNo}`);
     const userPhone = parsedPhoneNumber
       ? parsedPhoneNumber?.nationalNumber
       : ``;
     const userCountryCode = `+${parsedPhoneNumber?.countryCallingCode}`;
-    
-    await triggerCheckPhone({
-      body: {
-        phone : body.phone,
-        phone_country_code: userCountryCode,
-      },
-      url,
-    }).then(async (r: any) => {
-      if (r.error) {
-        router.push(appLinks.otpVerification('register'));
-      } else {
-        router.push(appLinks.userLogin.path);
-      }
+    if (parsedPhoneNumber && parsedPhoneNumber.countryCallingCode) {
+      await triggerCheckPhone({
+        body: {
+          phone: parsedPhoneNumber.nationalNumber,
+          phone_country_code: `+${parsedPhoneNumber.countryCallingCode}`,
+        },
+        url,
+      }).then(async (r: any) => {
+        if (r.error) {
+          router.push(appLinks.otpVerification('register'));
+        } else {
+          router.push(appLinks.userLogin.path);
+        }
+        dispatch(
+          setCustomer({
+            countryCode: `+${parsedPhoneNumber.countryCallingCode}`,
+            phone: parsedPhoneNumber.nationalNumber,
+          })
+        );
+      });
+    } else {
       dispatch(
-        setCustomer({
-          countryCode: `+${parsedPhoneNumber?.countryCallingCode}`,
-          phone: body.phone,
-        })
+        showToastMessage({ content: t('invalid_phone'), type: 'error' })
       );
-    });
+    }
   };
 
   return (
@@ -160,12 +164,13 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
               render={({ field: { onChange } }) => (
                 <PhoneInput
                   // onChange={onChange}
-                  onChange={(e : string) => { 
+                  onChange={(e: string) => {
                     setValue('phone', e?.slice(4));
                     setValue('fullPhoneNo', e);
                   }}
                   defaultCountry="KW"
                   // countries={['KW']}
+                  placeholder="+965 9xxxxxxx"
                   id="phone"
                   className="focus:outline-none mt-2 border-b border-gray-100 pb-3"
                   style={{ borderBottomColor: '#e5e7eb' }}

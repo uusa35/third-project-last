@@ -60,8 +60,6 @@ const GuestOrderModal: FC<Props> = ({
   });
 
   const onSubmit = async (body: any) => {
-    console.log({ body });
-
     const parsedPhone = parsePhoneNumber(body.phone.toString())?.nationalNumber;
     const parsedCountryCode = `+${
       parsePhoneNumber(body.phone.toString())?.countryCallingCode
