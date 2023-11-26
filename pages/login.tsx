@@ -48,7 +48,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const color = useAppSelector(themeColor);
-  const { customer } = useAppSelector((state) => state);
+  const { customer, locale } = useAppSelector((state) => state);
   const signInAdvantages = [
     { id: 1, icon: <SaveAddressIcon />, text: 'save_your_addresses' },
     { id: 2, icon: <SaveContactInfo />, text: 'save_your_contact_information' },
@@ -168,8 +168,9 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
                   }}
                   defaultCountry="KW"
                   // countries={['KW']}
-                  placeholder="+965 9xxxxxxx"
+                  placeholder={t('phone_placeholder')}
                   id="phone"
+                  dir={locale.dir}
                   className="focus:outline-none mt-2 border-b border-gray-100 pb-3"
                   style={{ borderBottomColor: '#e5e7eb' }}
                   onFocus={(e) =>
