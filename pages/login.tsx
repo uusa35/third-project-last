@@ -114,9 +114,7 @@ const GuestMobile: NextPage<Props> = ({ element, url }): React.ReactElement => {
         );
       });
     } else {
-      dispatch(
-        showToastMessage({ content: t('invalid_phone'), type: 'error' })
-      );
+      dispatch(showToastMessage({ content: 'invalid_phone', type: 'error' }));
     }
   };
 
