@@ -137,7 +137,7 @@ const VendorShow: NextPage<Props> = ({ url, element }): React.ReactElement => {
                   >
                     <MinChargeIcon />
                     <span className="base-mobile-lg-desktop px-2">
-                      {t('min_order_with_delivery')}
+                      {t('min_order')}
                     </span>
                   </div>
                   <div className={`base-mobile-lg-desktop`}>

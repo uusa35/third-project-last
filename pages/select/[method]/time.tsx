@@ -463,7 +463,9 @@ const SelectTime: NextPage<Props> = ({ url, method }): React.ReactNode => {
                     <span className="px-1">{t(selectedDay.day)}</span>
                     {selectedDay.day !== 'tomorrow' &&
                     selectedDay.day !== 'today'
-                      ? moment(selectedDay.date).locale(lang).format('DD MMMM')
+                      ? moment(selectedDay.rawDate)
+                          .locale('en')
+                          .format('DD MMMM')
                       : null}
                   </div>
                   <span className="px-2 inline-block">-</span>

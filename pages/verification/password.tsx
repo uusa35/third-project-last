@@ -161,7 +161,6 @@ const UserPassword: NextPage<Props> = ({
               dispatch(setCustomer(omit(r.data.data.user, 'address')));
               dispatch(signIn(r.data.data.token));
               setToken(r.data.data.token);
-              
               if (
                 r.data &&
                 r.data.data &&
@@ -170,7 +169,7 @@ const UserPassword: NextPage<Props> = ({
               ) {
                 const address = first(
                   filter(
-                    r.data.data.data.user.address,
+                    r.data.data.user.address,
                     (a) => a.address?.area_id === destination?.id.toString()
                   )
                 );
@@ -178,7 +177,6 @@ const UserPassword: NextPage<Props> = ({
                   dispatch(setCustomerAddress(address));
                 }
               }
-
               triggerGetCart(
                 {
                   userAgent: customer.userAgent,

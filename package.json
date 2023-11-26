@@ -23,7 +23,7 @@
     "@mui/x-date-pickers": "^5.0.12",
     "@next/font": "13.1.1",
     "@reduxjs/toolkit": "^1.9.1",
-    "@sentry/nextjs": "^7.36.0",
+    "@sentry/nextjs": "^7.80.1",
     "@sentry/react": "^7.28.1",
     "@svgr/plugin-svgo": "^7.0.0",
     "@svgr/webpack": "^7.0.0",
