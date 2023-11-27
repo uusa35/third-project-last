@@ -77,7 +77,7 @@ const PromoCode: FC<Props> = ({ url, handelApplyPromoCode = () => {} }) => {
                 <div
                   key={i}
                   onClick={() => {
-                    dispatch(resetPromo());
+                    // dispatch(resetPromo());
                     setPromoCodeVal(prmocode_item);
                   }}
                   className={`flex items-center gap-x-1 rounded-full border ${
