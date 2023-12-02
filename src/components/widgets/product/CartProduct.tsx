@@ -18,6 +18,7 @@ import {
   RadioBtns,
 } from '@/types/index';
 import { isEmpty, map } from 'lodash';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -39,6 +40,7 @@ export default function CartProduct({
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
 
+  console.log(product.ProductImage, product.ProductNameEn);
   return (
     <div
       className={`flex border-b gap-x-2 ${checkoutProduct ? 'py-2' : 'py-4'}`}
@@ -51,7 +53,7 @@ export default function CartProduct({
             product.ProductName
           )}`}
         >
-          <CustomImage
+          <Image
             src={imgUrl(product.ProductImage)}
             alt={'product img'}
             className="rounded-md"
@@ -137,7 +139,10 @@ export default function CartProduct({
 
           {/* notes */}
           {checkoutProduct && (
-            <p suppressHydrationWarning={suppressText} className="xxs-mobile-xs-desktop">
+            <p
+              suppressHydrationWarning={suppressText}
+              className="xxs-mobile-xs-desktop"
+            >
               {product.ExtraNotes}
             </p>
           )}
