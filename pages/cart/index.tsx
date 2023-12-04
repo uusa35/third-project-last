@@ -168,8 +168,20 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
             type: `success`,
           })
         );
-        if (enable_promocode) {
-          dispatch(resetPromo());
+        if (enable_promocode && promocode) {
+          // check if promo is still valid or not
+           triggerCheckPromoCode({
+             userAgent: userAgent,
+             PromoCode: promocode,
+             url,
+             area_branch: destObj,
+           }).then((r: any) => {
+             // console.log({ r });
+             if (r.error && r.error?.msg) {
+               dispatch(resetPromo());
+             }
+           });
+          
         }
       } else if (r.error && r.error.data && r.error.data.msg) {
         if (r.error.data.statusNum === '300' && r.error.data.product)
@@ -190,120 +202,6 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     });
   };
 
-  // const handelIncRequest = (item: ProductCart) => {
-  //   triggerAddToCart({
-  //     process_type: method,
-  //     destination: destObj,
-  //     body: {
-  //       UserAgent: userAgent,
-
-  //       Cart:
-  //         isSuccess && cartItems.data && cartItems.data.Cart
-  //           ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
-  //               ...item,
-  //               Quantity: item.Quantity + 1,
-  //             })
-  //           : cartItems.data.Cart,
-  //     },
-  //     url,
-  //   }).then((r: any) => {
-  //     if (r.data && r.data?.status) {
-  //       dispatch(
-  //         showToastMessage({
-  //           content: `cart_updated_successfully`,
-  //           type: `success`,
-  //         })
-  //       );
-  //       dispatch(resetPromo());
-  //     } else {
-  //       if (r.error && r.error.data && r.error.data.msg) {
-  //         dispatch(
-  //           showToastMessage({
-  //             content: lowerCase(kebabCase(r.error.data.msg)),
-  //             type: `error`,
-  //           })
-  //         );
-  //       }
-  //     }
-  //   });
-  // };
-
-  // const handelDecRequest = (item: ProductCart) => {
-  //   triggerAddToCart({
-  //     process_type: method,
-  //     destination: destObj,
-  //     body: {
-  //       UserAgent: userAgent,
-  //       Cart:
-  //         isSuccess && cartItems.data && cartItems.data.Cart
-  //           ? filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
-  //               ...item,
-  //               Quantity: item.Quantity - 1,
-  //             })
-  //           : cartItems.data.Cart,
-  //     },
-  //     url,
-  //   }).then((r: any) => {
-  //     if (r.data && r.data?.status) {
-  //       dispatch(
-  //         showToastMessage({
-  //           content: `cart_updated_successfully`,
-  //           type: `success`,
-  //         })
-  //       );
-  //       dispatch(resetPromo());
-  //     } else {
-  //       if (r.error && r.error.data && r.error.data.msg) {
-  //         dispatch(
-  //           showToastMessage({
-  //             content: lowerCase(kebabCase(r.error.data.msg)),
-  //             type: `error`,
-  //           })
-  //         );
-  //       }
-  //     }
-  //   });
-  // };
-
-  // const handelRemoveRequest = (item: ProductCart) => {
-  //   const currentItems = filter(cartItems.data.Cart, (i) => i.id !== item.id);
-  //   triggerAddToCart({
-  //     process_type: method,
-  //     destination: destObj,
-  //     body: {
-  //       UserAgent: userAgent,
-  //       Cart:
-  //         isSuccess &&
-  //         cartItems.data &&
-  //         cartItems.data.Cart &&
-  //         !isEmpty(currentItems)
-  //           ? currentItems
-  //           : [], // empty Cart Case !!!
-  //     },
-  //     url,
-  //   }).then((r: any) => {
-  //     if (r.data && r.data?.status) {
-  //       dispatch(
-  //         showToastMessage({
-  //           content: `cart_updated_successfully`,
-  //           type: `success`,
-  //         })
-  //       );
-  //       if (enable_promocode) {
-  //         dispatch(resetPromo());
-  //       }
-  //     } else {
-  //       if (r.error && r.error.data && r.error.data.msg) {
-  //         dispatch(
-  //           showToastMessage({
-  //             content: lowerCase(kebabCase(r.error.data.msg)),
-  //             type: `error`,
-  //           })
-  //         );
-  //       }
-  //     }
-  //   });
-  // };
 
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
