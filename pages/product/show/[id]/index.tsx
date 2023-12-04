@@ -80,6 +80,7 @@ import {
   useGetCartProductsQuery,
   useAddToCartMutation,
   useLazyGetCartProductsQuery,
+  useLazyCheckPromoCodeQuery,
 } from '@/redux/api/cartApi';
 import ChangeMood3Modal from '@/components/modals/ChangeMood3Modal';
 import search from '../../search';
@@ -113,7 +114,7 @@ const ProductShow: NextPage<Props> = ({
     searchParams: { method, destination },
     customer: { userAgent, prefrences },
     vendor: { logo },
-    cart: { promocode },
+    cart: { promocode , enable_promocode},
   } = useAppSelector((state) => state);
   const color = useAppSelector(themeColor);
   const dispatch = useAppDispatch();
@@ -130,6 +131,8 @@ const ProductShow: NextPage<Props> = ({
   const desObject = useAppSelector(destinationHeaderObject);
   const [triggerAddToCart] = useAddToCartMutation();
   const [triggerGetCartProducts] = useLazyGetCartProductsQuery();
+  const [triggerCheckPromoCode] = useLazyCheckPromoCodeQuery();
+
   const {
     data: element,
     isSuccess,
@@ -670,7 +673,21 @@ const ProductShow: NextPage<Props> = ({
           url,
         }).then((r: any) => {
           if (r && r.data && r.data.status && r.data.data && r.data.data.Cart) {
-            dispatch(resetPromo());
+            // dispatch(resetPromo());
+            if (enable_promocode && promocode) {
+              // check if promo is still valid or not
+              triggerCheckPromoCode({
+                userAgent: userAgent,
+                PromoCode: promocode,
+                url,
+                area_branch: desObject,
+              }).then((r: any) => {
+                // console.log({ r });
+                if (r.error && r.error?.msg) {
+                  dispatch(resetPromo());
+                }
+              });
+            }
             triggerGetCartProducts({
               userAgent,
               area_branch: desObject,
