@@ -224,10 +224,9 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
     // remove promo if exists
-    // if (enable_promocode) {
-    //   dispatch(resetPromo());
-    // } else
-    if (value) {
+    if (enable_promocode) {
+      dispatch(resetPromo());
+    } else if (value) {
       triggerCheckPromoCode({
         userAgent: userAgent,
         PromoCode: value,
