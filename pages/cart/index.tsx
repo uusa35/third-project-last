@@ -116,30 +116,50 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     }
   }, []);
 
-  // reset promo
-  // useEffect(() => {
-  //   dispatch(resetPromo())
-  // }, []);
-
   // inc and dec and rmove
   const HandelDecIncRmv = (item: ProductCart, process: string) => {
     let newCart = cartItems.data.Cart;
     if (process === 'inc') {
-      newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
-        ...item,
-        Quantity: item.Quantity + 1,
+      newCart = cartItems.data.Cart.map((itm) => {
+        if (itm.id === item.id) {
+          return {
+            ...item,
+            Quantity: item.Quantity + 1,
+          };
+        } else {
+          return itm;
+        }
       });
+
+      // console.log(newCart);
+
+      // newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
+      //   ...item,
+      //   Quantity: item.Quantity + 1,
+      // });
       // handelIncRequest(item);
     } else if (process === 'dec') {
       // if val === 1 then remove the item
       if (item.Quantity === 1) {
         newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id);
+
         // handelRemoveRequest(item);
       } else {
-        newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
-          ...item,
-          Quantity: item.Quantity - 1,
+        newCart = cartItems.data.Cart.map((itm) => {
+          if (itm.id === item.id) {
+            return {
+              ...item,
+              Quantity: item.Quantity - 1,
+            };
+          } else {
+            return itm;
+          }
         });
+
+        // newCart = filter(cartItems.data.Cart, (i) => i.id !== item.id).concat({
+        //   ...item,
+        //   Quantity: item.Quantity - 1,
+        // });
         // handelDecRequest(item);
       }
     }
@@ -170,18 +190,17 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
         );
         if (enable_promocode && promocode) {
           // check if promo is still valid or not
-           triggerCheckPromoCode({
-             userAgent: userAgent,
-             PromoCode: promocode,
-             url,
-             area_branch: destObj,
-           }).then((r: any) => {
-             // console.log({ r });
-             if (r.error && r.error?.msg) {
-               dispatch(resetPromo());
-             }
-           });
-          
+          triggerCheckPromoCode({
+            userAgent: userAgent,
+            PromoCode: promocode,
+            url,
+            area_branch: destObj,
+          }).then((r: any) => {
+            // console.log({ r });
+            if (r.error && r.error?.msg) {
+              dispatch(resetPromo());
+            }
+          });
         }
       } else if (r.error && r.error.data && r.error.data.msg) {
         if (r.error.data.statusNum === '300' && r.error.data.product)
@@ -202,13 +221,12 @@ const Cart: NextPage<Props> = ({ url }): React.ReactElement => {
     });
   };
 
-
   // apply promo
   const handelApplyPromoCode = (value: string | undefined) => {
     // remove promo if exists
     // if (enable_promocode) {
     //   dispatch(resetPromo());
-    // } else 
+    // } else
     if (value) {
       triggerCheckPromoCode({
         userAgent: userAgent,
