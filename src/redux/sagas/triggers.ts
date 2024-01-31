@@ -19,7 +19,9 @@ import { appLoadingSlice } from '@/redux/slices/appLoadingSlice';
 import { localeSlice } from '@/redux/slices/localeSlice';
 
 export function* triggerResetEntireApp() {
-  yield takeLatest(`resetEntireApp`, startResetEnireAppSceanrio);
+  yield takeLatest(['REHYDRATE',
+    '__NEXT_REDUX_WRAPPER_HYDRATE__'
+  ], startResetEnireAppSceanrio);
 }
 
 

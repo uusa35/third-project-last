@@ -27,6 +27,7 @@ import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
 import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
+import { resetApp } from '@/redux/slices/versionSlice';
 
 type Props = {
   children: ReactNode | undefined;
@@ -37,6 +38,7 @@ type Handler = (...evts: any[]) => void;
 
 const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
   const {
+    version,
     appSetting: { url, sideMenuOpen },
     locale,
     searchParams: { destination, method },
@@ -164,6 +166,15 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
       window.removeEventListener('hashchange', handleHashChangeStart);
     };
   }, [router.pathname]);
+
+  useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_APP_VERSION &&
+      version !== process.env.NEXT_PUBLIC_APP_VERSION
+    ) {
+      dispatch(resetApp());
+    }
+  }, [version]);
 
   return (
     <div
