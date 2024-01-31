@@ -25,7 +25,8 @@ import Header from '@/components/home/Header';
 import Footer from '@/components/home/Footer';
 import ContentLoader from '@/components/skeletons';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
-import DeliveryPickup from '@/components/home/DeliveryPickup';
+import dynamic from 'next/dynamic';
+
 import {
   destinationId,
   destinationHeaderObject,
@@ -39,6 +40,11 @@ import {
   addToHiddenModals,
   removeExpiredPromoCodes,
 } from '@/redux/slices/promoCodeSlice';
+// import DeliveryPickup from '@/components/home/DeliveryPickup';
+const DeliveryPickup = dynamic(
+  () => import('@/components/home/DeliveryPickup'),
+  { ssr: false }
+);
 
 type Props = {
   element: Vendor;

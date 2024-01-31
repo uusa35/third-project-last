@@ -1,12 +1,13 @@
+'use client';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import DeliveryIcon from '@/appIcons/delivery animation.json';
 import PickupIcon from '@/appIcons/pick up animation.json';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { themeColor } from '@/redux/slices/vendorSlice';
 import { useRouter } from 'next/router';
-import TextTrans from '../TextTrans';
+import TextTrans from '@/components/TextTrans';
 import {
   alexandriaFont,
   alexandriaFontMeduim,
@@ -15,7 +16,7 @@ import {
 } from '@/constants/*';
 import { Player } from '@lottiefiles/react-lottie-player';
 import { setAreaBranchModalStatus } from '@/redux/slices/modalsSlice';
-import ChangeMoodModal from '../modals/ChangeMoodModal';
+import ChangeMoodModal from '@/components/modals/ChangeMoodModal';
 import { truncate } from 'lodash';
 
 type Props = { url: string };

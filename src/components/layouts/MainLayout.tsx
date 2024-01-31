@@ -1,10 +1,9 @@
-import React, { FC, ReactNode, useCallback, useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import i18n from 'i18next';
 import { useRouter } from 'next/router';
 import {
   alexandriaFont,
-  appLinks,
   montserratFontRegular,
   scrollClass,
   setLang,
@@ -26,8 +25,6 @@ import { isAuthenticated, setUserAgent } from '@/redux/slices/customerSlice';
 import { isNull } from 'lodash';
 import { hideSideMenu } from '@/redux/slices/appSettingSlice';
 import ContentLoader from '@/components/skeletons';
-import { useLazyGetCartProductsQuery } from '@/redux/api/cartApi';
-import { resetApp } from '@/redux/slices/versionSlice';
 
 type Props = {
   children: ReactNode | undefined;
