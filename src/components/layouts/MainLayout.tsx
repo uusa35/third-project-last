@@ -164,15 +164,6 @@ const MainLayout: FC<Props> = ({ children }): React.ReactNode => {
     };
   }, [router.pathname]);
 
-  useEffect(() => {
-    if (
-      process.env.NEXT_PUBLIC_APP_VERSION &&
-      version !== process.env.NEXT_PUBLIC_APP_VERSION
-    ) {
-      dispatch(resetApp());
-    }
-  }, [version]);
-
   return (
     <div
       dir={router.locale === 'ar' ? 'rtl' : 'ltr'}

@@ -26,7 +26,6 @@ import Footer from '@/components/home/Footer';
 import ContentLoader from '@/components/skeletons';
 import CheckoutFixedBtn from '@/components/CheckoutFixedBtn';
 import dynamic from 'next/dynamic';
-
 import {
   destinationId,
   destinationHeaderObject,
